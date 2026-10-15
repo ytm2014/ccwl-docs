@@ -79,6 +79,31 @@ Creating or updating a post that schedules it (`schedule`, `schedule_now`, `queu
 | `salesbot:media:write` | Upload and delete media |
 | `salesbot:zapier:hooks` | Subscribe Zapier triggers |
 
+### Link in Bio
+
+| Permission | Allows |
+| --- | --- |
+| `biolinks:pages:read` | List and read pages and their blocks |
+| `biolinks:pages:write` | Create, edit and duplicate pages, change themes and edit blocks |
+| `biolinks:pages:publish` | Activate or pause pages, and change pages that are live |
+| `biolinks:pages:delete` | Delete pages |
+| `biolinks:links:read` | List and read short links |
+| `biolinks:links:write` | Create and edit short links |
+| `biolinks:links:publish` | Activate or pause short links, and change links that are live |
+| `biolinks:links:delete` | Delete short links |
+| `biolinks:catalog:read` | Read themes, fonts and block types |
+| `biolinks:analytics:read` | Read page and link analytics |
+| `biolinks:submissions:read` | Read form submissions |
+| `biolinks:submissions:delete` | Delete form submissions |
+| `biolinks:qr:read` | Read QR codes |
+| `biolinks:qr:write` | Create and delete QR codes |
+| `biolinks:pixels:read` | Read tracking pixels |
+| `biolinks:pixels:write` | Create and delete tracking pixels |
+| `biolinks:domains:read` | Read custom domains and domain operations |
+| `biolinks:domains:manage` | Connect, verify and remove custom domains |
+
+Some write permissions only appear when creating a key if your platform has Link in Bio writes switched on.
+
 ### Webhooks
 
 | Permission | Allows |
@@ -94,7 +119,7 @@ See [Managing endpoints](/webhooks/manage) for how these combine.
 
 ## Workspaces
 
-- **Messaging API:** the key selects the workspace. No workspace ID appears in the URL.
+- **Messaging and Link in Bio APIs:** the key selects the workspace. No workspace ID appears in the URL.
 - **Publishing API:** the workspace UUID is part of the URL and must match the key's workspace. A key from another workspace gets `404`, even if its admin belongs to both.
 
 ## Older credentials

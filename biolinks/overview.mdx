@@ -1,0 +1,63 @@
+---
+title: "Link in Bio API overview"
+description: "How pages, short links and domains work through the API, and the rules every write follows."
+---
+
+Base URL: `https://app.example.com/api/v1/biolinks`
+
+Authenticate with a [workspace API key](/authentication) that has `biolinks:` permissions. The key chooses the workspace, so no workspace ID appears in the URL. IDs in paths are the `id` values the API returns.
+
+## New content starts paused
+
+Pages and short links you create are **paused**. Build them, then make them live with [Set page status](/biolinks/pages/set-page-status) or [Set short link status](/biolinks/short-links/set-short-link-status). New pages get the same starter blocks as the dashboard.
+
+`status` cannot be changed through a normal update; only the status endpoints change it. Changing anything on an **active** page or link (including its blocks, theme and deletion) also needs the matching `publish` permission.
+
+## Revisions: `If-Match`
+
+Every page and link has a `revision`, returned in the body and in the `ETag` header. Any change to an existing page or link, including its blocks, theme, status and duplication, must send it back:
+
+```http
+If-Match: "<revision>"
+```
+
+- Missing: `428`. Out of date (someone changed it since you read it): `412`. Read it again and retry.
+- Block changes return the page's new revision as `page_revision`. Use that for your next change.
+- Revisions are opaque strings, not version numbers. Don't compare them.
+
+## Retries: `Idempotency-Key`
+
+Every `POST` needs an `Idempotency-Key` header of 8–200 letters, digits, `.`, `_`, `:` or `-`.
+
+- Retrying with the same key and the **exact same body bytes** within 24 hours returns the original response with `Idempotency-Replayed: true`.
+- The same key with a different body returns `409`, even if the JSON means the same thing.
+- A replay doesn't repeat the original `ETag` header. Take the revision from the body.
+
+## Blocks
+
+Use the block endpoints to change a page's content; sending `blocks` in a page update is refused.
+
+- [Get the catalogue](/biolinks/catalogue/get-the-catalogue) lists every block type, its default content and a `write_schema` showing which fields you can set.
+- Updating a block merges the top-level `content` fields you send. A list you send replaces that whole list.
+- Commerce and embed blocks can't be created or edited through the API. Existing ones come back with `content_supported: false` and are left alone when you edit other blocks.
+- Images and other assets are set by URL. The API doesn't upload or fetch files.
+- A page can have up to 200 blocks. Reordering needs every block ID exactly once.
+
+## Custom domains
+
+1. [Connect a domain](/biolinks/domains/connect-a-domain) with its host name. It starts `pending`.
+2. Point the domain's DNS at the platform.
+3. [Verify a domain](/biolinks/domains/verify-a-domain). This is queued and returns `202` with an operation.
+4. Poll [Get a domain operation](/biolinks/domains/get-a-domain-operation) until it finishes, then check `ssl_active` on the domain. Verification alone doesn't mean HTTPS is ready.
+
+Removing a domain is queued the same way. A domain still used by a page or link can't be removed. You can queue up to 5 domain operations per minute.
+
+## What else to know
+
+- Lists return 25 items by default, up to 100 with `per_page`. Pages and links can be filtered by `status` and searched with `keyword`.
+- Form submissions use cursor pagination, newest first.
+- Analytics give lifetime totals, a 7-day trend and 30-day breakdowns. Reading through the API never counts as a visit.
+- An `active` page can still be unreachable if its domain, plan or the platform blocks it. Check `disabled` and the domain's status.
+- Passwords are write-only; responses only say `has_password`. Pixel selections aren't returned either.
+
+Not available through the API yet: webhook events for pages and links, bulk writes, submission exports, raw visitor data, custom HTML/CSS, commerce blocks and setting a domain's home page.

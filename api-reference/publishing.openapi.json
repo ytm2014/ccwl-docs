@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://{domain}/mixpost/api",
+      "url": "https://{domain}/os/api",
       "description": "Your platform domain",
       "variables": {
         "domain": {

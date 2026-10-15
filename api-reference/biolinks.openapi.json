@@ -1,0 +1,3037 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Link in Bio API",
+    "version": "1.0.0",
+    "description": "Link-in-bio pages and their blocks, short links, QR codes, tracking pixels, form submissions, analytics and custom domains."
+  },
+  "servers": [
+    {
+      "url": "https://{domain}/api/v1/biolinks",
+      "description": "Your platform domain",
+      "variables": {
+        "domain": {
+          "default": "app.example.com",
+          "description": "The domain you sign in to, without https://"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "apiKeyHeader": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Pages"
+    },
+    {
+      "name": "Blocks"
+    },
+    {
+      "name": "Short links"
+    },
+    {
+      "name": "Catalogue"
+    },
+    {
+      "name": "Analytics"
+    },
+    {
+      "name": "Submissions"
+    },
+    {
+      "name": "QR codes"
+    },
+    {
+      "name": "Pixels"
+    },
+    {
+      "name": "Domains"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "A workspace API key: `Authorization: Bearer osk_...`"
+      },
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "The same workspace API key in the `x-api-key` header."
+      }
+    },
+    "schemas": {
+      "Page": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "string",
+            "description": "Opaque. Send it back in `If-Match` when changing the page."
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "public_url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "handle": {
+            "type": "string",
+            "nullable": true
+          },
+          "tagline": {
+            "type": "string",
+            "nullable": true
+          },
+          "theme": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "paused"
+            ]
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Disabled by the platform. Activating does not clear it."
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "hide_branding": {
+            "type": "boolean"
+          },
+          "avatar_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "appearance": {
+            "type": "object"
+          },
+          "has_password": {
+            "type": "boolean"
+          },
+          "settings": {
+            "type": "object",
+            "description": "`seo`, `utm` and `protection.sensitive`. Passwords and pixel selections are not returned."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "public_url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "destination": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "paused"
+            ]
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "has_password": {
+            "type": "boolean"
+          },
+          "settings": {
+            "type": "object",
+            "description": "`utm`, `forward_query`, `http_status`, `sensitive_content`."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Block": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "example": "link"
+          },
+          "position": {
+            "type": "integer"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "content_supported": {
+            "type": "boolean",
+            "description": "`false` for block types the API cannot edit (commerce, embeds). Their `content` is empty."
+          },
+          "content": {
+            "type": "object",
+            "description": "Fields depend on `type`. See `write_schema` in Get the catalogue."
+          }
+        }
+      },
+      "Qr": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "URL",
+              "Text",
+              "Biolink"
+            ]
+          },
+          "content": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Pixel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "pixel_id": {
+            "type": "string"
+          }
+        }
+      },
+      "Submission": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "page_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "block_id": {
+            "type": "string"
+          },
+          "block_label": {
+            "type": "string"
+          },
+          "block_type": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Domain": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "host": {
+            "type": "string",
+            "example": "links.example.com"
+          },
+          "status": {
+            "type": "string"
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "ssl_active": {
+            "type": "boolean"
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "last_checked_at": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Operation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "domain_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "verify",
+              "delete"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "description": "Queued, then pending DNS, verified, ready, deleted or failed."
+          },
+          "error_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/pages": {
+      "get": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "List pages",
+        "operationId": "pages.index",
+        "description": "**Required permission:** `biolinks:pages:read`",
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "paused"
+              ]
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search titles."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Page"
+                      }
+                    },
+                    "current_page": {
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_page_url": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Create a page",
+        "operationId": "pages.store",
+        "description": "New pages are created **paused**, with the same starter blocks as the dashboard. Activate with Set page status.\n\n**Required permission:** `biolinks:pages:write`",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "example": "Acme Studio"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "maxLength": 60,
+                    "nullable": true,
+                    "example": "acme"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "uuid",
+                    "nullable": true,
+                    "description": "A connected domain ID. Leave empty for the default domain."
+                  },
+                  "handle": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "nullable": true,
+                    "example": "@acmestudio"
+                  },
+                  "tagline": {
+                    "type": "string",
+                    "maxLength": 280,
+                    "nullable": true
+                  },
+                  "theme": {
+                    "type": "string",
+                    "description": "A theme from Get the catalogue."
+                  },
+                  "hide_branding": {
+                    "type": "boolean"
+                  },
+                  "avatar_color": {
+                    "type": "string",
+                    "pattern": "^#[0-9a-fA-F]{6}$",
+                    "example": "#4F46E5",
+                    "nullable": true
+                  },
+                  "appearance": {
+                    "type": "object",
+                    "properties": {
+                      "font_override": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "A font name from the catalogue."
+                      },
+                      "accent": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}$",
+                        "example": "#4F46E5",
+                        "nullable": true
+                      },
+                      "btn_radius": {
+                        "type": "string",
+                        "enum": [
+                          "pill",
+                          "lg",
+                          "sq"
+                        ],
+                        "nullable": true
+                      },
+                      "btn_style": {
+                        "type": "string",
+                        "enum": [
+                          "soft",
+                          "outline",
+                          "solid",
+                          "shadowSoft",
+                          "shadowHard"
+                        ],
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "seo": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "maxLength": 120
+                          },
+                          "description": {
+                            "type": "string",
+                            "maxLength": 300
+                          },
+                          "image": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "noindex": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "protection": {
+                        "type": "object",
+                        "properties": {
+                          "password": {
+                            "type": "string",
+                            "maxLength": 100,
+                            "description": "Write-only. Never returned."
+                          },
+                          "clear_password": {
+                            "type": "boolean"
+                          },
+                          "sensitive": {
+                            "type": "boolean",
+                            "description": "Show a sensitive-content warning first."
+                          }
+                        }
+                      },
+                      "utm": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "medium": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "campaign": {
+                            "type": "string",
+                            "maxLength": 80
+                          }
+                        }
+                      },
+                      "pixels": {
+                        "type": "array",
+                        "maxItems": 100,
+                        "items": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "description": "Pixel IDs from this workspace. Replaces the current selection."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages/{page}": {
+      "get": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Get a page",
+        "operationId": "pages.show",
+        "description": "The `ETag` header carries the revision.\n\n**Required permission:** `biolinks:pages:read`",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Update a page",
+        "operationId": "pages.update",
+        "description": "Fields you leave out keep their values. `status` and `blocks` are refused here: use Set page status and the block endpoints.\n\n**Required permission:** `biolinks:pages:write`\n\nChanging an **active** page also needs `biolinks:pages:publish`.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "example": "Acme Studio"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "maxLength": 60,
+                    "nullable": true,
+                    "example": "acme"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "uuid",
+                    "nullable": true,
+                    "description": "A connected domain ID. Leave empty for the default domain."
+                  },
+                  "handle": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "nullable": true,
+                    "example": "@acmestudio"
+                  },
+                  "tagline": {
+                    "type": "string",
+                    "maxLength": 280,
+                    "nullable": true
+                  },
+                  "theme": {
+                    "type": "string",
+                    "description": "A theme from Get the catalogue."
+                  },
+                  "hide_branding": {
+                    "type": "boolean"
+                  },
+                  "avatar_color": {
+                    "type": "string",
+                    "pattern": "^#[0-9a-fA-F]{6}$",
+                    "example": "#4F46E5",
+                    "nullable": true
+                  },
+                  "appearance": {
+                    "type": "object",
+                    "properties": {
+                      "font_override": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "A font name from the catalogue."
+                      },
+                      "accent": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}$",
+                        "example": "#4F46E5",
+                        "nullable": true
+                      },
+                      "btn_radius": {
+                        "type": "string",
+                        "enum": [
+                          "pill",
+                          "lg",
+                          "sq"
+                        ],
+                        "nullable": true
+                      },
+                      "btn_style": {
+                        "type": "string",
+                        "enum": [
+                          "soft",
+                          "outline",
+                          "solid",
+                          "shadowSoft",
+                          "shadowHard"
+                        ],
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "seo": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "maxLength": 120
+                          },
+                          "description": {
+                            "type": "string",
+                            "maxLength": 300
+                          },
+                          "image": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "noindex": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "protection": {
+                        "type": "object",
+                        "properties": {
+                          "password": {
+                            "type": "string",
+                            "maxLength": 100,
+                            "description": "Write-only. Never returned."
+                          },
+                          "clear_password": {
+                            "type": "boolean"
+                          },
+                          "sensitive": {
+                            "type": "boolean",
+                            "description": "Show a sensitive-content warning first."
+                          }
+                        }
+                      },
+                      "utm": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "medium": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "campaign": {
+                            "type": "string",
+                            "maxLength": 80
+                          }
+                        }
+                      },
+                      "pixels": {
+                        "type": "array",
+                        "maxItems": 100,
+                        "items": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "description": "Pixel IDs from this workspace. Replaces the current selection."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Delete a page",
+        "operationId": "pages.destroy",
+        "description": "**Required permission:** `biolinks:pages:delete`\n\nChanging an **active** page also needs `biolinks:pages:publish`.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/pages/{page}/status": {
+      "put": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Set page status",
+        "operationId": "pages.status",
+        "description": "**Required permission:** `biolinks:pages:publish`",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "paused"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages/{page}/duplicate": {
+      "post": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Duplicate a page",
+        "operationId": "pages.duplicate",
+        "description": "Creates a **paused** copy with new block IDs and reset counters.\n\n**Required permission:** `biolinks:pages:write`",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "slug": {
+                    "type": "string",
+                    "maxLength": 60
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "uuid",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages/{page}/theme": {
+      "post": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Change a page theme",
+        "operationId": "pages.theme",
+        "description": "**Required permission:** `biolinks:pages:write`\n\nChanging an **active** page also needs `biolinks:pages:publish`.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "theme",
+                  "reset_appearance"
+                ],
+                "properties": {
+                  "theme": {
+                    "type": "string",
+                    "description": "A theme from the catalogue."
+                  },
+                  "reset_appearance": {
+                    "type": "boolean",
+                    "description": "Also clear appearance overrides."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages/{page}/blocks": {
+      "get": {
+        "tags": [
+          "Blocks"
+        ],
+        "summary": "List blocks",
+        "operationId": "blocks.index",
+        "description": "**Required permission:** `biolinks:pages:read`",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Block"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Blocks"
+        ],
+        "summary": "Add a block",
+        "operationId": "blocks.store",
+        "description": "Adds a block at the end of the page. A page can have up to 200 blocks. Commerce and embed blocks cannot be created through the API.\n\n**Required permission:** `biolinks:pages:write`\n\nChanging an **active** page also needs `biolinks:pages:publish`.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "type"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "link",
+                    "description": "A block type from the catalogue."
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "content": {
+                    "type": "object",
+                    "example": {
+                      "title": "Shop the sale",
+                      "url": "https://example.com/sale"
+                    },
+                    "description": "Fields for this block type. See `write_schema` in the catalogue."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Block"
+                    },
+                    "page_revision": {
+                      "type": "string",
+                      "description": "The page's new revision."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages/{page}/blocks/order": {
+      "put": {
+        "tags": [
+          "Blocks"
+        ],
+        "summary": "Reorder blocks",
+        "operationId": "blocks.order",
+        "description": "Send every block ID of the page exactly once, in the new order.\n\n**Required permission:** `biolinks:pages:write`\n\nChanging an **active** page also needs `biolinks:pages:publish`.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "blocks"
+                ],
+                "properties": {
+                  "blocks": {
+                    "type": "array",
+                    "maxItems": 200,
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pages/{page}/blocks/{block}": {
+      "get": {
+        "tags": [
+          "Blocks"
+        ],
+        "summary": "Get a block",
+        "operationId": "blocks.show",
+        "description": "**Required permission:** `biolinks:pages:read`",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "block",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Block ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Block"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Blocks"
+        ],
+        "summary": "Update a block",
+        "operationId": "blocks.update",
+        "description": "Merges the top-level `content` fields you send. A list you send replaces that whole list. `type` cannot change.\n\n**Required permission:** `biolinks:pages:write`\n\nChanging an **active** page also needs `biolinks:pages:publish`.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "block",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Block ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "content": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "block": {
+                          "$ref": "#/components/schemas/Block"
+                        },
+                        "page_revision": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Blocks"
+        ],
+        "summary": "Delete a block",
+        "operationId": "blocks.destroy",
+        "description": "The `ETag` header carries the page's new revision.\n\n**Required permission:** `biolinks:pages:write`\n\nChanging an **active** page also needs `biolinks:pages:publish`.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          },
+          {
+            "name": "block",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Block ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/links": {
+      "get": {
+        "tags": [
+          "Short links"
+        ],
+        "summary": "List short links",
+        "operationId": "links.index",
+        "description": "**Required permission:** `biolinks:links:read`",
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "paused"
+              ]
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search titles."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Link"
+                      }
+                    },
+                    "current_page": {
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_page_url": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Short links"
+        ],
+        "summary": "Create a short link",
+        "operationId": "links.store",
+        "description": "New links are created **paused**.\n\n**Required permission:** `biolinks:links:write`",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "destination"
+                ],
+                "properties": {
+                  "destination": {
+                    "type": "string",
+                    "maxLength": 2048,
+                    "example": "https://example.com/autumn-sale",
+                    "description": "An `http`, `https`, `mailto` or `tel` URL."
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "nullable": true
+                  },
+                  "slug": {
+                    "type": "string",
+                    "maxLength": 60,
+                    "nullable": true,
+                    "example": "sale"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "uuid",
+                    "nullable": true
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "password": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "description": "Write-only. Never returned."
+                      },
+                      "clear_password": {
+                        "type": "boolean"
+                      },
+                      "forward_query": {
+                        "type": "boolean",
+                        "description": "Pass the visitor's query string on to the destination."
+                      },
+                      "http_status": {
+                        "type": "integer",
+                        "enum": [
+                          301,
+                          302,
+                          303,
+                          307,
+                          308
+                        ],
+                        "default": 302
+                      },
+                      "sensitive_content": {
+                        "type": "boolean"
+                      },
+                      "utm": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "medium": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "campaign": {
+                            "type": "string",
+                            "maxLength": 80
+                          }
+                        }
+                      },
+                      "pixels": {
+                        "type": "array",
+                        "maxItems": 100,
+                        "items": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "description": "Pixel IDs from this workspace. Replaces the current selection."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/links/{link}": {
+      "get": {
+        "tags": [
+          "Short links"
+        ],
+        "summary": "Get a short link",
+        "operationId": "links.show",
+        "description": "**Required permission:** `biolinks:links:read`",
+        "parameters": [
+          {
+            "name": "link",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Link ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Short links"
+        ],
+        "summary": "Update a short link",
+        "operationId": "links.update",
+        "description": "Fields you leave out keep their values.\n\n**Required permission:** `biolinks:links:write`\n\nChanging an **active** link also needs `biolinks:links:publish`.",
+        "parameters": [
+          {
+            "name": "link",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Link ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "destination": {
+                    "type": "string",
+                    "maxLength": 2048,
+                    "example": "https://example.com/autumn-sale",
+                    "description": "An `http`, `https`, `mailto` or `tel` URL."
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "nullable": true
+                  },
+                  "slug": {
+                    "type": "string",
+                    "maxLength": 60,
+                    "nullable": true,
+                    "example": "sale"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "uuid",
+                    "nullable": true
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "password": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "description": "Write-only. Never returned."
+                      },
+                      "clear_password": {
+                        "type": "boolean"
+                      },
+                      "forward_query": {
+                        "type": "boolean",
+                        "description": "Pass the visitor's query string on to the destination."
+                      },
+                      "http_status": {
+                        "type": "integer",
+                        "enum": [
+                          301,
+                          302,
+                          303,
+                          307,
+                          308
+                        ],
+                        "default": 302
+                      },
+                      "sensitive_content": {
+                        "type": "boolean"
+                      },
+                      "utm": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "medium": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "campaign": {
+                            "type": "string",
+                            "maxLength": 80
+                          }
+                        }
+                      },
+                      "pixels": {
+                        "type": "array",
+                        "maxItems": 100,
+                        "items": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "description": "Pixel IDs from this workspace. Replaces the current selection."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Short links"
+        ],
+        "summary": "Delete a short link",
+        "operationId": "links.destroy",
+        "description": "**Required permission:** `biolinks:links:delete`\n\nChanging an **active** link also needs `biolinks:links:publish`.",
+        "parameters": [
+          {
+            "name": "link",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Link ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/links/{link}/status": {
+      "put": {
+        "tags": [
+          "Short links"
+        ],
+        "summary": "Set short link status",
+        "operationId": "links.status",
+        "description": "**Required permission:** `biolinks:links:publish`",
+        "parameters": [
+          {
+            "name": "link",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Link ID."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"a1b2c3\""
+            },
+            "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "paused"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Get the catalogue",
+        "operationId": "catalog",
+        "description": "Themes, fonts, block types with their defaults, and `read_schema` / `write_schema` for each block type, plus which ones are `writable` on your workspace.\n\n**Required permission:** `biolinks:catalog:read`",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/pages/{page}/analytics": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get page analytics",
+        "operationId": "pages.analytics",
+        "description": "Lifetime totals, a 7-day trend (today and the 6 days before) and 30-day breakdowns, with timezone and as-of time.\n\n**Required permission:** `biolinks:analytics:read`",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Page ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/links/{link}/analytics": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get short link analytics",
+        "operationId": "links.analytics",
+        "description": "Same shape as page analytics. Links record clicks, not views.\n\n**Required permission:** `biolinks:analytics:read`",
+        "parameters": [
+          {
+            "name": "link",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Link ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/submissions": {
+      "get": {
+        "tags": [
+          "Submissions"
+        ],
+        "summary": "List form submissions",
+        "operationId": "submissions.index",
+        "description": "Newest first, with cursor pagination: pass `next_cursor` back as `cursor`.\n\n**Required permission:** `biolinks:submissions:read`",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Only submissions from this page."
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Submission"
+                      }
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "prev_cursor": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/submissions/{submission}": {
+      "get": {
+        "tags": [
+          "Submissions"
+        ],
+        "summary": "Get a submission",
+        "operationId": "submissions.show",
+        "description": "**Required permission:** `biolinks:submissions:read`",
+        "parameters": [
+          {
+            "name": "submission",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Submission ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Submission"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Submissions"
+        ],
+        "summary": "Delete a submission",
+        "operationId": "submissions.destroy",
+        "description": "**Required permission:** `biolinks:submissions:delete`",
+        "parameters": [
+          {
+            "name": "submission",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Submission ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/qr": {
+      "get": {
+        "tags": [
+          "QR codes"
+        ],
+        "summary": "List QR codes",
+        "operationId": "qr.index",
+        "description": "**Required permission:** `biolinks:qr:read`",
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Qr"
+                      }
+                    },
+                    "current_page": {
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_page_url": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "QR codes"
+        ],
+        "summary": "Create a QR code",
+        "operationId": "qr.store",
+        "description": "Stores the QR code. Render it from Get a QR code matrix; no image file is generated.\n\n**Required permission:** `biolinks:qr:write`",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "type",
+                  "content"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "URL",
+                      "Text",
+                      "Biolink"
+                    ]
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "https://example.com"
+                  },
+                  "color": {
+                    "type": "string",
+                    "pattern": "^#[0-9a-fA-F]{6}$",
+                    "example": "#4F46E5"
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "bg": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}$",
+                        "example": "#4F46E5"
+                      },
+                      "dot": {
+                        "type": "string",
+                        "enum": [
+                          "square",
+                          "rounded",
+                          "dots"
+                        ]
+                      },
+                      "eye": {
+                        "type": "string",
+                        "enum": [
+                          "square",
+                          "rounded"
+                        ]
+                      },
+                      "logo": {
+                        "type": "string",
+                        "maxLength": 8
+                      },
+                      "frame": {
+                        "type": "boolean"
+                      },
+                      "frame_text": {
+                        "type": "string",
+                        "maxLength": 30
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Qr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qr/{qr}": {
+      "get": {
+        "tags": [
+          "QR codes"
+        ],
+        "summary": "Get a QR code",
+        "operationId": "qr.show",
+        "description": "**Required permission:** `biolinks:qr:read`",
+        "parameters": [
+          {
+            "name": "qr",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "QR code ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Qr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "QR codes"
+        ],
+        "summary": "Delete a QR code",
+        "operationId": "qr.destroy",
+        "description": "**Required permission:** `biolinks:qr:write`",
+        "parameters": [
+          {
+            "name": "qr",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "QR code ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/qr/{qr}/matrix": {
+      "get": {
+        "tags": [
+          "QR codes"
+        ],
+        "summary": "Get a QR code matrix",
+        "operationId": "qr.matrix",
+        "description": "The grid of modules (rows of on/off cells) to draw the code yourself.\n\n**Required permission:** `biolinks:qr:read`",
+        "parameters": [
+          {
+            "name": "qr",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "QR code ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "modules": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pixels": {
+      "get": {
+        "tags": [
+          "Pixels"
+        ],
+        "summary": "List pixels",
+        "operationId": "pixels.index",
+        "description": "**Required permission:** `biolinks:pixels:read`",
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Pixel"
+                      }
+                    },
+                    "current_page": {
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_page_url": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pixels"
+        ],
+        "summary": "Create a pixel",
+        "operationId": "pixels.store",
+        "description": "**Required permission:** `biolinks:pixels:write`",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "type",
+                  "pixel_id"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "facebook",
+                      "google_analytics",
+                      "google_tag_manager",
+                      "linkedin",
+                      "pinterest",
+                      "x",
+                      "quora",
+                      "tiktok",
+                      "snapchat"
+                    ]
+                  },
+                  "pixel_id": {
+                    "type": "string",
+                    "maxLength": 190,
+                    "pattern": "^[A-Za-z0-9_-]+$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Pixel"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pixels/{pixel}": {
+      "delete": {
+        "tags": [
+          "Pixels"
+        ],
+        "summary": "Delete a pixel",
+        "operationId": "pixels.destroy",
+        "description": "If active pages or links use the pixel, the matching publish permission is also needed.\n\n**Required permission:** `biolinks:pixels:write`",
+        "parameters": [
+          {
+            "name": "pixel",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Pixel ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/domains/available": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "List usable domains",
+        "operationId": "domains.available",
+        "description": "Domains you can assign to a page or link.\n\n**Required permission:** `biolinks:domains:read`",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "link_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/domains": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "List domains",
+        "operationId": "domains.index",
+        "description": "**Required permission:** `biolinks:domains:read`",
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Domain"
+                      }
+                    },
+                    "current_page": {
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_page_url": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Connect a domain",
+        "operationId": "domains.store",
+        "description": "Adds the domain as `pending`. Point its DNS at the platform, then call Verify a domain. Plan limits apply.\n\n**Required permission:** `biolinks:domains:manage`",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "host"
+                ],
+                "properties": {
+                  "host": {
+                    "type": "string",
+                    "maxLength": 190,
+                    "example": "links.example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Domain"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domains/{domain}": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Get a domain",
+        "operationId": "domains.show",
+        "description": "**Required permission:** `biolinks:domains:read`",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Domain ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Domain"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Remove a domain",
+        "operationId": "domains.destroy",
+        "description": "Queued: returns `202` with an operation to poll. Domains still used by pages or links cannot be removed.\n\n**Required permission:** `biolinks:domains:manage`",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Domain ID."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Operation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domains/{domain}/verify": {
+      "post": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Verify a domain",
+        "operationId": "domains.verify",
+        "description": "Queued: returns `202` with an operation to poll. Verification does not mean SSL is ready; check `ssl_active` on the domain.\n\n**Required permission:** `biolinks:domains:manage`",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Domain ID."
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200
+            },
+            "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Operation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domain-operations/{operation}": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Get a domain operation",
+        "operationId": "domains.operation",
+        "description": "Poll this until `status` is final.\n\n**Required permission:** `biolinks:domains:read`",
+        "parameters": [
+          {
+            "name": "operation",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Operation ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Operation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

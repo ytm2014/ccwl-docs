@@ -34,6 +34,19 @@
       {
         "tab": "Publishing API",
         "openapi": { "source": "api-reference/publishing.openapi.json", "directory": "publishing" }
+      },
+      {
+        "tab": "Link in Bio API",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["biolinks/overview"]
+          },
+          {
+            "group": "Reference",
+            "openapi": { "source": "api-reference/biolinks.openapi.json", "directory": "biolinks" }
+          }
+        ]
       }
     ]
   },

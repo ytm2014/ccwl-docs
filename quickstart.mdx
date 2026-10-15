@@ -46,14 +46,14 @@ Lists return `data`, `links` and `meta`. Use `per_page` (up to 100) and `page` t
 Publishing URLs include your workspace UUID:
 
 ```bash
-curl https://app.example.com/mixpost/api/WORKSPACE_UUID/accounts \
+curl https://app.example.com/os/api/WORKSPACE_UUID/accounts \
   -H "Authorization: Bearer osk_YOUR_SECRET"
 ```
 
 To create and schedule a post, you need the account `id`s from that response. This also needs `publishing:posts:write` and `publishing:posts:publish` on your key:
 
 ```bash
-curl -X POST https://app.example.com/mixpost/api/WORKSPACE_UUID/posts \
+curl -X POST https://app.example.com/os/api/WORKSPACE_UUID/posts \
   -H "Authorization: Bearer osk_YOUR_SECRET" \
   -H "Content-Type: application/json" \
   -d '{

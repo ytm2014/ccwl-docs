@@ -18,6 +18,9 @@ These docs cover the APIs and webhooks available on your platform. Everything he
   <Card title="Publishing API" icon="calendar" href="/publishing/diagnostics/check-your-key">
     Social accounts, posts, scheduling and media.
   </Card>
+  <Card title="Link in Bio API" icon="link" href="/biolinks/pages/list-pages">
+    Bio pages, short links, QR codes and custom domains.
+  </Card>
   <Card title="Webhooks" icon="webhook" href="/webhooks/overview">
     Get notified when posts publish, contacts are created or messages arrive.
   </Card>
@@ -26,15 +29,15 @@ These docs cover the APIs and webhooks available on your platform. Everything he
   </Card>
 </CardGroup>
 
-## The two APIs
+## The APIs
 
-| | Messaging API | Publishing API |
-| --- | --- | --- |
-| Covers | Contacts, tags, segments, conversations, messages, broadcasts, automations, media | Social accounts, posts, scheduling, approval, tags, media |
-| Base URL | `https://app.example.com/api/v1` | `https://app.example.com/mixpost/api/{workspace-uuid}` |
-| Workspace | Chosen by the API key | In the URL, and must match the API key |
+| | Messaging API | Publishing API | Link in Bio API |
+| --- | --- | --- | --- |
+| Covers | Contacts, tags, segments, conversations, messages, broadcasts, automations, media | Social accounts, posts, scheduling, approval, tags, media | Bio pages and blocks, short links, QR codes, pixels, form submissions, analytics, custom domains |
+| Base URL | `https://app.example.com/api/v1` | `https://app.example.com/os/api/{workspace-uuid}` | `https://app.example.com/api/v1/biolinks` |
+| Workspace | Chosen by the API key | In the URL, and must match the API key | Chosen by the API key |
 
-One workspace API key can call both APIs, as long as you give it permissions for both when you create it.
+One workspace API key can call every API, as long as you give it the permissions for each when you create it.
 
 <Note>
 Some features depend on your plan and on what your platform has turned on. If an endpoint returns `404` even with a valid key, the feature is not available on your workspace yet.
