@@ -1,0 +1,2153 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Publishing API",
+    "version": "1.0.0",
+    "description": "Social accounts, posts, scheduling, approval, tags and media for one workspace."
+  },
+  "servers": [
+    {
+      "url": "https://{domain}/mixpost/api",
+      "description": "Your platform domain",
+      "variables": {
+        "domain": {
+          "default": "app.example.com",
+          "description": "The domain you sign in to, without https://"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "apiKeyHeader": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Diagnostics"
+    },
+    {
+      "name": "Accounts"
+    },
+    {
+      "name": "Posts"
+    },
+    {
+      "name": "Media"
+    },
+    {
+      "name": "Tags"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "A workspace API key: `Authorization: Bearer osk_...`"
+      },
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "The same workspace API key in the `x-api-key` header."
+      }
+    },
+    "schemas": {
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Use this in a post's `accounts`."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string",
+            "example": "instagram"
+          },
+          "data": {
+            "type": "object"
+          },
+          "authorized": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "published_at": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Media": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Use this in a post version's `media`."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "thumb_url": {
+            "type": "string"
+          },
+          "is_video": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "hex_color": {
+            "type": "string",
+            "example": "#4F46E5"
+          }
+        }
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "scheduled",
+              "publishing",
+              "published",
+              "failed",
+              "needs_approval",
+              "approval_denied"
+            ]
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            }
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "account_id",
+                "is_original",
+                "content"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "integer",
+                  "description": "`0` for the original version. Otherwise an account `id` that is also in `accounts`, to override the content for that account.",
+                  "example": 0
+                },
+                "is_original": {
+                  "type": "boolean",
+                  "description": "Only the first version is the original.",
+                  "example": true
+                },
+                "content": {
+                  "type": "array",
+                  "minItems": 1,
+                  "description": "One item per post in a thread. Most posts have a single item.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "body": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Our autumn sale starts today!"
+                      },
+                      "url": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "media": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "description": "Media `id`s from the media library."
+                      }
+                    }
+                  }
+                },
+                "options": {
+                  "type": "object",
+                  "description": "Network-specific options, keyed by provider (for example a Reddit title)."
+                }
+              }
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "scheduled_at": {
+            "type": "string",
+            "nullable": true,
+            "description": "`YYYY-MM-DD HH:mm:ss`, UTC"
+          },
+          "published_at": {
+            "type": "string",
+            "nullable": true
+          },
+          "partially_published_at": {
+            "type": "string",
+            "nullable": true
+          },
+          "failed_at": {
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "trashed": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/ping": {
+      "get": {
+        "tags": [
+          "Diagnostics"
+        ],
+        "summary": "Check your key",
+        "operationId": "ping",
+        "description": "Returns `{\"status\":\"ok\"}` when the key is valid.\n\n**Required permission:** any publishing permission.",
+        "responses": {
+          "200": {
+            "description": "Key is valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/accounts": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "List accounts",
+        "operationId": "accounts.index",
+        "description": "Every connected social account in the workspace.\n\n**Required permission:** `publishing:accounts:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Account"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/accounts/{account}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Get an account",
+        "operationId": "accounts.show",
+        "description": "**Required permission:** `publishing:accounts:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Account UUID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/posts": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "List posts",
+        "operationId": "posts.index",
+        "description": "20 posts per page.\n\n**Required permission:** `publishing:posts:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by status."
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search post content."
+          },
+          {
+            "name": "accounts[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "description": "Only posts for these account `id`s."
+          },
+          {
+            "name": "tags[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "description": "Only posts with these tag `id`s."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "date_created",
+                "date_published"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Post"
+                      }
+                    },
+                    "links": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Create a post",
+        "operationId": "posts.store",
+        "description": "Creates a draft, or schedules it if you set `schedule`, `schedule_now` or `queue` (which also needs at least one account). Each line of `body` becomes a paragraph.\n\n**Required permission:** `publishing:posts:write`, plus `publishing:posts:publish` to schedule, queue or publish now.",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "versions"
+                ],
+                "properties": {
+                  "accounts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Account `id`s (from List accounts) to publish to.",
+                    "example": [
+                      12
+                    ]
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Tag `id`s."
+                  },
+                  "date": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "2026-10-20",
+                    "description": "`YYYY-MM-DD`"
+                  },
+                  "time": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "09:00",
+                    "description": "`HH:mm`"
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "example": "Europe/London",
+                    "description": "Timezone for `date` and `time`."
+                  },
+                  "schedule": {
+                    "type": "boolean",
+                    "description": "Schedule for `date` and `time`."
+                  },
+                  "schedule_now": {
+                    "type": "boolean",
+                    "description": "Publish immediately."
+                  },
+                  "queue": {
+                    "type": "boolean",
+                    "description": "Add to the next free slot in the posting schedule."
+                  },
+                  "versions": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "account_id",
+                        "is_original",
+                        "content"
+                      ],
+                      "properties": {
+                        "account_id": {
+                          "type": "integer",
+                          "description": "`0` for the original version. Otherwise an account `id` that is also in `accounts`, to override the content for that account.",
+                          "example": 0
+                        },
+                        "is_original": {
+                          "type": "boolean",
+                          "description": "Only the first version is the original.",
+                          "example": true
+                        },
+                        "content": {
+                          "type": "array",
+                          "minItems": 1,
+                          "description": "One item per post in a thread. Most posts have a single item.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "body": {
+                                "type": "string",
+                                "nullable": true,
+                                "example": "Our autumn sale starts today!"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "media": {
+                                "type": "array",
+                                "items": {
+                                  "type": "integer"
+                                },
+                                "description": "Media `id`s from the media library."
+                              }
+                            }
+                          }
+                        },
+                        "options": {
+                          "type": "object",
+                          "description": "Network-specific options, keyed by provider (for example a Reddit title)."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Delete several posts",
+        "operationId": "posts.deleteMultiple",
+        "description": "**Required permission:** `publishing:posts:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "posts"
+                ],
+                "properties": {
+                  "posts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "delete_mode": {
+                    "type": "string",
+                    "enum": [
+                      "app_only",
+                      "social_only",
+                      "app_and_social"
+                    ],
+                    "default": "app_only",
+                    "description": "Whether to also remove the post from the social networks."
+                  },
+                  "trash": {
+                    "type": "boolean",
+                    "description": "Move to trash instead of deleting."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/{workspace}/posts/{post}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get a post",
+        "operationId": "posts.show",
+        "description": "**Required permission:** `publishing:posts:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post UUID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Update a post",
+        "operationId": "posts.update",
+        "description": "Replaces the post's accounts, tags, date, time and versions. `date` and `time` use the workspace's timezone. To schedule, call [Schedule a post](/publishing/posts/schedule-a-post) afterwards. A non-draft post with no accounts or no date and time goes back to draft.\n\n**Required permission:** `publishing:posts:write`, plus `publishing:posts:publish` if the post is scheduled or you send a `date` and `time`.",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post UUID."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "versions"
+                ],
+                "properties": {
+                  "accounts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Account `id`s (from List accounts) to publish to.",
+                    "example": [
+                      12
+                    ]
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Tag `id`s."
+                  },
+                  "date": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "2026-10-20",
+                    "description": "`YYYY-MM-DD`"
+                  },
+                  "time": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "09:00",
+                    "description": "`HH:mm`"
+                  },
+                  "versions": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "account_id",
+                        "is_original",
+                        "content"
+                      ],
+                      "properties": {
+                        "account_id": {
+                          "type": "integer",
+                          "description": "`0` for the original version. Otherwise an account `id` that is also in `accounts`, to override the content for that account.",
+                          "example": 0
+                        },
+                        "is_original": {
+                          "type": "boolean",
+                          "description": "Only the first version is the original.",
+                          "example": true
+                        },
+                        "content": {
+                          "type": "array",
+                          "minItems": 1,
+                          "description": "One item per post in a thread. Most posts have a single item.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "body": {
+                                "type": "string",
+                                "nullable": true,
+                                "example": "Our autumn sale starts today!"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "media": {
+                                "type": "array",
+                                "items": {
+                                  "type": "integer"
+                                },
+                                "description": "Media `id`s from the media library."
+                              }
+                            }
+                          }
+                        },
+                        "options": {
+                          "type": "object",
+                          "description": "Network-specific options, keyed by provider (for example a Reddit title)."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Delete a post",
+        "operationId": "posts.delete",
+        "description": "**Required permission:** `publishing:posts:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post UUID."
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "delete_mode": {
+                    "type": "string",
+                    "enum": [
+                      "app_only",
+                      "social_only",
+                      "app_and_social"
+                    ],
+                    "default": "app_only"
+                  },
+                  "trash": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/{workspace}/posts/schedule/{post}": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Schedule a post",
+        "operationId": "posts.schedule",
+        "description": "Schedules the post for its saved date and time, or publishes it now with `postNow: true`. The post may need approval first.\n\n**Required permission:** `publishing:posts:publish`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post UUID."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "postNow"
+                ],
+                "properties": {
+                  "postNow": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "scheduled_at": {
+                      "type": "string",
+                      "example": "2026-10-20 09:00:00"
+                    },
+                    "needs_approval": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/posts/reschedule/{post}": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Reschedule a post",
+        "operationId": "posts.reschedule",
+        "description": "**Required permission:** `publishing:posts:publish`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post UUID."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "source_date",
+                  "source_time",
+                  "target_date",
+                  "target_time"
+                ],
+                "properties": {
+                  "source_date": {
+                    "type": "string",
+                    "example": "2026-10-20"
+                  },
+                  "source_time": {
+                    "type": "string",
+                    "example": "09:00"
+                  },
+                  "target_date": {
+                    "type": "string",
+                    "example": "2026-10-21"
+                  },
+                  "target_time": {
+                    "type": "string",
+                    "example": "10:30"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "scheduled_at": {
+                      "type": "string",
+                      "example": "2026-10-20 09:00:00"
+                    },
+                    "needs_approval": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/posts/add-to-queue/{post}": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Add a post to the queue",
+        "operationId": "posts.addToQueue",
+        "description": "Schedules the post into the next free slot of the posting schedule.\n\n**Required permission:** `publishing:posts:publish`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post UUID."
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "timezone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "scheduled_at": {
+                      "type": "string",
+                      "example": "2026-10-20 09:00:00"
+                    },
+                    "needs_approval": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/posts/approve/{post}": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Approve a post",
+        "operationId": "posts.approve",
+        "description": "The key's admin must be allowed to approve posts.\n\n**Required permission:** `publishing:posts:approve`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post UUID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "scheduled_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/media": {
+      "get": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "List media",
+        "operationId": "media.index",
+        "description": "**Required permission:** `publishing:media:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Media"
+                      }
+                    },
+                    "links": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Upload a file",
+        "operationId": "media.upload",
+        "description": "Uploads an image, GIF or video in one request. For large files use the chunked upload.\n\n**Required permission:** `publishing:media:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "alt_text": {
+                    "type": "string",
+                    "maxLength": 255
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Media"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Delete media",
+        "operationId": "media.delete",
+        "description": "**Required permission:** `publishing:media:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "items"
+                ],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Media `id`s."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/media/{media}": {
+      "get": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Get a media item",
+        "operationId": "media.show",
+        "description": "**Required permission:** `publishing:media:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "media",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Media UUID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Media"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Update a media item",
+        "operationId": "media.update",
+        "description": "**Required permission:** `publishing:media:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "media",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Media UUID."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "alt_text": {
+                    "type": "string",
+                    "maxLength": 500
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/media/chunked/initiate": {
+      "post": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Start a chunked upload",
+        "operationId": "media.chunked.initiate",
+        "description": "Step 1 of 3. Returns the chunk size and how many chunks to send.\n\n**Required permission:** `publishing:media:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "filename",
+                  "mime_type",
+                  "total_size"
+                ],
+                "properties": {
+                  "filename": {
+                    "type": "string",
+                    "example": "launch.mp4"
+                  },
+                  "mime_type": {
+                    "type": "string",
+                    "example": "video/mp4"
+                  },
+                  "total_size": {
+                    "type": "integer",
+                    "description": "File size in bytes."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "upload_uuid": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "chunk_size": {
+                      "type": "integer"
+                    },
+                    "total_chunks": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/media/chunked/{upload}/upload": {
+      "post": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Upload a chunk",
+        "operationId": "media.chunked.upload",
+        "description": "Step 2 of 3. Send each chunk, numbered from 0.\n\n**Required permission:** `publishing:media:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "upload",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The `upload_uuid` from step 1."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "chunk",
+                  "chunk_index"
+                ],
+                "properties": {
+                  "chunk": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "chunk_index": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/{workspace}/media/chunked/{upload}/complete": {
+      "post": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Finish a chunked upload",
+        "operationId": "media.chunked.complete",
+        "description": "Step 3 of 3. Returns the new media item.\n\n**Required permission:** `publishing:media:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "upload",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The `upload_uuid` from step 1."
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alt_text": {
+                    "type": "string",
+                    "maxLength": 255
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Media"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/media/chunked/{upload}": {
+      "delete": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Cancel a chunked upload",
+        "operationId": "media.chunked.abort",
+        "description": "**Required permission:** `publishing:media:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "upload",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The `upload_uuid` from step 1."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/media/remote/initiate": {
+      "post": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Import from a URL",
+        "operationId": "media.remote.initiate",
+        "description": "Small files (under 10 MB) are imported straight away and return `status: \"completed\"` with the `media`. Larger files return a `download_id` with `status: \"pending\"`; poll [Check a URL import](/publishing/media/check-a-url-import).\n\n**Required permission:** `publishing:media:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "alt_text": {
+                    "type": "string",
+                    "maxLength": 255
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "completed",
+                        "failed",
+                        "pending"
+                      ]
+                    },
+                    "download_id": {
+                      "type": "string"
+                    },
+                    "media": {
+                      "$ref": "#/components/schemas/Media"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/media/remote/{download}/status": {
+      "get": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Check a URL import",
+        "operationId": "media.remote.status",
+        "description": "**Required permission:** `publishing:media:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "download",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The `download_id`."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "downloading",
+                        "processing",
+                        "completed",
+                        "failed"
+                      ]
+                    },
+                    "progress": {
+                      "type": "integer"
+                    },
+                    "media": {
+                      "$ref": "#/components/schemas/Media"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "List tags",
+        "operationId": "tags.index",
+        "description": "**Required permission:** `publishing:tags:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tag"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Create a tag",
+        "operationId": "tags.store",
+        "description": "**Required permission:** `publishing:tags:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "hex_color"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "Campaign"
+                  },
+                  "hex_color": {
+                    "type": "string",
+                    "example": "#4F46E5",
+                    "description": "A 6-digit hex colour including the #."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/tags/{tag}": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Get a tag",
+        "operationId": "tags.show",
+        "description": "**Required permission:** `publishing:tags:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "tag",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Tag UUID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Update a tag",
+        "operationId": "tags.update",
+        "description": "**Required permission:** `publishing:tags:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "tag",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Tag UUID."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "hex_color"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "hex_color": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Delete a tag",
+        "operationId": "tags.delete",
+        "description": "**Required permission:** `publishing:tags:write`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "tag",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Tag UUID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

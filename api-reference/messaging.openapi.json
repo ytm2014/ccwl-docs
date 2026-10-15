@@ -1,0 +1,2106 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Messaging API",
+    "version": "1.0.0",
+    "description": "Contacts, conversations, messages, broadcasts, automations and media for one workspace. The workspace is selected by the API key, so no workspace ID appears in any URL."
+  },
+  "servers": [
+    {
+      "url": "https://{domain}/api/v1",
+      "description": "Your platform domain",
+      "variables": {
+        "domain": {
+          "default": "app.example.com",
+          "description": "The domain you sign in to, without https://"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "apiKeyHeader": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "A workspace API key: `Authorization: Bearer osk_...`"
+      },
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "The same workspace API key in the `x-api-key` header."
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Account",
+      "description": "The workspace is selected by the API key, so no workspace id appears in any /api/v1 URL."
+    },
+    {
+      "name": "Automations",
+      "description": "Read + activate/pause only. Authoring a node graph stays in the builder, which owns its own validation."
+    },
+    {
+      "name": "Broadcasts",
+      "description": "The send pipeline is never invoked directly: marking a broadcast scheduled is what lets the sweep's single Scheduled→Sending claim keep it un-double-sendable."
+    },
+    {
+      "name": "Channels",
+      "description": "Read-only: connecting a channel is an OAuth flow that must happen in the dashboard."
+    },
+    {
+      "name": "Contacts",
+      "description": "custom_fields is a flat {key: value} map. An empty map is returned as {} so client-side property access is always safe."
+    },
+    {
+      "name": "Conversations & Messages",
+      "description": "There is no Conversation model: a conversation is a Contact with messages, and the rollup fields are denormalised columns on it."
+    },
+    {
+      "name": "Media",
+      "description": "Upload requests are multipart, not JSON — do not set Content-Type: application/json on media.store."
+    },
+    {
+      "name": "Segments",
+      "description": "Segments are the audience type broadcasts target."
+    },
+    {
+      "name": "Tags",
+      "description": "Contacts are tagged by NAME (see contacts.tags.add), so tag names stay unique."
+    }
+  ],
+  "paths": {
+    "/account": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get the authenticated workspace",
+        "description": "Returns the workspace (account) the API key belongs to. Use it as a connectivity / auth check.\n\n**Required permission:** any messaging permission.",
+        "operationId": "account.show",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/automations": {
+      "get": {
+        "tags": [
+          "Automations"
+        ],
+        "summary": "List automations",
+        "description": "Paginated list of flows and quick automations. `live` tells you whether an automation actually answers right now — a flow switched on but never published shows status active while every inbound skips it.\n\n**Required permission:** `salesbot:automations:read`",
+        "operationId": "automations.index",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "active"
+            },
+            "description": "draft | active | paused | failed"
+          },
+          {
+            "name": "builder",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "flow"
+            },
+            "description": "quick | flow"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "keyword"
+            },
+            "description": "Filter by automation type"
+          },
+          {
+            "name": "channel",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "{{channelId}}"
+            },
+            "description": "Filter by channel id"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/automations/{automation}": {
+      "get": {
+        "tags": [
+          "Automations"
+        ],
+        "summary": "Get an automation",
+        "description": "Returns a single automation.\n\n**Required permission:** `salesbot:automations:read`",
+        "operationId": "automations.show",
+        "parameters": [
+          {
+            "name": "automation",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The automation ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/automations/{automation}/activate": {
+      "post": {
+        "tags": [
+          "Automations"
+        ],
+        "summary": "Activate an automation",
+        "description": "Switches it on. Refused (422) if the plan's per-channel active-bot cap is reached, if a flow has no published version, or if the published flow uses a step the plan does not include.\n\n**Required permission:** `salesbot:automations:write`",
+        "operationId": "automations.activate",
+        "parameters": [
+          {
+            "name": "automation",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The automation ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/automations/{automation}/pause": {
+      "post": {
+        "tags": [
+          "Automations"
+        ],
+        "summary": "Pause an automation",
+        "description": "Switches it off. Conversations mid-flow are unaffected until they finish.\n\n**Required permission:** `salesbot:automations:write`",
+        "operationId": "automations.pause",
+        "parameters": [
+          {
+            "name": "automation",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The automation ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/broadcasts": {
+      "get": {
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "List broadcasts",
+        "description": "Paginated list of campaigns with their aggregate delivery counters.\n\n**Required permission:** `salesbot:broadcasts:read`",
+        "operationId": "broadcasts.index",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "draft"
+            },
+            "description": "draft | scheduled | sending | sent | paused | cancelled | failed"
+          },
+          {
+            "name": "channel",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "{{channelId}}"
+            },
+            "description": "Filter by channel id"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "Create a broadcast",
+        "description": "Creates a campaign. Draft unless `schedule` is true. `timezone_mode: contact` sends the same wall-clock in each recipient's own timezone and requires `scheduled_local_at`. Set `type: retarget` with `source_broadcast_id` + `retarget_engagement` to re-message a prior broadcast's recipients instead of a segment.\n\n**Required permission:** `salesbot:broadcasts:write`",
+        "operationId": "broadcasts.store",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "March promo"
+                  },
+                  "channel": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "audience": {
+                    "type": "object",
+                    "properties": {
+                      "segment": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
+                  },
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "text"
+                      },
+                      "body": {
+                        "type": "string",
+                        "example": "20% off this week."
+                      }
+                    }
+                  },
+                  "schedule": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "scheduled_at": {
+                    "type": "string",
+                    "example": "2026-09-01T09:00:00Z"
+                  },
+                  "timezone_mode": {
+                    "type": "string",
+                    "example": "fixed"
+                  },
+                  "requires_approval": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broadcasts/{broadcast}": {
+      "get": {
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "Get a broadcast",
+        "description": "Returns a single broadcast with its channel and delivery counters.\n\n**Required permission:** `salesbot:broadcasts:read`",
+        "operationId": "broadcasts.show",
+        "parameters": [
+          {
+            "name": "broadcast",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The broadcast ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "Update a broadcast",
+        "description": "Partial update, allowed only while draft or scheduled — an in-flight or finished broadcast is a historical record. Re-enabling `requires_approval` voids any prior sign-off.\n\n**Required permission:** `salesbot:broadcasts:write`",
+        "operationId": "broadcasts.update",
+        "parameters": [
+          {
+            "name": "broadcast",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The broadcast ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "March promo (v2)"
+                  },
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "text"
+                      },
+                      "body": {
+                        "type": "string",
+                        "example": "25% off this week."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "Delete a broadcast",
+        "description": "Deletes the campaign.\n\n**Required permission:** `salesbot:broadcasts:write`",
+        "operationId": "broadcasts.destroy",
+        "parameters": [
+          {
+            "name": "broadcast",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The broadcast ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/broadcasts/{broadcast}/approve": {
+      "post": {
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "Approve a held broadcast",
+        "description": "Clears the approval gate, records the approver, and schedules the broadcast.\n\n**Required permission:** `salesbot:broadcasts:write`",
+        "operationId": "broadcasts.approve",
+        "parameters": [
+          {
+            "name": "broadcast",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The broadcast ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/broadcasts/{broadcast}/send": {
+      "post": {
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "Send a broadcast now",
+        "description": "Schedules the broadcast for immediate send; the dispatch sweep claims it. Refused for anything not draft or scheduled (so an audience cannot be messaged twice) and for a broadcast still held for approval.\n\n**Required permission:** `salesbot:broadcasts:write`",
+        "operationId": "broadcasts.send",
+        "parameters": [
+          {
+            "name": "broadcast",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The broadcast ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/broadcasts/{broadcast}/recipients": {
+      "get": {
+        "tags": [
+          "Broadcasts"
+        ],
+        "summary": "List a broadcast's recipients",
+        "description": "The per-contact delivery rows, with status, provider message id and any error.\n\n**Required permission:** `salesbot:broadcasts:read`",
+        "operationId": "broadcasts.recipients",
+        "parameters": [
+          {
+            "name": "broadcast",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The broadcast ID."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "sent"
+            },
+            "description": "Filter by delivery status"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/channels": {
+      "get": {
+        "tags": [
+          "Channels"
+        ],
+        "summary": "List channels",
+        "description": "Paginated list of connected messaging channels. `name` is the live profile name, not the connect-time snapshot.\n\n**Required permission:** `salesbot:channels:read`",
+        "operationId": "channels.index",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "support"
+            },
+            "description": "Search the channel name, handle or account name"
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "whatsapp"
+            },
+            "description": "whatsapp | facebook | instagram | sms | telegram | livechat | tiktok | …"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "connected"
+            },
+            "description": "Filter by connection status"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/channels/{channel}": {
+      "get": {
+        "tags": [
+          "Channels"
+        ],
+        "summary": "Get a channel",
+        "description": "Returns a single channel by id.\n\n**Required permission:** `salesbot:channels:read`",
+        "operationId": "channels.show",
+        "parameters": [
+          {
+            "name": "channel",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The channel ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/contacts": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "List contacts",
+        "description": "Paginated, filterable list of contacts with their tags and pipeline stage.\n\n**Required permission:** `salesbot:contacts:read`",
+        "operationId": "contacts.index",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "ada"
+            },
+            "description": "Search name, handle, phone or email"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "active"
+            },
+            "description": "active | paused | blocked"
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "whatsapp"
+            },
+            "description": "Filter by platform"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "API"
+            },
+            "description": "Filter by acquisition source"
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "{{stageId}}"
+            },
+            "description": "Stage id, or \"none\" for contacts with no stage"
+          },
+          {
+            "name": "tags[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "{{tagId}}"
+            },
+            "description": "Tag ids — matches a contact carrying ANY of them"
+          },
+          {
+            "name": "has_phone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            },
+            "description": "Only contacts with a phone number"
+          },
+          {
+            "name": "has_email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            },
+            "description": "Only contacts with an email address"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Create a contact",
+        "description": "Creates a contact and fires contact.created. To make it reachable on WhatsApp, supply `channel` (one of the workspace's WhatsApp numbers), `phone` in international form and `opt_in_attested: true`, confirming the person agreed to receive WhatsApp messages from you; no other channel can be bound here. A number another contact already holds is refused. Subject to the workspace's plan contact cap.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "contacts.store",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Ada Lovelace"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "+15550100"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "ada@example.com"
+                  },
+                  "channel": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "opt_in_attested": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "stage": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "source": {
+                    "type": "string",
+                    "example": "API"
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "example": "Europe/London"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "VIP"
+                    }
+                  },
+                  "custom_fields": {
+                    "type": "object",
+                    "properties": {
+                      "plan": {
+                        "type": "string",
+                        "example": "pro"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/bulk": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Bulk action on contacts",
+        "description": "Applies one action to up to 500 contacts: up to 50 inline, more queued (202, `queued: true`). Actions: delete, add_tag, remove_tag, set_stage. `value` is the tag NAME for add_tag/remove_tag and the stage id for set_stage. Per-contact webhooks still fire; contact-event automation triggers are suppressed so a bulk change cannot stampede the flow engine. `delete` also needs the key creator to hold the bulk-delete permission.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "contacts.bulk",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "example": "add_tag"
+                  },
+                  "ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "value": {
+                    "type": "string",
+                    "example": "VIP"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/{contact}": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Get a contact",
+        "description": "Returns a single contact with its tags and stage.\n\n**Required permission:** `salesbot:contacts:read`",
+        "operationId": "contacts.show",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Update a contact",
+        "description": "Partial update — omitted fields keep their stored value. Any tags supplied are ADDED, never synced. Fires contact.updated.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "contacts.update",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Ada King"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "ada@example.org"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Delete a contact",
+        "description": "Deletes the contact and cascades its channel identities, messages, notes and tag links.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "contacts.destroy",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/contacts/{contact}/tags": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Add tags to a contact",
+        "description": "Attaches tags by name, creating any that do not exist. Fires contact.tagged and the tag_applied automation trigger.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "contacts.tags.add",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "VIP"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Remove tags from a contact",
+        "description": "Detaches tags by name. Names that do not exist are ignored — no tag is created just to detach it.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "contacts.tags.remove",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Newsletter"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/{contact}/notes": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Add an internal note",
+        "description": "Records an internal note on the contact. Never sent to the customer.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "contacts.notes.store",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string",
+                    "example": "Asked about enterprise pricing."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/{contact}/stage": {
+      "put": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Move a contact's pipeline stage",
+        "description": "Sets (or clears, with null) the contact's stage and fires contact.stage_changed with the previous stage.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "contacts.stage.update",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stage": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations": {
+      "get": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "List conversations",
+        "description": "The unified inbox, newest activity first. A conversation IS a contact, so the id here is the contact id and can be passed straight back as `contact_id` when sending. Archived threads are excluded unless asked for.\n\n**Required permission:** `salesbot:conversations:read`",
+        "operationId": "conversations.index",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "ada"
+            },
+            "description": "Search name, handle or phone"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "open"
+            },
+            "description": "open | done"
+          },
+          {
+            "name": "unread",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            },
+            "description": "Only conversations with unread messages"
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "whatsapp"
+            },
+            "description": "Filter by platform"
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "dm"
+            },
+            "description": "dm | comment"
+          },
+          {
+            "name": "archived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            },
+            "description": "Include archived threads"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/conversations/{contact}": {
+      "get": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Get a conversation",
+        "description": "Returns one conversation with its rollup fields and current assignee.\n\n**Required permission:** `salesbot:conversations:read`",
+        "operationId": "conversations.show",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/conversations/{contact}/messages": {
+      "get": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "List a conversation's messages",
+        "description": "The thread, oldest first, paginated — so a client appends pages instead of reversing them.\n\n**Required permission:** `salesbot:conversations:read`",
+        "operationId": "conversations.messages",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/conversations/{contact}/read": {
+      "post": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Mark a conversation read",
+        "description": "Clears the unread counter.\n\n**Required permission:** `salesbot:conversations:write`",
+        "operationId": "conversations.read",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/conversations/{contact}/status": {
+      "put": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Open or close a conversation",
+        "description": "Closing stamps the reopen window and settles any automation a human takeover parked. `parked_action` (resume | skip | keep | end) overrides the workspace resume policy for this close.\n\n**Required permission:** `salesbot:conversations:write`",
+        "operationId": "conversations.status.update",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "done"
+                  },
+                  "parked_action": {
+                    "type": "string",
+                    "example": "keep"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{contact}/assignee": {
+      "put": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Assign a conversation",
+        "description": "Assigns the conversation to a workspace member, or hands it back with a null user_id. Emits conversation.assigned and notifies the new owner. Non-members are rejected.\n\n**Required permission:** `salesbot:conversations:write`",
+        "operationId": "conversations.assignee.update",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{contact}/bot": {
+      "put": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Pause or resume the bot",
+        "description": "Pausing freezes any running automation on this conversation; resuming unfreezes it. Idempotent — retrying a request cannot flip the state back.\n\n**Required permission:** `salesbot:conversations:write`",
+        "operationId": "conversations.bot.update",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paused": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{contact}/blocked": {
+      "put": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Block or unblock a contact",
+        "description": "Blocking stops outbound messages and pauses the bot so no automation re-engages them.\n\n**Required permission:** `salesbot:conversations:write`",
+        "operationId": "conversations.blocked.update",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "blocked": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{contact}/notes": {
+      "post": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Add an internal note",
+        "description": "Records an internal note on the conversation. Never sent to the customer.\n\n**Required permission:** `salesbot:conversations:write`",
+        "operationId": "conversations.notes.store",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string",
+                    "example": "Escalated to billing."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages": {
+      "post": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Send a message",
+        "description": "Sends on the channel the customer last used (or the identity or channel uuid in `channel`), records it in the thread and fires the same message.* webhooks a dashboard reply does. Counted as a BOT send: it needs the workspace in good standing, never takes the conversation over, and gets the bot's messaging window. Refused with 422 (with a `reason`) when the contact is blocked or opted out, or the window is closed — send an approved template (`type: template`, `template_id`, `parameters`) to re-engage. Media (while inbox media is on) is sent by reference: `media.library` (an id from POST /media) or `media.source_message_id`; a URL is refused. Send an `Idempotency-Key` header to make a retried request one send.\n\n**Required permission:** `salesbot:messages:send`",
+        "operationId": "messages.store",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Makes a retried request a single send."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contact_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "text"
+                  },
+                  "body": {
+                    "type": "string",
+                    "example": "Your order has shipped."
+                  },
+                  "kind": {
+                    "type": "string",
+                    "example": "dm"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/media": {
+      "get": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "List media",
+        "description": "Paginated list of the workspace media library, newest first.\n\n**Required permission:** `salesbot:media:read`",
+        "operationId": "media.index",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "logo"
+            },
+            "description": "Search file names"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Upload a file",
+        "description": "multipart/form-data with a `file` field. Runs the same upload pipeline as the dashboard, so the file gets its thumbnail conversions and the workspace storage path. Allowed mime types and the per-type size cap come from the install's file config.\n\n**Required permission:** `salesbot:media:write`",
+        "operationId": "media.store",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/media/{media}": {
+      "get": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Get a media item",
+        "description": "Returns a single item with a resolved URL.\n\n**Required permission:** `salesbot:media:read`",
+        "operationId": "media.show",
+        "parameters": [
+          {
+            "name": "media",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The media ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Media"
+        ],
+        "summary": "Delete a media item",
+        "description": "Detaches the item from any post version that referenced it, then deletes the files and the record.\n\n**Required permission:** `salesbot:media:write`",
+        "operationId": "media.destroy",
+        "parameters": [
+          {
+            "name": "media",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The media ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/segments": {
+      "get": {
+        "tags": [
+          "Segments"
+        ],
+        "summary": "List segments",
+        "description": "Paginated list of saved contact filters. Counts are opt-in — evaluating a grouped-conditions segment is a real query, so it is not run once per row unless asked for.\n\n**Required permission:** `salesbot:contacts:read`",
+        "operationId": "segments.index",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "churn"
+            },
+            "description": "Search segment names"
+          },
+          {
+            "name": "with_counts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            },
+            "description": "Include the live contact count for every segment"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Segments"
+        ],
+        "summary": "Create a segment",
+        "description": "Creates a saved filter. Tags are referenced by tag id. `conditions` is an optional grouped rule tree; unknown fields and operators are stripped by the shared sanitiser, so an invalid rule is dropped rather than silently matching everything.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "segments.store",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Quiet VIPs"
+                  },
+                  "stage": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "include_tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "exclude_tags": {
+                    "type": "array",
+                    "items": {}
+                  },
+                  "min_days_inactive": {
+                    "type": "integer",
+                    "example": 30
+                  },
+                  "conditions": {
+                    "type": "object",
+                    "properties": {
+                      "match": {
+                        "type": "string",
+                        "example": "all"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "match": {
+                              "type": "string",
+                              "example": "any"
+                            },
+                            "rules": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "field": {
+                                    "type": "string",
+                                    "example": "platform"
+                                  },
+                                  "op": {
+                                    "type": "string",
+                                    "example": "is"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "example": "whatsapp"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/segments/{segment}": {
+      "get": {
+        "tags": [
+          "Segments"
+        ],
+        "summary": "Get a segment",
+        "description": "Returns a single segment plus its live contact count.\n\n**Required permission:** `salesbot:contacts:read`",
+        "operationId": "segments.show",
+        "parameters": [
+          {
+            "name": "segment",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The segment ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Segments"
+        ],
+        "summary": "Update a segment",
+        "description": "Partial update — an omitted key keeps its stored value, so changing the name cannot erase the conditions.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "segments.update",
+        "parameters": [
+          {
+            "name": "segment",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The segment ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Quiet VIPs (60d)"
+                  },
+                  "min_days_inactive": {
+                    "type": "integer",
+                    "example": 60
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Segments"
+        ],
+        "summary": "Delete a segment",
+        "description": "Deletes the saved filter. Contacts are unaffected.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "segments.destroy",
+        "parameters": [
+          {
+            "name": "segment",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The segment ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/segments/{segment}/contacts": {
+      "get": {
+        "tags": [
+          "Segments"
+        ],
+        "summary": "List a segment's contacts",
+        "description": "Evaluates the segment live and returns the matching contacts, paginated. A segment stores a query, never a membership list, so results reflect the data at request time.\n\n**Required permission:** `salesbot:contacts:read`",
+        "operationId": "segments.contacts",
+        "parameters": [
+          {
+            "name": "segment",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The segment ID."
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "List tags",
+        "description": "Paginated list of contact tags with contact counts.\n\n**Required permission:** `salesbot:contacts:read`",
+        "operationId": "tags.index",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "vip"
+            },
+            "description": "Search tag names"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "25"
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Create a tag",
+        "description": "Creates a tag, or returns the existing one with the same name (200 instead of 201).\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "tags.store",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "VIP"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "#16a34a"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tags/{tag}": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Get a tag",
+        "description": "Returns a single tag by id.\n\n**Required permission:** `salesbot:contacts:read`",
+        "operationId": "tags.show",
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The tag ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Update a tag",
+        "description": "Renames or recolours a tag.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "tags.update",
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The tag ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "VIP client"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "#000000"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Delete a tag",
+        "description": "Deletes a tag and detaches it from every contact. The built-in Unsubscribe tag is refused — it is the opt-out marker the broadcast pipeline filters on.\n\n**Required permission:** `salesbot:contacts:write`",
+        "operationId": "tags.destroy",
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The tag ID."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    }
+  }
+}

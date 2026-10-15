@@ -1,0 +1,124 @@
+---
+title: "Managing endpoints"
+description: "Create, update, test and inspect webhook endpoints through the API."
+---
+
+Base URL: `https://app.example.com/api/v1/workspace-webhooks`
+
+Authenticate with a [workspace API key](/authentication). Older credentials (`sbk_` keys, personal tokens) and browser sessions are not accepted here.
+
+## Permissions
+
+| Request | Needs |
+| --- | --- |
+| `GET /events`, `GET /endpoints`, `GET /endpoints/{endpoint}` | `webhooks:read` |
+| `POST /endpoints`, `PATCH /endpoints/{endpoint}`, `DELETE /endpoints/{endpoint}` | `webhooks:write` |
+| `POST /endpoints/{endpoint}/rotate-secret` | `webhooks:write` |
+| `POST /endpoints/{endpoint}/test` | `webhooks:deliveries:retry` |
+| `GET /endpoints/{endpoint}/deliveries`, `GET /deliveries/{delivery}` | `webhooks:deliveries:read` |
+| `POST /deliveries/{delivery}/resend` | `webhooks:deliveries:retry` |
+
+The key also needs `publishing:webhooks:subscribe` and/or `salesbot:webhooks:subscribe` for every product the endpoint subscribes to. Endpoints that include a product your key cannot subscribe to are left out of lists and refused on direct access.
+
+## Required headers
+
+| Header | When | Why |
+| --- | --- | --- |
+| `Idempotency-Key` | Every `POST` | 8–200 letters, digits, `.`, `_`, `:` or `-`. Retrying with the same key and the **exact same body** returns the original response (with `Idempotency-Replayed: true`) instead of acting twice. A different body with the same key returns `409`. Keys are remembered for 24 hours. |
+| `If-Match: "<revision>"` | Every `PATCH`, `DELETE` and `POST` under `/endpoints/{endpoint}` | Take the revision from the `ETag` of `GET /endpoints/{endpoint}`. Missing returns `428`; out of date returns `412`. |
+
+## List available events
+
+```bash
+curl https://app.example.com/api/v1/workspace-webhooks/events \
+  -H "Authorization: Bearer osk_YOUR_SECRET"
+```
+
+Returns every event your workspace can subscribe to, with its data schema, a sample payload and the channels it supports.
+
+## Create an endpoint
+
+```bash
+curl -X POST https://app.example.com/api/v1/workspace-webhooks/endpoints \
+  -H "Authorization: Bearer osk_YOUR_SECRET" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: create-crm-hook-001" \
+  -d '{
+    "name": "CRM notifications",
+    "url": "https://example.com/webhooks",
+    "enabled": false,
+    "subscriptions": [
+      {"event": "publishing.post.published", "channel": "all"},
+      {"event": "salesbot.contact.created", "channel": "whatsapp"}
+    ]
+  }'
+```
+
+- `url` must be public `https://`.
+- Publishing events always use `"channel": "all"`.
+- New endpoints are always created paused, whatever you send in `enabled`. [Enable it](#update-an-endpoint) once your receiver is ready.
+- Returns `201` with the endpoint and its **signing secret** (`whsec_...`) in a top-level `secret` field. This is the only time the secret is returned. If the response is lost, retry with the same `Idempotency-Key` and body to get it again within 24 hours.
+- A workspace can have up to 25 endpoints.
+
+## Update an endpoint
+
+```bash
+curl -X PATCH https://app.example.com/api/v1/workspace-webhooks/endpoints/{endpoint} \
+  -H "Authorization: Bearer osk_YOUR_SECRET" \
+  -H "Content-Type: application/json" \
+  -H 'If-Match: "7"' \
+  -d '{"enabled": true}'
+```
+
+Fields you leave out keep their current values. If you send `subscriptions`, it replaces the whole list.
+
+## Send a test event
+
+```bash
+curl -X POST https://app.example.com/api/v1/workspace-webhooks/endpoints/{endpoint}/test \
+  -H "Authorization: Bearer osk_YOUR_SECRET" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: test-001" \
+  -H 'If-Match: "7"' \
+  -d '{"event": "publishing.post.published"}'
+```
+
+Sends a sample of a subscribed event with `"test": true`. The endpoint must be enabled. Returns `202` with the new delivery.
+
+## Rotate the signing secret
+
+```bash
+curl -X POST https://app.example.com/api/v1/workspace-webhooks/endpoints/{endpoint}/rotate-secret \
+  -H "Authorization: Bearer osk_YOUR_SECRET" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: rotate-001" \
+  -H 'If-Match: "7"' \
+  -d '{"immediate": false}'
+```
+
+- `"immediate": false` keeps the old secret valid for 24 hours alongside the new one.
+- `"immediate": true` revokes the old secret straight away.
+- You cannot start a second overlapping rotation while one is in progress.
+
+## Delivery history and resend
+
+```bash
+curl https://app.example.com/api/v1/workspace-webhooks/endpoints/{endpoint}/deliveries \
+  -H "Authorization: Bearer osk_YOUR_SECRET"
+```
+
+`GET /deliveries/{delivery}` shows its attempts. `POST /deliveries/{delivery}/resend` sends it again as a new delivery (with a new ID, linked through `resend_of`). Resending needs the endpoint to be enabled, still subscribed to the event, and the payload to still be stored. Payloads are kept for about 7 days.
+
+## Delete an endpoint
+
+```bash
+curl -X DELETE https://app.example.com/api/v1/workspace-webhooks/endpoints/{endpoint} \
+  -H "Authorization: Bearer osk_YOUR_SECRET" \
+  -H 'If-Match: "7"'
+```
+
+Returns `204`.
+
+## Limits
+
+Management changes are limited to 60 per workspace per minute, on top of the normal [API rate limits](/errors-and-limits).

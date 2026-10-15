@@ -1,0 +1,131 @@
+---
+title: "Events"
+description: "Every event you can subscribe to, and what its data contains."
+---
+
+The authoritative list for your workspace is [`GET /api/v1/workspace-webhooks/events`](/webhooks/manage#list-available-events). It includes each event's JSON schema and a sample. This page summarises it.
+
+Fields that have no value are left out of `data`. IDs are always UUIDs.
+
+## Publishing events
+
+| Event | When |
+| --- | --- |
+| `publishing.account.added` | A social account is connected |
+| `publishing.account.updated` | A social account changes |
+| `publishing.account.deleted` | A social account is removed |
+| `publishing.post.scheduled` | A post is scheduled |
+| `publishing.post.published` | A post is published |
+| `publishing.post.publishing_failed` | Publishing a post failed |
+| `publishing.post.deleted` | Posts are deleted or moved to trash |
+
+**Account events** carry the account's `id`, `name`, `provider` (for example `instagram`) and `status`. `account.deleted` carries `id` and `"deleted": true`.
+
+**Post events** carry the post's `id` and a numeric `status`. Fetch the full post with [Get a post](/publishing/posts/get-a-post).
+
+**`post.deleted`** carries `ids` (a list of post IDs), `deleted` and `to_trash`.
+
+```json
+{ "event": "publishing.post.deleted", "data": { "ids": ["1e7d9b0a-..."], "deleted": false, "to_trash": true } }
+```
+
+## Messaging events
+
+Messaging events can be limited to one channel per subscription: `whatsapp`, `facebook`, `instagram`, `sms` or `tiktok`, or `all`.
+
+### Contacts
+
+| Event | Data |
+| --- | --- |
+| `salesbot.contact.created` | `contact` |
+| `salesbot.contact.updated` | `contact` |
+| `salesbot.contact.tagged` | `contact`, `tag` |
+| `salesbot.contact.untagged` | `contact`, `tag` |
+| `salesbot.contact.stage_changed` | `contact`, `stage`, `previous_stage` |
+| `salesbot.contact.date_reached` | `contact`, `event`, `date` (`field`, `value`) |
+
+### Conversations and messages
+
+| Event | Data |
+| --- | --- |
+| `salesbot.message.received` | `contact`, `conversation`, `message` |
+| `salesbot.conversation.assigned` | `contact`, `conversation`, `assigned_to` (`name`) |
+| `salesbot.conversation.closed` | `contact`, `conversation` (`id`, `status`) |
+| `salesbot.message.sent` | `channel`, `provider`, `contact`, `conversation`, `message` |
+| `salesbot.message.delivered` | same as `message.sent` |
+| `salesbot.message.read_or_seen` | same as `message.sent` |
+| `salesbot.message.failed` | same as `message.sent`, with `message.error_code` |
+
+Not every channel reports every message status:
+
+| Channel | Sent | Delivered | Read / seen | Failed |
+| --- | --- | --- | --- | --- |
+| WhatsApp | Yes | Yes | Limited | Yes |
+| Facebook | Yes | Yes | Yes | Yes |
+| Instagram | Yes | No | Yes | Yes |
+| SMS | Yes | Limited | No | Yes |
+| TikTok | No | No | No | No |
+
+You can't subscribe a channel to a status it never reports.
+
+### Automations and broadcasts
+
+| Event | Data |
+| --- | --- |
+| `salesbot.automation.triggered` | `contact`, `automation` |
+| `salesbot.automation.completed` | `contact`, `automation` |
+| `salesbot.automation.failed` | `contact`, `automation` |
+| `salesbot.broadcast.sent` | `broadcast` |
+| `salesbot.broadcast.completed` | `broadcast` |
+| `salesbot.broadcast.failed` | `broadcast` |
+
+### Payments and bookings
+
+| Event | Data |
+| --- | --- |
+| `salesbot.payment.succeeded` | `contact`, `payment` |
+| `salesbot.payment.failed` | `contact`, `payment` |
+| `salesbot.payment.refunded` | `contact`, `payment` |
+| `salesbot.booking.created` | `contact`, `booking` |
+| `salesbot.booking.rescheduled` | `contact`, `booking` |
+| `salesbot.booking.cancelled` | `contact`, `booking` |
+
+### Store
+
+All store events carry `event`, `contact` and `order`.
+
+`salesbot.store.order_created`, `salesbot.store.order_paid`, `salesbot.store.payment_failed`, `salesbot.store.checkout_abandoned`, `salesbot.store.order_fulfilled`, `salesbot.store.order_cancelled`, `salesbot.store.order_refunded`, `salesbot.store.product_back_in_stock`, `salesbot.store.inventory_low`, `salesbot.store.customer_milestone`
+
+## Data objects
+
+| Object | Fields |
+| --- | --- |
+| `contact` | `id`, `name`, `email`, `phone`, `platform`, `stage`, `tags`, `created_at` |
+| `conversation` | `id`, `status` |
+| `message` | `id`, `text`, `type`, `platform`, `direction`, `status`, `sent_at`, `status_at`, `error_code` |
+| `automation` | `id`, `name`, `builder` |
+| `broadcast` | `id`, `name`, `recipients`, `sent`, `failed` |
+| `payment` | `id`, `provider`, `amount`, `currency`, `status`, `paid_at` |
+| `booking` | `id`, `meeting_type`, `status`, `scheduled_at`, `ends_at` |
+| `order` | `id`, `number`, `total`, `currency`, `status`, `provider` |
+
+Text fields are capped at 1,000 characters (`message.text` at 10,000) and lists at 100 items. Contact and message events can include personal data such as names, emails, phone numbers and message text, so protect your receiver accordingly.
+
+### Example
+
+```json
+{
+  "id": "a3f1c0e2-...",
+  "schema_version": "1",
+  "event": "salesbot.message.received",
+  "product": "salesbot",
+  "occurred_at": "2026-10-03T12:00:00Z",
+  "workspace_id": "c2a4f0d1-58e4-4c1b-a1f7-2b6f3e9d0a11",
+  "test": false,
+  "data": {
+    "contact": { "id": "5b1e...", "name": "Ada Lovelace", "phone": "+447700900123", "platform": "whatsapp" },
+    "conversation": { "id": "5b1e..." },
+    "message": { "text": "Is this still available?", "type": "text", "platform": "whatsapp", "direction": "inbound" }
+  }
+}
+```

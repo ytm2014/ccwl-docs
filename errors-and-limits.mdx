@@ -1,0 +1,55 @@
+---
+title: "Errors and limits"
+description: "Status codes, error bodies and rate limits."
+---
+
+## Error format
+
+Errors return JSON with a `message`:
+
+```json
+{ "message": "This API key cannot call this endpoint." }
+```
+
+Validation errors (`422`) also list the problem fields:
+
+```json
+{
+  "message": "The name field is required.",
+  "errors": { "name": ["The name field is required."] }
+}
+```
+
+When a message cannot be sent, the Messaging API returns `422` with a `reason`, for example because the contact is blocked, has opted out, or the messaging window has closed.
+
+## Status codes
+
+| Code | Meaning |
+| --- | --- |
+| `200` `201` `202` `204` | Success. `201` means created, `202` means accepted for processing, `204` means deleted. |
+| `401` | The key is missing, invalid, revoked or expired, or you sent two different keys. |
+| `403` | The key lacks a permission, its admin can no longer do this, or the workspace is suspended. |
+| `404` | The resource does not exist in this workspace, or the feature is not available on it. |
+| `409` | Conflict, for example an `Idempotency-Key` reused with a different body. |
+| `412` | The `If-Match` revision is out of date. Fetch the resource again. |
+| `422` | Validation failed. |
+| `428` | An `If-Match` header is required. |
+| `429` | Too many requests. Wait for the number of seconds in `Retry-After`. |
+
+## Rate limits
+
+| Limit | Default |
+| --- | --- |
+| Per workspace API key, across both APIs | 60 requests per minute |
+| Per client IP | 300 requests per minute |
+| Requests with an invalid key, per IP | 30 per minute |
+| Webhook management changes, per workspace | 60 per minute |
+
+The Messaging API may also apply its own per-key limit. Your platform can change these defaults. When you get a `429`, wait for `Retry-After` seconds before retrying.
+
+## Retrying safely
+
+- `GET` requests are always safe to retry.
+- `POST /api/v1/messages` accepts an `Idempotency-Key` header. Retrying with the same key sends the message once.
+- Every `POST` to the [webhook management API](/webhooks/manage) requires an `Idempotency-Key`.
+- Other writes are not idempotent. Check whether the first request succeeded before retrying.

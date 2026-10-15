@@ -1,0 +1,23 @@
+---
+title: "Zapier"
+description: "Trigger Zaps from messaging events without writing code."
+---
+
+If your platform offers the Zapier app, you can connect it from **Integrations → Zapier** in your dashboard and pick events as Zap triggers. You do not need anything on this page to use Zapier normally.
+
+## How it works
+
+Zapier subscribes to events with REST hooks under `https://app.example.com/zapier`. The key it uses needs the `salesbot:zapier:hooks` permission.
+
+| Request | What it does |
+| --- | --- |
+| `GET /zapier/me` | Checks the connection and lists the available events. |
+| `POST /zapier/subscribe` | Subscribes a `target_url` to an `event`. Returns `201` with the hook `id` (or `200` if it already existed). |
+| `POST /zapier/unsubscribe` | Removes the hook with the given `id`. |
+| `GET /zapier/sample/{event}` | Returns a sample payload so you can map fields in the Zap editor. |
+
+Errors you may see: `unknown_event`, `invalid_target_url`, `too_many_hooks` and `zapier_not_connected`.
+
+<Tip>
+For your own code, use [webhooks](/webhooks/overview) instead. They are signed, retried and have a delivery history.
+</Tip>

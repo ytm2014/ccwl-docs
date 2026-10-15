@@ -1,0 +1,78 @@
+---
+title: "Webhooks overview"
+description: "Receive an HTTPS request whenever something happens in your workspace."
+---
+
+A webhook endpoint is a URL on your server. When an event you subscribed to happens, the platform sends it a signed JSON `POST`.
+
+## Setting up an endpoint
+
+You can create endpoints in the dashboard under **Integrations → Webhooks**, or [through the API](/webhooks/manage).
+
+1. Enter a name and a public `https://` URL.
+2. Pick the events you want. Nothing is selected automatically. Messaging events can be limited to one channel (for example only `whatsapp`) or `all`.
+3. Copy the signing secret (it starts with `whsec_`) when it is shown. You need it to [verify signatures](/webhooks/verify-signatures).
+4. New endpoints start **paused**. Enable the endpoint, then send a test event to check your receiver handles it.
+
+## What a delivery looks like
+
+```http
+POST /your/webhook/path HTTP/1.1
+Content-Type: application/json
+X-Webhook-Event: publishing.post.published
+X-Webhook-Delivery: 7c0f6c1e-2a7b-4f53-9d43-0c1f3c6f8b21
+X-Webhook-Signature: t=1791028800,v1=5f2c...
+```
+
+```json
+{
+  "id": "0b6d2c9e-6a51-4d8e-9a3f-3d0e5a1c7f42",
+  "schema_version": "1",
+  "event": "publishing.post.published",
+  "product": "publishing",
+  "occurred_at": "2026-10-03T12:00:00Z",
+  "workspace_id": "c2a4f0d1-58e4-4c1b-a1f7-2b6f3e9d0a11",
+  "test": false,
+  "data": { "id": "1e7d9b0a-...", "status": 2 }
+}
+```
+
+| Field | Meaning |
+| --- | --- |
+| `id` | The event ID. |
+| `schema_version` | Always `"1"` for this format. |
+| `event` | The event name, for example `salesbot.contact.created`. |
+| `product` | `publishing` or `salesbot`. |
+| `occurred_at` | When the event happened (UTC). |
+| `workspace_id` | The workspace UUID. |
+| `test` | `true` for test events you triggered yourself. |
+| `data` | The event's data. See [Events](/webhooks/events). |
+
+Payloads are deliberately small. To get the full record, call the API with the ID from `data`.
+
+## Responding
+
+- Return any `2xx` status as soon as you have **stored** the event. Do slow work afterwards.
+- Requests time out after 8 seconds (4 seconds to connect).
+- Redirects are not followed and count as a failure.
+
+## Retries
+
+Network errors, timeouts, `408`, `429` and `5xx` responses are retried. Other `4xx` responses and redirects are final.
+
+An event is attempted at most **6 times**, with delays of roughly 10 seconds, 1 minute, 5 minutes, 30 minutes and 2 hours (with some random jitter). A `Retry-After` header on your response can lengthen a delay.
+
+Delivery history in the dashboard shows each attempt's status code, duration and outcome, and lets you resend a delivery.
+
+## Delivery guarantees
+
+- **At least once.** The same delivery can arrive more than once. Use the `X-Webhook-Delivery` header to ignore duplicates.
+- **Not ordered.** Events can arrive out of order. Use `occurred_at` if order matters.
+- **Up to a minute's delay.** Deliveries are sent by a scheduler that runs every minute.
+- A manual resend gets a **new** delivery ID, on purpose.
+
+## Changing an endpoint
+
+Editing an endpoint cancels deliveries still queued for its old settings. A request already on its way can still arrive.
+
+If the admin responsible for an endpoint leaves or loses access, deliveries pause until another admin takes it over from the endpoint's edit form.

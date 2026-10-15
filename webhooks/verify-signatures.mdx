@@ -1,0 +1,129 @@
+---
+title: "Verify signatures"
+description: "Check that a webhook really came from the platform and was not replayed."
+---
+
+Every delivery carries an `X-Webhook-Signature` header:
+
+```
+X-Webhook-Signature: t=1791028800,v1=5f2c8a...
+```
+
+- `t` is the Unix time, in seconds, when the request was signed.
+- `v1` is a hex HMAC-SHA256 of `{t}.{raw request body}`, keyed with the endpoint's signing secret.
+
+During a secret rotation the header carries **two** `v1` values, one per secret. Accept the request if either one matches.
+
+## Steps
+
+<Steps>
+  <Step title="Read the raw body">
+    Use the exact bytes you received. Parsing and re-encoding the JSON changes the bytes and breaks the signature.
+  </Step>
+  <Step title="Check the timestamp">
+    Reject the request if `t` is more than 5 minutes away from your server's clock.
+  </Step>
+  <Step title="Compute and compare">
+    Compute `HMAC-SHA256(secret, t + "." + body)` as lowercase hex and compare it with each `v1` value using a constant-time comparison.
+  </Step>
+  <Step title="Deduplicate">
+    Store the `X-Webhook-Delivery` ID and skip deliveries you have already processed.
+  </Step>
+</Steps>
+
+## Examples
+
+<CodeGroup>
+```js Node.js
+import crypto from 'node:crypto';
+import express from 'express';
+
+const app = express();
+const SECRET = process.env.WEBHOOK_SECRET;
+
+app.post('/webhooks', express.raw({ type: 'application/json' }), (req, res) => {
+  const header = req.get('X-Webhook-Signature') ?? '';
+  const parts = header.split(',').map((p) => p.split('='));
+  const t = parts.find(([k]) => k === 't')?.[1];
+  const signatures = parts.filter(([k]) => k === 'v1').map(([, v]) => v);
+
+  if (!t || Math.abs(Date.now() / 1000 - Number(t)) > 300) return res.sendStatus(400);
+
+  const expected = crypto.createHmac('sha256', SECRET).update(`${t}.`).update(req.body).digest('hex');
+  const valid = signatures.some((sig) =>
+    sig.length === expected.length && crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected)));
+  if (!valid) return res.sendStatus(400);
+
+  const event = JSON.parse(req.body);
+  // Store the event, keyed by req.get('X-Webhook-Delivery'), then process it later.
+  res.sendStatus(200);
+});
+```
+
+```python Python
+import hashlib, hmac, os, time
+from flask import Flask, request, abort
+
+app = Flask(__name__)
+SECRET = os.environ["WEBHOOK_SECRET"].encode()
+
+@app.post("/webhooks")
+def webhook():
+    body = request.get_data()  # raw bytes
+    parts = [p.split("=", 1) for p in request.headers.get("X-Webhook-Signature", "").split(",") if "=" in p]
+    t = next((v for k, v in parts if k == "t"), None)
+    signatures = [v for k, v in parts if k == "v1"]
+
+    if t is None or abs(time.time() - int(t)) > 300:
+        abort(400)
+
+    expected = hmac.new(SECRET, t.encode() + b"." + body, hashlib.sha256).hexdigest()
+    if not any(hmac.compare_digest(sig, expected) for sig in signatures):
+        abort(400)
+
+    # Store the event, keyed by request.headers["X-Webhook-Delivery"], then process it later.
+    return "", 200
+```
+
+```php PHP
+<?php
+$secret = getenv('WEBHOOK_SECRET');
+$body = file_get_contents('php://input');
+$header = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? '';
+
+$t = null;
+$signatures = [];
+foreach (explode(',', $header) as $part) {
+    [$k, $v] = array_pad(explode('=', $part, 2), 2, '');
+    if ($k === 't') $t = $v;
+    if ($k === 'v1') $signatures[] = $v;
+}
+
+if ($t === null || abs(time() - (int) $t) > 300) {
+    http_response_code(400);
+    exit;
+}
+
+$expected = hash_hmac('sha256', $t.'.'.$body, $secret);
+$valid = false;
+foreach ($signatures as $sig) {
+    $valid = $valid || hash_equals($expected, $sig);
+}
+if (! $valid) {
+    http_response_code(400);
+    exit;
+}
+
+// Store the event, keyed by $_SERVER['HTTP_X_WEBHOOK_DELIVERY'], then process it later.
+http_response_code(200);
+```
+</CodeGroup>
+
+## Rotating the secret
+
+Rotate a secret from the endpoint's settings or with the [rotate-secret endpoint](/webhooks/manage#rotate-the-signing-secret).
+
+- **With overlap (default):** both the old and new secret sign deliveries for 24 hours. Update your receiver, then let the old one expire.
+- **Immediately:** the old secret stops working at once. Use this if a secret has leaked.
+
+The signing secret is separate from your API keys. Revoking an API key does not stop webhook deliveries.

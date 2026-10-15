@@ -1,47 +1,80 @@
 ---
 title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+description: "Create a key and make your first request."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
-
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
-
-    ```bash
-    npm install your-package
-    ```
+  <Step title="Create a workspace API key">
+    In your dashboard go to **Configuration → Integrations → REST API** and create a key. For this guide, give it `salesbot:contacts:read` and `publishing:accounts:read`. Copy the key; it is shown only once.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
-
-    ```bash
-    your-cli init
-    ```
+  <Step title="Find your domain">
+    Your API lives on the same domain you sign in to. In the examples below, replace `app.example.com` with it.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
-
+  <Step title="Check the key">
     ```bash
-    your-cli start
+    curl https://app.example.com/api/v1/account \
+      -H "Authorization: Bearer osk_YOUR_SECRET"
     ```
+
+    ```json
+    {
+      "data": {
+        "id": "c2a4f0d1-58e4-4c1b-a1f7-2b6f3e9d0a11",
+        "name": "Acme Marketing",
+        "created_at": "2026-01-14T10:22:31+00:00"
+      }
+    }
+    ```
+
+    The `id` is your **workspace UUID**. You need it for the Publishing API.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Messaging
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+List your contacts:
+
+```bash
+curl "https://app.example.com/api/v1/contacts?per_page=10" \
+  -H "Authorization: Bearer osk_YOUR_SECRET"
+```
+
+Lists return `data`, `links` and `meta`. Use `per_page` (up to 100) and `page` to move through them. See the [Messaging API reference](/messaging/account/get-the-authenticated-workspace) for every endpoint.
+
+## Publishing
+
+Publishing URLs include your workspace UUID:
+
+```bash
+curl https://app.example.com/mixpost/api/WORKSPACE_UUID/accounts \
+  -H "Authorization: Bearer osk_YOUR_SECRET"
+```
+
+To create and schedule a post, you need the account `id`s from that response. This also needs `publishing:posts:write` and `publishing:posts:publish` on your key:
+
+```bash
+curl -X POST https://app.example.com/mixpost/api/WORKSPACE_UUID/posts \
+  -H "Authorization: Bearer osk_YOUR_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accounts": [12],
+    "date": "2026-10-20",
+    "time": "09:00",
+    "timezone": "Europe/London",
+    "schedule": true,
+    "versions": [
+      { "account_id": 0, "is_original": true, "content": [ { "body": "Our autumn sale starts today!" } ] }
+    ]
+  }'
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Permissions" icon="key" href="/authentication#permissions">
+    Pick the narrowest set your integration needs.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/webhooks/overview">
+    React to events instead of polling.
+  </Card>
+</CardGroup>

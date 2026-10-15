@@ -1,0 +1,106 @@
+---
+title: "Authentication"
+description: "Workspace API keys, how to send them and what they can do."
+---
+
+## Workspace API keys
+
+A workspace API key starts with `osk_`. It belongs to exactly one workspace and acts on behalf of the admin who created it.
+
+<Steps>
+  <Step title="Open the key manager">
+    In your dashboard, go to **Configuration → Integrations → REST API**. Only workspace admins can create keys.
+  </Step>
+  <Step title="Create a key">
+    Give it a name, pick its permissions and, optionally, an expiry date. No permissions are selected by default.
+  </Step>
+  <Step title="Copy it once">
+    The key is shown only once. Store it in your secret manager straight away; it cannot be shown again.
+  </Step>
+</Steps>
+
+<Warning>
+If the admin who created a key leaves the workspace or stops being an admin, the key stops working. Create integration keys from an admin account that will stay in place.
+</Warning>
+
+## Sending the key
+
+Send the key in **one** of these headers. Both work on both APIs.
+
+<CodeGroup>
+```http Bearer
+Authorization: Bearer osk_YOUR_SECRET
+```
+
+```http x-api-key
+x-api-key: osk_YOUR_SECRET
+```
+</CodeGroup>
+
+If you send both headers with different values, the request is rejected with `401`.
+
+## Permissions
+
+A key only gets the permissions you select when you create it. Picking "all" selects every permission that exists at that moment; permissions added to the platform later are never added to existing keys. To change a key's permissions, create a new key, switch your integration over, then revoke the old one.
+
+Permissions narrow what the creating admin can already do; they never add to it. Plan limits and features that are switched off still apply.
+
+### Publishing
+
+| Permission | Allows |
+| --- | --- |
+| `publishing:accounts:read` | List and read connected social accounts |
+| `publishing:posts:read` | List and read posts |
+| `publishing:posts:write` | Create, edit and delete posts |
+| `publishing:posts:publish` | Schedule, reschedule, queue or publish posts now |
+| `publishing:posts:approve` | Approve posts |
+| `publishing:media:read` | Read the media library |
+| `publishing:media:write` | Upload, edit and delete media |
+| `publishing:tags:read` | Read post tags |
+| `publishing:tags:write` | Create, edit and delete post tags |
+
+Creating or updating a post that schedules it (`schedule`, `schedule_now`, `queue`, or a `date` and `time`) also needs `publishing:posts:publish`.
+
+### Messaging
+
+| Permission | Allows |
+| --- | --- |
+| `salesbot:channels:read` | Read connected messaging channels |
+| `salesbot:contacts:read` | Read contacts, tags and segments |
+| `salesbot:contacts:write` | Create, edit and delete contacts, tags and segments |
+| `salesbot:conversations:read` | Read conversations and their messages |
+| `salesbot:conversations:write` | Mark read, open and close, assign, pause the bot, block, add notes |
+| `salesbot:messages:send` | Send messages |
+| `salesbot:broadcasts:read` | Read broadcasts and their recipients |
+| `salesbot:broadcasts:write` | Create, edit, approve, send and delete broadcasts |
+| `salesbot:automations:read` | Read automations |
+| `salesbot:automations:write` | Switch automations on and off |
+| `salesbot:media:read` | Read the media library |
+| `salesbot:media:write` | Upload and delete media |
+| `salesbot:zapier:hooks` | Subscribe Zapier triggers |
+
+### Webhooks
+
+| Permission | Allows |
+| --- | --- |
+| `webhooks:read` | List webhook endpoints and the event catalogue |
+| `webhooks:write` | Create, edit, delete endpoints and rotate secrets |
+| `webhooks:deliveries:read` | Read delivery history |
+| `webhooks:deliveries:retry` | Send test events and resend deliveries |
+| `publishing:webhooks:subscribe` | Subscribe an endpoint to publishing events |
+| `salesbot:webhooks:subscribe` | Subscribe an endpoint to messaging events |
+
+See [Managing endpoints](/webhooks/manage) for how these combine.
+
+## Workspaces
+
+- **Messaging API:** the key selects the workspace. No workspace ID appears in the URL.
+- **Publishing API:** the workspace UUID is part of the URL and must match the key's workspace. A key from another workspace gets `404`, even if its admin belongs to both.
+
+## Older credentials
+
+Personal publishing tokens and messaging keys starting with `sbk_` keep working on their own API as before. They are never converted or expired automatically. To move an integration to a workspace key: create the key, update the integration, check a read and a safe write, then revoke the old credential.
+
+<Info>
+Personal publishing tokens can cover several workspaces. Revoking one can affect integrations in all of them.
+</Info>
