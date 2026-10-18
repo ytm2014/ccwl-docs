@@ -100,9 +100,9 @@ All store events carry `event`, `contact` and `order`.
 
 | Object | Fields |
 | --- | --- |
-| `contact` | `id`, `name`, `email`, `phone`, `platform`, `stage`, `tags`, `created_at` |
+| `contact` | `id`, `name`, `email`, `phone`, `platform`, `stage`, `tags`, `created_at`, and `source` on `message.received` (see below) |
 | `conversation` | `id`, `status` |
-| `message` | `id`, `text`, `type`, `platform`, `direction`, `status`, `sent_at`, `status_at`, `error_code` |
+| `message` | `id`, `text`, `type`, `platform`, `direction`, `status`, `sent_at`, `status_at`, `error_code`, and `referral` on `message.received` (see below) |
 | `automation` | `id`, `name`, `builder` |
 | `broadcast` | `id`, `name`, `recipients`, `sent`, `failed` |
 | `payment` | `id`, `provider`, `amount`, `currency`, `status`, `paid_at` |
@@ -110,6 +110,34 @@ All store events carry `event`, `contact` and `order`.
 | `order` | `id`, `number`, `total`, `currency`, `status`, `provider` |
 
 Text fields are capped at 1,000 characters (`message.text` at 10,000) and lists at 100 items. Contact and message events can include personal data such as names, emails, phone numbers and message text, so protect your receiver accordingly.
+
+### Ad referrals on `message.received`
+
+`salesbot.message.received` carries two extra fields that tell you which ad brought the person in. No other event changes.
+
+- **`message.referral`**: the Click-to-WhatsApp, Click-to-Messenger or Click-to-Instagram ad, or `m.me` / `ig.me` ref link, this message came from. It's `null` on an ordinary message.
+- **`contact.source`**: the contact's first touch, as text. For example `Messenger ad: 2021 Toyota Corolla LE`, `Instagram ad: Autumn sale`, `WhatsApp ad: ...` or `WhatsApp post: ...`. It's `null` when the contact didn't come from an ad.
+
+`message.referral` is the same 12-key object the [Messaging API](/ad-referrals) returns:
+
+| Key | Meaning |
+| --- | --- |
+| `source` | `ad`, `post` (a WhatsApp ad pointing at an organic post) or `link` (a ref link) |
+| `ad_id`, `ad_title`, `body` | The ad's ID, headline and text |
+| `photo_url`, `video_url`, `thumbnail_url` | The ad's image, video and video thumbnail |
+| `source_url` | Link to the ad or post |
+| `post_id` | The post the ad points at |
+| `product_id` | For catalog ads, the catalog product the person tapped |
+| `ref` | The `ref` parameter of the ad or link |
+| `ctwa_clid` | Click ID (WhatsApp only) |
+
+Every key is present, and `null` when Meta didn't send it. Links are only passed on when they are plain `http(s)` URLs with no username or password and at most 2,048 characters; any other link becomes `null`. Links are never shortened.
+
+<Warning>
+The media links are Meta CDN links and they expire. If you need the image or video later, copy it when the webhook arrives.
+</Warning>
+
+When someone taps an ad without writing anything, an inbound message reading `Opened the chat from an ad` is recorded with the referral, so you still get a `message.received` for the tap.
 
 ### Example
 
@@ -119,13 +147,37 @@ Text fields are capped at 1,000 characters (`message.text` at 10,000) and lists 
   "schema_version": "1",
   "event": "salesbot.message.received",
   "product": "salesbot",
-  "occurred_at": "2026-10-03T12:00:00Z",
+  "occurred_at": "2026-10-18T12:00:00Z",
   "workspace_id": "c2a4f0d1-58e4-4c1b-a1f7-2b6f3e9d0a11",
   "test": false,
   "data": {
-    "contact": { "id": "5b1e...", "name": "Ada Lovelace", "phone": "+447700900123", "platform": "whatsapp" },
+    "contact": {
+      "id": "5b1e...",
+      "name": "Ada Lovelace",
+      "platform": "facebook",
+      "source": "Messenger ad: 2021 Toyota Corolla LE"
+    },
     "conversation": { "id": "5b1e..." },
-    "message": { "text": "Is this still available?", "type": "text", "platform": "whatsapp", "direction": "inbound" }
+    "message": {
+      "text": "Is this still available?",
+      "type": "text",
+      "platform": "facebook",
+      "direction": "inbound",
+      "referral": {
+        "source": "ad",
+        "ad_id": "120210000000000000",
+        "ad_title": "2021 Toyota Corolla LE",
+        "body": "Low mileage, one owner. Message us to book a test drive.",
+        "photo_url": "https://scontent.xx.fbcdn.net/v/t45.1600-4/corolla.jpg",
+        "video_url": null,
+        "thumbnail_url": null,
+        "source_url": null,
+        "post_id": null,
+        "product_id": "6543210987654321",
+        "ref": null,
+        "ctwa_clid": null
+      }
+    }
   }
 }
 ```

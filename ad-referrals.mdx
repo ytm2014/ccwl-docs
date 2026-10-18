@@ -12,6 +12,7 @@ When someone starts or continues a chat from a Click-to-WhatsApp, Click-to-Messe
 | `GET /api/v1/conversations/{contact}/messages` | `referral` on each message | The ad or link that message came from, or `null`. |
 | `GET /api/v1/conversations` and `GET /api/v1/conversations/{contact}` | `referral` | The **most recent** ad or ref link the person arrived from, or `null`. |
 | Same | `source` | The **first** touch, as text. For example `Messenger ad: 2021 Toyota Corolla LE`, `Instagram ad: Autumn sale`, `WhatsApp ad: ...` or `WhatsApp post: ...`. |
+| [`salesbot.message.received` webhook](/webhooks/events#ad-referrals-on-message-received) | `message.referral` and `contact.source` | The same 12-key object and first-touch text. `referral` is `null` on an ordinary message. |
 
 ## The referral object
 
