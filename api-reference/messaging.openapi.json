@@ -1135,7 +1135,7 @@
           "Conversations & Messages"
         ],
         "summary": "List conversations",
-        "description": "The unified inbox, newest activity first. A conversation IS a contact, so the id here is the contact id and can be passed straight back as `contact_id` when sending. Archived threads are excluded unless asked for.\n\n**Required permission:** `salesbot:conversations:read`",
+        "description": "The unified inbox, newest activity first. A conversation IS a contact, so the id here is the contact id and can be passed straight back as `contact_id` when sending. Archived threads are excluded unless asked for. Each conversation also carries `source` (the first touch, e.g. `Messenger ad: 2021 Toyota Corolla LE`) and `referral`: the most recent ad or m.me / ig.me ref link the person arrived from, the same object as a message's `referral` (null when they never came from one).\n\n**Required permission:** `salesbot:conversations:read`",
         "operationId": "conversations.index",
         "parameters": [
           {
@@ -1222,7 +1222,7 @@
           "Conversations & Messages"
         ],
         "summary": "Get a conversation",
-        "description": "Returns one conversation with its rollup fields and current assignee.\n\n**Required permission:** `salesbot:conversations:read`",
+        "description": "Returns one conversation with its rollup fields, current assignee, `source` (first touch) and `referral` (the latest ad or ref link the person arrived from, or null).\n\n**Required permission:** `salesbot:conversations:read`",
         "operationId": "conversations.show",
         "parameters": [
           {
@@ -1248,7 +1248,7 @@
           "Conversations & Messages"
         ],
         "summary": "List a conversation's messages",
-        "description": "The thread, oldest first, paginated — so a client appends pages instead of reversing them.\n\n**Required permission:** `salesbot:conversations:read`",
+        "description": "The thread, oldest first, paginated — so a client appends pages instead of reversing them. Each message carries `referral`: null unless it came from a Click-to-WhatsApp, Click-to-Messenger or Click-to-Instagram ad (or an m.me / ig.me ref link), and then the same keys on every channel: `source` (ad, post or link), `ad_id`, `ad_title`, `body`, `photo_url`, `video_url`, `thumbnail_url`, `source_url`, `post_id`, `product_id` (the catalog product the ad showed, for a catalog ad), `ref` and `ctwa_clid` (WhatsApp only). A key Meta did not send is null; media URLs are Meta CDN links and expire. When somebody who already has a Messenger or Instagram thread taps an ad, Meta sends no message, so an inbound line reading `Opened the chat from an ad` is recorded carrying the referral. Ad details are captured while click-to-message ad triggers are enabled for the workspace.\n\n**Required permission:** `salesbot:conversations:read`",
         "operationId": "conversations.messages",
         "parameters": [
           {

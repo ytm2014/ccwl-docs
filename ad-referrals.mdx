@@ -1,0 +1,68 @@
+---
+title: "Ad referrals"
+description: "See which Click-to-WhatsApp, Click-to-Messenger or Click-to-Instagram ad brought a contact in."
+---
+
+When someone starts or continues a chat from a Click-to-WhatsApp, Click-to-Messenger or Click-to-Instagram ad, or from an `m.me` / `ig.me` ref link, the Messaging API records where they came from.
+
+## Where you'll find it
+
+| Endpoint | Field | Meaning |
+| --- | --- | --- |
+| `GET /api/v1/conversations/{contact}/messages` | `referral` on each message | The ad or link that message came from, or `null`. |
+| `GET /api/v1/conversations` and `GET /api/v1/conversations/{contact}` | `referral` | The **most recent** ad or ref link the person arrived from, or `null`. |
+| Same | `source` | The **first** touch, as text. For example `Messenger ad: 2021 Toyota Corolla LE`, `Instagram ad: Autumn sale`, `WhatsApp ad: ...` or `WhatsApp post: ...`. |
+
+## The referral object
+
+The same 12 keys appear on every channel. Each key is always present and is `null` when Meta didn't send it.
+
+| Key | Meaning |
+| --- | --- |
+| `source` | `ad`, `post` (a WhatsApp ad pointing at an organic post) or `link` (an `m.me` / `ig.me` ref link) |
+| `ad_id` | The ad's ID |
+| `ad_title` | The ad's headline |
+| `body` | The ad's text |
+| `photo_url` | Ad image |
+| `video_url` | Ad video |
+| `thumbnail_url` | Video thumbnail |
+| `source_url` | Link to the ad or post |
+| `post_id` | The post the ad points at |
+| `product_id` | For catalog ads, the catalog product the person tapped (for example a specific vehicle) |
+| `ref` | The `ref` parameter of the ad or link |
+| `ctwa_clid` | Click ID (WhatsApp only) |
+
+```json
+{
+  "id": "9f1c...",
+  "type": "text",
+  "direction": "inbound",
+  "body": "Is this still available?",
+  "referral": {
+    "source": "ad",
+    "ad_id": "120210000000000000",
+    "ad_title": "2021 Toyota Corolla LE",
+    "body": "Low mileage, one owner. Message us to book a test drive.",
+    "photo_url": "https://scontent.xx.fbcdn.net/...",
+    "video_url": null,
+    "thumbnail_url": null,
+    "source_url": "https://fb.me/...",
+    "post_id": null,
+    "product_id": "8765432109876543",
+    "ref": null,
+    "ctwa_clid": null
+  }
+}
+```
+
+<Warning>
+Media URLs are Meta CDN links and expire. Download anything you need to keep. Only plain `http(s)` links are passed through.
+</Warning>
+
+## Ad taps with no message
+
+When someone who already has a Messenger or Instagram chat taps an ad, Meta doesn't send a message. The platform records an inbound message reading `Opened the chat from an ad` that carries the referral, once per tap, so you still see the visit. It appears in the messages endpoint like any other message.
+
+## Requirements
+
+Ad details are only captured while your platform has click-to-message ad triggers and automations turned on for your workspace, and Meta messaging is connected on the Page or Instagram channel. Messages received before that was in place have no referral details.
