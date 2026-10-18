@@ -20,3 +20,11 @@ npx mint dev
 ```bash
 node scripts/build-messaging-openapi.mjs <path-to-app>/docs/api/manifest
 ```
+
+## Each platform's own domain in the examples
+
+The examples use `app.example.com` (and `/os/` for the Publishing API). Every white-label platform
+links here from its API pages as `https://workspace.guide/?domain=<its domain>&core=<its dashboard
+path>`; `domain.js` (Mintlify loads every `.js` file on every page) remembers that for the visit and
+swaps it into the text, code samples, links and copy buttons. Without a domain nothing changes.
+Keep using `app.example.com` and `https://{domain}` in new pages and the OpenAPI files.
