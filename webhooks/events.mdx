@@ -90,6 +90,42 @@ You can't subscribe a channel to a status it never reports.
 | `salesbot.booking.rescheduled` | `contact`, `booking` |
 | `salesbot.booking.cancelled` | `contact`, `booking` |
 
+### Channel connect
+
+Only on instances where partner-initiated channel onboarding is switched on, and
+only for connections a partner started. They report the outcome of the
+onboarding — not a later token expiry or disconnection. See
+[Channel Connect](/partner/channel-connect).
+
+| Event | Data |
+| --- | --- |
+| `salesbot.channel.connection.completed` | `channel`, `connection` |
+| `salesbot.channel.connection.failed` | `channel`, `connection` |
+| `salesbot.channel.connection.cancelled` | `channel`, `connection` |
+| `salesbot.channel.connection.expired` | `channel`, `connection` |
+
+`connection` carries `id` (the connection, not the channel), `platform`,
+`status`, `channel_id` (only on `completed`), `error_code`, `state` and
+`expires_at`.
+
+```json
+{
+  "event": "salesbot.channel.connection.completed",
+  "data": {
+    "channel": "whatsapp",
+    "connection": {
+      "id": "7f2c1a84-...",
+      "platform": "whatsapp",
+      "status": "connected",
+      "channel_id": "b4e9d201-...",
+      "error_code": null,
+      "state": "dealer-4821",
+      "expires_at": "2026-10-20T09:42:00+00:00"
+    }
+  }
+}
+```
+
 ### Store
 
 All store events carry `event`, `contact` and `order`.

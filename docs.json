@@ -28,6 +28,10 @@
           {
             "group": "Integrations",
             "pages": ["zapier"]
+          },
+          {
+            "group": "Partner API",
+            "pages": ["partner/overview", "partner/channel-connect"]
           }
         ]
       },

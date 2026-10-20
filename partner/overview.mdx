@@ -1,0 +1,131 @@
+---
+title: "Partner API"
+description: "Provision a customer and give their workspace an API key, without anybody opening the dashboard."
+---
+
+<Note>
+The Partner API is for **platform partners** — software that signs its own
+customers up here — and is enabled per partner. It is not the same thing as the
+workspace APIs: it uses a different key, a different base path, and can act on
+every workspace it has provisioned. If you were given an `osk_` key, you want
+the [Messaging](/messaging), [Publishing](/publishing) or
+[Link in Bio](/biolinks/overview) API instead.
+</Note>
+
+Base path `/api/partner`. Send your partner key as the `X-API-KEY` header,
+**from your backend only**. 60 requests a minute.
+
+## Provision a customer
+
+<CodeGroup>
+```bash cURL
+curl -X POST https://app.example.com/api/partner/users \
+  -H "X-API-KEY: $PARTNER_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "external_id": "dealer-4821",
+    "email": "sales@acmemotors.test",
+    "name": "Acme Motors"
+  }'
+```
+</CodeGroup>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "user_id": 184,
+    "external_id": "dealer-4821",
+    "email": "sales@acmemotors.test",
+    "name": "Acme Motors",
+    "created_at": "2026-10-20T09:12:04+00:00",
+    "workspace_id": "6b1f0e2c-....",
+    "workspace_ids": ["6b1f0e2c-...."],
+    "outcome": "created",
+    "workspace_created": true,
+    "warnings": []
+  }
+}
+```
+
+`GET /api/partner/users/{external_id}` returns the same identity and the same
+workspace fields, and `404` for an `external_id` you have not provisioned.
+
+### Workspaces
+
+`workspace_id` is the customer's **first** workspace — the one provisioning
+created — and is what every workspace-scoped endpoint below takes.
+`workspace_ids` lists **all** of them, oldest first, so `workspace_ids[0]` is
+always `workspace_id`. A second one appears if the customer was later made an
+admin of another workspace; pass the uuid you mean. A workspace the customer is
+only a member of is not listed.
+
+### What `outcome` tells you
+
+| `outcome` | Meaning |
+| --- | --- |
+| `created` | A new account, with a workspace of its own. |
+| `linked_existing_user` | That e-mail already had an account here. It was adopted, and **no workspace was created**. |
+| `updated` | A customer you had already provisioned, refreshed. |
+
+<Warning>
+Handle `linked_existing_user`. If the adopted account already administers a
+workspace, `workspace_id` names it and you can carry on. If it administers
+none, `workspace_id` is `null` and `warnings` contains
+`existing_account_linked_without_workspace` — there is nothing to issue a key
+against or connect a channel in until somebody adds that user to a workspace, or
+you provision a different e-mail.
+</Warning>
+
+### Conflicts
+
+`409` with a stable `error_code`, and nothing written:
+
+| `error_code` | Meaning |
+| --- | --- |
+| `email_belongs_to_another_partner` | The e-mail is another partner's customer. It is never handed over. |
+| `email_in_use_by_another_account` | Your user exists under that `external_id`, and the e-mail you asked for is another account's. |
+
+## Issue a workspace API key
+
+The `osk_` key your customer's integrations authenticate with, without anybody
+opening the Integrations page.
+
+```bash
+curl -X POST https://app.example.com/api/partner/workspaces/$WORKSPACE/api-keys \
+  -H "X-API-KEY: $PARTNER_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Dealer CRM","scopes":["salesbot:contacts:read","salesbot:contacts:write"]}'
+```
+
+`201`, with `plain_text_token` in `data`.
+
+<Warning>
+`plain_text_token` is returned **once**. It is stored as a hash and cannot be
+retrieved again. Store it where you keep credentials, and do not log the
+response body.
+</Warning>
+
+`scopes` is the same list the dashboard offers. A scope the workspace cannot
+have is a `422`, never silently dropped. There is a limit of 25 live keys per
+workspace, shared with keys made in the dashboard.
+
+- `GET …/api-keys` lists the keys — name, prefix, scopes, timestamps, last use
+  per product. Never the secret.
+- `DELETE …/api-keys/{id}` revokes one immediately, for every product. Repeating
+  it is a `200`.
+
+Every issuance is written to the customer's audit log.
+
+## Scoping
+
+You may act only on a workspace that a user **you** provisioned administers.
+Anything else — another partner's workspace, a workspace nobody provisioned, a
+uuid that does not exist — is a **404**, never a 403.
+
+## Next
+
+<Card title="Channel Connect" icon="link" href="/partner/channel-connect">
+  Give a customer a link that connects their own WhatsApp number, or connect a
+  Telegram bot from its token.
+</Card>
