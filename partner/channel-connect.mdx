@@ -21,16 +21,27 @@ All paths are relative to `/api/partner`, authenticated by your partner key as
 | Platform | How |
 | --- | --- |
 | `whatsapp` | A hosted link, then Meta's own signup dialog. Add `"coexistence": true` to keep the number on the WhatsApp Business app. |
+| `facebook` | A hosted link, Facebook Login, then your customer picks the Page. |
+| `instagram` | The same, for an Instagram professional account on one of their Pages. |
+| `tiktok` | A hosted link and the TikTok Business login. One login is one account. |
 | Telegram | No link needed — post the BotFather token. |
 
-<Warning>
-`facebook`, `instagram`, `instagram_login` and `tiktok` are **not** supported
-and are refused with a `422` on `platform`. On this platform those messaging
-channels come from a connected publishing account, whose OAuth has to run in the
-dashboard. Use the dashboard's client-invite link for them.
+<Note>
+Which platforms are available depends on how the instance is configured, so ask
+rather than assume: `GET /api/partner/channel-connect/settings` returns the
+list. A platform that is not on it is refused with a `422` and
+`"error_code": "provider_not_supported"`.
+</Note>
 
-Channel Connect is about **messaging** channels. It does not connect publishing
-accounts.
+<Warning>
+`instagram_login` — Instagram without a Facebook Page — is **not** supported and
+is always refused. An Instagram account connects through `instagram` if it has a
+Page, and not at all if it does not.
+
+Channel Connect is about **messaging** channels. Connecting a Page or an
+Instagram account does also connect it for publishing (that is how channels work
+here), but if you want a customer's accounts connected for publishing across
+every platform, use the dashboard's client-invite link.
 </Warning>
 
 ## 1. Register your return URLs
@@ -79,6 +90,11 @@ curl -X POST https://app.example.com/api/partner/workspaces/$WORKSPACE/channel-c
 Open `connect_url` as a **top-level navigation** in your customer's browser —
 not an iframe, not a fetch. Everything after they click Continue is bound to
 that browser. The session lasts **30 minutes**.
+
+For `facebook` and `instagram` your customer then picks which Page or account to
+connect, on the same hosted page — the status is `selecting` while it waits for
+them. `tiktok` grants one account, so that step is a single confirmation, and
+WhatsApp's number selection happens inside Meta's own dialog.
 
 `state` comes back to you on the return URL and in the completion event, so use
 it to match the session to your own customer. Do not put secrets or personal
@@ -155,12 +171,20 @@ Both return the public channel fields only: never channel data or access tokens.
 
 | Code | Meaning |
 | --- | --- |
-| `provider_not_supported` | That platform is not available here. |
+| `provider_not_supported` | That platform is not available on this instance. Read `GET /channel-connect/settings` for the list. |
 | `provider_not_configured` | The platform is not set up on this instance for that channel. Contact the operator. |
-| `provider_unavailable` | A transient failure starting the authorization. Retry with a new session. |
-| `authorization_not_completed` | The dialog was closed or denied, or nothing could be stored — the number is already connected elsewhere, the plan's limits are full, or a permission was withheld. |
-| `account_already_connected_elsewhere` | The number belongs to another workspace. |
-| `channel_limit_reached` | The plan's connected-channel limit is full. |
+| `provider_unavailable` | A transient failure reaching the provider. Retry with a new session. |
+| `provider_request_failed` | The provider answered with something unusable. |
+| `token_exchange_failed` | The provider would not exchange the authorization. |
+| `required_permissions_missing` | Your customer withheld a permission the channel cannot work without. Ask them to retry and accept the messaging permissions. |
+| `credentials_expired` | The grant expired before they finished choosing. Start a new session. |
+| `no_eligible_accounts` | Nothing connectable was granted — no Page, or no Instagram professional account on any Page they granted. |
+| `asset_discovery_incomplete` | The provider's account list did not finish. Retry with a new session. |
+| `authorization_not_completed` | The dialog was closed or denied, or nothing could be stored — already connected elsewhere, the plan's limits are full, or a permission was withheld. |
+| `account_already_connected_elsewhere` | That Page, profile or number belongs to another workspace. |
+| `channel_limit_reached` | The plan's connected-account limit is full. |
+| `business_account_required` | TikTok: a personal account cannot message. |
+| `messaging_unavailable_in_region` | TikTok withholds Business Messaging in that account's region. |
 | `reconnection_target_mismatch` | A reconnect came back with a different account than the channel it was meant to reconnect. The new one **is** connected. |
 | `session_expired` | The 30 minutes ran out. |
 
