@@ -40,6 +40,10 @@
     },
     {
       "name": "Tags"
+    },
+    {
+      "name": "Analytics",
+      "description": "Followers, reach, engagement and post performance, as the analytics dashboard shows them, plus when to post. Dates are UTC days unless a `timezone` is sent. Figures compared with the previous period of the same length are `{value, change}`, where `change` is a percentage (`100` when the previous period was zero, `null` when both are). Time series are lists of `{date, value}` points; breakdowns (ages, countries, keywords) are lists of `{label, value}`."
     }
   ],
   "components": {
@@ -266,6 +270,704 @@
           },
           "trashed": {
             "type": "boolean"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "The date range may span at most 366 days."
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "date_to": [
+                "The date range may span at most 366 days."
+              ]
+            }
+          }
+        }
+      },
+      "AnalyticsPeriod": {
+        "type": "object",
+        "description": "The range the figures cover, and the previous range of the same length every `change` is measured against.",
+        "properties": {
+          "start_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "previous_start_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "previous_end_date": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "AnalyticsChange": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "change": {
+            "type": "number",
+            "nullable": true,
+            "description": "Percent against the previous period: `100` when that was zero and this is not, `null` when both are zero."
+          }
+        }
+      },
+      "AnalyticsPoint": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2026-01-15",
+            "description": "A UTC day, or a month (`YYYY-MM`)."
+          },
+          "value": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "AccountStanding": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "followers": {
+            "type": "integer",
+            "description": "On the last day."
+          },
+          "follower_growth": {
+            "type": "integer",
+            "description": "Negative when followers were lost."
+          },
+          "growth_rate": {
+            "type": "number",
+            "description": "Percent of the followers at the start."
+          },
+          "posts": {
+            "type": "integer"
+          }
+        }
+      },
+      "AnalyticsSummary": {
+        "type": "object",
+        "properties": {
+          "total_followers": {
+            "type": "integer"
+          },
+          "follower_growth": {
+            "$ref": "#/components/schemas/AnalyticsChange"
+          },
+          "total_posts": {
+            "$ref": "#/components/schemas/AnalyticsChange"
+          },
+          "best_account": {
+            "$ref": "#/components/schemas/AccountStanding",
+            "description": "Highest growth rate; null with no accounts."
+          },
+          "needs_attention": {
+            "$ref": "#/components/schemas/AccountStanding",
+            "description": "Lowest growth rate, only when negative; otherwise null."
+          },
+          "audience_chart": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnalyticsPoint"
+            },
+            "description": "Total followers per day; `null` where nothing was recorded."
+          },
+          "leaderboard": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountStanding"
+            },
+            "description": "Most followers first."
+          },
+          "most_active": {
+            "$ref": "#/components/schemas/AccountStanding",
+            "description": "Most posts."
+          },
+          "least_active": {
+            "$ref": "#/components/schemas/AccountStanding",
+            "description": "Fewest posts; null when it is the most active account."
+          },
+          "follower_distribution": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "account": {
+                  "$ref": "#/components/schemas/Account"
+                },
+                "followers": {
+                  "type": "integer"
+                },
+                "percentage": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "posting_streak": {
+            "type": "object",
+            "properties": {
+              "active_days": {
+                "type": "integer"
+              },
+              "total_days": {
+                "type": "integer"
+              },
+              "percentage": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "AccountAnalytics": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "type": {
+            "type": "string",
+            "example": "overview"
+          },
+          "tabs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "overview",
+              "content",
+              "insights"
+            ]
+          },
+          "period": {
+            "$ref": "#/components/schemas/AnalyticsPeriod"
+          },
+          "initial_sync": {
+            "type": "object",
+            "properties": {
+              "in_progress": {
+                "type": "boolean"
+              },
+              "progress": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Percent while the first import runs."
+              }
+            }
+          },
+          "data": {
+            "type": "object",
+            "description": "Depends on the network and type. Compared figures are `{value, change}`, time series `{date, value}` lists, breakdowns `{label, value}` lists, and charts with several series an object of such lists.",
+            "example": {
+              "total_followers": 120,
+              "views": {
+                "value": 5400,
+                "change": 12.5
+              },
+              "likes": {
+                "value": 310,
+                "change": -4.2
+              },
+              "audience": [
+                {
+                  "date": "2026-01-01",
+                  "value": 118
+                },
+                {
+                  "date": "2026-01-02",
+                  "value": 120
+                }
+              ]
+            }
+          }
+        }
+      },
+      "PostingTimes": {
+        "type": "object",
+        "properties": {
+          "has_data": {
+            "type": "boolean",
+            "description": "False, with neutral scores and no `best`, when no account has scored history."
+          },
+          "timezone": {
+            "type": "string",
+            "example": "Europe/Berlin"
+          },
+          "offset_hours": {
+            "type": "number",
+            "example": 1
+          },
+          "accounts": {
+            "type": "integer",
+            "description": "Accounts with scored history."
+          },
+          "samples": {
+            "type": "integer",
+            "description": "Posts behind the scores."
+          },
+          "days": {
+            "type": "array",
+            "description": "Sunday first.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "day": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "score": {
+                  "type": "integer"
+                },
+                "samples": {
+                  "type": "integer"
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low",
+                    "none"
+                  ]
+                }
+              }
+            }
+          },
+          "day_intervals": {
+            "type": "array",
+            "description": "Seven lists, Sunday first, of twelve two-hour intervals. `end_hour` is exclusive.",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "start_hour": {
+                    "type": "integer"
+                  },
+                  "end_hour": {
+                    "type": "integer"
+                  },
+                  "best_hour": {
+                    "type": "integer"
+                  },
+                  "score": {
+                    "type": "integer"
+                  },
+                  "samples": {
+                    "type": "integer"
+                  },
+                  "confidence": {
+                    "type": "string",
+                    "enum": [
+                      "high",
+                      "medium",
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "best": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "day": {
+                  "type": "integer"
+                },
+                "hour": {
+                  "type": "integer"
+                },
+                "score": {
+                  "type": "integer"
+                },
+                "samples": {
+                  "type": "integer"
+                }
+              }
+            },
+            "example": [
+              {
+                "day": 2,
+                "hour": 13,
+                "score": 74,
+                "samples": 14
+              }
+            ]
+          }
+        }
+      },
+      "BestTimes": {
+        "type": "object",
+        "properties": {
+          "timezone": {
+            "type": "string"
+          },
+          "times": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "account_id": {
+                  "type": "integer"
+                },
+                "account_uuid": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "time": {
+                  "type": "string",
+                  "example": "13:00",
+                  "description": "24-hour, in `timezone`."
+                }
+              }
+            }
+          }
+        }
+      },
+      "PostAnalytics": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "type": "object",
+            "description": "Empty when the post went out to no account yet.",
+            "properties": {
+              "totals": {
+                "type": "object",
+                "properties": {
+                  "views": {
+                    "type": "integer"
+                  },
+                  "likes": {
+                    "type": "integer"
+                  },
+                  "comments": {
+                    "type": "integer"
+                  },
+                  "shares": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "trends": {
+                "type": "object",
+                "properties": {
+                  "views": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AnalyticsPoint"
+                    }
+                  },
+                  "likes": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AnalyticsPoint"
+                    }
+                  },
+                  "comments": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AnalyticsPoint"
+                    }
+                  },
+                  "shares": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AnalyticsPoint"
+                    }
+                  }
+                }
+              },
+              "engagement_rate": {
+                "type": "number",
+                "description": "Likes, comments and shares as a percent of views.",
+                "example": 4
+              },
+              "breakdown": {
+                "type": "object",
+                "description": "Empty when there was no engagement.",
+                "properties": {
+                  "likes": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "integer"
+                      },
+                      "percentage": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "comments": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "integer"
+                      },
+                      "percentage": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "shares": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "integer"
+                      },
+                      "percentage": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              },
+              "funnel": {
+                "type": "object",
+                "properties": {
+                  "views": {
+                    "type": "integer"
+                  },
+                  "interactions": {
+                    "type": "integer"
+                  },
+                  "shares": {
+                    "type": "integer"
+                  },
+                  "view_to_interaction_rate": {
+                    "type": "number"
+                  },
+                  "interaction_to_share_rate": {
+                    "type": "number"
+                  }
+                }
+              },
+              "peak_day": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "total": {
+                    "type": "integer"
+                  },
+                  "views": {
+                    "type": "integer"
+                  },
+                  "likes": {
+                    "type": "integer"
+                  },
+                  "comments": {
+                    "type": "integer"
+                  },
+                  "shares": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "winner": {
+            "type": "object",
+            "nullable": true,
+            "description": "The account with the highest engagement rate; null with fewer than two accounts or no engagement.",
+            "properties": {
+              "account_id": {
+                "type": "integer"
+              },
+              "metrics": {
+                "type": "object",
+                "properties": {
+                  "views": {
+                    "type": "integer"
+                  },
+                  "likes": {
+                    "type": "integer"
+                  },
+                  "comments": {
+                    "type": "integer"
+                  },
+                  "shares": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "engagement_rate": {
+                "type": "number"
+              }
+            }
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "account_id": {
+                  "type": "integer"
+                },
+                "account_uuid": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "metrics": {
+                  "type": "array",
+                  "description": "The network's own metrics.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "example": "VIEW_COUNT"
+                      },
+                      "label": {
+                        "type": "string",
+                        "example": "View count"
+                      },
+                      "value": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "trends": {
+                  "type": "object",
+                  "description": "Keyed by metric key.",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AnalyticsPoint"
+                    }
+                  }
+                },
+                "engagement_rate": {
+                  "type": "number"
+                },
+                "breakdown": {
+                  "type": "object",
+                  "description": "Empty when there was no engagement.",
+                  "properties": {
+                    "likes": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "integer"
+                        },
+                        "percentage": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "comments": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "integer"
+                        },
+                        "percentage": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "shares": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "integer"
+                        },
+                        "percentage": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                },
+                "vs_average": {
+                  "type": "object",
+                  "description": "Against that account's average post: `1.3` is 30% above. Null without an average.",
+                  "properties": {
+                    "views": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "likes": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "comments": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "shares": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "engagement": {
+                      "type": "number",
+                      "nullable": true
+                    }
+                  }
+                },
+                "peak_day": {
+                  "type": "object",
+                  "nullable": true,
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "views": {
+                      "type": "integer"
+                    },
+                    "likes": {
+                      "type": "integer"
+                    },
+                    "comments": {
+                      "type": "integer"
+                    },
+                    "shares": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2145,6 +2847,478 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/{workspace}/analytics": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the analytics summary",
+        "operationId": "analytics.summary",
+        "description": "Every account in the workspace that has analytics, over one period: total followers, follower growth and posts with their change, the best-growing account and one losing followers, a leaderboard, the most and least active accounts, each account's share of followers, total followers per day, and on how many days anything was posted.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "this_week",
+                "last_week",
+                "this_month",
+                "last_month",
+                "last_3_months",
+                "this_year"
+              ],
+              "default": "this_month"
+            },
+            "description": "In UTC. Weeks start on Monday. `this_week`, `this_month` and `this_year` run up to today; `last_3_months` is the three whole months before this one. Ignored when `date_from` and `date_to` are both sent."
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2026-01-01"
+            },
+            "description": "Start of a custom range (UTC day). Send with `date_to`."
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2026-01-31"
+            },
+            "description": "End of a custom range, on or after `date_from`. A range spans at most 366 days, both ends included."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "period": {
+                      "$ref": "#/components/schemas/AnalyticsPeriod"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/AnalyticsSummary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credential."
+          },
+          "403": {
+            "description": "The API key does not have `publishing:analytics:read`."
+          },
+          "404": {
+            "description": "Unknown workspace, account or post, or analytics are not turned on."
+          },
+          "422": {
+            "description": "Invalid input. An unknown `period`, one date without the other, an end before the start, or more than 366 days.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/analytics/accounts/{account}": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the analytics of an account",
+        "operationId": "analytics.account",
+        "description": "One account's analytics of one `type`. The answer's `tabs` lists the types the account supports, which depend on the network:\n\n| Network | Types |\n| --- | --- |\n| Instagram | overview, engagement, audience, reach, content, hashtags, insights, competitors (competitors needs an account connected through Facebook) |\n| Facebook Page | overview, engagement, video, content, hashtags, insights |\n| Google Business Profile | overview, engagement, content, search_terms, reviews |\n| Threads, Bluesky, Mastodon, LinkedIn Page | overview, engagement, content, hashtags, insights |\n| Pinterest | overview, content, hashtags, insights |\n| TikTok, YouTube | overview, content, insights |\n| LinkedIn profile | overview, engagement |\n\nAccounts on other networks (X among them) have no analytics and get a `422`. `data` depends on the network and type. `content` lists the period's posts with their metrics, paged (`data.pagination`) and sortable by a metric; `reviews` pages too. `insights` gives the best day, hour, post type and posting frequency, the top post and the engagement trend. While `initial_sync.in_progress` is true, the account's first import is still running and the figures are incomplete.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Account UUID."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "overview",
+                "engagement",
+                "content",
+                "hashtags",
+                "insights",
+                "audience",
+                "reach",
+                "video",
+                "competitors",
+                "search_terms",
+                "reviews"
+              ],
+              "default": "overview"
+            },
+            "description": "One of the account's `tabs`."
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "this_week",
+                "last_week",
+                "this_month",
+                "last_month",
+                "last_3_months",
+                "this_year"
+              ],
+              "default": "this_month"
+            },
+            "description": "In UTC. Weeks start on Monday. `this_week`, `this_month` and `this_year` run up to today; `last_3_months` is the three whole months before this one. Ignored when `date_from` and `date_to` are both sent."
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2026-01-01"
+            },
+            "description": "Start of a custom range (UTC day). Send with `date_to`."
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2026-01-31"
+            },
+            "description": "End of a custom range, on or after `date_from`. A range spans at most 366 days, both ends included."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "description": "`content` and `reviews` only."
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "description": "`content` and `reviews` only. Defaults to 25 posts or 10 reviews."
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 64,
+              "example": "VIEW_COUNT"
+            },
+            "description": "`content` only: a metric name, as the keys of a post's `metrics` (e.g. `VIEW_COUNT`, `IMPRESSION_COUNT`, `LIKES`). Newest first without it."
+          },
+          {
+            "name": "sort_dir",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountAnalytics"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credential."
+          },
+          "403": {
+            "description": "The API key does not have `publishing:analytics:read`."
+          },
+          "404": {
+            "description": "Unknown workspace, account or post, or analytics are not turned on."
+          },
+          "422": {
+            "description": "Invalid input. An account without analytics, a `type` the account does not support (the message lists its tabs), bad paging, or a bad period.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/analytics/posting-times": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the best times to post",
+        "operationId": "analytics.postingTimes",
+        "description": "When posting has worked, per weekday and hour, pooled over the chosen accounts. Each post of the last 180 days that has views counts by its engagement rate against its own account's average, and every account weighs the same, so a busy account does not drown out the others. A slot scores 50 × that ratio, pulled toward 50 when few posts are behind it, from 0 to 100: 50 is average for these accounts, 100 twice the average or better. Only networks with the `insights` type take part.\n\nWeekdays run from `0` (Sunday) to `6` (Saturday). `best` names up to three slots with at least two posts behind them, at most one per weekday, highest first. `confidence` is `high` from 5 posts, `medium` from 2, `low` with 1 and `none` without. `offset_hours` is the timezone's offset from UTC now.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "accounts[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "description": "Account UUIDs. Defaults to every account in the workspace."
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "Europe/Berlin"
+            },
+            "description": "IANA timezone the weekdays, hours and times are in. Defaults to the timezone setting of the key's creator (or the token's user), then UTC."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostingTimes"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credential."
+          },
+          "403": {
+            "description": "The API key does not have `publishing:analytics:read`."
+          },
+          "404": {
+            "description": "Unknown workspace, account or post, or analytics are not turned on."
+          },
+          "422": {
+            "description": "Invalid input. An account that is not in the workspace (`accounts.0`), or an unknown timezone.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/analytics/best-times": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the next best time for each account",
+        "operationId": "analytics.bestTimes",
+        "description": "Each account is scored on its own history, as in *Get the best times to post*, and its next best time is the soonest of its `best` slots after `from`. That is always within a week, and never in the past. Accounts with no best slot yet are left out of `times`.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "accounts[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "description": "Account UUIDs. Defaults to every account in the workspace."
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "A day in `timezone` to look from. Defaults to now; a day in the past counts as now."
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "Europe/Berlin"
+            },
+            "description": "IANA timezone the weekdays, hours and times are in. Defaults to the timezone setting of the key's creator (or the token's user), then UTC."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BestTimes"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credential."
+          },
+          "403": {
+            "description": "The API key does not have `publishing:analytics:read`."
+          },
+          "404": {
+            "description": "Unknown workspace, account or post, or analytics are not turned on."
+          },
+          "422": {
+            "description": "Invalid input. An account that is not in the workspace, an unknown timezone, or `from` not `YYYY-MM-DD`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{workspace}/posts/{post}/analytics": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the analytics of a post",
+        "operationId": "posts.analytics",
+        "description": "How a post did on each account it went out to. Accounts it did not go out to are left out, so a post that is not published yet has an empty `summary` and `accounts`. Trashed posts can still be read. Trends are daily; a post tracked for 60 days or more is grouped by week (each point dated with its Monday), and one tracked for 180 days or more by month (`YYYY-MM`).\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. Must match the API key's workspace."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Post UUID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostAnalytics"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credential."
+          },
+          "403": {
+            "description": "The API key does not have `publishing:analytics:read`."
+          },
+          "404": {
+            "description": "Unknown workspace, account or post, or analytics are not turned on."
           }
         }
       }
