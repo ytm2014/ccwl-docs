@@ -3,7 +3,7 @@
   "info": {
     "title": "Publishing API",
     "version": "1.0.0",
-    "description": "Social accounts, posts, scheduling, approval, tags and media for one workspace."
+    "description": "Social accounts, posts, scheduling, approval, tags, media and analytics for one workspace."
   },
   "servers": [
     {
@@ -2858,7 +2858,7 @@
         ],
         "summary": "Get the analytics summary",
         "operationId": "analytics.summary",
-        "description": "Every account in the workspace that has analytics, over one period: total followers, follower growth and posts with their change, the best-growing account and one losing followers, a leaderboard, the most and least active accounts, each account's share of followers, total followers per day, and on how many days anything was posted.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "description": "Every account in the workspace that has analytics, over one period: total followers, follower growth and posts with their change, the best-growing account and one losing followers, a leaderboard, the most and least active accounts, each account's share of followers, total followers per day, and on how many days anything was posted.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has turned analytics off, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
         "parameters": [
           {
             "name": "workspace",
@@ -2934,7 +2934,7 @@
             "description": "The API key does not have `publishing:analytics:read`."
           },
           "404": {
-            "description": "Unknown workspace, account or post, or analytics are not turned on."
+            "description": "Unknown workspace, account or post, or analytics are turned off."
           },
           "422": {
             "description": "Invalid input. An unknown `period`, one date without the other, an end before the start, or more than 366 days.",
@@ -2956,7 +2956,7 @@
         ],
         "summary": "Get the analytics of an account",
         "operationId": "analytics.account",
-        "description": "One account's analytics of one `type`. The answer's `tabs` lists the types the account supports, which depend on the network:\n\n| Network | Types |\n| --- | --- |\n| Instagram | overview, engagement, audience, reach, content, hashtags, insights, competitors (competitors needs an account connected through Facebook) |\n| Facebook Page | overview, engagement, video, content, hashtags, insights |\n| Google Business Profile | overview, engagement, content, search_terms, reviews |\n| Threads, Bluesky, Mastodon, LinkedIn Page | overview, engagement, content, hashtags, insights |\n| Pinterest | overview, content, hashtags, insights |\n| TikTok, YouTube | overview, content, insights |\n| LinkedIn profile | overview, engagement |\n\nAccounts on other networks (X among them) have no analytics and get a `422`. `data` depends on the network and type. `content` lists the period's posts with their metrics, paged (`data.pagination`) and sortable by a metric; `reviews` pages too. `insights` gives the best day, hour, post type and posting frequency, the top post and the engagement trend. While `initial_sync.in_progress` is true, the account's first import is still running and the figures are incomplete.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "description": "One account's analytics of one `type`. The answer's `tabs` lists the types the account supports, which depend on the network:\n\n| Network | Types |\n| --- | --- |\n| Instagram | overview, engagement, audience, reach, content, hashtags, insights, competitors (competitors needs an account connected through Facebook) |\n| Facebook Page | overview, engagement, video, content, hashtags, insights |\n| Google Business Profile | overview, engagement, content, search_terms, reviews |\n| Threads, Bluesky, Mastodon, LinkedIn Page | overview, engagement, content, hashtags, insights |\n| Pinterest | overview, content, hashtags, insights |\n| TikTok, YouTube | overview, content, insights |\n| LinkedIn profile | overview, engagement |\n\nAccounts on other networks (X among them) have no analytics and get a `422`. `data` depends on the network and type. `content` lists the period's posts with their metrics, paged (`data.pagination`) and sortable by a metric; `reviews` pages too. `insights` gives the best day, hour, post type and posting frequency, the top post and the engagement trend. While `initial_sync.in_progress` is true, the account's first import is still running and the figures are incomplete.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has turned analytics off, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
         "parameters": [
           {
             "name": "workspace",
@@ -3098,7 +3098,7 @@
             "description": "The API key does not have `publishing:analytics:read`."
           },
           "404": {
-            "description": "Unknown workspace, account or post, or analytics are not turned on."
+            "description": "Unknown workspace, account or post, or analytics are turned off."
           },
           "422": {
             "description": "Invalid input. An account without analytics, a `type` the account does not support (the message lists its tabs), bad paging, or a bad period.",
@@ -3120,7 +3120,7 @@
         ],
         "summary": "Get the best times to post",
         "operationId": "analytics.postingTimes",
-        "description": "When posting has worked, per weekday and hour, pooled over the chosen accounts. Each post of the last 180 days that has views counts by its engagement rate against its own account's average, and every account weighs the same, so a busy account does not drown out the others. A slot scores 50 × that ratio, pulled toward 50 when few posts are behind it, from 0 to 100: 50 is average for these accounts, 100 twice the average or better. Only networks with the `insights` type take part.\n\nWeekdays run from `0` (Sunday) to `6` (Saturday). `best` names up to three slots with at least two posts behind them, at most one per weekday, highest first. `confidence` is `high` from 5 posts, `medium` from 2, `low` with 1 and `none` without. `offset_hours` is the timezone's offset from UTC now.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "description": "When posting has worked, per weekday and hour, pooled over the chosen accounts. Each post of the last 180 days that has views counts by its engagement rate against its own account's average, and every account weighs the same, so a busy account does not drown out the others. A slot scores 50 × that ratio, pulled toward 50 when few posts are behind it, from 0 to 100: 50 is average for these accounts, 100 twice the average or better. Only networks with the `insights` type take part.\n\nWeekdays run from `0` (Sunday) to `6` (Saturday). `best` names up to three slots with at least two posts behind them, at most one per weekday, highest first. `confidence` is `high` from 5 posts, `medium` from 2, `low` with 1 and `none` without. `offset_hours` is the timezone's offset from UTC now.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has turned analytics off, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
         "parameters": [
           {
             "name": "workspace",
@@ -3172,7 +3172,7 @@
             "description": "The API key does not have `publishing:analytics:read`."
           },
           "404": {
-            "description": "Unknown workspace, account or post, or analytics are not turned on."
+            "description": "Unknown workspace, account or post, or analytics are turned off."
           },
           "422": {
             "description": "Invalid input. An account that is not in the workspace (`accounts.0`), or an unknown timezone.",
@@ -3194,7 +3194,7 @@
         ],
         "summary": "Get the next best time for each account",
         "operationId": "analytics.bestTimes",
-        "description": "Each account is scored on its own history, as in *Get the best times to post*, and its next best time is the soonest of its `best` slots after `from`. That is always within a week, and never in the past. Accounts with no best slot yet are left out of `times`.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "description": "Each account is scored on its own history, as in *Get the best times to post*, and its next best time is the soonest of its `best` slots after `from`. That is always within a week, and never in the past. Accounts with no best slot yet are left out of `times`.\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has turned analytics off, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
         "parameters": [
           {
             "name": "workspace",
@@ -3255,7 +3255,7 @@
             "description": "The API key does not have `publishing:analytics:read`."
           },
           "404": {
-            "description": "Unknown workspace, account or post, or analytics are not turned on."
+            "description": "Unknown workspace, account or post, or analytics are turned off."
           },
           "422": {
             "description": "Invalid input. An account that is not in the workspace, an unknown timezone, or `from` not `YYYY-MM-DD`.",
@@ -3277,7 +3277,7 @@
         ],
         "summary": "Get the analytics of a post",
         "operationId": "posts.analytics",
-        "description": "How a post did on each account it went out to. Accounts it did not go out to are left out, so a post that is not published yet has an empty `summary` and `accounts`. Trashed posts can still be read. Trends are daily; a post tracked for 60 days or more is grouped by week (each point dated with its Monday), and one tracked for 180 days or more by month (`YYYY-MM`).\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has not turned analytics on, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
+        "description": "How a post did on each account it went out to. Accounts it did not go out to are left out, so a post that is not published yet has an empty `summary` and `accounts`. Trashed posts can still be read. Trends are daily; a post tracked for 60 days or more is grouped by week (each point dated with its Monday), and one tracked for 180 days or more by month (`YYYY-MM`).\n\nRead-only. Personal access tokens may call it with any workspace role, viewers included. If your platform has turned analytics off, every analytics endpoint answers `404`.\n\n**Required permission:** `publishing:analytics:read`",
         "parameters": [
           {
             "name": "workspace",
@@ -3318,7 +3318,7 @@
             "description": "The API key does not have `publishing:analytics:read`."
           },
           "404": {
-            "description": "Unknown workspace, account or post, or analytics are not turned on."
+            "description": "Unknown workspace, account or post, or analytics are turned off."
           }
         }
       }
