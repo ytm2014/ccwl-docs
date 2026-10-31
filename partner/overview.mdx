@@ -62,29 +62,31 @@ only a member of is not listed.
 
 ### What `outcome` tells you
 
-| `outcome` | Meaning |
-| --- | --- |
-| `created` | A new account, with a workspace of its own. |
-| `linked_existing_user` | That e-mail already had an account here. It was adopted, and **no workspace was created**. |
-| `updated` | A customer you had already provisioned, refreshed. |
+| `outcome` | `workspace_created` | Meaning |
+| --- | --- | --- |
+| `created` | `true` | A new account, with a workspace of its own. |
+| `updated` | `false` | A customer you had already provisioned, refreshed. This includes your own customer arriving under a new `external_id` (matched by e-mail): the new id is stamped on the account. |
 
 <Warning>
-Handle `linked_existing_user`. If the adopted account already administers a
-workspace, `workspace_id` names it and you can carry on. If it administers
-none, `workspace_id` is `null` and `warnings` contains
-`existing_account_linked_without_workspace` — there is nothing to issue a key
-against or connect a channel in until somebody adds that user to a workspace, or
-you provision a different e-mail.
+If `warnings` contains `existing_account_linked_without_workspace`, your
+customer administers no workspace at the moment and `workspace_id` is `null`.
+There is nothing to issue a key against or connect a channel in until somebody
+makes them an admin of a workspace.
 </Warning>
 
 ### Conflicts
 
-`409` with a stable `error_code`, and nothing written:
+An e-mail that already belongs to someone else is never taken over. You get a
+`409` with a stable `error_code`, and nothing is written:
 
 | `error_code` | Meaning |
 | --- | --- |
+| `email_has_existing_account` | Someone opened an account with that e-mail themselves. It is never adopted, because that would let you sign in as them without their password. Ask your customer's workspace admin to invite that person, or provision a different e-mail. |
 | `email_belongs_to_another_partner` | The e-mail is another partner's customer. It is never handed over. |
 | `email_in_use_by_another_account` | Your user exists under that `external_id`, and the e-mail you asked for is another account's. |
+
+A `422` means a field failed validation; a `400` means the request was refused,
+for example an e-mail outside your allowed domains.
 
 ## Issue a workspace API key
 
