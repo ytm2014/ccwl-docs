@@ -204,7 +204,7 @@
                 "content": {
                   "type": "array",
                   "minItems": 1,
-                  "description": "One item per post in a thread. Most posts have a single item.",
+                  "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon and Threads, where each further item continues the thread. Other networks publish only the first item.",
                   "items": {
                     "type": "object",
                     "properties": {
@@ -1289,7 +1289,7 @@
                         "content": {
                           "type": "array",
                           "minItems": 1,
-                          "description": "One item per post in a thread. Most posts have a single item.",
+                          "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon and Threads, where each further item continues the thread. Other networks publish only the first item.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -1532,7 +1532,7 @@
                         "content": {
                           "type": "array",
                           "minItems": 1,
-                          "description": "One item per post in a thread. Most posts have a single item.",
+                          "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon and Threads, where each further item continues the thread. Other networks publish only the first item.",
                           "items": {
                             "type": "object",
                             "properties": {
