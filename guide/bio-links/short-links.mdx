@@ -1,0 +1,85 @@
+---
+title: "Short links"
+description: "Create branded short links, then add expiry, a password, targeting, UTM tags, deep links, cloaking and pixels."
+keywords: ["short links", "link shortener", "slug", "custom domain", "UTM", "redirect", "301", "deep links", "cloaking", "targeting", "A/B split"]
+---
+
+Short links send visitors from a short address, on the platform's short domain or your own domain, to any destination URL, and count the clicks. In the sidebar, open **Bio Links** → **Links** (or the **Links** tab, if your dashboard shows tabs across the top). The list shows each link with its destination, any rules it has, its status and its clicks, with totals at the top. Use the **All**, **Active** and **Paused** tabs, the search box and, when you have custom domains, **All domains** to filter it.
+
+Viewers can see, copy and open links. Creating, editing and deleting them needs the **Admin** or **Member** role. If your plan limits short links, the page shows how many you have used.
+
+## Create a short link
+
+<Steps>
+  <Step title="Open the dialog">
+    Click **Create short link**.
+  </Step>
+  <Step title="Enter the destination">
+    Paste the full **Destination URL**.
+  </Step>
+  <Step title="Choose the address">
+    Under **Short URL**, type the part after the slash, or leave it empty for a randomly generated one. If your workspace has [connected custom domains](/guide/bio-links/settings#custom-domains), pick the **Domain** to serve the link from.
+  </Step>
+  <Step title="Name it (optional)">
+    Add a **Title** for your own reference, for example "Spring campaign". Visitors don't see it.
+  </Step>
+  <Step title="Create it">
+    Click **Create short link**. The link is live straight away, and its settings page opens.
+  </Step>
+</Steps>
+
+### Create many at once
+
+Click **Bulk create**, paste up to 500 **Destination URLs**, one per line, optionally pick a **Domain**, and click **Create links**. Each one gets a randomly generated slug. Lines that can't be used are skipped, and a message tells you how many links were created and skipped.
+
+## Link settings
+
+Open a link by clicking its row, or choose **Edit** from its menu (which also has **Copy link**, **Open link** and **Delete**). Make your changes, then click **Save changes** at the bottom (or **Save** at the top).
+
+### Destination & URL
+
+| Field | What it does |
+| --- | --- |
+| **Destination URL** | Where visitors are sent. |
+| **Short URL** | The **Domain** and slug. Leave the slug empty to keep the current address. |
+| **Title** (internal) | A name for your own reference. |
+| **Active** | Turn off to stop the link without deleting it. You can also switch it on the list. |
+
+### Advanced
+
+Everything else sits in the **Advanced** group, which starts folded with a one-line summary of what's set ("Everything at its default" when nothing is). It has seven sections, each showing its own summary:
+
+**Expiry.** Set when the link **Starts** and **Ends**, and a **Click limit**. In **Send expired visitors to**, enter a URL for visitors who arrive once the link has expired; leave it empty to show the built-in expired page.
+
+**Protection.** Set a **Password** visitors must enter before they're redirected (tick **Remove password** to clear an existing one), or tick **Sensitive content (18+ interstitial)** to show a warning first.
+
+**Targeting.** Pick a **Rule type** to send different visitors to different destinations: **Continent**, **Country**, **City**, **Device type**, **Operating system**, **Browser**, **Browser language** or **Rotation (A/B split)**. Then click **Add rule** for each destination:
+
+- For most types, enter the value to **Match** (for example `US`) and its **Destination URL**. The first match wins; visitors who match nothing get the default destination.
+- For **Rotation (A/B split)**, enter a **Weight** for each destination. Visitors are split at random across them, in proportion to their weights.
+
+**Redirect options.**
+
+| Option | What it does |
+| --- | --- |
+| **HTTP status** | **301 · Moved permanently (default)**, **302 · Found**, **307 · Temporary redirect** or **308 · Permanent redirect**. |
+| **Forward incoming query string to the destination** | Passes any query string on the short link through to the destination. |
+| **UTM parameters** | **Source**, **Medium** and **Campaign** tags for your analytics. |
+
+**Deep links.** Turn on **Open this link in the native app when possible** so that, on a phone, the link opens in the matching app. Leave **App** on **Auto-detect from destination** or pick one (apps include YouTube, Instagram, TikTok, Spotify, Amazon, WhatsApp and others). You can add an **iOS URL override** and an **Android URL override**; leave them empty to use the built-in URL shapes for the detected app.
+
+**Cloaking.** Turn on **Keep the short URL in the address bar** so visitors keep seeing the short address. You can set the **Title**, **Description**, **Share image URL** and **Favicon URL** used for the page.
+
+**Pixels.** Tick **All pixels** or the individual tracking pixels to fire for this link. Create pixels first: see [Pixels](/guide/bio-links/settings#pixels).
+
+If a save is refused, a **We couldn't save this link** box lists the problems and the sections concerned open.
+
+## Delete a short link
+
+Click **Delete link** at the bottom of the link's settings, or **Delete** in its menu on the list, then confirm. The link stops working and its click history is removed. This can't be undone.
+
+## Related
+
+- [QR codes](/guide/bio-links/qr-codes)
+- [Leads, pixels and custom domains](/guide/bio-links/settings)
+- For developers: [Link in Bio API overview](/biolinks/overview)

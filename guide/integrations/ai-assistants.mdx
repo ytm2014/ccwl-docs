@@ -1,0 +1,67 @@
+---
+title: "AI assistants (MCP)"
+description: "Connect Claude, ChatGPT, Claude Code, Cursor, VS Code or another AI assistant to your workspace from the MCP page."
+keywords: ["MCP", "AI assistant", "Claude", "ChatGPT", "Cursor", "VS Code", "Claude Code", "connector", "personal token"]
+sidebarTitle: "AI assistants"
+---
+
+import { AppName } from "/snippets/app-name.jsx";
+
+The **MCP** card on the [Integrations](/guide/integrations/overview) page lets you connect an AI assistant to your workspace. Once connected, you can ask it in plain language to list your accounts, draft and schedule posts, and more. This page covers what the dashboard shows. For the full list of what an assistant can do, see [MCP server](/mcp/overview); for detailed per-app steps, see [Connect your app](/mcp/connect).
+
+Every workspace member can open the page; each person connects their own assistant. If you can't open **Integrations**, use the **Connect an agent** card in **Profile** > **API** instead. What the assistant can do is limited by your role and your team role permissions in each workspace.
+
+<Note>
+Don't see the **MCP** card? Your plan or your platform doesn't include AI assistant access yet.
+</Note>
+
+## What the page shows
+
+- **MCP server URL**: the address you give your assistant, with a **Copy** button. It is the same address for every workspace.
+- **How it works**: a short explanation. If your platform supports signing in from assistants, it explains that you sign in to <AppName /> when you connect and choose the workspaces the assistant may use. To change them later, connect again. If sign-in isn't available, the page tells you to connect with a key instead.
+- **Set up your assistant**: one tab per app, with the steps and anything to copy.
+
+## Connect an app that signs in
+
+When sign-in is available, the page has tabs for **Claude**, **ChatGPT**, **Claude Code**, **Cursor** and **VS Code**. The steps follow the same pattern:
+
+<Steps>
+  <Step title="Copy the server URL">
+    Click **Copy** next to **MCP server URL**.
+  </Step>
+  <Step title="Add it to your assistant">
+    Follow the tab for your app. In Claude you add a custom connector, in ChatGPT you create a connector with developer mode on, in Claude Code you run the command shown, and in Cursor and VS Code you paste the configuration shown. Each tab has a **Copy** button for its command or configuration.
+  </Step>
+  <Step title="Sign in and choose workspaces">
+    Your assistant opens a sign-in page. Sign in as usual, tick the workspaces it may use, and click **Connect**.
+  </Step>
+</Steps>
+
+Some assistants only offer custom connectors on certain plans, and a team or business account may need an admin to allow it first. The tab for each app says so where it applies.
+
+## Connect with a key
+
+For an assistant that can't sign in, open the **Other clients** tab (or follow the page's key steps when sign-in isn't available):
+
+<Steps>
+  <Step title="Create a key">
+    Click **Create API key**. The dialog opens on **All my workspaces** with the **AI assistants** permission already ticked, so one key works in every workspace you belong to. Admins can switch to **This workspace only**. Name it, pick an expiry, click **Create key** and copy the key: it is shown only once. See [API keys](/guide/integrations/api-and-webhooks#api-keys) for the dialog's fields. If there is no button, use **Open Access tokens** to create a personal token in your profile instead.
+  </Step>
+  <Step title="Give your assistant the URL and the key">
+    Paste the **MCP server URL** into your assistant and send the key in the header shown on the page, with every request. The tab includes a ready-made Claude Code command; replace `YOUR_TOKEN` with your key.
+  </Step>
+</Steps>
+
+<Warning>
+A key for all your workspaces acts as you, with your role in each one. Keep it secret, and revoke it when you no longer need it, from **Integrations** > **REST API** or **Profile** > **API**.
+</Warning>
+
+If the page says a token is needed but new personal tokens are no longer created, use an assistant that signs in, or ask a workspace Admin.
+
+## Related
+
+- [MCP server](/mcp/overview)
+- [Connect your app](/mcp/connect)
+- [MCP tools](/mcp/tools)
+- [API keys and webhooks](/guide/integrations/api-and-webhooks)
+- [Integrations](/guide/integrations/overview)

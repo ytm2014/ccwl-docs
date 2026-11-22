@@ -1,0 +1,57 @@
+---
+title: "Zapier"
+description: "Generate a key for Zapier, build Zaps on your sales inbox events and send test events from the dashboard."
+keywords: ["Zapier", "Zap", "trigger", "automation", "API key", "test event"]
+---
+
+The **Zapier** card on the [Integrations](/guide/integrations/overview) page connects your sales inbox events (a new contact, an inbound message, a broadcast sent and more) to the apps you use through Zapier. You generate a key in the dashboard, use it in a Zap, and every event you pick as a trigger reaches Zapier as it happens. Developers can find the technical details on [Zapier](/zapier).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+
+<Note>
+Don't see **Zapier**, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Connect Zapier
+
+<Steps>
+  <Step title="Generate a key">
+    Open **Integrations** > **Zapier** and click **Generate API key**.
+  </Step>
+  <Step title="Copy the key and base URL">
+    Under **Zapier credentials**, click **Reveal** or **Copy** next to **API key**. Copy it now: it is shown only once. Copy the **Base URL** too.
+  </Step>
+  <Step title="Build a Zap">
+    In Zapier, create a Zap and choose the app named in the page's **Setup guide** as the trigger. When Zapier asks you to authenticate, paste the API key and the base URL.
+  </Step>
+  <Step title="Pick a trigger event">
+    Choose a trigger event, for example "New contact". Zapier subscribes to it automatically.
+  </Step>
+  <Step title="Turn the Zap on">
+    The Zap appears under **Connected Zaps** on the page, and events flow through as they happen.
+  </Step>
+</Steps>
+
+## Connected Zaps
+
+**Connected Zaps** lists every event a Zap is subscribed to, with its name and event code. Until you build one, it reads "No active Zaps yet."
+
+## Send a test event
+
+Under **Send a test event**, pick an **Event** and click **Send test**. A sample payload goes to every Zap subscribed to that event, which helps when you map fields in the Zap editor.
+
+## Replace the key
+
+After the first time, the **API key** field only shows the start of the key. Click **Generate a new key** to get a new one. The new key replaces the old one, which stops working at once, but your Zaps stay subscribed: update the key in Zapier's connection settings.
+
+To disconnect Zapier from the workspace, click **Disconnect** at the top of the page.
+
+<Tip>
+For your own software, use [webhooks](/guide/integrations/api-and-webhooks#webhooks) instead. They are signed, retried and have a delivery history.
+</Tip>
+
+## Related
+
+- [Zapier for developers](/zapier)
+- [API keys and webhooks](/guide/integrations/api-and-webhooks)
+- [Integrations](/guide/integrations/overview)

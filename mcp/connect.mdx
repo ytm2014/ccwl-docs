@@ -1,0 +1,172 @@
+---
+title: "Connect your app"
+description: "Add the platform to Claude, ChatGPT, Cursor, VS Code, Claude Code or any MCP app."
+---
+
+
+## Before you start
+
+You need:
+
+1. **An account** in a workspace whose plan includes AI assistant (MCP) access.
+2. **An AI app that supports MCP connectors.** Some apps only offer this on paid plans; each section below says what you need.
+3. **The server URL:**
+
+   ```
+   https://app.example.com/mcp
+   ```
+
+<Warning>
+Once connected, the assistant can do what you can do in the workspaces you give it: read your accounts, posts and inbox, and create, schedule, publish and delete posts. Only connect apps you trust, and read what the assistant plans to do before you approve publishing, deleting or messaging customers.
+</Warning>
+
+## How signing in works
+
+It is the same in every app:
+
+1. You add the server URL to your AI app.
+2. The app opens the sign-in page in your browser. Sign in as usual, with your two-factor code if you use one.
+3. You are asked to **tick the workspaces** this app may use, or **Select all**. The app only ever sees the workspaces you tick. Only workspaces whose plan allows AI assistants are listed; if there is just one, it is ticked already.
+4. Check the address it says access will be sent to, then click **Connect**. You are sent back to the app and the connection is ready.
+
+**Cancel** gives the app nothing. The app refreshes its access in the background, so you are not asked to sign in again unless you leave the connection unused for 90 days.
+
+<Tip>
+Want to add or remove a workspace? Connect again from your app and tick the workspaces you want now. Your new choice replaces the old one, and the server URL stays the same. If your AI app does not show the sign-in screen, remove the connection in the app first, then connect.
+</Tip>
+
+If you later leave one of the workspaces, the connection keeps working in the others. If you leave all of them, sign in again.
+
+<Tabs>
+  <Tab title="Claude">
+    **You need** a Claude Pro, Max, Team or Enterprise plan. On Team and Enterprise, an organisation Owner may need to add the connector first.
+
+    1. In Claude on the web or Claude Desktop, open **Settings → Connectors**.
+    2. Click **Add custom connector**.
+    3. Name it after your platform and set the **Remote MCP server URL** to `https://app.example.com/mcp`.
+    4. Leave the OAuth client ID and secret empty: Claude registers itself.
+    5. Click **Add**, then **Connect**, and sign in.
+
+    In a chat, open the tools menu below the message box and make sure your connector is on. Then ask, for example, *"List my workspaces."* The connector also works in the Claude mobile apps.
+
+    **Team and Enterprise:** an Owner adds the connector under **Organization settings → Connectors**; each member then clicks **Connect** in their own **Settings → Connectors** and signs in with their own account.
+  </Tab>
+  <Tab title="ChatGPT">
+    **You need** a ChatGPT plan with custom connectors in **Developer mode** (such as Plus, Pro, Business, Enterprise or Edu). On Business, Enterprise and Edu a workspace admin may need to switch it on.
+
+    1. Open **Settings → Apps & Connectors**, then **Advanced settings**, and switch on **Developer mode**.
+    2. Back in **Apps & Connectors**, click **Create**.
+    3. Name it after your platform, set the **MCP Server URL** to `https://app.example.com/mcp` and **Authentication** to **OAuth**.
+    4. Tick **I trust this application**, click **Create**, and sign in when asked.
+
+    In a chat, click **+**, choose **Developer mode** and select your connector. ChatGPT asks you to confirm before running tools that change things.
+
+    OpenAI renames these menus from time to time; if you cannot find an option, search their help centre for "custom connectors".
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http workspace https://app.example.com/mcp
+    ```
+
+    Start Claude Code, type `/mcp`, choose **workspace**, then **Authenticate**, and sign in in the browser window that opens.
+  </Tab>
+  <Tab title="Cursor">
+    Open **Cursor Settings → MCP** and click **Add new MCP server**, which opens `mcp.json`. Add:
+
+    ```json
+    {
+      "mcpServers": {
+        "workspace": {
+          "url": "https://app.example.com/mcp"
+        }
+      }
+    }
+    ```
+
+    Save, click **Needs login** next to **workspace**, and sign in.
+  </Tab>
+  <Tab title="VS Code">
+    Run **MCP: Add Server…** from the Command Palette and choose **HTTP**, or create `.vscode/mcp.json`:
+
+    ```json
+    {
+      "servers": {
+        "workspace": {
+          "type": "http",
+          "url": "https://app.example.com/mcp"
+        }
+      }
+    }
+    ```
+
+    Click **Start** above the entry, allow it to sign you in, and sign in. The tools then appear in Copilot Chat's **Agent** mode.
+  </Tab>
+  <Tab title="Other apps">
+    Any app that supports **remote MCP servers with OAuth** (also called streamable HTTP with dynamic client registration) works: give it the server URL and leave client ID and secret fields empty.
+
+    If your app can only send a fixed token, use a [personal access token](#use-a-personal-access-token).
+  </Tab>
+</Tabs>
+
+## Use a personal access token
+
+For scripts, servers and apps without OAuth. A token acts as you in **every** workspace you belong to, so keep it secret like a password. The assistant names the workspace on each call.
+
+<Steps>
+  <Step title="Create the token">
+    In your dashboard, go to **Configuration → Integrations**, open **MCP** and the **Other clients** tab (or open **API** in your user menu) and click **Create API key**. Choose **All my workspaces**, give it a name and tick the **AI assistants** permission plus the permissions for what the assistant should do, such as Publishing and Messaging. Copy the token. It is shown once.
+  </Step>
+  <Step title="Send it as a Bearer token">
+    Point your app at `https://app.example.com/mcp` with the header `Authorization: Bearer <token>`.
+  </Step>
+</Steps>
+
+<CodeGroup>
+```bash Claude Code
+claude mcp add --transport http workspace https://app.example.com/mcp \
+  --header "Authorization: Bearer $APP_TOKEN"
+```
+
+```json Claude Desktop / Cursor
+{
+  "mcpServers": {
+    "workspace": {
+      "type": "http",
+      "url": "https://app.example.com/mcp",
+      "headers": {
+        "Authorization": "Bearer <token>"
+      }
+    }
+  }
+}
+```
+
+```json stdio-only apps
+{
+  "mcpServers": {
+    "workspace": {
+      "command": "npx",
+      "args": [
+        "-y", "mcp-remote", "https://app.example.com/mcp",
+        "--header", "Authorization: Bearer ${APP_TOKEN}"
+      ],
+      "env": { "APP_TOKEN": "<token>" }
+    }
+  }
+}
+```
+</CodeGroup>
+
+The token keeps working until it expires or you delete it under **Profile** > **API**. Deleting it disconnects every app that uses it.
+
+<Note>
+A token without the **AI assistants** permission is refused with `403`. The assistant only gets the tools the token's other permissions allow; to give it more, create a new token. Tokens created before token permissions existed keep working with every tool.
+</Note>
+
+## Check the connection
+
+Ask the assistant to *"list my workspaces"*. If they come back, you are connected. If not, see [Troubleshooting](/mcp/troubleshooting).
+
+## Disconnect
+
+Remove the connector in your AI app (for example **Settings → Connectors** in Claude). For a token connection, also delete the token under **Profile** > **API** in your dashboard.

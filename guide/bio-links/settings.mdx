@@ -1,0 +1,87 @@
+---
+title: "Leads, pixels and custom domains"
+sidebarTitle: "Leads, pixels and domains"
+description: "Review what your forms collected, add tracking pixels and connect your own domain for bio pages and short links."
+keywords: ["leads", "collected data", "form submissions", "export CSV", "pixels", "Facebook pixel", "Google Analytics", "custom domain", "DNS", "CNAME", "SSL"]
+---
+
+Three areas are shared by all your bio pages and short links: **Leads** (what visitors sent through your forms), **Pixels** and **Custom domains**. Find them under **Bio Links** → **More**. If your dashboard shows **Bio Links** with tabs across the top, they're on the **Settings** tab instead, where leads are called **Collected data**.
+
+These areas are for the **Admin** and **Member** roles; viewers don't see them. Connecting and removing custom domains needs the **Admin** role.
+
+## Leads
+
+When visitors fill in an **Email collector**, **Phone collector** or **Contact form** block on one of your pages, their entry appears here, newest first. Each row shows the submitted **Data**, the **Biolink block** it came from and its **Type**.
+
+- Use **Search leads** to find an entry.
+- Click **Export CSV** to download every entry as a spreadsheet file (date, block, type, email, name, phone and message).
+- Click **Remove** on a row, then **Remove entry**, to delete it. This can't be undone.
+
+To collect leads, add one of those blocks to a page. See [Bio page blocks](/guide/bio-links/blocks#engage).
+
+## Pixels
+
+Tracking pixels let your ad and analytics tools record visits to your bio pages and clicks on your short links.
+
+<Steps>
+  <Step title="Create the pixel">
+    Under **Pixels**, click **Create pixel**.
+  </Step>
+  <Step title="Fill in the details">
+    Give it a **Name**, choose the **Type** (Facebook, Google Analytics, Google Tag Manager, LinkedIn, Pinterest, X, Quora, TikTok or Snapchat), and paste the **Pixel ID** from that service, for example `G-XXXXXXXXXX` for Google Analytics or `GTM-XXXXXX` for Google Tag Manager. Click **Create**.
+  </Step>
+  <Step title="Turn it on where you need it">
+    A pixel only fires where you select it: in a bio page's editor under **Settings** → **Tracking & UTM** → **Tracking pixels**, or in a short link's **Pixels** section (which also offers **All pixels**).
+  </Step>
+</Steps>
+
+To delete a pixel, click **Remove** on its row, then **Remove pixel**. It stops tracking on every page that uses it.
+
+## Custom domains
+
+By default, pages and short links use the platform's shared short domain. You can serve them from your own domain or subdomain instead, such as `links.example.com`.
+
+<Note>
+If this page says **Custom domains are not available yet.**, your platform hasn't set them up. Your pages keep working on their current addresses. If your plan limits custom domains, the page shows how many you have used.
+</Note>
+
+### Connect a domain
+
+<Steps>
+  <Step title="Point your DNS">
+    At your domain provider, add the record shown at the top of the page: a **CNAME** record to the given host name, or an **A record** to the given IP address.
+  </Step>
+  <Step title="Add the domain">
+    Click **Connect domain** and enter the **Domain or subdomain**. Optionally set a **Custom index URL** (where visitors go when they open the domain itself, with no page address) and a **Custom 404 not found URL** (where visitors go when an address on the domain doesn't exist). Click **Connect domain**.
+  </Step>
+  <Step title="Verify it">
+    Click **Verify** on the domain after you've added the DNS record. A verified domain offers **Re-check** to check again.
+  </Step>
+</Steps>
+
+An SSL certificate is issued and renewed automatically once DNS points to the right place. The status badge on each domain shows where it is:
+
+| Status | Meaning |
+| --- | --- |
+| **Pending DNS** | The domain hasn't been verified yet. |
+| **Verified · issuing SSL** | DNS is correct and the certificate is being issued. |
+| **Verified · SSL failed** | DNS is correct but the certificate couldn't be issued; the badge gives the reason. |
+| **SSL active** | The domain is ready to use. |
+| **Disabled** | The domain has been switched off and can't be verified or used from here. |
+
+A domain brought over from an earlier link-in-bio setup shows **Imported · pending move** or **Imported · being moved**. It's set up for you; there's nothing to do.
+
+### Use the domain
+
+Once connected, the domain appears in the domain list when you create a page or short link, in a page's **Settings** → **Address**, and in a link's **Destination & URL** section.
+
+### Remove a domain
+
+Click **Remove** on its row, then **Remove domain**. You can connect it again later. A domain still used by pages or links can't be removed: move those pages and links to another domain, or delete them, first.
+
+## Related
+
+- [Create and edit bio pages](/guide/bio-links/pages)
+- [Short links](/guide/bio-links/short-links)
+- [Bio page analytics](/guide/bio-links/analytics)
+- For developers: [Link in Bio API overview](/biolinks/overview)

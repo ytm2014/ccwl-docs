@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Developer Docs",
+  "name": "Help & Docs",
   "colors": {
     "primary": "#4F46E5",
     "light": "#818CF8",
@@ -11,7 +11,92 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "App guide",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "guide/getting-started/introduction",
+              "guide/getting-started/navigating",
+              "guide/getting-started/workspaces",
+              "guide/getting-started/team-and-roles",
+              "guide/getting-started/social-accounts",
+              "guide/getting-started/profile-and-security",
+              "guide/getting-started/billing"
+            ]
+          },
+          {
+            "group": "Publishing",
+            "pages": [
+              "guide/publishing/create-a-post",
+              "guide/publishing/posts",
+              "guide/publishing/calendar",
+              "guide/publishing/posting-schedule",
+              "guide/publishing/templates",
+              "guide/publishing/media-library",
+              "guide/publishing/bulk-posts-and-rss",
+              "guide/publishing/analytics"
+            ]
+          },
+          {
+            "group": "Sales inbox",
+            "pages": [
+              "guide/messaging/overview",
+              "guide/messaging/channels",
+              "guide/messaging/inbox",
+              "guide/messaging/contacts",
+              {
+                "group": "Automation and outreach",
+                "pages": [
+                  "guide/messaging/automations",
+                  "guide/messaging/broadcasts",
+                  "guide/messaging/whatsapp-templates",
+                  "guide/messaging/sequences-and-growth",
+                  "guide/messaging/meetings",
+                  "guide/messaging/ai-knowledge"
+                ]
+              },
+              "guide/messaging/reports-and-settings"
+            ]
+          },
+          {
+            "group": "Bio Links",
+            "pages": [
+              "guide/bio-links/pages",
+              "guide/bio-links/blocks",
+              "guide/bio-links/templates",
+              "guide/bio-links/short-links",
+              "guide/bio-links/qr-codes",
+              "guide/bio-links/analytics",
+              "guide/bio-links/settings"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "guide/integrations/overview",
+              "guide/integrations/api-and-webhooks",
+              "guide/integrations/ai-assistants",
+              {
+                "group": "Connected tools",
+                "pages": [
+                  "guide/integrations/zapier",
+                  "guide/integrations/ai-providers",
+                  "guide/integrations/crm-and-spreadsheets",
+                  "guide/integrations/calendars-and-meetings",
+                  "guide/integrations/payments-and-stores",
+                  "guide/integrations/messaging-providers",
+                  "guide/integrations/meta-ads"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Developers",
+        "icon": "code",
         "groups": [
           {
             "group": "Getting started",
@@ -53,6 +138,16 @@
           {
             "group": "Reference",
             "openapi": { "source": "api-reference/biolinks.openapi.json", "directory": "biolinks" }
+          }
+        ]
+      },
+      {
+        "tab": "MCP",
+        "icon": "plug",
+        "groups": [
+          {
+            "group": "AI assistants",
+            "pages": ["mcp/overview", "mcp/connect", "mcp/tools", "mcp/troubleshooting"]
           }
         ]
       }

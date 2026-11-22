@@ -1,0 +1,63 @@
+---
+title: "Appointments"
+description: "Create bookable appointment types with availability and reminders, and manage the meetings contacts book."
+keywords: ["appointments", "meetings", "booking", "booking link", "availability", "google calendar", "google meet", "reminders", "reschedule", "no-show"]
+---
+
+Appointments let contacts book time with you. You define appointment types (how long, when you're free, where you meet and which reminders go out), share a booking link from the inbox or a flow, and manage the bookings in one list.
+
+Open **Appointments** under **More**, or **Meetings** from the sidebar or the **Growth** tab. The page has two tabs: **Bookings** and **Appointment types**.
+
+<Note>
+Don't see **Appointments**? Your plan, your role or your platform doesn't include it yet.
+</Note>
+
+## Before you start
+
+Connect Google Calendar under **Integrations** so meetings sync to your calendar and get Google Meet links. You can create appointment types without a calendar, but then meetings won't sync or generate Meet links.
+
+## Create an appointment type
+
+<Steps>
+  <Step title="Open Appointment types">
+    Click **New appointment type**.
+  </Step>
+  <Step title="Describe it">
+    Enter a **Name**, an optional description, the **Duration (min)** and the **Slot interval (min)**.
+  </Step>
+  <Step title="Choose where you meet">
+    Pick the **Location**. Google Meet creates a link for each booking; for a phone call, in-person or custom location, add the **Location details** (a phone number, address or link). Choose the **Calendar account** and **Calendar**, or **No calendar (don't sync)**.
+  </Step>
+  <Step title="Set availability">
+    Under **Weekly availability**, add time ranges for each day with **+ Add time**, or leave a day **Unavailable**. Set the **Time zone**, **Buffer before**, **Buffer after**, **Min notice (min)** and how many **Days ahead** people can book.
+  </Step>
+  <Step title="Set reminders and messages">
+    Pick **Reminders** (for example 1 day before, 1 hour or 10 min). Optionally write the **Confirmation message**, **Reminder message** and **Cancellation message** sent to the contact; leave them blank to use the defaults. Contact variables are supported.
+  </Step>
+  <Step title="Save">
+    Keep **Active (available for booking)** ticked and click **Save appointment type**.
+  </Step>
+</Steps>
+
+Each type's menu has **Edit**, **Copy booking link**, **Open booking page** and **Delete**. A type with bookings is deactivated instead of deleted.
+
+## Share a booking link
+
+- In the [inbox](/guide/messaging/inbox), click **Insert booking link** in the reply box and pick the appointment type.
+- Use **Copy booking link** and paste it anywhere.
+- Bookings can also come from your bot and your automations; the **Source** column shows where each one came from.
+
+## Manage bookings
+
+The **Bookings** tab shows **Upcoming** and **Past** meetings with the **Contact**, **Meeting**, **When**, **Status** and **Source** (your bot, the hosted page or an automation). Actions:
+
+- **Join Google Meet** or **Open booking page**,
+- **Reschedule**: choose a new free time (shown in the type's time zone) and **Confirm new time**,
+- **Mark completed** or **Mark as no-show**,
+- **Cancel meeting**: the contact is notified and the calendar event removed.
+
+## Related
+
+- [Inbox](/guide/messaging/inbox)
+- [Flows](/guide/messaging/automations)
+- [Sequences and growth tools](/guide/messaging/sequences-and-growth)

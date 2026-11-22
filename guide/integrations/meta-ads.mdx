@@ -1,0 +1,67 @@
+---
+title: "Meta Ads and Conversion Leads"
+description: "Connect your Meta ad account to compare ad spend with conversations, and report how your Facebook leads turned out to Meta."
+keywords: ["Meta Ads", "Facebook ads", "ad account", "ad spend", "Conversion Leads", "Conversions API", "lead ads", "dataset"]
+sidebarTitle: "Meta Ads"
+---
+
+Two Meta cards on the [Integrations](/guide/integrations/overview) page connect your advertising to your conversations: **Meta Ads** brings in ad spend so you can compare it with the conversations and sales your ads produce, and **Meta Conversion Leads** tells Meta how each Facebook lead turned out, so your lead ads can find people more likely to become customers. Both appear under the **Productivity** tab.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+
+<Note>
+Don't see a card, or does it say **Not available yet** or **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Meta Ads
+
+<Steps>
+  <Step title="Connect with Meta">
+    Open **Integrations** > **Meta Ads** and click **Connect with Meta**. Sign in to Meta and allow access to your business ad account.
+  </Step>
+  <Step title="Choose the ad account">
+    Back on the page, pick your account under **Ad account** (each shows its name, ID and currency) and click **Save ad account**. The account is verified before it is saved.
+  </Step>
+</Steps>
+
+Once connected, the page shows the **Account currency** and the **Last complete refresh**. If Meta reports a problem, the message appears on the page. Selecting an account starts reporting; paid messaging needs separate setup.
+
+To change accounts or renew access, click **Reconnect with Meta**.
+
+If the page says Meta Ads is not enabled for this workspace, your saved referral history stays available in reports.
+
+## Meta Conversion Leads
+
+Conversion Leads sends events to a CRM dataset in Meta Events Manager:
+
+- "Lead" when a Facebook lead form is captured.
+- The stage's own name each time that contact moves to a pipeline stage.
+
+Only contacts who came in through a Facebook lead form in the last 90 days are reported, each stage once per lead. Their email and phone number are hashed before they are sent.
+
+### Connect it
+
+<Steps>
+  <Step title="Open your dataset in Events Manager">
+    In Meta Events Manager, create or open the CRM dataset you use for your lead ads. Copy its dataset ID, then generate a Conversions API access token in the dataset's settings.
+  </Step>
+  <Step title="Fill in the form">
+    Open **Integrations** > **Meta Conversion Leads**. Under **Your CRM dataset**, enter the **Dataset ID** and the **Conversions API access token**.
+  </Step>
+  <Step title="Test first (optional)">
+    Enter a **Test event code (optional)** from Events Manager. While it is set, events appear under Test events in Events Manager and don't count towards your ads. Clear it when you've finished testing.
+  </Step>
+  <Step title="Save">
+    Click **Connect**. The panel then shows **Sending to** with your dataset's name and ID.
+  </Step>
+  <Step title="Choose the optimisation stage in Meta">
+    In Events Manager, choose the stage your lead ads should optimise for.
+  </Step>
+</Steps>
+
+**Last 7 days** shows how many events were **Sent**, **Failed** and are **Waiting**, and the reason for the last failure. If Meta stops accepting events, a message asks you to check the dataset ID, generate a new token and save again.
+
+## Related
+
+- [Integrations](/guide/integrations/overview)
+- [CRM and spreadsheets](/guide/integrations/crm-and-spreadsheets)

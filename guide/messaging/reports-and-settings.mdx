@@ -1,0 +1,67 @@
+---
+title: "Reports and settings"
+description: "Check the activity log, audit log, ad attribution and pipeline reports, and set the conversation rules for handover, assignment, reopening and AI replies."
+keywords: ["reports", "activity log", "logs", "audit log", "ad attribution", "roas", "pipeline report", "win rate", "conversation rules", "handover", "round-robin", "reopen", "ai replies"]
+---
+
+The sales inbox keeps a record of what happened and lets you tune how conversations behave. Reports are under **Reports** (the **Reports** group on the **More** page); settings are under **Settings** or the **Channels** group on **More**.
+
+Each report needs the matching permission in your team role, so you may not see all of them.
+
+## Activity
+
+**Activity** (the **Logs** page) is a central log of messages, bots, automations and integrations. Search events, or filter by **Event**, **Status**, **Platform** and **Date range** (last 24 hours, 7 days, 30 days or all time). Open an entry to see its details, including the error when something failed. Use it to find out why a flow didn't run or a message wasn't delivered.
+
+## Audit log
+
+**Audit log** is an append-only record of admin and destructive actions in your workspace: **When**, **Who**, the **Action** and a **Summary**, with the IP address. Filter by action and date range. Entries can't be edited or deleted; they only age out of the retention window.
+
+## Ad attribution
+
+**Ad attribution** shows what your click-to-message ads brought in. It's available to admins.
+
+Pick a date range (**From**, **To**, **Apply**) to see, per ad: **Conversations**, first-ad contacts, **Leads** (Facebook lead form submissions), **Revenue**, and, when Meta Ads is connected under **Integrations**, **Spend**, **Impressions**, **Clicks**, **Cost / conversation**, **Cost per lead** and **ROAS**. Without Meta Ads you still get the conversations and revenue recorded in your workspace.
+
+A dash means a figure isn't available. Mixed currencies, missing measurements or unresolved refunds withhold ROAS, and currencies are never converted. Use **Export** to **Download CSV** or **Download PDF**.
+
+For how ad details are captured on each message, see [Ad referrals](/ad-referrals).
+
+## Pipeline
+
+The **Pipeline** report shows how contacts move through your [pipeline stages](/guide/messaging/contacts#the-pipeline-board): stage entries, **Won**, **Lost**, **Win rate** and how many are in a stage now. Per stage it shows **Entered**, **Moved on**, **Moved back**, **Conversion**, **Avg time**, **Median** and **In stage now**. Filter by date and **Assigned to**, and export as CSV or PDF.
+
+Wins and losses only count once a stage is marked **Won** or **Lost** in its settings on the board. The report may offer to mark a stage for you. Stage history is recorded from the date shown on the report; earlier moves weren't tracked.
+
+## Settings
+
+**Settings** has two cards:
+
+- **Bot setup**: per-channel welcome message, menus, commerce and templates. See [Set up each channel's bot](/guide/messaging/channels#set-up-each-channels-bot).
+- **Conversation rules**: described below.
+
+## Conversation rules
+
+Conversation rules decide how a conversation behaves around the handover between your automations and your team. They apply to every channel in the workspace. Open **Conversation rules** from **Settings**, from the **More** page, or from the inbox's gear menu, then click **Save changes**.
+
+| Setting | Choices |
+| --- | --- |
+| **When an agent replies** | **Pause the automation**: your reply is a takeover; the running flow freezes with its step, answers and timer intact until you hand it back. **Let the automation continue**: your reply is just another message. |
+| **Who owns the conversation after a reply** | **Assign it to whoever replied last**, **Only claim it if nobody owns it**, or **Never change the owner**. |
+| **A brand-new conversation** | **Leave new conversations unassigned**, or **Round-robin to the least busy member** (balanced by open conversations; everyone with inbox access is in the rotation). |
+| **A message on a conversation you closed** | **Always reopen it**, **Reopen only within a window of closing** (set the hours), or **Never reopen it**. |
+| **Handing a paused automation back** | **Only when someone hands it back**, **When the conversation is closed**, **After a period of quiet** (set the quiet hours), or **Never — a paused flow can only be ended**. Closing a conversation with a paused flow always asks you; this only pre-selects the answer. |
+
+### AI replies
+
+The **AI replies** section is the kill switch for AI-generated answers:
+
+- **Let the AI reply**: turning it off stops every AI step at once; the rest of each flow keeps running.
+- **Wait before an AI reply**: a short pause in seconds so the answer lands like a person typed it.
+- **AI replies per person**: the most automated AI replies one person can get. Messages over the limit stay in the inbox without an AI answer. 0 means no limit.
+
+## Related
+
+- [Inbox](/guide/messaging/inbox)
+- [Flows](/guide/messaging/automations)
+- [Contacts](/guide/messaging/contacts)
+- [Ad referrals](/ad-referrals)

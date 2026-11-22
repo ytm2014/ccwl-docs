@@ -1,0 +1,58 @@
+---
+title: "AI providers"
+description: "Connect your own OpenAI, Claude, Google Gemini or DeepSeek key for AI replies in your flows, and manage vector stores the AI can search."
+keywords: ["AI", "OpenAI", "Claude", "Anthropic", "Gemini", "DeepSeek", "API key", "vector store", "knowledge", "AI replies"]
+---
+
+The AI cards on the [Integrations](/guide/integrations/overview) page connect your own account with an AI provider. Once connected, you can pick that provider's model in the **AI** step of the flow builder so your automations reply with AI. The available providers are **OpenAI**, **Claude**, **Google Gemini** and **DeepSeek**; you'll find them under the **AI** tab.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+
+## Connect a provider
+
+<Steps>
+  <Step title="Get a key from the provider">
+    The page's **Setup guide** tells you where: the OpenAI platform (**API keys**), the Anthropic Console (**Settings → API keys**), Google AI Studio (**Get API key**) or the DeepSeek platform (**API keys**).
+  </Step>
+  <Step title="Paste it">
+    Open the provider's card and paste the key into the **API key** field under **API credentials**. For DeepSeek, fill in **Base URL (optional)** only if you use a proxy.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. Keys are encrypted and never sent back to your browser.
+  </Step>
+  <Step title="Use it in a flow">
+    In the flow builder, add the **AI** step and pick this provider's model.
+  </Step>
+</Steps>
+
+To change the key later, paste the new one and click **Save & reconnect**. A saved key shows as dots; leave the field blank to keep it.
+
+## Capabilities and models
+
+The **Capabilities** panel shows what the provider can do inside the AI step: **File search**, **Web search**, **Reasoning effort**, **Functions** and **CRM contact tools**. Supported features are highlighted and unsupported ones are struck through. **File search** is what lets the AI search your [vector stores](#vector-stores).
+
+Below the capabilities, **Models:** lists the models you can pick in the flow builder and **Default:** names the one used when you don't choose.
+
+## Vector stores
+
+For providers with file search (OpenAI and Google Gemini, where your plan includes it), a **Vector stores** tab appears next to **Configuration**. A vector store groups documents the AI can search when it writes a reply. Connect the provider first.
+
+<Steps>
+  <Step title="Create a store">
+    Under **Create a vector store**, enter a **Store name** (for example "Product docs") and click **Create**.
+  </Step>
+  <Step title="Add content">
+    In the store, click **+ Upload file** to add a PDF, TXT or MD file of up to 20 MB, or paste a web address and click **Add URL** to have the page fetched and indexed.
+  </Step>
+</Steps>
+
+Each store shows its number of files and each file's name and source. Click **Delete** to remove a store and its indexed files from the provider; this can't be undone.
+
+## Test or disconnect
+
+Once connected, use **Test connection** at the top of the page to check the key still works, or **Disconnect** to remove the provider.
+
+## Related
+
+- [Integrations](/guide/integrations/overview)
+- [AI assistants](/guide/integrations/ai-assistants)

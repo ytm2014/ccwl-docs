@@ -1,0 +1,79 @@
+---
+title: "CRM and spreadsheets"
+description: "Push contacts to HubSpot or Mailchimp, and send chat data to Google Sheets from your flows."
+keywords: ["HubSpot", "Mailchimp", "CRM", "audience", "auto-sync", "Google Sheets", "spreadsheet", "contacts"]
+---
+
+These cards on the [Integrations](/guide/integrations/overview) page send your sales inbox contacts to other tools: **HubSpot** and **Mailchimp** (under **Sales & CRM**) and **Google Sheets** (under **Productivity**).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+
+<Note>
+Don't see a card, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## HubSpot
+
+<Steps>
+  <Step title="Create a private app in HubSpot">
+    In HubSpot, open **Settings → Integrations → Private Apps** and create a private app. Grant it the `crm.objects.contacts.write` scope and copy its access token.
+  </Step>
+  <Step title="Paste the token">
+    Open **Integrations** > **HubSpot** and paste the token into **Private app access token**.
+  </Step>
+  <Step title="Choose auto-sync">
+    Optionally tick **Auto-sync every new & updated contact**. When it's on, contacts with an email are pushed to HubSpot automatically, with no flow step needed.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**.
+  </Step>
+</Steps>
+
+## Mailchimp
+
+<Steps>
+  <Step title="Get an API key">
+    In Mailchimp, open **Account → Extras → API keys** and create or copy a key. The datacenter part of the key (for example `-us21`) is read from it.
+  </Step>
+  <Step title="Paste the key">
+    Open **Integrations** > **Mailchimp** and paste it into **API key**.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. Your audiences load and appear under **Audiences**.
+  </Step>
+  <Step title="Choose auto-sync">
+    Optionally tick **Auto-sync every new & updated contact** and pick the audience under **Auto-sync into audience**, then click **Save**.
+  </Step>
+</Steps>
+
+## After connecting
+
+- **Synced** shows how many contacts have been sent to the CRM so far.
+- A contact needs an email address to sync.
+- Without auto-sync, you can push contacts on demand with the **Sync to HubSpot** or **Add to Mailchimp** step in a flow.
+- To change the key, paste the new one and click **Save**. A saved key shows as dots; leave the field blank to keep it.
+
+## Google Sheets
+
+Google Sheets lets your flows add a row to a spreadsheet for each contact or event, using the **Send to Google Sheets** step.
+
+<Steps>
+  <Step title="Sign in with Google">
+    Open **Integrations** > **Google Sheets** and click **Sign in with Google**. Allow access to your spreadsheets and Drive files. The page then shows **Connected as** with your Google account.
+  </Step>
+  <Step title="Add a spreadsheet">
+    Under **Spreadsheets**, click **New spreadsheet**, enter a **Name** and, optionally, **Headers (optional)** as a comma-separated list (written as the first row), then click **Create**. Or paste the address of an existing Google Sheet and click **Add**.
+  </Step>
+  <Step title="Use it in a flow">
+    Add the **Send to Google Sheets** step to a flow to append a row each time it runs.
+  </Step>
+</Steps>
+
+Each spreadsheet in the list shows its number of tabs and its headers; click the name to open it in Google Sheets. The bin button next to a spreadsheet takes it off this list.
+
+If the card says **Not available yet** and the page reads "Google is not available yet.", your platform hasn't set up Google sign-in.
+
+## Related
+
+- [Calendars and meetings](/guide/integrations/calendars-and-meetings)
+- [Integrations](/guide/integrations/overview)

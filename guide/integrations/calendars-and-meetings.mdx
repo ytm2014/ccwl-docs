@@ -1,0 +1,53 @@
+---
+title: "Calendars and meetings"
+description: "Connect Google Calendar and Zoom so bookings get calendar events, availability checks and meeting links automatically."
+keywords: ["Google Calendar", "Google Meet", "Zoom", "booking", "meetings", "availability", "Book Meeting"]
+---
+
+Two cards on the [Integrations](/guide/integrations/overview) page help you take bookings in conversations: **Google Calendar** creates calendar events with a Google Meet link and checks your availability, and **Zoom** creates Zoom meetings with join links. Both are under the **Productivity** tab.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+
+<Note>
+If a card says **Not available yet**, your platform hasn't set up sign-in for that service. If it says **Not included in your plan**, your plan doesn't include it.
+</Note>
+
+## Google Calendar
+
+With Google Calendar connected, the **Book Meeting** step in your flows can create calendar events with a Google Meet link, read your availability, and send confirmations and reminders.
+
+<Steps>
+  <Step title="Sign in with Google">
+    Open **Integrations** > **Google Calendar** and click **Sign in with Google**. Allow calendar access. The page then shows **Connected as** with your Google account.
+  </Step>
+  <Step title="Choose the booking calendar">
+    Under **Booking calendar**, pick the calendar to use. New meetings are created there, and its free/busy time is checked when slots are offered. Click **Refresh** if a calendar you just created isn't listed.
+  </Step>
+  <Step title="Start taking bookings">
+    Add a **Book Meeting** step to a flow, or set up a meeting type under **Meetings**.
+  </Step>
+</Steps>
+
+A meeting type can use a different calendar from the booking calendar you choose here.
+
+## Zoom
+
+With Zoom connected, new bookings get a Zoom meeting and its join link automatically.
+
+<Steps>
+  <Step title="Sign in with Zoom">
+    Open **Integrations** > **Zoom** and click **Sign in with Zoom**. Approve access for the Zoom account that should host the meetings. The page then shows **Connected as** with that account.
+  </Step>
+  <Step title="Use Zoom for a meeting type">
+    Set a meeting type's location to **Zoom**, so new bookings of that type get a join link.
+  </Step>
+</Steps>
+
+Rescheduling a booking moves its Zoom meeting, and cancelling a booking deletes it.
+
+Clicking **Disconnect** revokes access at Zoom and stops new links being created.
+
+## Related
+
+- [CRM and spreadsheets](/guide/integrations/crm-and-spreadsheets)
+- [Integrations](/guide/integrations/overview)

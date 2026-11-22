@@ -1,0 +1,115 @@
+---
+title: "API keys and webhooks"
+description: "Create and revoke API keys, see your personal tokens, and manage webhook endpoints: create, test, delivery history, resend and secret rotation."
+keywords: ["API key", "REST API", "personal token", "access token", "revoke", "webhooks", "endpoint", "signing secret", "rotate", "delivery history", "resend"]
+sidebarTitle: "API keys and webhooks"
+---
+
+The **REST API** and **Webhooks** cards on the [Integrations](/guide/integrations/overview) page are where you give your own software access to the workspace. This page covers the dashboard side. For developers, [Quickstart](/quickstart), [Authentication](/authentication) and [Webhooks overview](/webhooks/overview) explain how to use the keys and receive the events.
+
+Both pages need the workspace **Admin** role. On some platforms a card first shows a short list of options (for example **Publishing** or **CRM & messaging**); pick the one you want to manage.
+
+## API keys
+
+Open **Integrations**, then the **REST API** card. The page lists **Workspace API keys**, your own personal tokens, and the **Base URLs** your developer needs.
+
+There are two kinds of key:
+
+| | Workspace key | Personal token |
+| --- | --- | --- |
+| Works in | This workspace only | Every workspace you belong to |
+| Acts as | The Admin who created it | You, with your role in each workspace |
+| Who sees it | Every Admin of this workspace | Only you, in **Profile** > **API** |
+| Default expiry | No expiry | 90 days |
+
+### Create a key
+
+<Steps>
+  <Step title="Open the dialog">
+    Click **Create API key**.
+  </Step>
+  <Step title="Choose where it works">
+    Under **Where it works**, pick **This workspace only** for a workspace key, or **All my workspaces** for a personal token. If only one kind is available to you, the dialog skips this choice.
+  </Step>
+  <Step title="Name it and set an expiry">
+    Enter a **Name** (for example "CRM integration") and pick an **Expiry**: 7, 30, 60 or 90 days, 1 year, **No expiry**, or **Choose a date**.
+  </Step>
+  <Step title="Pick permissions">
+    Under **Permissions**, tick what the key may do. Permissions are grouped by product (Publishing, the sales inbox, Bio Links, Webhooks, AI assistants); use **Select current … permissions** to tick a whole group. Nothing is ticked by default, and permissions added to the product later are never granted automatically.
+  </Step>
+  <Step title="Create and copy it">
+    Click **Create key**. You may be asked to confirm your password. Click **Copy key**, store it safely, then click **Done**. The key is shown only once.
+  </Step>
+</Steps>
+
+<Tip>
+Connecting an AI assistant that can't sign in? Click **Key for an AI assistant** instead. It opens the same dialog with the AI assistant permissions already ticked.
+</Tip>
+
+A workspace can have up to 25 active workspace keys. If you reach the limit, revoke one you no longer use.
+
+### Read the list
+
+Each workspace key shows its **Name** with a status (**Active**, **Expired** or **Revoked**), the start of the **Key**, its **Permissions** (click to expand the list), **Last usage** (hover for the date per product), **Created at** with who created it, and **Expires at**.
+
+### Revoke or delete a key
+
+- To stop a key working, click its revoke button and confirm with **Revoke key**. Every client using that key stops working; other keys are not affected.
+- A revoked or expired key can then be removed from the list with its delete button. The activity log keeps its history.
+
+To replace a key safely, create the new one, switch your integration to it and test, then revoke the old one.
+
+### Personal tokens and older keys
+
+**Your personal tokens** lists the tokens you created with **All my workspaces**. You can revoke them here; to rename or rotate them, use **Manage in Profile > API**.
+
+If the workspace still has keys from before workspace keys existed, they appear under **Older keys**. They keep working. Use **Replace with a workspace key** to create a matching workspace key, update your integration, then revoke the older one.
+
+## Webhooks
+
+Open **Integrations**, then the **Webhooks** card. A webhook endpoint is an HTTPS address on your server that receives the Publishing, inbox, sales inbox and Bio Links events you choose.
+
+### Create an endpoint
+
+<Steps>
+  <Step title="Open the form">
+    Click **Create endpoint**.
+  </Step>
+  <Step title="Name and address">
+    Enter a **Name** (for example "CRM notifications") and the **HTTPS endpoint URL**.
+  </Step>
+  <Step title="Pick events">
+    Under **Events to send**, tick the events you want. Use **Search events** to filter and **Select all** to tick a group. For sales inbox events you can limit each event to one channel, or keep **All channels and workspace events**.
+  </Step>
+  <Step title="Enable it">
+    Tick **Enable this endpoint** to start deliveries now. Left unticked, the endpoint is saved as **Paused**.
+  </Step>
+  <Step title="Save and copy the secret">
+    Click **Save endpoint**. Copy the signing secret with **Copy secret**: it is not shown again after you close the dialog. Your developer uses it to [verify signatures](/webhooks/verify-signatures).
+  </Step>
+</Steps>
+
+The list shows each endpoint's name and status (**Enabled** or **Paused**), its URL, the number of events and the result of the **Last delivery**.
+
+### Test, history and resend
+
+- **Send test** queues a sample of the endpoint's first subscribed event. It works only while the endpoint is enabled.
+- **Delivery history** lists each delivery with its status, number of attempts and HTTP status. Click **Details** to see every attempt with its outcome and duration, and **Resend** to send a finished delivery again. Use **Previous**, **Next** and **Refresh** to move through the list.
+
+### Edit, rotate and delete
+
+- **Edit** reopens the form. Saving cancels deliveries still queued for the old settings. If the Admin responsible for the endpoint has left, tick **Make me the responsible administrator for this endpoint**.
+- **Rotate secret** creates a new signing secret. For 24 hours deliveries are signed with both the old and the new secret while you update your receiver; tick **Revoke the old secret immediately instead** to skip that overlap.
+- **Delete** stops future and queued deliveries to that endpoint.
+
+### Older endpoints
+
+Endpoints created with the earlier webhook settings appear under **Older endpoints** and keep working. When your receiver is ready, click **Move to workspace webhooks**: you get a new secret, then **Send test and move** moves the endpoint once your receiver answers the test. You can **Move back** for a limited time afterwards.
+
+## Related
+
+- [Authentication](/authentication)
+- [Webhooks overview](/webhooks/overview)
+- [Webhook events](/webhooks/events)
+- [AI assistants](/guide/integrations/ai-assistants)
+- [Integrations](/guide/integrations/overview)

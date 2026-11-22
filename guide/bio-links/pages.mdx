@@ -1,0 +1,123 @@
+---
+title: "Create and edit bio pages"
+sidebarTitle: "Bio pages"
+description: "Build a link-in-bio page with blocks, give it a look, set its address and protection, and publish it."
+keywords: ["bio page", "link in bio", "bio links", "editor", "blocks", "theme", "appearance", "publish", "SEO", "password"]
+---
+
+A bio page is a single mobile-friendly page with your profile, links and other content, at a short address you can put in your social profiles. You build it from blocks in an editor with a live preview, then switch it on when it's ready.
+
+In the sidebar, open **Bio Links** → **Pages**. (If your dashboard shows **Bio Links** as a single page with tabs across the top, use the **Pages** tab.) The list shows each page with its address, status, views, clicks, click rate and when it was last updated, with workspace totals above it. Use the **All pages**, **Active** and **Paused** tabs and the search box to find a page.
+
+Don't see **Bio Links**? Your plan or your platform doesn't include it yet. Viewers can browse pages, previews and analytics; creating and changing pages needs the **Admin** or **Member** role.
+
+## Create a page
+
+<Steps>
+  <Step title="Open the new page dialog">
+    On the **Pages** list, click **New page**.
+  </Step>
+  <Step title="Choose how to start">
+    Leave **Blank page** selected for a starter page with a profile and a link to fill in, or click **From a template** to pick a designed theme first (see [Templates](/guide/bio-links/templates)).
+  </Step>
+  <Step title="Choose the address">
+    Under **Short URL**, type the part after the slash, for example `yourname`. Leave it empty for a randomly generated one. If your workspace has [connected custom domains](/guide/bio-links/settings#custom-domains), pick the domain to host the page on from the list in front of the field.
+  </Step>
+  <Step title="Create it">
+    Click **Create biolink page**. The editor opens on your new page.
+  </Step>
+</Steps>
+
+A new page starts **paused**, so nobody can open it until you publish it. It comes with starter blocks (an avatar, a heading, a short bio, social icons and a first link) for you to replace.
+
+If your plan limits the number of bio pages, the list shows how many you have used, and you can't create more once you reach the limit.
+
+## The editor
+
+The editor has three tabs, **Blocks**, **Settings** and **Appearance**, next to a phone preview (on smaller screens, open it with **Show preview**). The preview follows your edits as you type, and you can click a block in it to open that block. Click **Desktop** to see the page at desktop width.
+
+On wide screens a **Page details** column on the right shows where the page lives (**HTTPS on** for your own domain, or **Shared address**), a QR code of the saved address with **Download** and **Customise**, the page's **Views** and **Clicks**, its **Top links**, the **Tracking pixels** it uses, and **View analytics**. On smaller screens, open it with the **Page details** button. Everything in it is read-only; you make changes in the tabs.
+
+The header shows the page's state (**Live**, **Paused** or **Disabled**), its public address, and whether you have **Unsaved changes** or **All changes saved**.
+
+<Warning>
+Nothing you change goes live until you click **Save** (or press Ctrl+S / Cmd+S). Visitors see the saved version until you save. If you try to leave with unsaved changes, you're asked first.
+</Warning>
+
+If someone else saved the page while you were editing, a banner says so. Click **Reload** to load the latest version; your unsaved edits are lost.
+
+## Add and arrange blocks
+
+On the **Blocks** tab:
+
+- Click **Add block**, then pick a block from the picker or search for one. The new block goes in after the block that is open, or at the end.
+- Click a block's title to open it and edit its fields in place. Under its fields, **Display settings** lets you schedule the block or show it only on some devices, countries or languages.
+- Drag a block by its handle to reorder, or use **Move up** and **Move down** in its menu.
+- Use the switch on a block to hide it without deleting it (it shows **Hidden**). The block menu also has **Edit**, **Duplicate**, **Hide**/**Show** and **Delete**.
+
+Without a search, the picker starts with a **Popular** group (Link, Socials, Image and Contact form), then groups every block into four categories:
+
+| Category | Blocks |
+| --- | --- |
+| **Basics** | Link, Heading, Paragraph, Avatar, Socials, List, Divider |
+| **Media** | Image, Gallery, Video, Music, File |
+| **Engage** | Email collector, Phone collector, Contact form, FAQ, Countdown, Modal text, Business hours |
+| **Embeds** | Embed, Map, RSS feed |
+
+See [Bio page blocks](/guide/bio-links/blocks) for what each block does and its fields.
+
+## Choose a look
+
+On the **Appearance** tab:
+
+- **Theme**: pick one of the theme tiles. Switching theme clears the button, font and accent changes you made, so you're asked first if you have any.
+- **Background**: the theme's own, one from the gallery (**Gradients**, **Mesh**, **Solid**), a **Custom** colour or gradient, an **Image** (with blur and dim) or a looping **Video** (mp4).
+- **Buttons**: **Button style**, **Button shape**, **Shadow** and **Accent** colour.
+- **Text**: **Body font** and **Heading font**.
+- **Layout**: **Column width**, a **Share button** that shares or copies your page link, and **Motion** (gentle entrance animations).
+
+You can also start from a designed theme in the [Templates](/guide/bio-links/templates) gallery.
+
+<Note>
+A page brought over from an earlier link-in-bio setup may keep the look it was imported with. The **Appearance** tab then offers **Preview the new look**, where you pick a theme and compare **Now** with **New look** before clicking **Switch to the new look**. Save your changes first. You can undo it later with **Back to classic** (or **Back to the previous look**).
+</Note>
+
+## Page settings
+
+The **Settings** tab groups the rest:
+
+| Section | What you can set |
+| --- | --- |
+| **Page** | **Title**, **Tagline**, **Avatar colour** (fills the avatar circle when there's no image) and, where offered, **Hide … branding** to remove the "Powered by" line. |
+| **Address** | **Domain** (when you have custom domains) and **Short URL**. Leave the short URL empty to keep the current address. |
+| **SEO and sharing** | **Title**, **Description** and **Share image URL** used by search engines and link previews, and **Discourage search engines (noindex)**. |
+| **Protection** | A **Password** visitors must enter (tick **Remove password** to clear it), **Sensitive content (18+ age gate)**, and **Show a splash intro** with a **Splash title**, **Message** and **Seconds** (1–10). |
+| **Tracking & UTM** | Tick the **Tracking pixels** to load on this page (create them first: see [Pixels](/guide/bio-links/settings#pixels)), and set **UTM defaults** (**Source**, **Medium**, **Campaign**). |
+| **Custom CSS** | Styles applied on your public page, after the theme. |
+| **Custom JavaScript** | Code such as a widget snippet, `<script>` tags included. It runs only when the page is opened on your own connected domain, never on shared domains or in the preview. Only add code you trust. |
+| **Danger zone** | **Delete this page**. This removes the page and all its blocks and can't be undone. |
+
+If a save is refused, the editor opens the tab with the problem and shows the message under the field.
+
+## Publish or pause a page
+
+In the editor, turn on **Published** and click **Save**. The header badge changes to **Live**. Turn it off and save to pause the page again. On the **Pages** list, the switch in each row's **Status** column publishes or pauses a page straight away.
+
+A page can still be closed to visitors when it isn't paused: the editor shows a banner if the page has been **Disabled** (the **Published** switch can't undo this) or if the workspace's plan has lapsed.
+
+## Share the public page
+
+Your page's address is shown under its title, for example `yourdomain.com/yourname` or the platform's own short domain followed by your short URL. In the editor, open **Share** for **Copy link**, **QR code**, **Open public page**, **Public preview** and **Analytics**.
+
+**Public preview** shows the saved page at **Phone** or **Desktop** size, with **Open**, **Copy**, **QR** and, when the page has a splash intro, **Replay splash**.
+
+On the **Pages** list, each row has **Copy link** and **QR code** buttons. Its **More** menu also has **Create QR**, **Edit page**, **Analytics**, **Public preview**, **Duplicate** (the copy starts paused) and **Delete**.
+
+## Related
+
+- [Bio page blocks](/guide/bio-links/blocks)
+- [Templates](/guide/bio-links/templates)
+- [QR codes](/guide/bio-links/qr-codes)
+- [Bio page analytics](/guide/bio-links/analytics)
+- [Leads, pixels and custom domains](/guide/bio-links/settings)
+- For developers: [Link in Bio API overview](/biolinks/overview)

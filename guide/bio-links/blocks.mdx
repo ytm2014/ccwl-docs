@@ -1,0 +1,81 @@
+---
+title: "Bio page blocks"
+sidebarTitle: "Blocks"
+description: "What each block in the bio page editor does, its fields, and how to schedule or target a block."
+keywords: ["blocks", "bio page", "link block", "socials", "email collector", "contact form", "gallery", "embed", "RSS", "display settings"]
+---
+
+Everything on a bio page is a block. Add blocks on the editor's **Blocks** tab with **Add block** (the picker lists the most-used blocks under **Popular** first), then click a block to edit its fields in place. The preview updates as you type; click **Save** to publish the changes. For adding, reordering and hiding blocks, see [Create and edit bio pages](/guide/bio-links/pages#add-and-arrange-blocks).
+
+Many fields that take an image or file have a **Library** button next to them, so you can paste a URL or choose from your media library.
+
+## Basics
+
+| Block | What it does | Fields |
+| --- | --- | --- |
+| **Link** | A tappable button to any URL. Its row shows how many clicks it has had. | **Button text**, **URL**, **Thumbnail image (optional)**, **Highlight this link**. On the new look also **Layout** (**Button**, **Featured** with the image beside the title, or **Card** with the image on top) and **Description (optional)**, which Featured and Card show. |
+| **Heading** | A bold title for your page. | **Heading text**, **Heading level** (Heading 1 to 6). |
+| **Paragraph** | A block of descriptive text. | **Paragraph text**. |
+| **Avatar** | Your profile photo. | **Image** (leave empty to show your initials), **Alt text**. On the new look also **Size**, **Shape** (**Circle**, **Rounded**, **Square**) and **Header**: **Plain**, or **Cover image** with a **Cover image or video** and a **Cover shape** (16:9 or 3:1). |
+| **Socials** | A row of social icons. | One row per **Platform** with the username or handle (or a full URL), **Add platform**, **Icon size** (Small to Extra large) and **Icon background** (**None**, **Glass**, **Solid**). |
+| **List** | A bullet or check list. | **List items** with **Add item**, and a **Bullet icon** (Check, Star, Heart, Sparkle, Arrow, Bag). |
+| **Divider** | A simple separator line. | No content; it still has display settings. |
+
+## Media
+
+| Block | What it does | Fields |
+| --- | --- | --- |
+| **Image** | A single image or banner. | **Image**, **Alt text**, **Click-through link (optional)**. |
+| **Gallery** | A grid of images. | **Images**, each with an optional click-through link, **Add image**, **Add from library** (pick several at once) and **Columns** (2 or 3). |
+| **Video** | Plays a video on the page. | **Video URL**: a YouTube, Vimeo, TikTok or .mp4 link. |
+| **Music** | Plays a track or playlist. | **Music URL**: Spotify, SoundCloud or Apple Music. |
+| **File** | A downloadable file. | **Title**, **File URL** and **Sub-text**. |
+
+## Engage
+
+| Block | What it does | Fields |
+| --- | --- | --- |
+| **Email collector** | Grows your mailing list. | **Heading**, **Button text**, **Success message**. |
+| **Phone collector** | Collects phone numbers. | **Heading**, **Button text**, **Success message**. |
+| **Contact form** | A custom enquiry form. | **Heading**, **Button text**, **Success message**. |
+| **FAQ** | Expandable questions. | **Questions**, each with a **Question** and **Answer**, and **Add question**. |
+| **Countdown** | A countdown to a date. | **Label**, **Target date & time**, **Message when finished**. |
+| **Modal text** | A button that opens pop-up text. | **Button text**, **Modal title**, **Modal content** (supports basic HTML), **CTA text (optional)** and **CTA URL**. |
+| **Business hours** | When you are open. | **Mode** (**Weekly hours**, **Open 24/7** or **Temporarily closed**), the hours for each day with a **Closed** tick box, and **Note (optional)**. |
+
+What visitors send through the email, phone and contact-form blocks is collected under **Leads**. See [Leads](/guide/bio-links/settings#leads).
+
+## Embeds
+
+| Block | What it does | Fields |
+| --- | --- | --- |
+| **Embed** | Shows content from another site in a frame. | **Embed URL (iframe)** and **Height (px)**, or **…or custom HTML**. |
+| **Map** | Shows a location. | **Address or place**. |
+| **RSS feed** | The latest posts from a feed, as buttons. | **RSS feed URL** and **Number of posts to show** (1–20). Posts refresh every 30 minutes. |
+
+<Note>
+Custom HTML in an **Embed** block is used instead of the URL. A widget's link, or its single `<iframe>` code, loads that site's page as normal. Other code runs in an isolated frame without access to the rest of the page, so chat bubbles and other page-wide scripts don't work there. For those, use **Custom JavaScript** in the page's **Settings** tab, which runs on your own connected domain.
+</Note>
+
+## Schedule or target a block
+
+Open a block and expand **Display settings** under its fields:
+
+| Setting | Effect |
+| --- | --- |
+| **Schedule**: **Start**, **End** | The block shows only within this window. Leave both empty for always-on. |
+| **Devices** | Show the block only on **Desktop**, **Mobile** or **Tablet** (pick one or more). |
+| **Countries** | Comma-separated country codes, such as `US, GB, DE`. |
+| **Languages** | Comma-separated language codes, such as `en, fr, es`. |
+
+Empty means the block is shown to everyone; otherwise only matching visitors see it. A block with a schedule shows a **Scheduled** badge in the list, and one with targeting shows **Targeted**.
+
+<Note>
+A page brought over from an earlier setup may contain payment blocks. Payments are not available yet, so such a block shows **Not shown** and isn't visible to visitors. You can hide or delete it.
+</Note>
+
+## Related
+
+- [Create and edit bio pages](/guide/bio-links/pages)
+- [Leads, pixels and custom domains](/guide/bio-links/settings)
+- For developers: [Link in Bio API overview](/biolinks/overview)

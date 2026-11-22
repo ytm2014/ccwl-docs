@@ -12,8 +12,15 @@
  * buttons put on the clipboard, and the API reference's https://{domain}/... examples. Without a
  * domain, nothing changes.
  *
- * Only a plain host name (optionally with a port) and a plain path segment are accepted, and
- * everything is written as text, never as HTML.
+ * The platform's name comes the same way (&name=Their%20Brand). The app guide writes the
+ * product's name with <AppName /> (snippets/app-name.jsx), which renders "the app" in a
+ * .wg-app-name span; this script puts the platform's name in those spans.
+ *
+ * A link that carries a domain or a name replaces whatever was remembered, so one platform's
+ * name never sticks to another's domain.
+ *
+ * Only a plain host name (optionally with a port), a plain path segment and a short plain name
+ * are accepted, and everything is written as text, never as HTML.
  */
 (function () {
   'use strict';
@@ -21,6 +28,12 @@
   var PLACEHOLDER = 'app.example.com';
   var DEFAULT_CORE = 'os';
   var STORE = 'workspaceGuide.platform';
+  var NAME_CLASS = 'wg-app-name';
+
+  function validName(value) {
+    return typeof value === 'string'
+      && /^[\p{L}\p{N}][\p{L}\p{N} &'.,!+_-]{0,59}$/u.test(value);
+  }
 
   function validDomain(value) {
     return typeof value === 'string'
@@ -33,22 +46,31 @@
     return typeof value === 'string' && /^[a-z0-9_-]{1,40}$/i.test(value);
   }
 
+  function clean(saved) {
+    if (!saved || typeof saved !== 'object') return null;
+    var platform = {
+      domain: validDomain(saved.domain) ? saved.domain : null,
+      core: validCore(saved.core) ? saved.core : DEFAULT_CORE,
+      name: validName(saved.name) ? saved.name : null
+    };
+    return platform.domain || platform.name ? platform : null;
+  }
+
   function readPlatform() {
     var params = new URLSearchParams(window.location.search);
-    var domain = (params.get('domain') || '').trim().toLowerCase();
-    var core = (params.get('core') || '').trim();
+    var fromLink = clean({
+      domain: (params.get('domain') || '').trim().toLowerCase(),
+      core: (params.get('core') || '').trim(),
+      name: (params.get('name') || '').trim().replace(/\s+/g, ' ')
+    });
 
-    if (validDomain(domain)) {
-      var platform = { domain: domain, core: validCore(core) ? core : DEFAULT_CORE };
-      try { window.localStorage.setItem(STORE, JSON.stringify(platform)); } catch (e) { /* private mode */ }
-      return platform;
+    if (fromLink) {
+      try { window.localStorage.setItem(STORE, JSON.stringify(fromLink)); } catch (e) { /* private mode */ }
+      return fromLink;
     }
 
     try {
-      var saved = JSON.parse(window.localStorage.getItem(STORE) || 'null');
-      if (saved && validDomain(saved.domain)) {
-        return { domain: saved.domain, core: validCore(saved.core) ? saved.core : DEFAULT_CORE };
-      }
+      return clean(JSON.parse(window.localStorage.getItem(STORE) || 'null'));
     } catch (e) { /* unreadable: ignore */ }
 
     return null;
@@ -63,7 +85,7 @@
   var SERVER_VARIABLE = 'https://{domain}';
 
   function swap(text) {
-    if (typeof text !== 'string') return text;
+    if (typeof text !== 'string' || !platform.domain) return text;
     if (text.indexOf(SERVER_VARIABLE) !== -1) {
       text = text
         .split(SERVER_VARIABLE + '/' + DEFAULT_CORE + '/').join('https://' + platform.domain + '/' + platform.core + '/')
@@ -76,13 +98,31 @@
   }
 
   function hasPlaceholder(text) {
-    return typeof text === 'string' && (text.indexOf(PLACEHOLDER) !== -1 || text.indexOf(SERVER_VARIABLE) !== -1);
+    return !!platform.domain && typeof text === 'string'
+      && (text.indexOf(PLACEHOLDER) !== -1 || text.indexOf(SERVER_VARIABLE) !== -1);
+  }
+
+  // <AppName /> spans: change their existing text node rather than replacing it, so the page's
+  // own rendering keeps the node it created.
+  function nameIn(root) {
+    if (!platform.name || !root.querySelectorAll) return;
+    var spans = root.querySelectorAll('.' + NAME_CLASS);
+    Array.prototype.forEach.call(spans, function (span) {
+      var node = span.firstChild;
+      if (node && node.nodeType === 3 && !node.nextSibling) {
+        if (node.nodeValue !== platform.name) node.nodeValue = platform.name;
+      } else if (span.textContent !== platform.name) {
+        span.textContent = platform.name;
+      }
+    });
   }
 
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, INPUT: 1, NOSCRIPT: 1 };
 
   function swapIn(root) {
     if (!root) return;
+    nameIn(root);
+    if (!platform.domain) return;
     var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode: function (node) {
         var parent = node.parentNode;

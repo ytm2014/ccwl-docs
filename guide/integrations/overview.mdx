@@ -1,0 +1,80 @@
+---
+title: "Integrations"
+description: "Connect your workspace to external tools: find the Integrations page, browse the cards by category and request a tool that isn't listed."
+keywords: ["integrations", "connect", "apps", "REST API", "webhooks", "MCP", "plan", "add-on", "request an integration"]
+---
+
+The **Integrations** page is where you connect your workspace to other tools: AI providers, CRMs, calendars, payment gateways, online stores, SMS gateways and more, plus the developer tools (**REST API**, **Webhooks** and **MCP**). In the sidebar, open **Integrations**.
+
+## Who can open it
+
+- Workspace **Admins** can open the page and every developer card.
+- Other team members can open it when their team role includes the **Connect integrations and manage webhooks** permission. They see the provider cards and can connect them, but the **REST API** card and the workspace **Webhooks** page need the **Admin** role.
+- Every member can open the **MCP** page to connect their own AI assistant, also from the **Connect an agent** card in **Profile** > **API**. See [AI assistants](/guide/integrations/ai-assistants).
+
+If you can't open **Integrations**, ask a workspace Admin to give you the permission.
+
+## Browse the cards
+
+The page shows one card per integration. Tabs along the top filter them by category, each with a count:
+
+| Tab | What you find there |
+| --- | --- |
+| **All** | Every card. |
+| **Developer** | **REST API**, **Webhooks** and **MCP**. |
+| **AI** | OpenAI, Claude, Google Gemini and DeepSeek. |
+| **Productivity** | Zapier, Google Sheets, Google Calendar, Zoom, Slack and the Meta cards. |
+| **Sales & CRM** | HubSpot and Mailchimp. |
+| **Commerce** | Shopify and WooCommerce. |
+| **Payments** | Stripe, PayPal, Paystack, Razorpay, MyFatoorah, Mercado Pago and Flutterwave. |
+| **SMS** | Twilio, Plivo and **Custom HTTP gateway**. |
+
+A tab only appears when it has at least one card. Which cards you see depends on your plan and on what your platform offers, so your list may be shorter.
+
+Each provider card shows a status badge: **Connected**, **Not connected**, **Error**, or **Not available yet** for a Google, Zoom or Meta tool your platform hasn't set up. The bottom of the card says **Connect** or **Manage**; click the card to open it.
+
+<Note>
+Don't see the provider cards, only the developer ones? Your plan or your platform doesn't include the sales inbox integrations yet.
+</Note>
+
+## Cards your plan doesn't include
+
+A tool that isn't part of your workspace's plan still has a card, so you can see what's available. Its badge reads **Not included in your plan**, and a notice above the cards explains that these integrations can be added with an add-on. Use the button in that notice (**See add-ons**, or **Upgrade your plan** when no add-on fits your plan) to add it. You can't connect a locked tool until your plan includes it.
+
+## On an integration's page
+
+Every provider page has the same frame around the provider's own settings:
+
+- **Back to integrations** at the top returns you to the cards.
+- Once the tool is connected, **Test connection** and **Disconnect** appear next to its name.
+- **Connection status** shows the **State**, **Last sync**, **Events (24h)** and a **Quota** bar.
+- **Recent delivery log** lists the latest events sent through the integration, or "No deliveries yet."
+- A **Setup guide** panel walks you through getting the credentials from the other service.
+
+Credentials you save are encrypted and never shown again. When a field already holds a saved secret, leave it blank to keep it.
+
+## Request an integration
+
+If the tool you need isn't listed:
+
+<Steps>
+  <Step title="Open the form">
+    Click **Request an integration** at the top of the page.
+  </Step>
+  <Step title="Name the tool">
+    Fill in **Which integration?**, for example the CRM you use. Optionally add what you'd use it for under **Anything else? (optional)**.
+  </Step>
+  <Step title="Send it">
+    Click **Send request**. Your platform's team receives it.
+  </Step>
+</Steps>
+
+The button only shows for people who can connect integrations, and you can send a few requests an hour.
+
+## Related
+
+- [API keys and webhooks](/guide/integrations/api-and-webhooks)
+- [AI assistants](/guide/integrations/ai-assistants)
+- [Zapier](/guide/integrations/zapier)
+- [AI providers](/guide/integrations/ai-providers)
+- [Payments and stores](/guide/integrations/payments-and-stores)

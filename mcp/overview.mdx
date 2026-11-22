@@ -1,0 +1,93 @@
+---
+title: "MCP server"
+description: "Let Claude, ChatGPT, Cursor and other AI assistants work in your workspace."
+---
+
+
+Your platform has a built-in **MCP (Model Context Protocol) server**. Connect an AI assistant to it and ask, in plain language, for the work you would otherwise do in the dashboard:
+
+- "What's scheduled for next week?"
+- "Draft a LinkedIn and X post announcing our webinar and schedule it for Tuesday at 10am."
+- "Upload this image from a URL and add it to the queue for Instagram."
+- "Find my failed posts and tell me what went wrong."
+- "Which account grew most this month, and when should we post next?"
+- "Which conversations in the inbox are still unread?"
+- "Tag everyone who asked about pricing this week as `pricing-lead`."
+- "Book Sam in for a demo on Thursday afternoon."
+
+<Note>
+AI assistant (MCP) access depends on your plan and on whether your platform has turned it on. If the server URL below returns `404`, it is not available to you yet.
+</Note>
+
+MCP is an open standard that Claude, ChatGPT, Cursor, VS Code, Claude Code and many other apps support. There is no integration code to write.
+
+## The server URL
+
+```
+https://app.example.com/mcp
+```
+
+It uses streamable HTTP. It is the same address for every workspace: [connect your app](/mcp/connect) by signing in with your usual login (OAuth) and ticking the workspaces it may use, or by sending a personal access token.
+
+<Note>
+The older address `https://app.example.com/os/mcp` still works with a personal access token. Use `/mcp` for anything new: it is the only address that supports signing in.
+</Note>
+
+## What it can do
+
+The assistant gets two sets of tools. See the [tools reference](/mcp/tools) for the full list.
+
+<CardGroup cols={2}>
+  <Card title="Publishing" icon="calendar">
+    Workspaces, connected social accounts, posts, scheduling and the queue, tags, the media library and analytics.
+  </Card>
+  <Card title="Sales inbox" icon="messages">
+    Contacts, conversations, messages, automations, appointments and broadcasts, where your plan includes the sales inbox.
+  </Card>
+</CardGroup>
+
+## Sign-in or token
+
+| | Sign in (OAuth) | Personal access token |
+| --- | --- | --- |
+| Set up | Paste the server URL, sign in, tick your workspaces | Create a token with the **AI assistants** permission, paste it into your app's config |
+| Workspaces | The workspaces you tick when you connect. Connect again to change them | Every workspace you belong to |
+| What it can do | Everything your role allows in those workspaces | What your role allows, narrowed to the token's permissions |
+| Best for | Claude, ChatGPT and other apps with connector screens | Claude Code, scripts, apps without OAuth |
+| Lasts | Refreshes itself. Unused for 90 days, sign in again | Until it expires (90 days unless you chose another date) or you revoke it |
+
+Either way, the assistant acts **as you**: it can never do more than your own role allows in each workspace.
+
+## How it works
+
+Almost every tool works on one workspace. The assistant is told this when it connects, so you can just ask; behind the scenes it:
+
+1. calls `list-workspaces` to get the workspace `uuid` (with a sign-in connection, only the workspaces you ticked),
+2. passes that `uuid` as `workspace` to every other tool,
+3. for posting, calls `list-accounts` for the account IDs, then `create-post`.
+
+## Roles and permissions
+
+What the assistant may do follows your role in the workspace:
+
+| Your role | Read | Create, edit, schedule, delete |
+| --- | :---: | :---: |
+| Viewer | ✅ | ❌ |
+| Member | ✅ | ✅ |
+| Admin | ✅ | ✅ |
+
+Sales inbox tools also follow your team role: a tool for an area you cannot open in the dashboard is not offered at all. With a token or workspace API key created with permissions, the assistant also only gets the tools those permissions allow. If a workspace requires post approval, posts the assistant schedules or queues wait for approval like anyone else's.
+
+A workspace you cannot access is reported as "not found", the same as one that does not exist.
+
+## Safety rails
+
+- **Messages to customers need a yes.** Tools that reach real people, such as `send-message`, `send-template-message` and `submit-broadcast`, refuse to run until the assistant passes `confirm: true`, which it should only do after checking with you.
+- **Broadcasts are never sent by the assistant.** `submit-broadcast` creates the broadcast awaiting approval; a person approves it in the dashboard.
+- **Automations are saved as drafts.** Nothing an assistant builds answers customers until someone presses Publish in the app.
+- **A sending cap.** An assistant can send at most 60 messages an hour and reach 200 people a day per workspace. A send past the cap is refused with the reason.
+- **Customer text is data.** Messages and notes written by your customers reach the assistant wrapped in `<untrusted_customer_content>` tags, with the instruction never to follow them.
+
+## Timezones
+
+Dates are stored in UTC. Most publishing tools take an optional `timezone` (an IANA name such as `Europe/London`) for reading your input and formatting the answer. Without one they use your account's timezone, then UTC, and every answer says which timezone it used. Analytics periods are UTC days; `get-best-posting-times` takes a `timezone` for its days, hours and next slots.

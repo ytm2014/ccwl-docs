@@ -1,0 +1,75 @@
+---
+title: "Broadcasts"
+description: "Send one message to a segment of your contacts, now or later, with optional team approval, then follow delivery, reads, replies and clicks."
+keywords: ["broadcasts", "campaign", "bulk messaging", "segment", "retarget", "schedule", "approval", "whatsapp template", "sms broadcast", "delivery report"]
+---
+
+A broadcast sends one message to many contacts on one channel: a promotion, an announcement or a service update. You choose the audience, write the message (or pick an approved WhatsApp template), decide when it goes, and then follow the results.
+
+Open **Broadcasts** in the sidebar, or the **Broadcasts** card under **More**.
+
+<Note>
+Don't see **Broadcasts**? Your plan or your platform doesn't include it yet. A lock badge next to the name means it needs a plan upgrade.
+</Note>
+
+## The broadcasts list
+
+The list shows each **Campaign**, its **Channel**, **Delivery** and the counts **Sent**, **Delivered**, **Replies** and **Failed**. Filter by **Status**. Depending on its state, a broadcast's actions include **See campaign report**, **View analytics**, **Edit**, **Approve & schedule**, **Pause**, **Resume**, **Cancel send** and **Delete**.
+
+- **Cancel send** stops it: messages already sent stay sent, the rest are never delivered. This can't be undone.
+- **Delete** removes the broadcast with its recipient records and delivery report.
+
+**WhatsApp templates** in the header opens your [templates](/guide/messaging/whatsapp-templates).
+
+## Create a broadcast
+
+Click **New broadcast**. The broadcast is fixed to the channel selected at the top of the page. Work through the four steps; each one shows when it's complete.
+
+<Steps>
+  <Step title="Audience">
+    Choose **Contact segment** (all eligible contacts, active eligible contacts or a saved [segment](/guide/messaging/contacts#segments)) or **Retarget a past broadcast**: pick an earlier broadcast on this channel and an engagement, for example everyone who read it but never replied. Recipients are worked out when the broadcast sends. Opted-out and blocked contacts are always left out.
+
+    On WhatsApp, contacts without a recorded opt-in are left out of a marketing template; a utility template reaches them. Admins can choose to include them anyway, which is recorded in the audit log.
+  </Step>
+  <Step title="Message">
+    Give the campaign a name. On WhatsApp, select an approved template and fill in a value for each variable; you can't type a free message. On other channels, type the message and use `{ }` to personalise it, for example with the first name. Telegram only reaches people who have started a chat with your bot. SMS shows the character and segment count, and can add an opt-out line.
+
+    Set the **Message purpose**: a **Promotion** skips contacts who opted out of promotions, a **Service update** (an order, booking or account notice) still reaches them. Tick **Track link clicks** to send links as short links that count clicks.
+  </Step>
+  <Step title="Schedule">
+    Choose **Send immediately** or **Schedule for later**. For a scheduled send, pick **One moment for everyone** or **Each contact's local time**, so nobody is messaged at 3am. Contacts without a known timezone use your workspace timezone. Tick **Require team approval before sending** if a teammate should approve it.
+  </Step>
+  <Step title="Review">
+    Check the summary, the **Preview** and the **Checks**, then click **Save broadcast**, or **Submit for approval**.
+  </Step>
+</Steps>
+
+<Tip>
+On WhatsApp, use **Send test message** to send the template to your own WhatsApp number first. Normal messaging charges apply.
+</Tip>
+
+If your role can't send broadcasts, the broadcast is submitted for approval automatically. A broadcast awaiting approval shows **Awaiting approval**; someone allowed to send it clicks **Approve & schedule**.
+
+### WhatsApp messaging limits
+
+WhatsApp limits how many people a number can message in 24 hours. If your audience is larger, the review tells you how many go out now; the rest are sent automatically over the following days.
+
+## Results
+
+Open a broadcast to see its report:
+
+- **Sent**, **Delivered**, **Read**, **Replies**, **Clicks** and **Failed**,
+- **Delivery breakdown**: how each person was reached, inside the 24-hour window, via a notification opt-in, or not at all,
+- **Conversion funnel** and **Engagement over time**,
+- **Link clicks** per link,
+- the **Message** that was sent,
+- **Failures and skips**,
+- **Recipients and send times**, filterable by status, with **Retry** where available.
+
+On Facebook Pages set up for paid marketing messages, a broadcast can also go to paid subscribers through a Meta campaign with a lifetime budget. Its report shows what Meta accepted, delivered and spent.
+
+## Related
+
+- [Segments](/guide/messaging/contacts#segments)
+- [WhatsApp templates](/guide/messaging/whatsapp-templates)
+- [Reports and settings](/guide/messaging/reports-and-settings)

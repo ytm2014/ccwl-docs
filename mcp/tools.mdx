@@ -1,0 +1,130 @@
+---
+title: "Tools reference"
+description: "Every tool the MCP server offers, grouped by what it works on."
+---
+
+
+Your assistant discovers these tools by itself when it connects. You never call them by name; this page is for knowing what to ask for, and why a tool might be missing.
+
+<Note>
+You only see the tools your role and plan allow. Sales inbox tools appear only where your plan includes the sales inbox, and each one hides itself if your team role cannot open that area in the dashboard. With a token or workspace API key created with permissions, you also only see the tools those permissions allow. Almost every tool takes a `workspace` uuid from `list-workspaces`.
+</Note>
+
+## Publishing
+
+### Workspaces and accounts
+
+| Tool | What it does |
+| --- | --- |
+| `list-workspaces` | The workspaces you can use here, most recently updated first. With a sign-in connection, just the ones you ticked when you connected. |
+| `get-workspace` | One workspace: name, colour, your role and approval rights, and counts of accounts, posts and members. |
+| `list-accounts` | The social accounts connected to a workspace, with the numeric IDs `create-post` needs. |
+| `get-account` | One account: provider, username, authorisation status, profile link and metrics. |
+
+### Posts
+
+| Tool | What it does |
+| --- | --- |
+| `list-posts` | Posts, newest first. Filter by account, status, tag, keyword and date ranges. |
+| `get-post` | One post: status, times, tags, the accounts it targets with live links or publish errors, and every content version. |
+| `create-post` | Create a post, and optionally schedule or publish it. |
+| `update-post` | Change a post's content, accounts, tags or schedule. |
+| `update-post-version` | Change one account's version of a post and leave the others alone. |
+| `duplicate-post` | Copy a post as a new draft. |
+| `schedule-post` | Schedule a post for a date and time, or publish it now. |
+| `add-post-to-queue` | Put a post in the next free slot of the workspace's posting schedule. |
+| `delete-post` | Move a post to the trash, delete it for good, or also remove it from the social networks. |
+| `restore-post` | Bring a post back from the trash as a draft. |
+| `attach-tags-to-post` | Add tags to a post. |
+| `detach-tags-from-post` | Remove tags from a post. |
+
+### Tags and media
+
+| Tool | What it does |
+| --- | --- |
+| `list-tags` | The workspace's post tags. |
+| `get-tag` | One post tag. |
+| `create-tag` | Create a post tag. |
+| `update-tag` | Rename or recolour a post tag. |
+| `list-media` | Images, GIFs and videos in the media library. |
+| `get-media` | One media file: type, URLs, alt text and source. |
+| `upload-media-by-url` | Add a file to the library from a public URL. Large files download in the background. |
+| `get-media-upload-status` | Progress of a background download started by `upload-media-by-url`. |
+
+### Analytics
+
+| Tool | What it does |
+| --- | --- |
+| `get-analytics-summary` | The workspace over a period: total followers, follower growth and posts, each compared with the period before, the best-growing account, a leaderboard and the most and least active accounts. |
+| `get-account-analytics` | One account's analytics of one type, such as overview, engagement, content or insights. Which types an account has depends on its network; content and reviews come in pages. |
+| `get-post-analytics` | How a published post did on each account it went out to: views, likes, comments, shares, engagement rate, trends and the best account. |
+| `get-best-posting-times` | The weekdays and hours your posts of the last 180 days did best, and each account's next best time, ready to pass to `schedule-post`. |
+
+Analytics tools only read, so every role can use them, viewers included. Periods are in UTC days. X accounts have no analytics.
+
+## Sales inbox
+
+### Overview and lookups
+
+| Tool | What it does |
+| --- | --- |
+| `get-workspace-overview` | A snapshot of the business: timezone, connected channels, contact usage, what is waiting in the inbox and today's bookings. The best first call. |
+| `get-reference` | The exact statuses, field names, approved WhatsApp templates and automation step types this workspace uses. |
+| `list-channels` | Connected messaging channels and whether each can send right now. |
+| `list-segments` | Saved audiences, with how many contacts match each. |
+| `list-pipeline-stages` | The sales pipeline's stages, in board order, with contact counts. |
+
+### Contacts
+
+| Tool | What it does |
+| --- | --- |
+| `search-contacts` | Find people by name, phone, email or handle, and filter by stage, tag, segment or date. |
+| `get-contact` | Everything about one contact: profile, stage, tags, custom fields, channels, notes and upcoming meetings. |
+| `create-contact` | Add a person. Refuses a phone number that already belongs to a contact. |
+| `update-contact` | Change a contact's details, custom fields or pipeline stage. Only the fields you pass change. |
+| `tag-contact` | Add a contact tag (not a post tag). Can start automations that listen for that tag. |
+| `untag-contact` | Remove a contact tag. |
+| `add-contact-note` | Write an internal note on a contact. |
+
+### Conversations and messages
+
+| Tool | What it does |
+| --- | --- |
+| `list-conversations` | The inbox, most recent first, with unread counts and assignees. Filter by open or done, unread, platform or name. |
+| `get-conversation` | The message thread with one contact, as a transcript. |
+| `assign-conversation` | Assign a conversation to a teammate, or unassign it. |
+| `close-conversation` | Mark a conversation as done. It can start the workspace's conversation-closed automation, so it needs `confirm: true`. |
+| `send-message` | Send a text message to one contact. Needs `confirm: true`. |
+| `send-template-message` | Send an approved WhatsApp template, including outside the 24-hour window. Needs `confirm: true`. |
+
+### Broadcasts
+
+| Tool | What it does |
+| --- | --- |
+| `preview-broadcast` | Work out exactly who a broadcast would reach and freeze that list. Nothing is sent. |
+| `submit-broadcast` | Create the broadcast for the previewed audience, **awaiting approval** in the dashboard. Needs `confirm: true`. |
+
+### Automations
+
+| Tool | What it does |
+| --- | --- |
+| `list-automations` | The workspace's automations: trigger, channel, whether each is live, and runs in flight or failed. |
+| `get-automation-flow` | The steps inside one automation. |
+| `get-automation-runs` | Recent runs and why each one stopped. |
+| `create-automation` | Create an automation as an unpublished draft. |
+| `save-automation-flow` | Replace a draft's steps. Customers keep getting the published version until someone presses Publish. |
+| `set-automation-state` | Switch an automation on or off. |
+
+### Appointments
+
+| Tool | What it does |
+| --- | --- |
+| `list-appointments` | The meetings calendar. |
+| `find-available-slots` | Bookable slots for a meeting type over a date window, honouring its hours, buffers and connected calendar. |
+| `book-appointment` | Book a contact into a slot. |
+| `reschedule-appointment` | Move a booking. |
+| `cancel-appointment` | Cancel a booking. |
+
+## Resources
+
+Apps that read MCP resources also get four reference documents, the same content as `get-reference`: what this connection can do, the contact field names, the automation step types and the approved WhatsApp templates.

@@ -1,0 +1,25 @@
+---
+title: "Troubleshooting"
+description: "Fix the common problems connecting an AI assistant."
+---
+
+
+| What you see | What to do |
+| --- | --- |
+| The app **couldn't connect** or **authentication failed** | Check the URL is exactly `https://app.example.com/mcp`, with `https://` and no trailing spaces, then try again. |
+| "None of your workspaces can connect an AI assistant" | None of your workspaces has a plan that includes AI assistant (MCP) access. Ask the workspace owner, or change plan. |
+| `401` / "Unauthenticated" with a token | The token is missing, mistyped, expired or deleted. Check the `Authorization: Bearer <token>` header, or create a new token under **Profile** > **API**. |
+| "This token cannot be used with AI assistants" | The token was created without the **AI assistants** permission. Create a new token with it. |
+| A tool is missing, or the assistant says the token does not include a permission | The token was created without that permission. Create a new token that includes it. |
+| "You no longer have access to any workspace this connection was set up for" | You left, or were removed from, every workspace you ticked. Connect again and tick the workspaces you can use now. |
+| Sign-in errors on a connection that used to work | It went unused for 90 days, or was removed. Click **Connect** in your AI app and sign in again. |
+| The assistant can't see a workspace | With a sign-in connection it only sees the workspaces you ticked: connect again and tick it too. With a token, you are not a member of that workspace. |
+| "You do not have permission…" when creating or changing something | Your role in that workspace is **Viewer**. You need **Member** or **Admin**. |
+| Sales inbox tools are missing | The workspace's plan does not include the sales inbox, or your team role cannot open that area. |
+| An account has no analytics, or its figures look incomplete | X accounts have no analytics. A newly connected account's first import takes a while; until it finishes, the answer's `initial_sync` says the figures are incomplete. |
+| A message or broadcast was refused | The assistant must pass `confirm: true` after checking with you, and the workspace may have reached its assistant sending cap (60 messages an hour, 200 people a day). The refusal says which. |
+| Nothing happens when you click **Connect** | Allow pop-ups and redirects for your AI app's site, or try another browser. |
+| The app won't add an HTTP server | It only supports local (stdio) servers. Use the `mcp-remote` bridge shown in [Connect your app](/mcp/connect#use-a-personal-access-token). |
+| The assistant can't see your posts or accounts | Make sure the connector is switched on for that chat, then ask it to "list my workspaces". |
+
+Still stuck? Contact your platform's support with the name of your AI app and the exact error message.

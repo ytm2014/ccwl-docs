@@ -1,0 +1,103 @@
+---
+title: "Bulk posts and RSS campaigns"
+sidebarTitle: "Bulk posts and RSS"
+description: "Schedule many posts at once from a CSV file, or turn an RSS feed into regular posts."
+keywords: ["bulk posts", "CSV", "bulk scheduling", "RSS", "RSS campaign", "feed"]
+---
+
+Two tools create posts in quantity. **Bulk Posts** schedules a batch of posts from a CSV file. **RSS Campaigns** watches a website's feed and posts new items to your accounts each day.
+
+<Note>
+Don't see **Bulk Posts** or **RSS Campaigns**? Your plan or your platform doesn't include them yet, or your workspace admin hasn't given you access. Admins can use both; for other members, an admin ticks **Bulk Posts Access** or **RSS Feeds Access** in that member's team settings.
+</Note>
+
+## Bulk posts
+
+In the sidebar, open **Bulk Posts**. You need the **Admin** or **Member** role.
+
+### Prepare the CSV file
+
+Click **Click to open CSV template** on the Bulk Posts page to open the template, make your own copy and fill in one row per post. The first row is the header and is skipped. The columns, in order, are:
+
+| Column | Content |
+| --- | --- |
+| 1 | The post text. |
+| 2–6 | Year, month, day, hour and minute the post goes out. |
+| 7 | Post type: `post`, `reel`, `story` or `livestream`. Empty means `post`. |
+| 8 | A link to an image or video to attach (optional). |
+| 9–10 | Number of repetitions and the interval between them (optional). |
+| 11–12 | Pinterest title and link (optional). |
+| 13 | YouTube video or Short title (optional). |
+| 14 | First comment (optional). |
+
+Save it as a CSV file.
+
+### Upload and schedule
+
+<Steps>
+  <Step title="Choose the accounts">
+    Use the account picker to select the accounts every post in the file goes to.
+  </Step>
+  <Step title="Set network options">
+    Options for the selected networks appear under the accounts, as in the [composer](/guide/publishing/create-a-post#network-options), for example a Pinterest board.
+  </Step>
+  <Step title="Add the file">
+    Drag the CSV file onto the upload area, or click **Browse**.
+  </Step>
+  <Step title="Schedule">
+    Click **Schedule Posts**. Each row becomes a post scheduled for its date and time, and you are taken to the **Posts** list.
+  </Step>
+</Steps>
+
+If you forget to choose an account or a file, a message tells you (**Please select account** or **Please upload CSV file**). If a row has a post type that isn't allowed, the upload is refused with an error.
+
+## RSS campaigns
+
+An RSS campaign reads a feed and creates posts from its items. Each post is written from the feed item's title, description and link, depending on the switches you set.
+
+In the sidebar, open **RSS Campaigns**.
+
+### Create a campaign
+
+<Steps>
+  <Step title="Start a campaign">
+    Click **Create New Campaign**.
+  </Step>
+  <Step title="Enter the feed">
+    Type the address under **Enter feed URL**. If no feed is found, you see **No feed was found on current URL**; check the address.
+  </Step>
+  <Step title="Choose the accounts">
+    Select the accounts to post to, and set any network options.
+  </Step>
+  <Step title="Shape the post text">
+    You can't type the text yourself. Use the **Hide/Show Feed Title**, **Hide/Show Feed Description** and **Hide/Show Feed Link** switches to choose what goes in. **Items On Provided RSS Link** lets you look at the feed's items, and the preview shows how the newest item will look. Keep at least one switch on, or posts would be empty.
+  </Step>
+  <Step title="Set the campaign details">
+    Enter the **Name of Campaign**, choose the **Number of Posts to be made from this feed Daily** (1 to 24), and the **Order for Feeds Selection**: **All Posts** or **Most Recent Posts**.
+  </Step>
+  <Step title="Start it">
+    Pick a time and click **Schedule**, click **Post now**, or click **Add to Queue** to use your [posting schedule](/guide/publishing/posting-schedule). You are taken back to the campaign list.
+  </Step>
+</Steps>
+
+<Tip>
+For Reddit, a post without its own title takes the feed item's title. For Google Business, an event or offer without start and end dates is posted as a standard update.
+</Tip>
+
+### Manage campaigns
+
+The **RSS Campaigns** list shows each campaign's name and feed, accounts, status (**Active** or **Inactive**), **Last Time Fetched**, **Numbers Published**, posts per day and today's posts, and fetch order. You can search the list.
+
+From a row you can:
+
+- **Edit** the campaign.
+- **Set Active** or **Deactivate** it, after you confirm. A deactivated campaign stops creating posts.
+- **Delete** it, after you confirm.
+
+Click **View Posts** to see the posts your campaigns have created in the **Posts** list.
+
+## Related
+
+- [Create a post](/guide/publishing/create-a-post)
+- [Manage your posts](/guide/publishing/posts)
+- [Posting schedule and queue](/guide/publishing/posting-schedule)
