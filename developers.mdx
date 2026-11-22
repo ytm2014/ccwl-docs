@@ -1,0 +1,48 @@
+---
+title: "Introduction"
+description: "Connect your own systems to your social media and messaging workspace."
+---
+
+These docs cover the APIs and webhooks available on your platform. Everything here works the same way whichever brand you sign in under. Wherever you see `app.example.com`, use the domain you normally sign in to.
+
+<Tip>
+Looking for how to use the dashboard rather than the API? See the [App guide](/guide/getting-started/introduction). To connect Claude, ChatGPT or another AI assistant, see [MCP](/mcp/overview).
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Create an API key and make your first request in a few minutes.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Workspace API keys, personal access tokens, headers and permissions.
+  </Card>
+  <Card title="Messaging API" icon="messages" href="/messaging/account/get-the-authenticated-workspace">
+    Contacts, conversations, messages, broadcasts and automations.
+  </Card>
+  <Card title="Publishing API" icon="calendar" href="/publishing/diagnostics/check-your-key">
+    Social accounts, posts, scheduling and media.
+  </Card>
+  <Card title="Link in Bio API" icon="link" href="/biolinks/pages/list-pages">
+    Bio pages, short links, QR codes and custom domains.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/webhooks/overview">
+    Get notified when posts publish, contacts are created or messages arrive.
+  </Card>
+  <Card title="Zapier" icon="bolt" href="/zapier">
+    Connect without writing code.
+  </Card>
+</CardGroup>
+
+## The APIs
+
+| | Messaging API | Publishing API | Link in Bio API |
+| --- | --- | --- | --- |
+| Covers | Contacts, tags, segments, conversations, messages, broadcasts, automations, media | Social accounts, posts, scheduling, approval, tags, media, analytics | Bio pages and blocks, short links, QR codes, pixels, form submissions, analytics, custom domains |
+| Base URL | `https://app.example.com/api/v1` | `https://app.example.com/os/api/{workspace-uuid}` | `https://app.example.com/api/v1/biolinks` |
+| Workspace | Chosen by the workspace API key, or the `X-Workspace` header with a personal access token | In the URL (with a workspace API key it must be the key's workspace) | Chosen by the workspace API key, or the `X-Workspace` header with a personal access token |
+
+One workspace API key can call every API, as long as you give it the permissions for each when you create it. A personal access token can do the same in every workspace you belong to. See [Authentication](/authentication).
+
+<Note>
+Some features depend on your plan and on what your platform has turned on. If an endpoint returns `404` even with a valid key, the feature is not available on your workspace yet.
+</Note>

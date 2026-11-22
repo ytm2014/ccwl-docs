@@ -17,6 +17,7 @@
           {
             "group": "Getting started",
             "pages": [
+              "index",
               "guide/getting-started/introduction",
               "guide/getting-started/navigating",
               "guide/getting-started/workspaces",
@@ -100,44 +101,72 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": ["index", "quickstart", "authentication", "errors-and-limits"]
+            "pages": [
+              "developers",
+              "quickstart",
+              "authentication",
+              "errors-and-limits"
+            ]
           },
           {
             "group": "Webhooks",
-            "pages": ["webhooks/overview", "webhooks/verify-signatures", "webhooks/events", "webhooks/manage"]
+            "pages": [
+              "webhooks/overview",
+              "webhooks/verify-signatures",
+              "webhooks/events",
+              "webhooks/manage"
+            ]
           },
           {
             "group": "Messaging",
-            "pages": ["ad-referrals"]
+            "pages": [
+              "ad-referrals"
+            ]
           },
           {
             "group": "Integrations",
-            "pages": ["zapier"]
+            "pages": [
+              "zapier"
+            ]
           },
           {
             "group": "Partner API",
-            "pages": ["partner/overview", "partner/channel-connect"]
+            "pages": [
+              "partner/overview",
+              "partner/channel-connect"
+            ]
           }
         ]
       },
       {
         "tab": "Messaging API",
-        "openapi": { "source": "api-reference/messaging.openapi.json", "directory": "messaging" }
+        "openapi": {
+          "source": "api-reference/messaging.openapi.json",
+          "directory": "messaging"
+        }
       },
       {
         "tab": "Publishing API",
-        "openapi": { "source": "api-reference/publishing.openapi.json", "directory": "publishing" }
+        "openapi": {
+          "source": "api-reference/publishing.openapi.json",
+          "directory": "publishing"
+        }
       },
       {
         "tab": "Link in Bio API",
         "groups": [
           {
             "group": "Overview",
-            "pages": ["biolinks/overview"]
+            "pages": [
+              "biolinks/overview"
+            ]
           },
           {
             "group": "Reference",
-            "openapi": { "source": "api-reference/biolinks.openapi.json", "directory": "biolinks" }
+            "openapi": {
+              "source": "api-reference/biolinks.openapi.json",
+              "directory": "biolinks"
+            }
           }
         ]
       },
@@ -147,7 +176,12 @@
         "groups": [
           {
             "group": "AI assistants",
-            "pages": ["mcp/overview", "mcp/connect", "mcp/tools", "mcp/troubleshooting"]
+            "pages": [
+              "mcp/overview",
+              "mcp/connect",
+              "mcp/tools",
+              "mcp/troubleshooting"
+            ]
           }
         ]
       }
@@ -164,6 +198,14 @@
     }
   },
   "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "cursor", "vscode"]
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "cursor",
+      "vscode"
+    ]
   }
 }
