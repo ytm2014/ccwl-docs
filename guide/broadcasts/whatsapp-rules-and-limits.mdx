@@ -1,0 +1,84 @@
+---
+title: "WhatsApp rules and limits"
+sidebarTitle: "WhatsApp rules and limits"
+description: "The WhatsApp rules every broadcast follows: the 24-hour window, approved templates, opt-in, marketing opt-outs, the number's messaging limit and sending speed."
+keywords: ["whatsapp rules", "24-hour window", "messaging limit", "tier", "whatsapp opt-in", "marketing template", "utility template", "whatsapp policy", "broadcast limits"]
+---
+
+WhatsApp is the strictest channel for broadcasts. WhatsApp itself decides what a business may send and to whom, and the broadcast composer applies those rules before anything goes out. Knowing them saves you from failed sends and from a number that loses its sending reputation.
+
+## The 24-hour window
+
+You can send a free-form message on WhatsApp only within 24 hours of the customer's last message to you. Outside that window, the only thing you may send is a **message template** that WhatsApp (Meta) has approved.
+
+A broadcast goes to many people at once, and most of them won't have written in the last 24 hours. That is why a WhatsApp broadcast always sends an approved template: the composer has no free-text box on WhatsApp, and only approved templates are listed. See [Message templates](/guide/broadcasts/message-templates).
+
+## Template categories matter
+
+Each template has a category, chosen when it is created and checked by Meta:
+
+| Category | Used for | How broadcasts treat it |
+| --- | --- | --- |
+| **Marketing** | Promotions, offers, announcements | Counts as a promotion. Only reaches contacts with a recorded WhatsApp opt-in, and never contacts who told WhatsApp to stop marketing messages. |
+| **Utility** | Order, booking and account updates | Counts as a service message. Reaches contacts without a recorded opt-in, and contacts who opted out of promotions only. |
+| **Authentication** | One-time codes | Counts as a service message. |
+
+Meta reviews every template before it can be sent, so choose the category that matches what the message really is.
+
+## Opt-in and opt-out
+
+Before a marketing template can reach someone, your workspace must have a record that they agreed to receive WhatsApp messages from you. How a contact gets one, and how an admin can include contacts without it, is explained in [Choose a broadcast audience](/guide/broadcasts/audiences#contacts-without-a-whatsapp-opt-in).
+
+People can also say no:
+
+- A contact who **opted out**, is **blocked** or carries the **Unsubscribe** tag is never messaged by a broadcast.
+- A contact who asked WhatsApp to stop marketing messages from your number is left out of every marketing template. Nobody in your workspace can override that.
+- If your workspace lets contacts opt out of promotions only, they still receive utility templates.
+
+## The number's messaging limit
+
+WhatsApp gives every business number a **messaging limit**: how many different people it may message with templates in a rolling 24 hours.
+
+The broadcast composer reads this limit and plans around it:
+
+- In the Audience step and the review, if the audience is bigger than what the number has left, you see a note such as "This number's WhatsApp messaging limit lets 1,000 of 2,400 go out now. The rest are sent automatically over the next 2 days."
+- The rest of the audience is held and released in daily waves. The broadcast stays **Sending** until everyone is handled, and its report shows how many are still waiting for the limit.
+- The count is deliberately careful: every template the number sent in the last 24 hours counts, including from flows and the inbox, and so do messages that other broadcasts on the number have queued.
+- If WhatsApp hasn't reported the number's limit, the composer says it could not be checked. The broadcast is then sent in full, and WhatsApp may refuse recipients over the limit.
+
+The limit applies to WhatsApp templates only. Free-form replies inside the 24-hour window, and other channels, are not affected.
+
+## Sending speed
+
+Even within the limit, messages don't all leave at once. Recipients are released in batches each minute, and each number sends a limited number of messages per second. A large broadcast can take a while to finish; nothing is lost while it waits.
+
+## Meta can still hold messages back
+
+Some messages are accepted and then not delivered for reasons on WhatsApp's side. The report's **Failures and skips** names them, for example:
+
+- **Meta held this back to protect engagement**: WhatsApp limits how many marketing messages one person receives from businesses.
+- **Meta held this back as part of a marketing message experiment.**
+- **Provider paused or disabled the template**: WhatsApp stopped the template. Pick another one.
+- **The WhatsApp Business account has a payment problem** or **is locked**: fix it in WhatsApp Manager.
+
+## Test before you send
+
+**Send test message** in the composer sends the template to your own WhatsApp number (the one on your profile) so you can check the variables and buttons. See [Create a broadcast](/guide/broadcasts/create-broadcast#send-a-test-message-whatsapp).
+
+## Common questions
+
+**Why did fewer people receive my broadcast than the segment count?**
+The count shows eligible contacts when you build the broadcast. At send time, contacts without an opt-in (for marketing templates), people who opted out since, and people WhatsApp itself held back are skipped. The report lists each reason.
+
+**Why is my broadcast still Sending the next day?**
+Part of the audience is waiting for the number's messaging limit. It finishes automatically.
+
+**Can I send a WhatsApp broadcast without a template?**
+No. Only approved templates can be broadcast on WhatsApp.
+
+## Related
+
+- [Message templates](/guide/broadcasts/message-templates)
+- [Choose a broadcast audience](/guide/broadcasts/audiences)
+- [Broadcast analytics](/guide/broadcasts/analytics)
+- [Channels](/guide/channels/overview)

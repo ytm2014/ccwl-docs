@@ -1,0 +1,89 @@
+---
+title: "AI Knowledge"
+description: "Give the AI something to answer from: upload files, add web pages, FAQs and text, import whole sites, group sources into collections and test what the AI finds."
+keywords: ["ai knowledge", "knowledge base", "collections", "sources", "faq", "upload pdf", "web page", "sitemap import", "rag", "test knowledge", "ai reply"]
+---
+
+AI Knowledge is what the AI answers from when it replies to your customers. You add sources (files, web pages, FAQs or pasted text), group them into collections, and let any **AI Reply** step search them. "Give your AI assistant something to answer from."
+
+In the sidebar, open **Salesbot** > **More** > **AI Knowledge**. Workspace admins also find it under **Settings** > **AI knowledge**.
+
+<Note>
+"AI Knowledge needs a knowledge-capable AI (OpenAI or Gemini)." If the page says so, connect your own OpenAI or Gemini key under **Integrations** (see [AI providers](/guide/integrations/ai-providers)). When it's ready, the page names the AI it's backed by. "Knowledge is private to this workspace." Don't see **AI Knowledge**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Collections
+
+Collections group related sources, for example *Products*, *Policies* or *Support*. Each AI Reply step can search all your knowledge or only some collections, so separate collections let different flows use different material.
+
+Under **New collection**, type a **Collection name** and click **Add collection**. Each collection shows how many sources it has and how many automations use it.
+
+## Add a source
+
+<Steps>
+  <Step title="Open the collection">
+    Select the collection and click **Add source**.
+  </Step>
+  <Step title="Choose the source type">
+    Pick the **Source type** and fill it in:
+
+    | Source type | What to enter |
+    | --- | --- |
+    | **Upload file (PDF / TXT / MD)** | A file: "PDF, TXT or MD, up to 20 MB." |
+    | **Web page URL** | The page address. "We fetch the page and index its readable text." |
+    | **FAQ (question & answer)** | A **Question** (for example "Do you offer refunds?") and its **Answer**. |
+    | **Pasted text** | An optional **Title** (for example "Returns policy") and the **Text**. |
+  </Step>
+  <Step title="Save">
+    Click **Add source**. The source may show as processing for a moment while it's indexed.
+  </Step>
+</Steps>
+
+Search the collection's sources by name or address, and page through them with **Previous** and **Next**. Each source has **Edit** and **Remove**. Editing an FAQ or a text source re-indexes it: "Saving re-indexes this source, so it may show as processing for a moment."
+
+## Import many pages
+
+To add a whole help centre or website, click **Import pages** in the collection and choose the **Source**:
+
+- **Sitemap (imports the pages it lists)**: enter the **Sitemap address**. "Most documentation sites publish one at /sitemap.xml. Sitemap-index files are followed one level."
+- **Paste a list of page addresses**: one per line. "Pages already in this collection are skipped."
+
+"Up to 100 pages per import, fetched while you wait. A bigger site takes a few passes — run Import again with the same address and it carries on from where it stopped."
+
+"Each page is indexed with the address it came from, so the assistant can link back to it when it answers from that page."
+
+## Test what the AI finds
+
+Under **Test knowledge** ("Ask a question to check what the assistant would retrieve."), choose a collection or **All collections**, type a question and click **Test**. **Retrieved snippets** shows the passages the AI would answer from.
+
+If the right passage doesn't come back, add an FAQ with that exact question, or split a long document into smaller, clearly titled sources.
+
+## Use it in a flow
+
+In an AI Reply step, open the **Built-in Tools** tab and under **AI Knowledge** choose **All workspace knowledge**, **Selected collections** or **Selected sources**. See [AI agent tools](/guide/automation/ai-tools#ai-knowledge).
+
+## Delete a collection
+
+**Delete collection** asks **Delete this collection?**: the collection "and all its sources will be removed from the AI provider as well. Any AI step searching it will fall back to answering without knowledge. This can't be undone."
+
+## Tips for good answers
+
+- One topic per source. Short, titled sources are found more reliably than one huge file.
+- Write FAQs in the words customers use.
+- Keep prices, opening hours and policies here rather than in prompts, so one update fixes every flow.
+- Remove outdated pages; the AI can't tell which of two conflicting sources is current.
+
+## Common problems
+
+| You see | What to do |
+| --- | --- |
+| "Could not add the source." | Check the file type and size, or that the page is public. |
+| "Could not import those pages." | Check the sitemap address opens in a browser. |
+| "The test request failed." | Try again; check your AI provider connection under Integrations. |
+| The AI ignores your knowledge | Check the AI Reply step searches the right collections, and that its provider supports knowledge. |
+
+## Related
+
+- [The AI Reply step](/guide/automation/ai-replies)
+- [AI agent tools](/guide/automation/ai-tools)
+- [AI providers](/guide/integrations/ai-providers)

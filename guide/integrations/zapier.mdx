@@ -1,12 +1,12 @@
 ---
 title: "Zapier"
-description: "Generate a key for Zapier, build Zaps on your sales inbox events and send test events from the dashboard."
-keywords: ["Zapier", "Zap", "trigger", "automation", "API key", "test event"]
+description: "Generate a key for Zapier, build Zaps on your sales inbox events, send test events and replace or remove the key."
+keywords: ["Zapier", "Zap", "trigger", "automation", "API key", "test event", "REST hooks"]
 ---
 
-The **Zapier** card on the [Integrations](/guide/integrations/overview) page connects your sales inbox events (a new contact, an inbound message, a broadcast sent and more) to the apps you use through Zapier. You generate a key in the dashboard, use it in a Zap, and every event you pick as a trigger reaches Zapier as it happens. Developers can find the technical details on [Zapier](/zapier).
+The **Zapier** card on the [Integrations](/guide/integrations/overview) page connects your sales inbox events (a new contact, an inbound message, a broadcast sent, a payment, a store order and more) to the thousands of apps Zapier works with. You generate a key in the dashboard, use it in a Zap, and every event you pick as a trigger reaches Zapier as it happens. Developers can find the technical details on [Zapier](/zapier).
 
-You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Productivity** tab.
 
 <Note>
 Don't see **Zapier**, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
@@ -16,7 +16,7 @@ Don't see **Zapier**, or does it say **Not included in your plan**? Your plan or
 
 <Steps>
   <Step title="Generate a key">
-    Open **Integrations** > **Zapier** and click **Generate API key**.
+    In the sidebar, open **Integrations** > **Zapier** and click **Generate API key**.
   </Step>
   <Step title="Copy the key and base URL">
     Under **Zapier credentials**, click **Reveal** or **Copy** next to **API key**. Copy it now: it is shown only once. Copy the **Base URL** too.
@@ -32,26 +32,57 @@ Don't see **Zapier**, or does it say **Not included in your plan**? Your plan or
   </Step>
 </Steps>
 
+The key is a workspace API key, so it also appears on the [API keys](/guide/integrations/api-keys) page.
+
+## Events you can use
+
+The events come in groups:
+
+| Group | Examples |
+| --- | --- |
+| Contacts | New contact, Contact updated, Contact tagged, Contact stage changed |
+| Conversations | Inbound message received, Conversation assigned, Conversation closed |
+| Message lifecycle | Message sent, delivered, read / seen, failed |
+| Automations | Automation triggered, completed, failed |
+| Broadcasts | Broadcast sent, completed, failed |
+| Payments | Payment succeeded, failed, refunded |
+| Store (e-commerce) | Store order placed, paid, shipped, cancelled, refunded, Checkout abandoned, Inventory low |
+| Bookings | Meeting booked, rescheduled, cancelled |
+
+Payment and store events only fire once a [payment gateway](/guide/integrations/payment-gateways) or a store ([Shopify](/guide/integrations/shopify), [WooCommerce](/guide/integrations/woocommerce)) is connected.
+
 ## Connected Zaps
 
-**Connected Zaps** lists every event a Zap is subscribed to, with its name and event code. Until you build one, it reads "No active Zaps yet."
+**Connected Zaps** lists every event a Zap is subscribed to, with its name and event code. Until you build one, it says there are no active Zaps yet.
 
 ## Send a test event
 
-Under **Send a test event**, pick an **Event** and click **Send test**. A sample payload goes to every Zap subscribed to that event, which helps when you map fields in the Zap editor.
+Under **Send a test event**, pick an **Event** and click **Send test**. A sample payload goes to every Zap subscribed to that event, which helps when you map fields in the Zap editor. The page confirms how many deliveries were sent.
 
 ## Replace the key
 
 After the first time, the **API key** field only shows the start of the key. Click **Generate a new key** to get a new one. The new key replaces the old one, which stops working at once, but your Zaps stay subscribed: update the key in Zapier's connection settings.
 
-To disconnect Zapier from the workspace, click **Disconnect** at the top of the page.
+If someone revokes the key on the API keys page, the field reads "No active key". Generate a new one.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The Zapier key is deleted, so every Zap using it stops receiving events.
+
+## Troubleshooting
+
+- **"No active Zaps are subscribed yet — turn on a Zap, then test."** Build and turn on a Zap for that event first.
+- **"Too many test events. Wait a minute, then try again."** Wait a minute between tests.
+- **"This workspace already has the most API keys it can hold."** Revoke a key you no longer use on the [API keys](/guide/integrations/api-keys) page, then generate again.
+- **Zapier says the key is invalid.** It was replaced or revoked. Generate a new key and update the Zapier connection.
 
 <Tip>
-For your own software, use [webhooks](/guide/integrations/api-and-webhooks#webhooks) instead. They are signed, retried and have a delivery history.
+For your own software, use [webhooks](/guide/integrations/webhooks) instead. They are signed, retried and have a delivery history.
 </Tip>
 
 ## Related
 
 - [Zapier for developers](/zapier)
-- [API keys and webhooks](/guide/integrations/api-and-webhooks)
+- [Webhooks](/guide/integrations/webhooks)
+- [API keys](/guide/integrations/api-keys)
 - [Integrations](/guide/integrations/overview)

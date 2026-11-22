@@ -1,0 +1,89 @@
+---
+title: "Manage bookings"
+description: "See upcoming and past meetings, reschedule or cancel them, and mark meetings completed or as a no-show."
+keywords: ["bookings", "meetings", "reschedule", "cancel meeting", "no-show", "completed", "upcoming", "past"]
+---
+
+The **Bookings** tab lists every meeting contacts have booked with you. Use it to check what's coming up, move or cancel a meeting, and record whether a meeting happened.
+
+In the sidebar, open **Salesbot** > **More** > **Appointments**. The page opens on **Bookings**.
+
+## Before the first booking
+
+If you have no appointment types yet, the tab shows **No meeting types yet.** with a **create a meeting type** button (and a reminder to connect Google Calendar if none is connected). Create a type first; see [Create and edit appointment types](/guide/appointments/appointment-types).
+
+## Upcoming and past
+
+Switch between **Upcoming** and **Past** at the top right; each shows how many meetings it holds.
+
+- **Upcoming**: confirmed meetings that haven't started, soonest first.
+- **Past**: meetings whose time has passed, and every cancelled, completed or no-show meeting, most recent first.
+
+Each list shows up to 200 meetings. The columns are:
+
+| Column | Shows |
+| --- | --- |
+| **Contact** | The contact's name and email. A booking without a contact shows **Guest**. |
+| **Meeting** | The appointment type. |
+| **When** | The date and time, with the contact's time zone underneath. |
+| **Status** | **confirmed**, **completed**, **cancelled** or **no show**. |
+| **Source** | Where the booking came from: **Flow**, **Page** or **Agent**. See [Appointments overview](/guide/appointments/overview). |
+
+You only see bookings of contacts you can see; a member limited to some channels sees bookings of contacts on those channels only.
+
+## Actions
+
+Each row's **...** menu offers what fits the meeting:
+
+| Action | When it shows |
+| --- | --- |
+| **Join Google Meet** | The meeting has a Google Meet link. |
+| **Open booking page** | Always. Opens the contact's own booking page for this meeting. |
+| **Reschedule** | Upcoming meetings, if you can cancel and reschedule meetings. |
+| **Cancel meeting** | Upcoming meetings, if you can cancel and reschedule meetings. |
+| **Mark completed**, **Mark as no-show** | Meetings that have started and are still confirmed, with the same permission. |
+
+## Reschedule a meeting
+
+<Steps>
+  <Step title="Open the picker">
+    In the meeting's **...** menu, click **Reschedule**. The **Reschedule meeting** window loads the free times (**Loading available times…**), grouped by day.
+  </Step>
+  <Step title="Pick a new time">
+    Times are shown in the contact's time zone, as the line **Times shown in** says. Click a time to select it.
+  </Step>
+  <Step title="Confirm">
+    Click **Confirm new time**. You'll see "Meeting rescheduled".
+  </Step>
+</Steps>
+
+The meeting keeps its booking, its calendar event and Zoom meeting move with it, reminders are planned again for the new time, and the contact gets the confirmation message. If someone took the slot while you were choosing, you'll see "That time is no longer available"; pick another. **No other times are available.** means the type has no free slot in its booking window.
+
+## Cancel a meeting
+
+Click **Cancel meeting** in the menu. The confirmation names the meeting and the contact and says they'll be notified and the calendar event removed. Confirm to cancel: you'll see "Meeting cancelled", the contact gets the cancellation message, pending reminders stop, and any calendar event and Zoom meeting are deleted. The slot becomes free again.
+
+Cancelling can't be undone. To meet anyway, the contact has to book again.
+
+## Mark completed or no-show
+
+Once a meeting's start time has passed, record how it went with **Mark completed** or **Mark as no-show**. You'll see "Meeting marked completed" or "Meeting marked as a no-show", and the meeting moves to **Past** with that status. Any reminders still pending are dropped.
+
+Each meeting can be marked once. You'll see an error if:
+
+- **This meeting has not started yet.** The start time is still in the future.
+- **This meeting was already cancelled or marked.** Someone else got there first.
+
+## What contacts can do themselves
+
+Contacts can reschedule or cancel an upcoming meeting from their own booking page, linked from their messages. Their changes appear here straight away. See [Booking page](/guide/appointments/booking-page).
+
+## Records and notifications
+
+Cancellations, reschedules and outcomes your team makes are recorded in the [audit log](/guide/analytics/audit-log). New, rescheduled and cancelled bookings also send `booking.created`, `booking.rescheduled` and `booking.cancelled` events to your webhooks; see [Webhooks](/webhooks/overview).
+
+## Related
+
+- [Appointments overview](/guide/appointments/overview)
+- [Confirmations and reminders](/guide/appointments/messages-and-reminders)
+- [Booking page](/guide/appointments/booking-page)

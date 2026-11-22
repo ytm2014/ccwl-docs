@@ -1,0 +1,77 @@
+---
+title: "Export reports"
+sidebarTitle: "Export reports"
+description: "Download the Pipeline and Ad attribution reports as CSV or PDF, see what each file contains, and where to get other data."
+keywords: ["export", "download", "CSV", "PDF", "pipeline report export", "ad attribution export", "spreadsheet"]
+---
+
+Two sales inbox reports can be downloaded: **Pipeline** and **Ad attribution**. Each has an **Export** menu at the top right with **Download CSV** (for spreadsheets) and **Download PDF** (a landscape A4 page to share or print).
+
+## Download a report
+
+<Steps>
+  <Step title="Open the report">
+    In the sidebar, open **Salesbot** > **More**, then **Pipeline** or **Ad attribution**.
+  </Step>
+  <Step title="Set the filters">
+    Choose **From** and **To** (and **Assigned to** on the Pipeline report) and click **Apply**. The export uses exactly these filters.
+  </Step>
+  <Step title="Export">
+    Click **Export**, then **Download CSV** or **Download PDF**.
+  </Step>
+</Steps>
+
+You need the same access as for the report itself: **View the overview** for Pipeline, **View ad attribution, spend and revenue** for Ad attribution.
+
+## Pipeline export
+
+The files are named `pipeline-report.csv` and `pipeline-report.pdf`. The CSV has one row per stage with these columns:
+
+| Column | Meaning |
+| --- | --- |
+| Stage | The stage name. |
+| Outcome | `won`, `lost` or empty. |
+| Entered, Moved on, Moved back | As in the report. |
+| Removed | Stays that ended because the contact's stage was cleared. |
+| Still in stage | Stays from the period that are still open. |
+| Reached won, Lost | Stays whose contact later reached a Won or Lost stage. |
+| Conversion % | Moved on divided by entered; empty for outcome stages. |
+| Completed stays | Stays that ended in the period. |
+| Avg days in stage, Median days in stage | Times in days, with two decimals. |
+| In stage now, Avg days so far | Open stays and their average age in days. |
+
+The CSV has a few columns the screen doesn't show (Removed, Still in stage, Completed stays), and gives times in days rather than minutes, hours or days.
+
+## Ad attribution export
+
+The files are named `ad-attribution.csv` and `ad-attribution.pdf`. The CSV has one row per ad:
+
+| Column | Meaning |
+| --- | --- |
+| Ad ID, Headline | The ad. |
+| Conversations, Messages | Conversations from the ad and their messages. |
+| First-ad contacts | Contacts first brought in by the ad. |
+| Revenue, Revenue currency | Credited revenue and its currency. |
+| Spend, Spend currency | Measured spend and its currency. |
+| Impressions, Clicks | Measured delivery. |
+| Cost per conversation, ROAS | As in the report. |
+| Refund adjustment unavailable | `Yes` when a refund's net amount isn't known. |
+| Measurement updated | When delivery was last measured. |
+| Leads, Cost per lead | Lead form submissions and their cost. These are always the last two columns. |
+
+A figure that isn't available (a dash on screen) is left blank in the CSV. Amounts in different currencies are never converted, so check the currency columns before adding them up.
+
+## What doesn't export
+
+- **Overview**, **Activity** and **Audit log** are on-screen only.
+- Contacts are exported from the contacts list; see [Contacts](/guide/contacts/overview).
+- Broadcast results are on each broadcast's report; see [Broadcasts](/guide/broadcasts/overview).
+- Post and account analytics belong to publishing; see [Publishing analytics](/guide/publishing/analytics).
+
+For anything else, developers can read your data through the API; see the [Quickstart](/quickstart).
+
+## Related
+
+- [Pipeline report](/guide/analytics/pipeline-report)
+- [Ad attribution report](/guide/analytics/ad-attribution)
+- [Sales inbox reports](/guide/analytics/overview)

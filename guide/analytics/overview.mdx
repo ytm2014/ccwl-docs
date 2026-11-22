@@ -1,0 +1,63 @@
+---
+title: "Sales inbox reports"
+sidebarTitle: "Reports overview"
+description: "Which reports the sales inbox has, where to find them, who can open them, and how dates and exports work."
+keywords: ["reports", "analytics", "overview", "activity", "audit log", "pipeline report", "ad attribution", "export", "permissions"]
+---
+
+The sales inbox has its own reports, separate from the analytics for your social posts. They answer questions such as how many people wrote in, whether your team is replying, where deals get stuck in the pipeline, and what your click-to-message ads brought in.
+
+For post and account analytics, see [Publishing analytics](/guide/publishing/analytics).
+
+## The reports
+
+| Report | Answers | Where |
+| --- | --- | --- |
+| [Overview](/guide/analytics/sales-overview) | Conversations, orders and revenue from chats, reply rate, what needs attention, mood of incoming messages, top flows. | In the sidebar, open **Salesbot** > **Overview**. |
+| [Pipeline](/guide/analytics/pipeline-report) | How contacts move through your pipeline stages, win rate and time in each stage. | **Salesbot** > **More** > **Pipeline** |
+| [Ad attribution](/guide/analytics/ad-attribution) | Conversations, leads, revenue, spend and ROAS per click-to-message ad. | **Salesbot** > **More** > **Ad attribution** |
+| [Activity](/guide/analytics/activity-log) | A log of every message, bot, flow run, webhook and integration event, with errors. | **Salesbot** > **More** > **Activity** |
+| [Audit log](/guide/analytics/audit-log) | Who changed what and when: admin and destructive actions. | **Salesbot** > **More** > **Audit log** |
+
+On the **More** page, these sit in the **Reports** group. A report you don't have access to, or that your workspace doesn't include, isn't shown.
+
+<Note>
+Don't see a report? Your plan or your platform doesn't include it yet, or your role doesn't give you access. Ad attribution also needs click-to-message ad tracking to be available.
+</Note>
+
+## Who can see what
+
+Each report follows a permission in your team role:
+
+| Permission | Opens | Default |
+| --- | --- | --- |
+| View the overview | **Overview** and **Pipeline** | Members; viewers can hold it. |
+| View the activity log | **Activity** | Members; viewers can hold it. |
+| View ad attribution, spend and revenue | **Ad attribution** | **Admin** only, unless a custom role grants it. Never available to a member limited to some channels. |
+| View the audit log | **Audit log** | **Admin** only, unless a custom role grants it. Never available to a member limited to some channels. |
+
+Members limited to some channels see figures for their channels only in **Overview** and **Activity**. Roles are managed in your team settings; see [Roles and permissions](/guide/account/roles-and-permissions).
+
+## Dates and time zones
+
+- **Overview** uses a period picker: **This week**, **Last week**, **This month**, **Last month**, **Last 3 months**, **This year**, or your own dates. Each headline figure is compared with the period before.
+- **Pipeline** and **Ad attribution** use **From** and **To** dates and an **Apply** button. They default to the last 28 days, and a range can be at most 90 days and can't end in the future. Otherwise you'll see "Choose a chronological range of at most 90 days ending today or earlier."
+- **Activity** and **Audit log** filter by **Last 24 hours**, **Last 7 days**, **Last 30 days** or **All time**.
+
+Days follow your business calendar (the workspace owner's time zone), not UTC, so "today" means today where your business is.
+
+## Exporting
+
+**Pipeline** and **Ad attribution** have an **Export** menu with **Download CSV** and **Download PDF** for the dates you picked. The other reports are on-screen only. See [Export reports](/guide/analytics/exporting-reports).
+
+## How long data is kept
+
+Activity entries and audit entries are removed automatically after a retention period your platform sets. The audit log is kept for at least a year. Export or note anything you need to keep longer.
+
+## Related
+
+- [Overview dashboard](/guide/analytics/sales-overview)
+- [Pipeline report](/guide/analytics/pipeline-report)
+- [Ad attribution report](/guide/analytics/ad-attribution)
+- [Activity log](/guide/analytics/activity-log)
+- [Audit log](/guide/analytics/audit-log)

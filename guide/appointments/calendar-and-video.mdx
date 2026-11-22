@@ -1,0 +1,58 @@
+---
+title: "Calendar and video meetings"
+sidebarTitle: "Calendar and video"
+description: "What Google Calendar and Zoom do for your appointments: calendar events, busy-time checks, Meet and Zoom links, and what happens on reschedule and cancel."
+keywords: ["Google Calendar", "Google Meet", "Zoom", "calendar sync", "free busy", "booking calendar", "meeting link"]
+---
+
+Appointments work without any calendar, but connecting Google Calendar and Zoom saves you copying details by hand. This page explains what each connection does for your bookings. How to connect them is on [Calendars and meetings](/guide/integrations/google-calendar).
+
+Connecting needs the **Admin** role or the permission to manage integrations. Open **Integrations** at the bottom of the sidebar.
+
+<Note>
+If the Google or Zoom card says it is not available yet, your platform hasn't set it up. Your appointments keep working without it.
+</Note>
+
+## Google Calendar
+
+After you **Sign in with Google** and approve calendar access, the card shows **Connected as** with the Google account, and a **Booking calendar** list (**Choose a calendar…**; your primary calendar is marked **· primary**). Click **Refresh** to reload the list after adding a calendar in Google.
+
+The booking calendar is the default for new meetings and for busy-time checks. Each appointment type can use a different one with its **Calendar account** and **Calendar** fields, or **No calendar (don't sync)**.
+
+For a type with a calendar:
+
+| When | What happens in Google Calendar |
+| --- | --- |
+| A contact books | An event is created on the type's calendar, titled with the type and the contact's name (for example "Intro call with Sam Lee"), with the type's description. The contact's email, if known, is added as a guest. |
+| The type's location is **Google Meet (auto link)** | The event gets a Google Meet link. It is shown as **Join Google Meet** in the bookings list and on the contact's booking page, and goes into `{{meeting.link}}`. |
+| Times are offered | Busy time on that calendar is removed from the free slots, including buffers. |
+| You or the contact reschedule | The event moves to the new time. If Google refuses the change, the booking keeps its old time. |
+| You or the contact cancel | The event is deleted. |
+
+Sync goes one way: changes you make to the event directly in Google don't change the booking. Reschedule or cancel from the bookings list or the contact's booking page instead.
+
+## Zoom
+
+After you **Sign in with Zoom**, the card shows **Connected as** with the Zoom account; meetings are created on that account. Then set an appointment type's **Location** to **Zoom (auto link)**.
+
+| When | What happens in Zoom |
+| --- | --- |
+| A contact books | A Zoom meeting is created and its join link becomes the booking's location (and the calendar event's location, if the type also has a calendar). |
+| A booking is rescheduled | The Zoom meeting moves. If it was deleted in Zoom, a new one is created. |
+| A booking is cancelled | The Zoom meeting is deleted. |
+
+Disconnecting Zoom stops new links being created. **Zoom (auto link)** only appears in the location list while Zoom is available to your workspace.
+
+## When a connection fails
+
+- If Google or Zoom refuses to create the event or meeting, the booking is not made. The booking page asks the visitor to try another time, and a flow takes its failed path if it has one.
+- If Google doesn't answer a busy-time check, the slot is treated as free.
+- If the calendar connection is lost, bookings continue without calendar events or Meet links, as for **No calendar (don't sync)**. Reconnect it under **Integrations**.
+
+Calendar selection, connections and disconnections are recorded in the [audit log](/guide/analytics/audit-log).
+
+## Related
+
+- [Calendars and meetings](/guide/integrations/google-calendar)
+- [Create and edit appointment types](/guide/appointments/appointment-types)
+- [Availability and booking rules](/guide/appointments/availability)

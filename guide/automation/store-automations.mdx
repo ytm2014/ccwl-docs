@@ -1,0 +1,140 @@
+---
+title: "Store automations"
+description: "Start flows from Shopify or WooCommerce orders, checkouts, stock and customer events, and use store steps to look up orders, send status updates, checkout links, products and discount codes."
+keywords: ["store automations", "shopify", "woocommerce", "order placed", "abandoned checkout", "order status", "where is my order", "find order", "checkout link", "discount code", "back in stock", "cash on delivery", "cod"]
+---
+
+When a Shopify or WooCommerce store is connected under **Integrations**, flows can react to what happens in the store and use store data in the conversation. Store triggers are on the **Store events** tab of the trigger picker, and store steps are under the **Sell** tile in the builder.
+
+<Note>
+Don't see **Store events** or the store steps? Your plan or your platform doesn't include store integrations yet, or no store is connected. See [Integrations](/guide/integrations/overview).
+</Note>
+
+## Store triggers
+
+| Trigger | Starts when |
+| --- | --- |
+| **Order placed** | A new order is placed in your store |
+| **Order paid** | An order is paid in your store |
+| **Payment failed** | An order's payment fails |
+| **Checkout abandoned** | A checkout is left unfinished |
+| **Order shipped** | An order is fulfilled / shipped |
+| **Order cancelled** | An order is cancelled |
+| **Order refunded** | An order is refunded |
+| **Product back in stock** | A product comes back in stock |
+| **Inventory low** | A product drops below the stock threshold |
+| **Customer milestone** | A customer crosses a spend / order-count threshold |
+| **Store customer created** | A customer is created in your connected store |
+
+### Narrow a store trigger
+
+| Filter | Available on | What it does |
+| --- | --- | --- |
+| **Store** | All | **Any connected store**, or one store. |
+| **Min order total** / **Max order total** | Order and checkout events | Only orders within this range. |
+| **Currency** | Order and checkout events | For example USD (three letters). |
+| **Payment method contains** | **Order placed** | "Use "cod" to target Cash-on-Delivery orders only." |
+| **Total spent reaches** / **Order count reaches** | **Customer milestone** | The threshold to cross. Set at least one. |
+| **Notify contacts tagged** | **Product back in stock**, **Inventory low** | "Product events have no single recipient — the flow runs for every contact holding this tag." For example *Waitlist*. Required. |
+| **Only this product** | **Product back in stock**, **Inventory low** | **Any product**, or one synced product. |
+
+### Who the flow reaches
+
+"Only buyers who are already contacts on this profile." A store flow must run on a profile, not on **All profiles**.
+
+- **WhatsApp**: "Store-triggered contacts are usually outside the 24-hour window — start the flow with an approved WhatsApp Template (or a Checkout Link step with a template fallback)."
+- **Messenger and Instagram**: "Messenger/Instagram can only reach customers who have messaged this profile before — others are skipped."
+- **SMS**: add a **Send SMS** step to text the customer's phone from any flow.
+
+## Store steps
+
+### Find Order
+
+Looks up an order and loads it into variables such as `{{order.number}}` and `{{order.tracking_url}}`.
+
+| Field | Options |
+| --- | --- |
+| **Look up by** | **This contact (phone / email)** (their latest order), **Order number**, **Email** or **Phone**. |
+| **Value** | For the last three: the value to search, usually a variable. "Tip: collect the order number with a User Input step first, then reference its variable here." |
+
+Connect both **FOUND** and **NOT FOUND**.
+
+### Order Status
+
+Sends the order's status. The **Message** defaults to "Your order `{{order.number}}` is `{{order.status}}` — total `{{order.total}}` `{{order.currency}}`." Turn on **Append tracking link when available** to add the tracking link.
+
+### Checkout Link
+
+"Sends the checkout / payment-retry URL from the trigger (or a preceding Find Order step) with a channel-native button."
+
+| Field | What to enter |
+| --- | --- |
+| **Message** | For example "You left something behind! Finish your order here:" |
+| **Button text** | For example "Complete checkout". |
+| **Discount code** (optional) | `{{discount.code}}` from a Create Discount Code step, or a fixed code. |
+| **Out-of-window template (recommended)** | WhatsApp only: the approved template to send when the 24-hour window is closed, with its parameters, or **No template — skip when window is closed**. |
+
+### Send Product
+
+"Sends a product card: image, title, price and a Buy link — rendered natively per channel." Choose the **Product**, or **From the trigger (back-in-stock)**, and an optional **Message**. With no products you see "No synced products — connect a store and press Sync now under Integrations."
+
+### Sync Contact
+
+Copies store data onto the contact:
+
+- **Backfill email from the store customer** and **Backfill phone from the store customer**;
+- **Add tags (comma-separated)**, for example "Customer, VIP";
+- **Set custom fields**: click **Add** for each field and value.
+
+### Create Discount Code
+
+"Creates a one-off code in your store and exposes it as `{{discount.code}}` for later steps."
+
+| Field | Options |
+| --- | --- |
+| **Type** | **Percentage off** or **Fixed amount off** |
+| **Amount** | Greater than 0 |
+| **Expires (days)** | Days until it expires, or **Never** |
+| **Usage limit** | How many times it can be used, or **Unlimited** |
+| **Code prefix** | For example SAVE |
+
+Connect **SUCCESS** and **FAILED**.
+
+### Update Store Note
+
+"Pushes an internal note onto the store record — handy after COD confirmations or support handovers." Choose **Attach note to**: **The order** or **The customer (Shopify only)**, and write the **Note**.
+
+## Ready-made store flows
+
+Look in the template gallery for:
+
+- **Abandoned Checkout Recovery**: "Nudge shoppers back to a stale checkout, then sweeten with a discount."
+- **Order Status Self-Service**: ""Where is my order?" answered automatically from your store data."
+- **COD Confirmation**: "Confirm Cash-on-Delivery orders with a WhatsApp form before dispatch."
+- **Delivery Review Request**: "Ask for a rating a few days after delivery."
+- **Order Confirmation**, **Shipping Update**, **Back In Stock Alert**, **Payment Failed Recovery**, **VIP Customer Thank You** and **Product Upsell After Purchase**, some with SMS versions.
+
+## Example: "Where is my order?"
+
+1. Trigger: a message containing "order" or "where is".
+2. **User Input**: "What's your order number?", saved to a custom field `order_number`.
+3. **Find Order**: look up by **Order number**, value `{{order_number}}`.
+4. **FOUND**: **Order Status** with the tracking link.
+5. **NOT FOUND**: a message asking them to check the number, then **Handover to Human**.
+
+## Common problems
+
+| You see | What to do |
+| --- | --- |
+| "A store trigger needs this automation to be on a channel" | Move the flow from **All profiles** to one profile. |
+| "Choose the tag of the contacts to notify: a product event has no buyer to write to." | Fill **Notify contacts tagged**. |
+| "Set a total spent or a number of orders for the milestone." | Set a threshold. |
+| "Discount amount must be greater than 0." | Enter an amount. |
+| Customers aren't messaged | They aren't contacts on this profile yet, or the reply window is closed. Use a WhatsApp template or SMS. |
+
+## Related
+
+- [Selling in the chat](/guide/automation/selling-in-chat)
+- [Triggers](/guide/automation/triggers)
+- [Variables](/guide/automation/variables#e-commerce)
+- [Integrations](/guide/integrations/overview)

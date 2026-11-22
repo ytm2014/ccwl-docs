@@ -1,0 +1,111 @@
+---
+title: "Team members and invitations"
+sidebarTitle: "Team members"
+description: "Invite people to a workspace, choose their role and access, change it later, cancel invitations and remove members."
+keywords: ["team", "members", "invite", "invitation", "pending", "remove member", "detach", "edit role", "can approve", "inbox access", "bulk posts access", "rss feeds access", "channels", "members limit"]
+---
+
+Everyone who works in a workspace is a member of it, with a role that decides what they can do there. Admins manage members on the **Team** page. A person can belong to several workspaces with a different role in each; their profile and password stay the same everywhere.
+
+## Open the Team page
+
+The Team page is for workspace admins. In the sidebar, open **Settings** > **Team Members**. Inside workspace settings, it is the **Team** entry of the settings menu. Admins may also find **Team Members** in the user menu (top right).
+
+If the sales inbox is part of your workspace and you can manage roles, the page has two tabs: **Members** and **Roles**. Roles are described in [Roles and permissions](/guide/account/roles-and-permissions).
+
+The **Members** panel lists everyone in the workspace and every invitation that hasn't been accepted yet:
+
+| Column | What it shows |
+| --- | --- |
+| **Name** | The person's name, or a **Pending** badge for an invitation. Hover the information icon on a pending row to see who sent it and when. |
+| **Email** | Their email address. |
+| **Role** | **Admin**, **Member** or **Viewer**, or **Owner** for the person who owns the workspace. A badge such as **Limited to 2 channels** shows when their access is limited to some channels. |
+| **Can approve** | **Yes** if they can approve posts that need approval. |
+| **Joined At** | When they joined. Pending invitations show a dash. |
+
+## Invite someone
+
+<Steps>
+  <Step title="Open the invitation dialog">
+    On the Team page, click **Invite member**.
+  </Step>
+  <Step title="Enter their email address">
+    Type the address in **Email**. The invitation is sent there.
+  </Step>
+  <Step title="Pick a role">
+    Choose **Admin** (can access and edit everything), **Member** (can access and edit everything except the configuration) or **Viewer** (can access everything except the configuration, but cannot edit or schedule posts). See [Roles and permissions](/guide/account/roles-and-permissions) for the details.
+  </Step>
+  <Step title="Choose their access">
+    For a member or viewer, choose what else they can do. The dialog shows the choices your workspace uses (see below).
+  </Step>
+  <Step title="Send it">
+    Click **Invite**. You see **Member invited successfully.** and the person appears in the list as **Pending**.
+  </Step>
+</Steps>
+
+The person gets an email. When they open it and sign in (or sign up), they see **Join … workspace** with the name of whoever invited them, and click **Accept** or **Decline**. Once they accept, their row shows their name and **Joined At** date.
+
+### Access options in the dialog
+
+Depending on what your workspace includes, the dialog shows one of these sets of options.
+
+**Individual options.** Tick what the person needs:
+
+| Option | What it allows |
+| --- | --- |
+| **Can Approve** | Approve posts that are waiting for approval. |
+| **Inbox Access** | Open the inbox and work on conversations. |
+| **Bulk Posts Access** | Use **Bulk Posts**. |
+| **RSS Feeds Access** | Use **RSS Campaigns**. |
+
+If the sales inbox is part of your workspace you can also pick a **Team role**, which replaces the Inbox, Bulk Posts and RSS options, and tick channels under **Salesbot channels** or **Channels (posting and Salesbot)** to limit the person to those channels. Tick no channel to give them every channel.
+
+**A custom role.** In workspaces where team roles decide access, the dialog has a **Custom role** list instead. A member with a role gets exactly that role's permissions. A member without a role gets no Inbox, Bulk Posts, RSS or post approval access, so choose a role to grant them. If no role exists yet, the dialog offers a link to create one. On a plan without team roles, an **Inbox Access** box is shown instead.
+
+Admins always have every permission, so these options don't apply to them.
+
+### Members limit
+
+Your plan may limit how many people can work in the workspace. When the limit is reached, the invitation is refused with **Members limit reached** and the limit. Remove a member or change your plan; see [Usage and plan limits](/guide/billing/usage-and-limits).
+
+## Cancel an invitation
+
+Open the menu at the end of the pending row, click **Cancel**, and confirm. The invitation is withdrawn. You can invite the same address again later. Inviting an address that already has a pending invitation shows **This member is already invited.**, and inviting someone who is already in the workspace shows **This user is already a member of this workspace.**
+
+## Change someone's role or access
+
+<Steps>
+  <Step title="Open the menu on their row">
+    Click the menu at the end of the person's row, then **Edit role**.
+  </Step>
+  <Step title="Make your changes">
+    The **Edit role for …** dialog has the same choices as the invitation. If the person has no custom role, it tells you which access they keep today. Saving with a role replaces their own channel limit with the role's channels.
+  </Step>
+  <Step title="Save">
+    Click **Update**. You see **Role updated**.
+  </Step>
+</Steps>
+
+You can't change your own role or the owner's: those rows have no menu.
+
+## Remove someone
+
+Open the menu on their row, click **Remove**, and confirm **Detach user**. They lose access to this workspace straight away. Their account is not deleted, and they keep any other workspaces they belong to. The owner can't be removed.
+
+## Common questions
+
+**The person never got the invitation email.**
+Check the address on the pending row. If it's wrong, cancel the invitation and send a new one. Ask them to look in their spam folder.
+
+**Can a member invite people?**
+No. The Team page is for admins only.
+
+**Someone left the company. Do their posts disappear when I remove them?**
+Removing a member only takes away their access to the workspace.
+
+## Related
+
+- [Roles and permissions](/guide/account/roles-and-permissions)
+- [Notifications](/guide/account/notifications)
+- [Workspace settings](/guide/account/workspace-settings)
+- [Usage and plan limits](/guide/billing/usage-and-limits)

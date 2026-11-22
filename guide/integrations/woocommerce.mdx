@@ -1,0 +1,83 @@
+---
+title: "WooCommerce"
+description: "Connect your WooCommerce store to sync products, customers and orders, start flows from store events and use the e-commerce steps in conversations."
+keywords: ["WooCommerce", "WordPress", "store", "orders", "REST API", "consumer key", "webhooks", "e-commerce", "abandoned checkout"]
+---
+
+The **WooCommerce** card on the [Integrations](/guide/integrations/overview) page connects your WooCommerce store. Once connected, your products, customers and recent orders are synced, store events can start flows, and the e-commerce steps let a flow look up an order, send a product or create a discount code in the chat.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Commerce** tab.
+
+<Note>
+Don't see **WooCommerce**, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Before you start
+
+- Your store must be served over HTTPS, for both the API and webhooks.
+- You need an administrator account in WordPress to create REST API keys.
+
+## Connect WooCommerce
+
+<Steps>
+  <Step title="Create a REST API key">
+    In WordPress admin, open **WooCommerce → Settings → Advanced → REST API** and add a key with **Read/Write** permissions. Copy the consumer key (starts with `ck_`) and consumer secret (starts with `cs_`).
+  </Step>
+  <Step title="Fill in the form">
+    In the sidebar, open **Integrations** > **WooCommerce**. Under **Store connection**, enter the **Store URL** (for example `shop.example.com`, including a sub-folder if your shop lives in one), the **Consumer key** and the **Consumer secret**.
+  </Step>
+  <Step title="Connect">
+    Click **Connect store**. The store is checked first, then webhooks are created in WooCommerce for you and the first sync starts. The page confirms "Store connected — syncing products, customers and recent orders…".
+  </Step>
+</Steps>
+
+The setup guide also shows the **Webhook endpoint (registered automatically)**. You don't need to add it in WooCommerce yourself; you'll see the new webhooks under **WooCommerce → Settings → Advanced → Webhooks**.
+
+## What syncs
+
+The **Synced data** panel counts the **Products**, **Customers** and **Orders** synced from your store, with the last sync time. After the first sync, WooCommerce sends order, customer and product changes as they happen. Click **Sync now** to run a full sync again.
+
+## Webhook health
+
+**Webhook health** checks that your store is still sending events:
+
+- Click **Check webhooks**. The panel then says "All expected subscriptions are active.", or lists the ones that are **Missing** or **Disabled**, with the time of the check.
+- Click **Repair subscriptions** to set them up again. WooCommerce disables a webhook after repeated failed deliveries, so check here if events stop.
+
+## Store events that start flows
+
+Set a flow's trigger to a store event: **Order placed**, **Order paid**, **Payment failed**, **Checkout abandoned**, **Order shipped**, **Order cancelled**, **Order refunded**, **Product back in stock**, **Inventory low**, **Customer milestone** or **Store customer created**. See [Shopify](/guide/integrations/shopify#store-events-that-start-flows) for what each means and [Flows](/guide/automation/overview) for building the flow.
+
+For WooCommerce, an order left unpaid in the **Pending payment** status counts as an abandoned checkout after a while (an hour by default).
+
+The same events are available to [Webhooks](/guide/integrations/webhooks), [Slack](/guide/integrations/slack) and [Zapier](/guide/integrations/zapier).
+
+## E-commerce steps
+
+Under **E-commerce** in the flow builder: **Find Order**, **Order Status**, **Checkout Link**, **Send Product**, **Sync Contact**, **Create Discount Code** and **Update Store Note**.
+
+## Who gets messaged
+
+A store event only messages someone who can already be reached on the flow's channel:
+
+- **WhatsApp:** store customers are usually outside WhatsApp's 24-hour window, so send an approved template first. Only customers who already have a WhatsApp conversation with your number are messaged; an order never adds a new contact.
+- **Messenger and Instagram:** Meta only allows messages to people who messaged your page before, so store events for unknown customers are skipped on those channels.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The webhooks are removed from your store where possible, the keys are deleted, and store triggers and steps stop working for this store. You can also revoke the REST API key in WordPress.
+
+## Troubleshooting
+
+- **"Enter the consumer key and the consumer secret."** Both are needed the first time, or when you change the store URL.
+- **"That store URL is not reachable as a public store host (…)."** Use the public address of your shop, served over HTTPS.
+- **"Could not reach the store API: …"** The keys are wrong or have only Read permission, or the store's REST API didn't answer. The message ends with the store's reason. Nothing is saved; fix it and connect again.
+- **"Some store webhooks could not be registered"** after connecting: use **Repair subscriptions** once the store allows it.
+- **"The store could not be read completely."** A sync stopped part-way. Click **Sync now**.
+
+## Related
+
+- [Shopify](/guide/integrations/shopify)
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [Flows](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

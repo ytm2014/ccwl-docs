@@ -1,0 +1,79 @@
+---
+title: "Live chat"
+description: "Add a chat widget to your website, style it, choose where it appears, and answer visitors from the Inbox."
+keywords: ["live chat", "website chat", "chat widget", "embed code", "snippet", "customizer", "quick replies", "page rules", "retire widget", "erase widget data"]
+---
+
+The live chat widget is a chat bubble on your own website. Visitors' messages land in your Inbox like any other channel, and your flows, appointments and payment links work in it too. You can create several widgets, for example one per website.
+
+<Note>
+Creating and changing widgets needs the permission to connect channels, which is admin-only unless a custom role grants it.
+</Note>
+
+## Create a widget
+
+<Steps>
+  <Step title="Start a new widget">
+    In the sidebar, open **Accounts**, click **Add account** and choose **Live Chat**. You can also open **Salesbot** > **More** > **Live chat widget** and choose **Create new widget** in the channel picker.
+  </Step>
+  <Step title="Name it">
+    Enter a **Name (optional)** or **Widget name**, such as *Website Chat*. The name is shown in your channel selector and in the Inbox, not to visitors.
+  </Step>
+  <Step title="Create it">
+    Click **Create widget**. The customizer opens.
+  </Step>
+</Steps>
+
+## Customise the widget
+
+The **Customizer** has these sections. A preview shows the widget open or as a launcher while you edit.
+
+| Section | Settings |
+| --- | --- |
+| **Widget** | **Name**. |
+| **Design** | **Version**: **Classic** opens straight into the conversation; **Home** shows a landing screen with your channels first. |
+| **Brand** | **Accent** colour, **Agent name** and **Greeting**. |
+| **Layout** | **Header** (**Gradient** or **Solid**), **Channels** (**Buttons** or **Icons**), **Dock side** (**Right** or **Left**), **Greeting teaser**. Under **Advanced**: **Distance from side (px)**, **Distance from bottom (px)** and, with **Use different spacing on phones**, separate phone values. |
+| **Channels** | Show *Chat with us on your favorite app* links to your other messaging channels. |
+| **Behavior** | **Online** (show the agent as available), **Show typing indicator**, **Status text**, **Launcher text**, **Offline message**, **Require email before chat**, and up to 6 **Quick replies** visitors can tap. |
+| **Where it appears** | **Pages** (**All pages**, **Only these** or **All except**, with up to 50 page rules), **Devices** (**All**, **Desktop** or **Mobile**), **Show after (seconds)** (0 to 5 minutes) and **Show on exit intent**. |
+
+Click **Save changes**.
+
+### Page rules
+
+A page rule matches anywhere in the page address and ignores capitals. Use `*` as a wildcard. With **Only these** and no rules, the widget appears nowhere. Changes to rules can take up to 5 minutes to reach visitors who are already browsing.
+
+<Tip>
+Move the launcher with the distance settings if it covers a sticky button or banner on your site. On a phone, an open chat fills the screen.
+</Tip>
+
+## Install it on your website
+
+Under **Install**, click **Copy snippet** and paste the snippet just before `</body>` on every page where the widget should appear. If your site uses a template or theme, adding it once to the shared footer covers every page. Then open your site and send a test message; it should appear in your Inbox.
+
+## Answer visitors
+
+Visitors' messages appear in the Inbox under the widget's name. You reply as on any channel, and visitors see your replies in the widget. With **Show typing indicator** on, they see when you're typing. If **Require email before chat** is on, visitors enter their email before they can start, so you can follow up if they leave.
+
+Live chat has no reply window.
+
+## Rename, retire or erase a widget
+
+- **Rename**: change **Name** in the customizer, or use **Edit name** on the widget's card on the **Accounts** page.
+- **Retire widget** (under **Danger zone**): stops new chats and messages. The install snippet stops working, but conversations and contacts are kept.
+- **Erase widget data**: available once the widget is retired. Permanently erases its conversations, and the contacts who only used this widget; contacts who also use another channel are kept. Type the widget's name to confirm. This can't be undone.
+
+## Troubleshooting
+
+**The widget doesn't show on my site.** Check that the snippet is on the page, then check **Where it appears**: the page rules, the device setting and **Show after (seconds)**. New rules can take up to 5 minutes.
+
+**The widget shows on pages where it shouldn't.** Switch **Pages** to **Only these** or **All except** and add rules.
+
+**Visitors can't start a chat.** The widget may be retired. Create a new widget and replace the snippet.
+
+## Related
+
+- [Messaging channels](/guide/channels/overview)
+- [The Inbox](/guide/inbox/the-inbox)
+- [Appointments](/guide/appointments/overview)

@@ -1,0 +1,131 @@
+---
+title: "Comment automation and comment-to-DM"
+sidebarTitle: "Comments and comment-to-DM"
+description: "Reply to comments and reviews automatically, send commenters a private message, moderate comments, and watch posts and ads."
+keywords: ["comment automation", "comment to dm", "auto reply comments", "reply to comment", "like comment", "hide comment", "delete comment", "private reply", "instagram comments", "facebook comments", "ad comments", "google review reply", "lead magnet"]
+---
+
+Comment flows start when someone comments on one of your posts (or replies, mentions you, or leaves a Google review) and can answer in public, send the person a private message, and like, hide or delete the comment. A classic use is comment-to-DM: "Comment GUIDE and I'll send it to you", where the flow replies under the comment and sends the guide by direct message.
+
+## Comment triggers
+
+| Platform | Triggers |
+| --- | --- |
+| Facebook | **Facebook comments** (posts and ads) |
+| Instagram | **Post or Reel comments**, **Live comments**, **Story reply**, **Story mentions** |
+| TikTok | **Video comments** |
+| Threads | **Threads replies** |
+| YouTube | **YouTube comments** |
+| LinkedIn | **LinkedIn comments** (Page posts) |
+| Reddit | **Reddit comments** |
+| Mastodon | **Mastodon mentions** |
+| Bluesky | **Bluesky replies** |
+| Google Business | **Google review** |
+
+Threads, YouTube, LinkedIn, Reddit and Google Business are comment-only profiles: flows there can answer in public but can't send private messages.
+
+## Choose which posts it watches
+
+On the trigger, **Which posts?** offers **All posts** (any of your posts, including future ones) or **Specific**, where you tick posts from your recent ones. Story triggers ask **Which stories?** the same way.
+
+### Comments on your ads
+
+On Facebook and Instagram, comments on ads are included in **All posts**. To target one ad, choose **Specific** and either:
+
+- click **Load posts from active ads** (where your ad account is connected) and tick the ad's post; or
+- paste the **Post ID (including an ad's post)** and click **Add**. "Use the post ID behind the ad, not its campaign or ad ID. Facebook IDs use PageID_PostID."
+
+"After you publish, comments on selected unpublished ad posts are checked every few minutes."
+
+## Filter the comments
+
+Set the trigger's **Trigger type**:
+
+- **Any message (no keyword filter)**: every comment;
+- **Message contains a keyword**, **Message is an exact match** or **Message starts with a keyword**: only comments with your keywords, such as GUIDE or PRICE;
+- **Only questions**: "Runs for comments that ask something (a question mark or a question word). Emojis, tags and short praise are skipped."
+
+Turn on **Only respond once per contact** so a person who comments several times gets one reply.
+
+## Reply in public
+
+Add **Reply to Comment** (under **Send message**). "Posts a public reply under the comment. Pair it with a Send Message step to also DM the commenter privately."
+
+- **Public reply**: the reply text, with variables such as `{{first_name}}`.
+- **Alternate versions**: click **Add another version** for other wordings. "Versions are rotated so replies don't look automated."
+
+To let AI write the reply, use an **AI Reply** step (or the **Reply to comments with AI** template). Its **Public reply** settings include a **Daily reply limit on this profile** ("Leave it empty for the platform's safe default; 0 means no limit.") and **Add an "AI-assisted" note to each reply**. See [The AI Reply step](/guide/automation/ai-replies).
+
+## Comment-to-DM
+
+After the public reply, add a **Send Message** step with **Send as** set to **Direct message** (or **Automatically**). On Facebook and Instagram this sends the commenter a private reply in their inbox. Each comment can receive one private reply; after that, the conversation continues once the person writes back.
+
+<Steps>
+  <Step title="Trigger">
+    **Post or Reel comments** (or **Facebook comments**), **Specific** post, **Message contains a keyword**: GUIDE. Turn on **Only respond once per contact**.
+  </Step>
+  <Step title="Reply to Comment">
+    "Thanks! Check your DMs" with two or three alternate versions.
+  </Step>
+  <Step title="Send Message (Direct message)">
+    "Here's your guide, `{{first_name}}`" with an **Open URL** button.
+  </Step>
+  <Step title="Optional">
+    A **Tag Action** ("Guide lead") and, if they reply, an **AI Reply** or a hand-over.
+  </Step>
+</Steps>
+
+The **Comment-to-DM flow**, **Comment-to-DM Lead Magnet**, **Follower-Gated Lead Magnet**, **Drive traffic from comments** and **Sell from Reel comments** templates are ready-made versions.
+
+<Warning>
+A flow started by a comment can't ask a question with **User Input** straight away: "the answer can only come back as a direct message." Send a direct message first, and let the person's reply start a message flow, or keep questions for after they write back.
+</Warning>
+
+## Moderate comments
+
+Add **Like Comment**, **Hide Comment** or **Delete Comment** (under **Send message**, shown only when a comment starts the flow):
+
+- **Like Comment**: "Likes the comment that triggered this flow — a light touch that boosts engagement."
+- **Hide Comment**: "Hides the comment from everyone except its author. Good for filtering spam or negativity without deleting."
+- **Delete Comment**: "Permanently deletes the comment. Use sparingly — this can't be undone."
+
+Combine them with a Condition on **Comment text** to hide comments containing words you choose, or with **AI sentiment** after a **Message classified** trigger.
+
+### What works where
+
+| Platform | Like | Hide | Delete |
+| --- | --- | --- | --- |
+| Facebook | Yes | Yes | Yes |
+| Instagram | No | Yes | Yes |
+| TikTok | Yes | No | Yes |
+| YouTube | No | Yes | No |
+| Threads | No | Yes | No |
+| LinkedIn | Yes | No | Yes |
+| Reddit | Yes (upvote) | No | Yes (moderator removal) |
+| Mastodon | Yes (favourite) | No | No |
+| Bluesky | Yes | No | No |
+| Google Business | No | No | No (reviews can only be answered) |
+
+Liking, hiding and deleting also need your platform to have enabled moderation for that network, and the profile's connection must include the permission. If it doesn't, the step is refused by name, for example "The channel's stored token does not show the permission this comment action needs. Reconnect the channel with it."
+
+## Google reviews
+
+The **Google review** trigger starts a flow when a customer leaves a review. Reply with **Reply to Comment** or an AI Reply step (the **AI review reply** template). On Google Business flows a Condition can check the **Review star rating** (is at most, is at least, is, is not; 1 to 5), so you can thank five-star reviews and pass low ones to a person.
+
+## Troubleshooting
+
+| Problem | What to check |
+| --- | --- |
+| No reply on some comments | The trigger's keywords, **Which posts?** and **Only respond once per contact**. Another Live flow on the same trigger may be answering instead. |
+| Reply but no DM | The platform allows one private reply per comment, and comment-only profiles can't send DMs. |
+| "Reply to Comment "…" has no public reply text." | Write the reply text. |
+| "Liking, hiding and deleting comments is not available on this platform yet." | Moderation isn't enabled for that network on your platform. |
+| "The comment this step acts on is no longer available." | The comment was deleted before the step ran. |
+| Replies stop on a busy day | The AI step's daily reply limit or the platform's own limit was reached. |
+
+## Related
+
+- [Triggers](/guide/automation/triggers)
+- [Message and question steps](/guide/automation/message-steps)
+- [The AI Reply step](/guide/automation/ai-replies)
+- [Quick automations](/guide/automation/quick-automations)

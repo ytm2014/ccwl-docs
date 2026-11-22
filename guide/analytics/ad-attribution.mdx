@@ -1,0 +1,88 @@
+---
+title: "Ad attribution report"
+sidebarTitle: "Ad attribution"
+description: "See the conversations, leads, revenue, spend and ROAS each click-to-message ad brought in."
+keywords: ["ad attribution", "ads report", "ROAS", "click-to-message", "click-to-WhatsApp", "Meta Ads", "spend", "cost per lead", "revenue"]
+---
+
+The Ad attribution report shows what your click-to-message ads (ads that open a chat on WhatsApp, Messenger or Instagram) brought in: the conversations they started, the new contacts and leads, the revenue those contacts paid, and, with Meta Ads connected, what each ad cost.
+
+In the sidebar, open **Salesbot** > **More** > **Ad attribution**. It is available to workspace admins, and to others only if a custom role grants **View ad attribution, spend and revenue**. Members limited to some channels can't open it.
+
+<Note>
+Don't see **Ad attribution**? Your plan or your platform doesn't include ad tracking yet.
+</Note>
+
+## How credit is given
+
+Each contact is credited to the **first paid touch**: the first ad that brought them into a chat.
+
+- **Conversations** are contact threads with an incoming direct message in the period, credited to that channel's first ad.
+- **First-ad contacts** are contacts whose first ad across all your channels was this ad.
+- **Revenue** is paid orders and payments recorded in the period, credited to the contact's first ad. A payment linked to an order counts once.
+- Deleted message history is not rebuilt.
+
+The page repeats this as a note under the figures. How the ad details are captured on each message is explained in [Ad referrals](/ad-referrals).
+
+## Pick the dates
+
+Set **From** and **To** in the strip under the title and click **Apply**. The default is the last 28 days; a range can be at most 90 days and can't end in the future.
+
+## The tiles
+
+| Tile | Meaning |
+| --- | --- |
+| **Ads** | The number of ads in the report. |
+| **Conversations** | Conversations started from your ads. |
+| **First-ad contacts** | New contacts first brought in by an ad. |
+| **Leads** | Facebook lead form submissions from your ads. Only shown when at least one ad brought in a lead. |
+| **Recorded revenue** | Revenue credited to your ads. |
+| **Measured spend** | What the ads cost, from Meta Ads. |
+
+## The table
+
+One row per ad, with its headline (or **Untitled ad**), its ad ID and when its measurement was last updated.
+
+| Column | Meaning |
+| --- | --- |
+| **Conversations** | Conversations from this ad, with the number of messages underneath. |
+| **First-ad contacts** | Contacts first brought in by this ad. |
+| **Leads** | Lead form submissions (when any ad has leads). A lead counts as a new contact only if the form created them, not if it matched someone you already had. |
+| **Revenue** | Revenue credited to the ad. **Refund adjustment unavailable** means a refund was found whose net amount isn't known. |
+| **Spend**, **Impressions**, **Clicks** | Delivery measured by Meta Ads. |
+| **Cost / conversation** | Spend divided by conversations. |
+| **Cost per lead** | Spend divided by leads (when any ad has leads). |
+| **ROAS** | Revenue divided by spend, for example 3.2×. |
+
+A dash means a figure isn't available. ROAS is withheld when currencies are mixed, a measurement is missing or a refund isn't resolved; revenue is also withheld for refunds with no reliable net amount. Currencies are never converted.
+
+## Meta Ads connection status
+
+Without Meta Ads you still get conversations, contacts and revenue recorded in your workspace; spend, impressions, clicks, costs and ROAS need the Meta Ads integration. A status line above the table tells you where things stand:
+
+| Message | What to do |
+| --- | --- |
+| Connect Meta Ads to add delivery and spend measurements. | Connect Meta Ads under **Integrations**. See [Meta Ads](/guide/integrations/meta-ads). |
+| Choose an ad account in Integrations to begin synchronization. | Pick the ad account on the Meta Ads card. |
+| The connected account is awaiting its first successful synchronization. | Wait for the first refresh. |
+| Delivery was refreshed successfully. | Nothing; each row shows when it was last measured. |
+| Saved ad delivery has not been refreshed recently. | Check the Meta Ads connection. |
+| Ad delivery could not be refreshed. | Check the Meta Ads connection; saved figures may be out of date. |
+| Ad synchronization is unavailable on the current plan or configuration. | Your plan or platform doesn't include ad syncing. |
+
+When a refresh has worked, the line also shows the time of the last successful refresh.
+
+## Partial reports
+
+Very busy workspaces may see **Partial report: the scan limit was reached.** The totals then cover only the records included, and ROAS is withheld. Choose a shorter date range.
+
+## Export
+
+Use **Export** > **Download CSV** or **Download PDF**. See [Export reports](/guide/analytics/exporting-reports).
+
+## Related
+
+- [Ad referrals](/ad-referrals)
+- [Meta Ads](/guide/integrations/meta-ads)
+- [Sales inbox reports](/guide/analytics/overview)
+- [Export reports](/guide/analytics/exporting-reports)

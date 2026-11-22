@@ -1,0 +1,72 @@
+---
+title: "Delete and restore contacts"
+sidebarTitle: "Delete and restore"
+description: "Delete contacts, bring them back within 30 days from Recently deleted, or erase them for good."
+keywords: ["delete contact", "restore contact", "recently deleted", "erase permanently", "recovery", "30 days", "bulk delete"]
+---
+
+Deleting a contact removes the person and their conversations from your workspace straight away, but keeps an encrypted recovery copy for 30 days so an admin can bring them back. Erasing removes the person and every recovery copy for good.
+
+## Delete one contact
+
+You need the **Delete contacts** permission. If your role is limited to some channels, you can only delete a contact whose channels you all have.
+
+- From the list: open the row's actions menu and choose **Delete**.
+- From the board: open the card's menu and choose **Delete**.
+- From the profile: **More contact actions** > **Delete contact**.
+
+Confirm in the dialog. It reminds you that a workspace admin can restore the contact record for 30 days and that attached files will be erased.
+
+## Delete many contacts
+
+On the list, tick contacts (or use **Select all *n* matching**), then click the bin in the selection bar and confirm *Delete n contacts and their conversations?*. Bulk deleting needs the **Delete contacts in bulk** permission and is limited to 5,000 contacts at a time. See [The contact list](/guide/contacts/contact-list#act-on-several-contacts).
+
+## Restore a deleted contact
+
+Restoring needs the **See deleted contacts and restore them** permission, which is admin-only unless a custom role grants it.
+
+<Steps>
+  <Step title="Open Recently deleted">
+    On the contact list, choose **More contact actions** > **Recently deleted**.
+  </Step>
+  <Step title="Find the contact">
+    Each row shows the name, email or phone, and **Expires** with the date the recovery copy will be erased.
+  </Step>
+  <Step title="Restore">
+    Click **Restore** and confirm. The restored profile opens.
+  </Step>
+</Steps>
+
+What comes back and what doesn't:
+
+- The contact returns with their conversations, notes and tags.
+- Deleted files stay erased, and automations that were running stay stopped.
+- A row marked **Partial history** was too large to keep in full, so some older history isn't in the copy.
+- A row marked **Merged: contact record only** was the duplicate in a merge. Its conversations already live on the contact it was merged into, so only the contact record comes back.
+- If the person wrote in again after the delete, they became a new contact that now holds their channel. The restored contact isn't linked to that channel; merge the two from the profile. See [Merge duplicate contacts](/guide/contacts/merge-duplicates).
+- Restoring counts as adding a contact. At your plan's contact limit it's refused until you make room. See [Contact limits](/guide/contacts/contact-limits).
+
+After 30 days the recovery copy is erased automatically and the contact can't be restored.
+
+## Erase a contact for good
+
+Use this for a deletion request, when no copy may be kept.
+
+- **A live contact:** choose **Erase permanently** from the row's actions menu on the list, or **More contact actions** > **Erase permanently** on the profile. You need the **Erase a contact past recovery** permission (admin-only by default). Confirm *Permanently erase name and any recovery snapshots? This cannot be undone.*
+- **An already deleted contact:** on **Recently deleted**, click **Erase permanently** on its row and confirm. You need the **Erase a deleted contact for good** permission (admin-only by default).
+
+<Warning>
+Erasing can't be undone. Download the person's data first if you need to keep a copy for them. See [Data, privacy and consent](/guide/contacts/data-and-privacy).
+</Warning>
+
+## Common questions
+
+**I don't see Recently deleted.** Your role can't restore contacts. Ask a workspace admin.
+
+**Can I restore a contact after 30 days?** No. The copy is erased automatically when it expires.
+
+## Related
+
+- [The contact list](/guide/contacts/contact-list)
+- [Merge duplicate contacts](/guide/contacts/merge-duplicates)
+- [Data, privacy and consent](/guide/contacts/data-and-privacy)

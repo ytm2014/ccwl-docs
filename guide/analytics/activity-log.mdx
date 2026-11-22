@@ -1,0 +1,74 @@
+---
+title: "Activity log"
+sidebarTitle: "Activity"
+description: "Search and filter the log of messages, bots, flows, broadcasts, webhooks and integrations to find out why something didn't happen."
+keywords: ["activity", "logs", "errors", "warnings", "flow failed", "message not delivered", "webhook", "troubleshooting"]
+---
+
+**Activity** is the log of everything the sales inbox does behind the scenes: messages sent and received, bot replies, flow runs, broadcasts, deliveries, webhooks and integrations. When a flow didn't run, a reminder never arrived or a message failed, this is where you find out why.
+
+In the sidebar, open **Salesbot** > **More** > **Activity**. The page is titled **Logs**. You need the **View the activity log** permission.
+
+## Scope
+
+The log shows events for the channel picked at the top of the page, plus workspace-wide events that belong to no channel (for example a failed background job or a token warning). Members limited to some channels see only events on their channels.
+
+## Status tabs
+
+Three tabs at the top give a quick count and filter the list:
+
+| Tab | Shows |
+| --- | --- |
+| **All events (24h)** | The count of events in the last 24 hours. Selecting it shows every status. |
+| **Warnings** | Only warnings, with their count. |
+| **Errors** | Only errors, with their count. |
+
+## Search and filter
+
+- **Search events**: type a word to filter as you type.
+- **Filters**: opens a menu with:
+  - **Event**: **All events**, **Messages**, **Broadcasts**, **Bots**, **Automations**, **Webhooks**, **Integrations**, **Delivery**, **System** or **Errors**.
+  - **Status**: **All statuses**, **Success**, **Warning** or **Error**.
+  - **Platform**: **All platforms** or one platform.
+  - **Date range**: **All time**, **Last 24 hours**, **Last 7 days** or **Last 30 days**.
+
+The **Filters** button shows how many filters are active. **Clear filters** resets everything. If nothing matches, the page says **No log entries match your filters.**
+
+## Read the list
+
+| Column | Shows |
+| --- | --- |
+| **Status** | Success, warning or error. |
+| **Event** | What happened, with its type as a label. |
+| **Platform** | The channel's platform, or a dash. |
+| **Profile** | The connected account involved, or a dash. |
+| **When** | How long ago. |
+
+Long lists are split into pages.
+
+## Open an entry
+
+Click a row to open its details on the side:
+
+- **Error**: the reason, in plain words where the platform gave one, for example a message refused by Meta.
+- **Type**, **Platform**, **Profile** and **When** (the exact time).
+- **Details**: the technical record of the event. Share it with support if you need help.
+
+## Use it to troubleshoot
+
+| Problem | What to look for |
+| --- | --- |
+| A flow didn't run or stopped | Filter **Event** by **Automations** and **Status** by **Error**. |
+| A message or reminder wasn't delivered | Filter by **Messages** or **Delivery**. A closed messaging window, an opted-out contact or a contact with no chat channel all show here. |
+| A broadcast had failures | Filter by **Broadcasts**. |
+| An integration or webhook isn't receiving data | Filter by **Webhooks** or **Integrations**. |
+| The Overview says flow runs failed this week | Open **Errors**. |
+
+Entries are removed after a retention period your platform sets.
+
+## Related
+
+- [Sales inbox reports](/guide/analytics/overview)
+- [Audit log](/guide/analytics/audit-log)
+- [Confirmations and reminders](/guide/appointments/messages-and-reminders)
+- [Automation not triggering](/guide/troubleshooting/automation-not-triggering)

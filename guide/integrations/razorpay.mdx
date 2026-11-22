@@ -1,0 +1,55 @@
+---
+title: "Razorpay"
+description: "Connect Razorpay with your key ID, key secret and a webhook secret to send Razorpay payment links in conversations."
+keywords: ["Razorpay", "payments", "key ID", "key secret", "webhook secret", "India", "INR", "payment link"]
+---
+
+The **Razorpay** card on the [Integrations](/guide/integrations/overview) page connects your Razorpay account, so you can send Razorpay payment links in conversations and track whether they're paid. Razorpay supports INR, and international currencies if your account has them enabled; amounts are charged in paise. For how payment links, triggers and the inbox button work, see [Payment gateways](/guide/integrations/payment-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Payments** tab.
+
+<Note>
+Don't see **Razorpay**, or does it say **Not included in your plan**? Your plan or your platform doesn't include payments yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Key ID** | Your Razorpay key ID, starting with `rzp_test_` or `rzp_live_`. |
+| **Key secret** | The secret that belongs to that key ID. |
+| **Webhook secret** | A secret you set on the webhook in Razorpay; enter the same value here. |
+
+## Connect Razorpay
+
+<Steps>
+  <Step title="Copy your keys">
+    In the Razorpay Dashboard, open **Settings → API Keys** and copy your **Key ID** and **Key secret**.
+  </Step>
+  <Step title="Choose a webhook secret">
+    Make up a long, random value for the webhook secret. You'll type it in both places.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **Razorpay**. Paste the **Key ID** and **Key secret**, enter your value in **Webhook secret**, and click **Connect**. All three fields are needed. The **Webhook endpoint** panel appears with the URL.
+  </Step>
+  <Step title="Create the webhook in Razorpay">
+    Click **Copy** next to the webhook URL. In Razorpay, under **Settings → Webhooks**, create a webhook with that URL and enter the same **Webhook secret**.
+  </Step>
+</Steps>
+
+Each event Razorpay sends is checked against the webhook secret, so events that don't come from your account are ignored.
+
+## Test and live mode
+
+Test or live mode follows the key ID: `rzp_test_` keys create test links, `rzp_live_` keys real ones. Create the webhook in the matching mode.
+
+## Troubleshooting
+
+- **"Could not reach the Razorpay API: …"** Razorpay refused the key ID and secret. Check they belong together and to the same mode.
+- **Payments stay Pending.** The webhook is missing, or its secret differs from the one saved here.
+- **The card shows Error.** Razorpay rejected the saved keys, for example after you regenerated them. Paste the new ones and click **Save & reconnect**.
+
+## Related
+
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [Integrations](/guide/integrations/overview)

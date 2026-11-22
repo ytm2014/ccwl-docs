@@ -1,0 +1,74 @@
+---
+title: "Webhooks"
+description: "Send workspace events to your own HTTPS endpoint: create an endpoint, pick events, test it, read the delivery history, resend and rotate the signing secret."
+keywords: ["webhooks", "endpoint", "signing secret", "rotate", "delivery history", "resend", "events", "paused"]
+---
+
+The **Webhooks** card on the [Integrations](/guide/integrations/overview) page sends events from your workspace to an HTTPS address on your own server as they happen: a post published, a message received, a contact created, a payment succeeded and more. This page covers the dashboard side. Developers can find the event list and payloads in [Webhooks overview](/webhooks/overview) and [Webhook events](/webhooks/events).
+
+You need the workspace **Admin** role. In the sidebar, open **Integrations**, then click the **Webhooks** card. On some platforms the card first shows a short list of options; pick the one you want to manage.
+
+## Create an endpoint
+
+<Steps>
+  <Step title="Open the form">
+    Click **Create endpoint**.
+  </Step>
+  <Step title="Name and address">
+    Enter a **Name** (for example "CRM notifications") and the **HTTPS endpoint URL**.
+  </Step>
+  <Step title="Pick events">
+    Under **Events to send**, tick the events you want. Use **Search events** to filter the list and **Select all** to tick a whole group. For sales inbox events you can limit each event to one channel, or keep **All channels and workspace events**.
+  </Step>
+  <Step title="Enable it">
+    Tick **Enable this endpoint** to start deliveries now. Left unticked, the endpoint is saved as **Paused**.
+  </Step>
+  <Step title="Save and copy the secret">
+    Click **Save endpoint**. Copy the signing secret with **Copy secret**: it is not shown again after you close the dialog. Your developer uses it to [verify signatures](/webhooks/verify-signatures).
+  </Step>
+</Steps>
+
+A workspace can have up to 25 endpoints.
+
+## Read the list
+
+Each endpoint shows its name and status (**Enabled** or **Paused**), its URL, the number of events it receives and the result of the **Last delivery**.
+
+## Test, history and resend
+
+- **Send test** queues a sample of the endpoint's first subscribed event. It only works while the endpoint is enabled.
+- **Delivery history** lists each delivery with its status, number of attempts and HTTP status. Click **Details** to see every attempt with its outcome and duration, and **Resend** to send a finished delivery again. Use **Previous**, **Next** and **Refresh** to move through the list.
+
+Failed deliveries are retried automatically, so a receiver that was briefly down usually catches up on its own. Check **Delivery history** when events seem to be missing.
+
+## Edit, rotate and delete
+
+- **Edit** reopens the form. Saving cancels deliveries still queued for the old settings. If the Admin responsible for the endpoint has left the workspace, tick **Make me the responsible administrator for this endpoint**.
+- **Rotate secret** creates a new signing secret. For 24 hours, deliveries are signed with both the old and the new secret while you update your receiver. Tick **Revoke the old secret immediately instead** to skip that overlap.
+- **Delete** stops future and queued deliveries to that endpoint.
+
+## Older endpoints
+
+Endpoints created with the earlier webhook settings appear under **Older endpoints** and keep working. When your receiver is ready, click **Move to workspace webhooks**: you get a new secret, then **Send test and move** moves the endpoint once your receiver answers the test. You can **Move back** for a limited time afterwards.
+
+## Webhooks, Zapier or Slack?
+
+| Use | When |
+| --- | --- |
+| Webhooks | Your own software needs every event, signed and with a delivery history. |
+| [Zapier](/guide/integrations/zapier) | You want to connect events to other apps without writing code. |
+| [Slack](/guide/integrations/slack) | Your team wants a message in a Slack channel for selected events. |
+
+## Troubleshooting
+
+- **Send test does nothing.** The endpoint is **Paused**. Edit it and tick **Enable this endpoint**.
+- **Deliveries fail with an HTTP error.** Open **Details** in **Delivery history** to see the status your server answered, fix the receiver, then **Resend**.
+- **Signatures stopped matching after a rotation.** Update your receiver with the new secret within 24 hours, or rotate again.
+- **You can't create another endpoint.** You've reached 25 endpoints. Delete one you no longer use.
+
+## Related
+
+- [Webhooks overview](/webhooks/overview)
+- [Webhook events](/webhooks/events)
+- [API keys](/guide/integrations/api-keys)
+- [Integrations](/guide/integrations/overview)

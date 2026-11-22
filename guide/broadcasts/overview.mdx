@@ -1,0 +1,99 @@
+---
+title: "Broadcasts overview"
+sidebarTitle: "Overview"
+description: "What a broadcast is, which channels can send one, how the broadcasts list works, and who in your team can create, send, approve and delete them."
+keywords: ["broadcasts", "bulk messaging", "campaign", "whatsapp broadcast", "broadcast list", "broadcast status", "broadcast permissions"]
+---
+
+A broadcast sends one message to many contacts on one channel: a promotion, an announcement, a reminder or a service update. You choose who receives it, write the message (on WhatsApp, pick an approved template), decide when it goes out, and then follow what happened to every recipient in its report.
+
+To open it, in the sidebar open **Salesbot** > **Broadcasts**.
+
+<Note>
+Don't see **Broadcasts**? Your plan or your platform doesn't include it yet. If your plan doesn't include broadcasts, an upgrade card takes the place of **New broadcast**; reports of earlier broadcasts stay readable.
+</Note>
+
+## Which channels can send a broadcast
+
+A broadcast always belongs to one channel, the one selected in the channel picker at the top of the page. Broadcasts are possible on:
+
+| Channel | What you send |
+| --- | --- |
+| **WhatsApp** | An approved WhatsApp message template. You can't type a free message. See [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits). |
+| **Facebook** and **Instagram** | A text message you type. |
+| **Telegram** | A text message, sent from your bot. Telegram only delivers to people who have started a chat with your bot. |
+| **SMS** | A plain text message through your connected SMS gateway. |
+
+Which of these you see depends on the channels your platform has switched on and the ones you have connected. On other channels, such as Mastodon or Bluesky, there is no **New broadcast** button. If you pick a channel that can't broadcast, the page tells you that broadcasts are not available on this channel.
+
+If no channel is connected yet, the page shows **Connect a channel first** with a **Set up a channel** button.
+
+## The broadcasts list
+
+The top of the page shows four totals for the selected channel: **Sent**, **Delivered**, **Replies** and **Failed**.
+
+Below them, tabs filter the list: **All**, **Scheduled**, **Sent** and **Draft**. The other statuses (**Sending**, **Paused**, **Cancelled**, **Failed**) are in the **More statuses** menu next to the tabs. If a filter shows nothing, click **Show all broadcasts**.
+
+Each row shows:
+
+| Column | What it shows |
+| --- | --- |
+| **Campaign** | The broadcast's name, the number of recipients and the audience (for example **All eligible contacts**, **Saved segment** or **Retargeted audience**), and its date. Click the row to open the report. |
+| **Channel** | The network and the channel's name. |
+| **Status** | The broadcast's status, plus an **Awaiting approval** badge when it waits for a teammate. |
+| **Delivery** | The share of sent messages that were delivered, as a bar and a percentage. |
+| **Replies** | How many recipients replied. |
+
+### Statuses
+
+| Status | Meaning |
+| --- | --- |
+| **Draft** | Saved but not queued. A broadcast submitted for approval stays a draft until it is approved. |
+| **Scheduled** | Queued to go out now or at the chosen time. |
+| **Sending** | Messages are going out. |
+| **Sent** | Every recipient has been handled. |
+| **Paused** | Stopped for now; it can be resumed. |
+| **Cancelled** | Stopped for good by someone in your team. |
+| **Failed** | The send could not be completed. |
+
+### Row actions
+
+Open the **...** menu on a row. What you see depends on the broadcast's status and your permissions:
+
+- **View analytics** opens the [report](/guide/broadcasts/analytics).
+- **Edit** opens a draft or scheduled broadcast.
+- **Approve & schedule** releases a broadcast that is awaiting approval.
+- **Pause**, **Resume** and **Cancel send** control a send in progress. See [Scheduling and approval](/guide/broadcasts/scheduling-and-approval).
+- **Delete** removes the broadcast with its recipient records and delivery report.
+
+**WhatsApp templates** in the page header opens your [message templates](/guide/broadcasts/message-templates). It only works with a WhatsApp channel selected; on any other channel it explains that templates are for WhatsApp.
+
+## Who can do what
+
+Broadcast actions follow your team role:
+
+| Action | Who can do it by default |
+| --- | --- |
+| See broadcasts and their reports | Admins, members and viewers |
+| Create and edit drafts, and send a test to yourself | Admins and members |
+| Schedule, pause, resume and cancel broadcasts | Admins |
+| Approve broadcasts that need team approval | Admins |
+| Delete broadcasts and their reports | Admins |
+
+An admin can give these permissions to other people with a custom team role; see [Roles and permissions](/guide/account/roles-and-permissions). A member who can create but not send can still finish a broadcast: it is submitted for approval, and an admin (or anyone allowed to approve) releases it. Viewers can only read.
+
+## Broadcast, sequence or flow?
+
+- Use a **broadcast** for one message to many people at a moment you choose.
+- Use a **sequence** for a series of messages spread over days after someone subscribes.
+- Use a **flow** to react to what a contact does, such as a keyword, a comment or a click on a [growth tool](/guide/broadcasts/growth-tools).
+
+Sequences and flows are covered in [Automation](/guide/automation/overview).
+
+## Related
+
+- [Create a broadcast](/guide/broadcasts/create-broadcast)
+- [Choose a broadcast audience](/guide/broadcasts/audiences)
+- [Scheduling and approval](/guide/broadcasts/scheduling-and-approval)
+- [Broadcast analytics](/guide/broadcasts/analytics)
+- [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits)

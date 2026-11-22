@@ -1,0 +1,57 @@
+---
+title: "PayPal"
+description: "Connect PayPal with your app's client ID and secret and a webhook ID to send PayPal checkout links in conversations."
+keywords: ["PayPal", "payments", "client ID", "client secret", "sandbox", "live", "webhook ID", "checkout"]
+---
+
+The **PayPal** card on the [Integrations](/guide/integrations/overview) page connects a PayPal app, so you can send PayPal checkout links in conversations and track whether they're paid. PayPal supports more than 25 currencies. For how payment links, triggers and the inbox button work, see [Payment gateways](/guide/integrations/payment-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Payments** tab.
+
+<Note>
+Don't see **PayPal**, or does it say **Not included in your plan**? Your plan or your platform doesn't include payments yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Client ID** | Your PayPal app's client ID. |
+| **Client secret** | Your PayPal app's secret. |
+| **Environment** | **sandbox** while testing, **live** for real payments. |
+| **Webhook ID** | The ID of the webhook you add in PayPal, starting with `WH-`. |
+
+## Connect PayPal
+
+<Steps>
+  <Step title="Copy your app credentials">
+    In the PayPal Developer Dashboard, open **Apps & Credentials** and copy your app's **Client ID** and **Client secret**. Make sure you're looking at the same mode (sandbox or live) you'll choose below.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **PayPal**. Paste both values and choose the **Environment**. Every field must be filled in to connect, but you only get the webhook ID after the next step, so type a temporary value in **Webhook ID** for now. Click **Connect**. The **Webhook endpoint** panel appears.
+  </Step>
+  <Step title="Add the webhook in PayPal">
+    Click **Copy** next to the webhook URL. In your PayPal app, under **Webhooks**, add an endpoint with that URL for these events: `CHECKOUT.ORDER.APPROVED`, `PAYMENT.CAPTURE.COMPLETED`, `PAYMENT.CAPTURE.REFUNDED` and `PAYMENT.CAPTURE.DENIED`.
+  </Step>
+  <Step title="Save the webhook ID">
+    Copy the webhook's ID from PayPal, paste it into **Webhook ID** in place of the temporary value, and click **Save & reconnect**. Until you do, payments can't be confirmed.
+  </Step>
+</Steps>
+
+Each event is verified with PayPal using the webhook ID, so events that don't come from your app are ignored.
+
+## Sandbox and live
+
+Sandbox and live apps have different credentials and different webhooks. When you go live, paste the live **Client ID** and **Client secret**, switch **Environment** to **live**, add the webhook to the live app and save its new **Webhook ID**.
+
+## Troubleshooting
+
+- **"Could not authenticate with PayPal — check the client ID/secret and environment."** The credentials don't match the chosen environment. Sandbox credentials only work with **sandbox**, live ones with **live**.
+- **Payments stay Pending.** The webhook is missing, the events aren't ticked, or the **Webhook ID** is empty or from the other environment.
+- **The card shows Error.** PayPal rejected the saved credentials. Paste new ones and click **Save & reconnect**.
+
+## Related
+
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [Stripe](/guide/integrations/stripe)
+- [Integrations](/guide/integrations/overview)

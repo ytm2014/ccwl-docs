@@ -1,0 +1,88 @@
+---
+title: "Shared calendars"
+description: "Share a read-only calendar of your posts with clients through a link, and let them approve, reject or comment on posts."
+keywords: ["shared calendar", "client", "share link", "client approval", "approve post", "reject post", "read-only calendar", "comments"]
+---
+
+import { AppName } from "/snippets/app-name.jsx";
+
+A shared calendar is a link to a calendar of selected accounts and dates. Anyone with the link can open it without signing in to <AppName />. Use it to show a client what is planned and, if you allow it, let them approve or reject posts.
+
+## Create a shared calendar
+
+<Steps>
+  <Step title="Open the shared calendars">
+    In the sidebar, open **Calendar** and click **Shared Calendar**. The list shows your existing shared calendars.
+  </Step>
+  <Step title="Start a new one">
+    Click **Create Shared Calendar Setup**.
+  </Step>
+  <Step title="Fill in the form">
+    Set the fields below.
+  </Step>
+  <Step title="Turn on the link">
+    Click **Enable Link Sharing**. The calendar is saved and its link created.
+  </Step>
+</Steps>
+
+| Field | What it does |
+| --- | --- |
+| **Shared calendar name** | A name to recognise it by. Only you and your team see it. |
+| **Start Date** | The starting date of the calendar to be shared. |
+| **End Date** | The final date that will be displayed. |
+| **Filter by Profile** | The accounts whose posts appear. **Search Accounts**, or pick a group under **Select Group (optional)**. Pick at least one account. |
+| **Filter Posts by Tags** | Only show posts with these labels. |
+| **Enable/Disable Post Approval** | **Allowed** lets people with the link approve or reject posts. **Not allowed** makes the calendar view-only. |
+| **Shared calendar expiration date** | The date the link stops working. |
+
+## Manage shared calendars
+
+The shared calendar list shows each calendar's **Accounts**, **Labels**, **Link Sharing**, **Post Approval**, **Expiration Date** and **Date Created**.
+
+- Switch **Link Sharing** off to stop the link working, and on again to restore it. You confirm each change.
+- Switch **Post Approval** on or off, after you confirm with **Proceed**.
+- From a row's **Actions** menu, use **Copy link** to copy the address to send (shown while link sharing is on), or **Delete** it.
+
+## What the recipient sees
+
+The recipient opens the link and sees the posts for the chosen accounts, dates and labels in a **Month** or **Week** view. Clicking a post shows a preview.
+
+### Approving and rejecting
+
+When post approval is allowed, posts that need approval show **Approve Post** and **Reject Post**. The recipient confirms the choice:
+
+- An approved post is scheduled for its time ("Post was successfully approved.").
+- A rejected post is reported back ("Post was successfully rejected.").
+
+Your team gets an email either way ("Post Approved" or "Post Not Approved"). Posts whose scheduled time has passed can't be approved ("Scheduled date for post is in the past").
+
+### Comments
+
+Where comments are available, the recipient can **Leave a comment**: they enter **Your name** and the comment, and click **Send comment**. The comment is sent to your team. Too many comments in a short time are refused with "Too many comments. Please wait a minute and try again."
+
+## Set up a client approval workflow
+
+<Steps>
+  <Step title="Limit who can approve in your team">
+    Give the team members who write posts a role without post approval, so their scheduled posts wait as **Needs approval**. See [Approvals](/guide/publishing/approvals).
+  </Step>
+  <Step title="Create the shared calendar">
+    Choose the client's accounts and set **Enable/Disable Post Approval** to **Allowed**.
+  </Step>
+  <Step title="Send the link">
+    Use **Copy link** and send it to the client.
+  </Step>
+  <Step title="Follow up">
+    Approved posts go out on time. Watch for the approval emails and the client's comments, and update rejected posts.
+  </Step>
+</Steps>
+
+<Warning>
+Anyone with the link can see the calendar. Set an expiration date and switch **Link Sharing** off when the client no longer needs it.
+</Warning>
+
+## Related
+
+- [Calendar](/guide/publishing/calendar)
+- [Approvals](/guide/publishing/approvals)
+- [Labels](/guide/publishing/labels)

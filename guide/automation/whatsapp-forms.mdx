@@ -1,0 +1,85 @@
+---
+title: "WhatsApp Forms"
+description: "Design native forms that open inside a WhatsApp chat, publish them, and send them from a flow to collect leads, bookings, feedback or registrations."
+keywords: ["whatsapp forms", "whatsapp flows", "native forms", "in-chat form", "lead form", "form step", "sync from meta", "publish form", "nfm"]
+---
+
+WhatsApp Forms (WhatsApp Flows in Meta's terms) are "native forms inside the chat": the customer taps a button, fills in a short form without leaving WhatsApp, and submits it. You design them here or in Meta's own Flow Builder, then send them from a flow.
+
+In the sidebar, open **Salesbot** > **More** > **Forms**. The page is called **WhatsApp Forms**. You need a connected WhatsApp number.
+
+<Note>
+Don't see **Forms**? Your plan or your platform doesn't include WhatsApp Forms yet. Creating and editing forms needs permission to manage automations.
+</Note>
+
+## The forms list
+
+Each form shows its **Name**, **Status**, **Origin** (**Designed here** or **Synced from Meta**) and **Actions**: **Edit**, **Publish** and **Delete**. A form marked **Not on Meta yet** exists only here so far. Use **Sync from Meta** to bring in forms you built in Meta's Flow Builder.
+
+## Create a form
+
+<Steps>
+  <Step title="Pick a starting point">
+    Under **Create a form** ("Pick a starting point — every field is editable afterwards."), choose a starter: **Get in touch** (name, phone, email, message), **Request an appointment** (name, phone, service, preferred date, notes), **Share your feedback** (a rating and comments), **Register** (name, email, phone, consent) or **Untitled form**.
+  </Step>
+  <Step title="Fill in the form details">
+    Under **Form details**: a **Name** (for you), a **Heading** ("Shown at the top of the form in WhatsApp.") and the **Submit button** label.
+  </Step>
+  <Step title="Edit the fields">
+    Under **Fields**, each field has a type, a **Question** and a **Required** switch. Drag to reorder, **Remove** to delete, **Add field** for more. Dropdown and multiple choice fields take **Options (one per line)**.
+  </Step>
+  <Step title="Save">
+    Click **Save**. "Saving uploads this form to WhatsApp and refreshes the preview." Fields without a question are dropped when you save.
+  </Step>
+  <Step title="Publish">
+    Click **Publish** when the form is ready. Only a saved draft with no errors can be published.
+  </Step>
+</Steps>
+
+### Field types
+
+| Type | Use it for |
+| --- | --- |
+| **Short text** | Names and short answers |
+| Email | An email address |
+| Phone number | A phone number |
+| **Number** | Quantities, ages |
+| **Long text** | Messages and notes |
+| **Dropdown** | One choice from a list |
+| **Multiple choice** | One choice shown as options |
+| Date | A date, such as a preferred appointment day |
+| **Consent checkbox** | "I agree to be contacted" and similar |
+
+### Preview and errors
+
+The **Preview** shows the form as WhatsApp renders it. "This form only exists here so far. Connect a live WhatsApp number and save again to upload it and get a preview." If WhatsApp refuses the form, the editor shows **WhatsApp rejected this form** with the reason; fix it and save again.
+
+## Send a form from a flow
+
+Add the **WhatsApp Form (Flow)** step (under **Ask a question**) to a WhatsApp flow:
+
+| Field | What to enter |
+| --- | --- |
+| **Form** | **Choose a form…** from your forms. **Design a form** opens the forms page in a new tab; **Sync from Meta** refreshes the list. |
+| **Flow name (manual)** | If the form isn't listed, the "Exact name in Meta's Flow Builder". |
+| **Button text (CTA)** | The button that opens the form, up to 20 characters. |
+| **Entry screen** | The first screen, for example WELCOME. |
+| **Message** | The text above the button, for example "Tap below — it takes 30 seconds." |
+
+"Draft forms send in test (draft) mode." When the customer submits, the step's **COMPLETED** output continues, and each answer is available to later steps as `{{nfm.field_name}}`, for example `{{nfm.email}}`. Use them in later steps, for example in a message, a Google Sheets row or an HTTP Request.
+
+Outside the 24-hour window the form can't be sent; give the step a template fallback under **Advanced**. See [WhatsApp steps](/guide/automation/whatsapp-steps#the-24-hour-fallback).
+
+## Send a form from the inbox
+
+Agents can also send a form in a WhatsApp conversation with **Send a form** in the inbox's reply box. See [Reply to conversations](/guide/inbox/reply).
+
+## Ready-made form flows
+
+The **Lead capture form (WhatsApp Flow)** template sends a form to new chats, and **COD Confirmation** confirms cash-on-delivery orders with a form before dispatch.
+
+## Related
+
+- [WhatsApp steps](/guide/automation/whatsapp-steps)
+- [Variables](/guide/automation/variables)
+- [Store automations](/guide/automation/store-automations)

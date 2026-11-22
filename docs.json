@@ -16,53 +16,286 @@
         "groups": [
           {
             "group": "Getting started",
+            "icon": "rocket",
             "pages": [
               "index",
               "guide/getting-started/introduction",
               "guide/getting-started/navigating",
               "guide/getting-started/workspaces",
-              "guide/getting-started/team-and-roles",
-              "guide/getting-started/social-accounts",
-              "guide/getting-started/profile-and-security",
-              "guide/getting-started/billing"
+              "guide/getting-started/social-accounts"
             ]
           },
           {
             "group": "Publishing",
+            "icon": "calendar",
             "pages": [
               "guide/publishing/create-a-post",
-              "guide/publishing/posts",
-              "guide/publishing/calendar",
-              "guide/publishing/posting-schedule",
-              "guide/publishing/templates",
-              "guide/publishing/media-library",
-              "guide/publishing/bulk-posts-and-rss",
-              "guide/publishing/analytics"
+              {
+                "group": "Create posts",
+                "pages": [
+                  "guide/publishing/post-versions",
+                  "guide/publishing/add-media",
+                  "guide/publishing/threads-and-first-comments",
+                  "guide/publishing/hashtags",
+                  "guide/publishing/mentions",
+                  "guide/publishing/variables",
+                  "guide/publishing/ai-assist",
+                  "guide/publishing/links-in-posts",
+                  "guide/publishing/preview-and-checks",
+                  "guide/publishing/labels"
+                ]
+              },
+              {
+                "group": "Schedule and publish",
+                "pages": [
+                  "guide/publishing/schedule-a-post",
+                  "guide/publishing/repeating-posts",
+                  "guide/publishing/posting-schedule",
+                  "guide/publishing/approvals",
+                  "guide/publishing/comments-and-activity"
+                ]
+              },
+              {
+                "group": "Networks",
+                "pages": [
+                  "guide/publishing/networks/overview",
+                  "guide/publishing/networks/x",
+                  "guide/publishing/networks/facebook",
+                  "guide/publishing/networks/instagram",
+                  "guide/publishing/networks/threads",
+                  "guide/publishing/networks/linkedin",
+                  "guide/publishing/networks/tiktok",
+                  "guide/publishing/networks/youtube",
+                  "guide/publishing/networks/pinterest",
+                  "guide/publishing/networks/google-business-profile",
+                  "guide/publishing/networks/bluesky",
+                  "guide/publishing/networks/mastodon-and-pixelfed",
+                  "guide/publishing/networks/reddit",
+                  "guide/publishing/networks/tumblr",
+                  "guide/publishing/networks/telegram-and-vkontakte"
+                ]
+              },
+              {
+                "group": "Manage posts",
+                "pages": [
+                  "guide/publishing/posts",
+                  "guide/publishing/delete-and-restore",
+                  "guide/publishing/failed-posts",
+                  "guide/publishing/import-posts",
+                  "guide/publishing/calendar",
+                  "guide/publishing/shared-calendars",
+                  "guide/publishing/templates",
+                  "guide/publishing/media-library",
+                  "guide/publishing/media-sources",
+                  "guide/publishing/bulk-posts",
+                  "guide/publishing/rss-campaigns"
+                ]
+              },
+              {
+                "group": "Home and analytics",
+                "pages": [
+                  "guide/publishing/home",
+                  "guide/publishing/analytics",
+                  "guide/publishing/account-analytics",
+                  "guide/publishing/post-analytics"
+                ]
+              }
             ]
           },
           {
-            "group": "Sales inbox",
+            "group": "Inbox",
+            "icon": "inbox",
             "pages": [
-              "guide/messaging/overview",
-              "guide/messaging/channels",
-              "guide/messaging/inbox",
-              "guide/messaging/contacts",
+              "guide/inbox/overview",
+              "guide/inbox/the-inbox",
+              "guide/inbox/reply",
+              "guide/inbox/reply-windows",
+              "guide/inbox/saved-replies",
+              "guide/inbox/notes",
+              "guide/inbox/contact-panel",
+              "guide/inbox/assign",
+              "guide/inbox/status",
+              "guide/inbox/bot-handover",
+              "guide/inbox/conversation-rules",
+              "guide/inbox/engagements",
+              "guide/inbox/alerts"
+            ]
+          },
+          {
+            "group": "Channels",
+            "icon": "tower-broadcast",
+            "pages": [
+              "guide/channels/overview",
               {
-                "group": "Automation and outreach",
+                "group": "Meta",
                 "pages": [
-                  "guide/messaging/automations",
-                  "guide/messaging/broadcasts",
-                  "guide/messaging/whatsapp-templates",
-                  "guide/messaging/sequences-and-growth",
-                  "guide/messaging/meetings",
-                  "guide/messaging/ai-knowledge"
+                  "guide/channels/facebook-messenger",
+                  "guide/channels/instagram"
                 ]
               },
-              "guide/messaging/reports-and-settings"
+              {
+                "group": "WhatsApp",
+                "pages": [
+                  "guide/channels/whatsapp",
+                  "guide/channels/whatsapp-settings"
+                ]
+              },
+              "guide/channels/tiktok",
+              "guide/channels/telegram",
+              "guide/channels/sms",
+              "guide/channels/live-chat",
+              "guide/channels/other-networks",
+              "guide/channels/troubleshooting"
+            ]
+          },
+          {
+            "group": "Contacts & CRM",
+            "icon": "address-book",
+            "pages": [
+              "guide/contacts/overview",
+              {
+                "group": "Working with contacts",
+                "pages": [
+                  "guide/contacts/contact-list",
+                  "guide/contacts/add-and-edit-contacts",
+                  "guide/contacts/contact-profile",
+                  "guide/contacts/import-csv",
+                  "guide/contacts/merge-duplicates"
+                ]
+              },
+              {
+                "group": "Organise contacts",
+                "pages": [
+                  "guide/contacts/tags",
+                  "guide/contacts/custom-fields",
+                  "guide/contacts/segments",
+                  "guide/contacts/pipeline"
+                ]
+              },
+              {
+                "group": "Limits and privacy",
+                "pages": [
+                  "guide/contacts/contact-limits",
+                  "guide/contacts/opt-outs",
+                  "guide/contacts/data-and-privacy",
+                  "guide/contacts/delete-and-restore"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Automation & chatbots",
+            "icon": "robot",
+            "pages": [
+              "guide/automation/overview",
+              "guide/automation/create-a-flow",
+              "guide/automation/templates-and-packs",
+              "guide/automation/quick-automations",
+              {
+                "group": "Building flows",
+                "pages": [
+                  "guide/automation/flow-builder",
+                  "guide/automation/triggers",
+                  "guide/automation/message-steps",
+                  "guide/automation/whatsapp-steps",
+                  "guide/automation/facebook-instagram-steps",
+                  "guide/automation/logic-steps",
+                  "guide/automation/contact-steps",
+                  "guide/automation/integration-steps",
+                  "guide/automation/webhook-step",
+                  "guide/automation/variables",
+                  "guide/automation/publish-and-test"
+                ]
+              },
+              {
+                "group": "AI",
+                "pages": [
+                  "guide/automation/ai-replies",
+                  "guide/automation/ai-tools",
+                  "guide/automation/ai-knowledge",
+                  "guide/automation/lead-qualification"
+                ]
+              },
+              {
+                "group": "Selling",
+                "pages": [
+                  "guide/automation/store-automations",
+                  "guide/automation/selling-in-chat"
+                ]
+              },
+              {
+                "group": "Channel features",
+                "pages": [
+                  "guide/automation/comment-automation",
+                  "guide/automation/channel-settings",
+                  "guide/automation/whatsapp-forms",
+                  "guide/automation/sequences"
+                ]
+              },
+              "guide/automation/troubleshooting"
+            ]
+          },
+          {
+            "group": "Broadcasts",
+            "icon": "bullhorn",
+            "pages": [
+              "guide/broadcasts/overview",
+              "guide/broadcasts/create-broadcast",
+              "guide/broadcasts/audiences",
+              "guide/broadcasts/scheduling-and-approval",
+              "guide/broadcasts/analytics",
+              "guide/broadcasts/whatsapp-rules-and-limits",
+              {
+                "group": "WhatsApp templates",
+                "pages": [
+                  "guide/broadcasts/message-templates",
+                  "guide/broadcasts/create-template",
+                  "guide/broadcasts/system-templates"
+                ]
+              },
+              {
+                "group": "Growth tools",
+                "pages": [
+                  "guide/broadcasts/growth-tools",
+                  "guide/broadcasts/website-popup"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Appointments",
+            "icon": "calendar-check",
+            "pages": [
+              "guide/appointments/overview",
+              "guide/appointments/appointment-types",
+              "guide/appointments/availability",
+              "guide/appointments/booking-page",
+              "guide/appointments/messages-and-reminders",
+              "guide/appointments/calendar-and-video",
+              "guide/appointments/manage-bookings"
+            ]
+          },
+          {
+            "group": "Reports",
+            "icon": "chart-line",
+            "pages": [
+              "guide/analytics/overview",
+              "guide/analytics/sales-overview",
+              "guide/analytics/pipeline-report",
+              "guide/analytics/ad-attribution",
+              "guide/analytics/exporting-reports",
+              {
+                "group": "Logs",
+                "pages": [
+                  "guide/analytics/activity-log",
+                  "guide/analytics/audit-log"
+                ]
+              }
             ]
           },
           {
             "group": "Bio Links",
+            "icon": "link",
             "pages": [
               "guide/bio-links/pages",
               "guide/bio-links/blocks",
@@ -75,22 +308,121 @@
           },
           {
             "group": "Integrations",
+            "icon": "plug",
             "pages": [
               "guide/integrations/overview",
-              "guide/integrations/api-and-webhooks",
-              "guide/integrations/ai-assistants",
               {
-                "group": "Connected tools",
+                "group": "Developer",
                 "pages": [
-                  "guide/integrations/zapier",
+                  "guide/integrations/api-keys",
+                  "guide/integrations/webhooks",
+                  "guide/integrations/ai-assistants",
+                  "guide/integrations/zapier"
+                ]
+              },
+              {
+                "group": "AI",
+                "pages": [
                   "guide/integrations/ai-providers",
-                  "guide/integrations/crm-and-spreadsheets",
-                  "guide/integrations/calendars-and-meetings",
-                  "guide/integrations/payments-and-stores",
-                  "guide/integrations/messaging-providers",
-                  "guide/integrations/meta-ads"
+                  "guide/integrations/openai",
+                  "guide/integrations/claude",
+                  "guide/integrations/gemini",
+                  "guide/integrations/deepseek"
+                ]
+              },
+              {
+                "group": "Productivity",
+                "pages": [
+                  "guide/integrations/google-sheets",
+                  "guide/integrations/google-calendar",
+                  "guide/integrations/zoom",
+                  "guide/integrations/slack"
+                ]
+              },
+              {
+                "group": "Sales & CRM",
+                "pages": [
+                  "guide/integrations/hubspot",
+                  "guide/integrations/mailchimp"
+                ]
+              },
+              {
+                "group": "Commerce",
+                "pages": [
+                  "guide/integrations/shopify",
+                  "guide/integrations/woocommerce"
+                ]
+              },
+              {
+                "group": "Payments",
+                "pages": [
+                  "guide/integrations/payment-gateways",
+                  "guide/integrations/stripe",
+                  "guide/integrations/paypal",
+                  "guide/integrations/paystack",
+                  "guide/integrations/razorpay",
+                  "guide/integrations/myfatoorah",
+                  "guide/integrations/mercado-pago",
+                  "guide/integrations/flutterwave"
+                ]
+              },
+              {
+                "group": "SMS",
+                "pages": [
+                  "guide/integrations/sms-gateways",
+                  "guide/integrations/twilio",
+                  "guide/integrations/plivo",
+                  "guide/integrations/custom-sms-gateway"
+                ]
+              },
+              {
+                "group": "Meta advertising",
+                "pages": [
+                  "guide/integrations/meta-ads",
+                  "guide/integrations/meta-conversion-leads"
                 ]
               }
+            ]
+          },
+          {
+            "group": "Account & workspace",
+            "icon": "gear",
+            "pages": [
+              "guide/account/profile",
+              "guide/account/security",
+              "guide/account/team-members",
+              "guide/account/roles-and-permissions",
+              "guide/account/notifications",
+              "guide/account/workspace-settings",
+              "guide/account/storage",
+              {
+                "group": "Agency",
+                "pages": [
+                  "guide/account/agency-console"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Billing",
+            "icon": "credit-card",
+            "pages": [
+              "guide/billing/choosing-a-plan",
+              "guide/billing/usage-and-limits",
+              "guide/billing/changing-your-plan",
+              "guide/billing/add-ons",
+              "guide/billing/payment-and-receipts",
+              "guide/billing/trials-and-locked-workspaces",
+              "guide/billing/cancelling"
+            ]
+          },
+          {
+            "group": "Troubleshooting",
+            "icon": "wrench",
+            "pages": [
+              "guide/troubleshooting/messages-not-sending",
+              "guide/troubleshooting/automation-not-triggering",
+              "guide/troubleshooting/posts-failing"
             ]
           }
         ]
@@ -207,5 +539,91 @@
       "cursor",
       "vscode"
     ]
-  }
+  },
+  "redirects": [
+    {
+      "source": "/guide/messaging/meetings",
+      "destination": "/guide/appointments/overview"
+    },
+    {
+      "source": "/guide/messaging/reports-and-settings",
+      "destination": "/guide/analytics/overview"
+    },
+    {
+      "source": "/guide/messaging/contacts",
+      "destination": "/guide/contacts/overview"
+    },
+    {
+      "source": "/guide/messaging/broadcasts",
+      "destination": "/guide/broadcasts/overview"
+    },
+    {
+      "source": "/guide/messaging/whatsapp-templates",
+      "destination": "/guide/broadcasts/message-templates"
+    },
+    {
+      "source": "/guide/messaging/overview",
+      "destination": "/guide/inbox/overview"
+    },
+    {
+      "source": "/guide/messaging/inbox",
+      "destination": "/guide/inbox/the-inbox"
+    },
+    {
+      "source": "/guide/messaging/channels",
+      "destination": "/guide/channels/overview"
+    },
+    {
+      "source": "/guide/messaging/automations",
+      "destination": "/guide/automation/overview"
+    },
+    {
+      "source": "/guide/messaging/ai-knowledge",
+      "destination": "/guide/automation/ai-knowledge"
+    },
+    {
+      "source": "/guide/messaging/sequences-and-growth",
+      "destination": "/guide/automation/sequences"
+    },
+    {
+      "source": "/guide/integrations/api-and-webhooks",
+      "destination": "/guide/integrations/api-keys"
+    },
+    {
+      "source": "/guide/integrations/calendars-and-meetings",
+      "destination": "/guide/integrations/google-calendar"
+    },
+    {
+      "source": "/guide/integrations/crm-and-spreadsheets",
+      "destination": "/guide/integrations/hubspot"
+    },
+    {
+      "source": "/guide/integrations/messaging-providers",
+      "destination": "/guide/integrations/sms-gateways"
+    },
+    {
+      "source": "/guide/integrations/payments-and-stores",
+      "destination": "/guide/integrations/payment-gateways"
+    },
+    {
+      "source": "/guide/getting-started/team-and-roles",
+      "destination": "/guide/account/team-members"
+    },
+    {
+      "source": "/guide/getting-started/profile-and-security",
+      "destination": "/guide/account/profile"
+    },
+    {
+      "source": "/guide/getting-started/billing",
+      "destination": "/guide/billing/choosing-a-plan"
+    },
+    {
+      "source": "/guide/publishing/bulk-posts-and-rss",
+      "destination": "/guide/publishing/bulk-posts"
+    },
+    {
+      "source": "/guide/channels/bot-setup",
+      "destination": "/guide/automation/channel-settings"
+    }
+  ]
 }

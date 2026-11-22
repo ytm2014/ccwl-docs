@@ -1,0 +1,76 @@
+---
+title: "SMS gateways"
+description: "How SMS gateways work: connecting one creates an SMS channel for the inbox, broadcasts and the Send SMS step, with an opt-out line and line type lookup."
+keywords: ["SMS", "text message", "Twilio", "Plivo", "custom gateway", "SMS channel", "opt-out", "STOP", "line type lookup", "Send SMS"]
+---
+
+The cards under the **SMS** tab of the [Integrations](/guide/integrations/overview) page connect an SMS gateway: **Twilio**, **Plivo** or a **Custom HTTP gateway** for any other provider. Connecting one creates a workspace-wide SMS channel, so you can text contacts from the inbox, send SMS broadcasts and add **Send SMS** steps to your flows. Messages are sent through, and billed by, your own gateway account. This page covers what all gateways share; each has its own page for its credentials.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+
+<Note>
+Don't see the **SMS** tab, or does a card say **Not included in your plan**? Your plan or your platform doesn't include SMS yet.
+</Note>
+
+## Compare the gateways
+
+| | [Twilio](/guide/integrations/twilio) | [Plivo](/guide/integrations/plivo) | [Custom HTTP gateway](/guide/integrations/custom-sms-gateway) |
+| --- | --- | --- | --- |
+| Send SMS | Yes | Yes | Yes |
+| Receive replies in the inbox | Yes | Yes | No |
+| Delivery reports | Yes | Yes | No |
+| Line type lookup | No | Yes | No |
+
+## What connecting creates
+
+When the gateway connects, a page message confirms it and asks you to set the webhook. An SMS channel named after the gateway (for example "SMS · Twilio") appears among your channels, with your sender number. From then on:
+
+- **Inbox:** replies to your number arrive as conversations (Twilio and Plivo), and you can answer them. See [Inbox](/guide/inbox/overview).
+- **Broadcasts:** you can send SMS broadcasts. See [Broadcasts](/guide/broadcasts/overview).
+- **Flows:** SMS flows can start from incoming texts, and every flow can use the **Send SMS** step.
+
+Once connected, the **SMS** panel on the gateway's page shows the **Sender** and how many messages were **Sent** and **Received**.
+
+## The inbound and delivery webhook
+
+For Twilio and Plivo, the **Inbound & delivery webhook** panel shows a URL. Click **Copy** and set it on your number in the gateway's dashboard, so replies reach the inbox and delivery reports update each message's status. The panel also says whether the gateway supports inbound SMS and delivery reports.
+
+## Send SMS step
+
+The **Send SMS** step (under **Actions** in the flow builder) texts the contact's phone through your connected gateway, from any flow, even one that started on WhatsApp or Instagram.
+
+| Field | What to enter |
+| --- | --- |
+| **Message** | The text; it can use contact and order variables. |
+| **Send to** (optional) | Another phone number. Left empty, the contact's own number is used. |
+
+See [Flows](/guide/automation/overview).
+
+## Delivery settings
+
+Where your platform offers them, a **Delivery settings** panel appears once connected. Click **Save settings** after changing it.
+
+- **Add an opt-out line to SMS broadcasts.** Adds a line, which you can edit in the box below, on a new line of each person's first SMS broadcast from this number, then at most once every 30 days, unless the message already mentions STOP. It is added to broadcasts only, never to replies or **Send SMS** steps.
+- **Check failed numbers with a line type lookup.** Only for gateways that offer it (Plivo). When the gateway reports an invalid destination, one lookup per number (billed by the gateway and remembered for 30 days) tells a landline from a typo. Landlines are then skipped.
+
+## Disconnect
+
+Click **Disconnect** at the top of the gateway's page. Its credentials are removed. The SMS channel and its conversations stay, marked as needing a reconnect; connect the gateway again to use it.
+
+## Troubleshooting
+
+| Message or symptom | What to do |
+| --- | --- |
+| "Enter the …" | A required field is empty. |
+| "Could not reach the … API: …" | The gateway refused the credentials. Copy them again from its dashboard. |
+| Replies don't reach the inbox | The inbound webhook isn't set on your number, or you use a custom gateway (send only). |
+| Messages stay without a delivery status | The status callback isn't set to the webhook URL, or the gateway doesn't send delivery reports. |
+| The channel shows it needs a reconnect | The gateway was disconnected. Connect it again. |
+| The card shows **Error** | The gateway rejected the saved credentials. Paste new ones and click **Save & reconnect**. |
+
+## Related
+
+- [Twilio](/guide/integrations/twilio)
+- [Plivo](/guide/integrations/plivo)
+- [Custom HTTP gateway](/guide/integrations/custom-sms-gateway)
+- [Channels](/guide/channels/overview)

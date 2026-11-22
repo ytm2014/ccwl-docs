@@ -1,0 +1,78 @@
+---
+title: "Pipeline report"
+description: "See how contacts move through your pipeline stages: entries, conversion, wins, losses and time in each stage."
+keywords: ["pipeline report", "win rate", "conversion", "stages", "won", "lost", "time in stage", "sales funnel"]
+---
+
+The Pipeline report shows how contacts move through the stages on your pipeline board: how many enter each stage, move on, move back, are won or lost, and how long they stay. It works from the history of stage moves, so it only shows contact counts and times, never contact details.
+
+In the sidebar, open **Salesbot** > **More** > **Pipeline**. You need the **View the overview** permission. Your workspace has one pipeline: the stages on the board in Contacts. See [Contacts](/guide/contacts/overview).
+
+<Note>
+Don't see **Pipeline**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Before you start: mark Won and Lost stages
+
+Wins and losses only count once at least one stage is marked **Won** or **Lost** in its settings on the pipeline board. Until then the report shows a warning that wins and losses read zero.
+
+The report may ask once whether reaching a stage (such as your customer stage) counts as a win. Click **Mark as Won** to mark it, or **No, leave it**. Either way you won't be asked again. Answering needs the permission to manage stages.
+
+## Filter the report
+
+In the strip under the title:
+
+- **From** and **To**: the dates. The default is the last 28 days; the range can be at most 90 days and can't end in the future.
+- **Assigned to**: **Everyone**, **Unassigned**, or one team member. This filters by who the contact was assigned to when they entered the stage.
+
+Click **Apply**.
+
+## The tiles
+
+| Tile | Meaning |
+| --- | --- |
+| **Stage entries** | Stage stays that began in the period. |
+| **Won** | Contacts who entered a Won stage in the period. A contact who won twice counts once. |
+| **Lost** | Contacts who entered a Lost stage in the period. |
+| **Win rate** | Won divided by won plus lost. |
+| **In a stage now** | Contacts in a stage at the end of the period (or now, if the period ends today). |
+
+## The stage table
+
+One row per stage, in board order, with its colour and, for an outcome stage, a **Won** or **Lost** label.
+
+| Column | Meaning |
+| --- | --- |
+| **Entered** | Stays in this stage that began in the period. The next columns follow these same stays up to today. |
+| **Moved on** | Left for a later stage that isn't a Lost stage. |
+| **Moved back** | Left for an earlier stage. |
+| **Conversion** | Moved on divided by entered. Not shown for Won or Lost stages, where a deal ends. |
+| **Won**, **Lost** | Stays whose contact afterwards reached a Won or Lost stage (or, for an outcome stage, is in it). |
+| **Avg time**, **Median** | How long completed stays lasted, for stays that ended in the period by a move or by clearing the stage. Shown in minutes, hours or days. |
+| **In stage now** | Open stays at the end of the period, with their average time so far underneath. |
+
+A contact who entered on the last day of the period and moved on the next day still counts as moved on, because the columns follow each stay to today.
+
+## When the history starts
+
+A note above the table says from which date stage history is recorded; earlier moves weren't tracked. Contacts that were already in a stage when tracking began count as in that stage now, but their time in it is unknown, so they are left out of times and entries. Moves caused by merging contacts or deleting a stage are also left out, because the contact didn't do anything.
+
+If no move has been recorded yet, the note says so.
+
+## Export
+
+Use **Export** > **Download CSV** or **Download PDF** for the dates and filter you applied. See [Export reports](/guide/analytics/exporting-reports).
+
+## Common questions
+
+**Won and Lost are zero.** No stage is marked Won or Lost. Mark them in a stage's settings on the pipeline board.
+
+**This workspace has no pipeline stages.** Add stages on the pipeline board first.
+
+**Times are dashes.** No stay ended in the period, so there is no completed time to show.
+
+## Related
+
+- [Contacts](/guide/contacts/overview)
+- [Sales inbox reports](/guide/analytics/overview)
+- [Export reports](/guide/analytics/exporting-reports)

@@ -1,0 +1,80 @@
+---
+title: "Conversation status"
+description: "Mark conversations done, reopen them, archive them, mark spam, block a contact and delete a conversation for good."
+keywords: ["status", "open", "done", "resolve", "reopen", "archive", "spam", "block", "delete", "mark as unread", "inbox zero"]
+---
+
+Every conversation in the Inbox has a status that tells your team whether it still needs attention. Working through **Open** until it's empty, and marking each conversation **Done** when it's handled, is the simplest way to keep a shared inbox under control.
+
+## The statuses
+
+| Status | What it means |
+| --- | --- |
+| **Open** | Needs attention. New conversations start here, and so do conversations the customer writes back to (depending on your rules). |
+| **Done** | Handled. The conversation leaves the **Open** list but keeps its history. |
+| **Archived** | Put away. Archived conversations are kept apart from **Open** and **Done**. |
+| **Spam** | Marked as spam by a teammate. |
+
+Choose which one you see with the status menu at the top of the conversation list; **All** shows everything. The header badge counts open conversations.
+
+## Change the status
+
+Open the conversation and use the thread header. **More actions** holds most of these:
+
+| Action | Where | What it does |
+| --- | --- | --- |
+| **Mark as done** | **More actions** | Moves the conversation to **Done**. |
+| **Reopen conversation** | **More actions** | Moves a done conversation back to **Open**. |
+| **Mark as unread** | **More actions** | Shows it as unread again so it isn't forgotten. |
+| **Mark as spam** / **Not spam** | **More actions** | Moves it to **Spam**, or back. |
+| **Archive conversation** / **Unarchive conversation** | **More actions** | Moves it to **Archived**, or back. |
+| **Block contact** / **Unblock contact** | **More actions** | Blocks the contact, or lifts the block. |
+| **Refresh** | **More actions** | Reloads the thread. |
+| **Delete permanently** | **More actions**, archived conversations only | Removes the thread for good. |
+
+Each action needs its own permission. Marking done and reopening, blocking and archiving are open to admins and members unless a custom role removes them. Deleting is for admins, or roles that grant it.
+
+## Mark a conversation done with a paused flow
+
+If a flow was paused because someone on your team took over, marking the conversation done asks what should happen to that flow: hand it back, skip the step you answered, leave it paused for later, or end it. See [Take over from the bot](/guide/inbox/bot-handover#closing-a-conversation-with-a-paused-flow).
+
+## When the customer writes back
+
+What a new message does to a done conversation depends on your [conversation rules](/guide/inbox/conversation-rules):
+
+- **Always reopen it** (the default): the conversation moves back to **Open**.
+- **Reopen only within a window of closing**: it reopens only if the customer writes within the number of hours you set (24 by default). After that the message still arrives and counts as unread, but the conversation stays in **Done**.
+- **Never reopen it**: new messages are visible under **Done** only.
+
+## Spam and hate speech
+
+Besides your own **Spam** status, AI insights can flag a message as spam or hate speech. Badges such as **Spam** and **Hate speech** then appear next to the name. These flags only label the conversation; nothing is removed on the platform.
+
+## Block a contact
+
+Use **Block contact** for someone you no longer want to deal with. A **Blocked** badge appears next to their name, and the thread says *This contact is blocked* with an **Unblock contact** button. You can't reply while a contact is blocked.
+
+## Archive and delete
+
+Archive conversations you want out of the way without losing them. To find them again, choose **Archived** in the status menu, and use **Unarchive conversation** to bring one back.
+
+On some platforms archived conversations are deleted automatically after 30 days; the thread tells you so with *Archived conversations auto-delete after 30 days.*
+
+To delete a conversation yourself, archive it first, then choose **More actions** > **Delete permanently** and confirm. The thread and its messages are deleted for good, and this can't be undone.
+
+<Warning>
+Deleting a conversation is permanent. If you only want it out of the list, archive it or mark it done instead.
+</Warning>
+
+## Working a busy queue
+
+1. Choose **Open** and the **Unassigned** quick filter to see what nobody has picked up.
+2. Assign or answer each one; use **Mine** to see your own share.
+3. Mark each conversation **Done** as soon as it's handled.
+4. Use **Waiting on customer** to see the conversations where the ball is in the customer's court.
+
+## Related
+
+- [Assign conversations](/guide/inbox/assign)
+- [Conversation rules](/guide/inbox/conversation-rules)
+- [Take over from the bot](/guide/inbox/bot-handover)

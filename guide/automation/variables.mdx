@@ -1,0 +1,125 @@
+---
+title: "Variables"
+description: "Personalise messages and step settings with contact details, answers, order data and other values, and set fallbacks for empty ones."
+keywords: ["variables", "personalisation", "merge tags", "first_name", "custom fields", "fallback", "order variables", "ad referral", "lead form", "answers", "tokens"]
+---
+
+Variables are placeholders in double curly brackets, such as `{{first_name}}`, that are replaced with real values when the flow runs. You can use them in message text, questions, AI prompts, template parameters, HTTP request bodies, Google Sheets columns, Slack and SMS messages and most other text fields.
+
+## Insert a variable
+
+Text fields that accept variables have a variable button. Click it (**Insert variable**), search with **Search variables**, and pick one from the list. You can also type a variable yourself.
+
+## Three rules
+
+1. **Spelling matters.** Write the name exactly, with two curly brackets on each side.
+2. **An unknown or empty variable becomes empty**, so the customer never sees `{{x}}`.
+3. **Add a fallback** for values that may be missing: `{{first_name|there}}` gives "there" when the first name is empty. "Hi `{{first_name|there}}`" reads well either way.
+
+## Contact
+
+| Variable | Value |
+| --- | --- |
+| `{{first_name}}` | First name |
+| `{{last_name}}` | Last name |
+| `{{name}}` | Full name |
+| `{{email}}` | Email |
+| `{{phone}}` | Phone |
+| `{{custom.field}}` | A custom field, by its key, for example `{{custom.company}}` |
+
+Names are taken from the contact's name. A placeholder name a platform gives an unknown user is treated as empty, so use a fallback.
+
+## System
+
+| Variable | Value |
+| --- | --- |
+| `{{last_message}}` | The customer's last message. In a flow, the message that started it, updated with each answer. |
+| `{{contact_id}}` | The contact's ID |
+| `{{channel}}` | The channel, for example `whatsapp` |
+| `{{channel_name}}` | The name of the connected channel |
+| `{{channel_contact_id}}` | The contact's ID on that channel, such as their WhatsApp number |
+| `{{workspace_id}}` | Your workspace's ID |
+| `{{flow_run_id}}` | The ID of this run |
+| `{{current_datetime}}` | The current date and time |
+
+## E-commerce
+
+Available in flows started by a store event, or after a **Find Order**, **Create Discount Code** or other store step.
+
+| Variable | Value |
+| --- | --- |
+| `{{order.number}}` | Order number |
+| `{{order.total}}` and `{{order.currency}}` | Order total and currency |
+| `{{order.status}}` | Order status |
+| `{{order.items_summary}}` | Order items, for example "1× Hoodie, 1× Socks" |
+| `{{order.checkout_url}}` | Checkout link |
+| `{{order.tracking_url}}` | Tracking link |
+| `{{customer.first_name}}` | The store customer's first name |
+| `{{customer.total_spent}}` | What the customer has spent in total |
+| `{{product.title}}` and `{{product.price}}` | Product title and price (product events) |
+| `{{store.name}}` | Store name |
+| `{{discount.code}}` | A code made by **Create Discount Code** |
+
+## WhatsApp cart
+
+In flows started by **Cart order received**:
+
+| Variable | Value |
+| --- | --- |
+| `{{cart.items_summary}}` | The items in the cart |
+| `{{cart.item_count}}` | How many items |
+| `{{cart.total}}` and `{{cart.currency}}` | Cart total and currency |
+| `{{cart.note}}` | The customer's note, if any |
+| `{{customer.name}}`, `{{customer.phone}}`, `{{customer.email}}` | The customer's details |
+
+## Ad referral
+
+When a contact starts a chat from an ad (the ad triggers):
+
+| Variable | Value |
+| --- | --- |
+| `{{ad.source_id}}` | Ad ID |
+| `{{ad.headline}}` | Ad headline |
+| `{{ad.body}}` | Ad text |
+| `{{ad.source_url}}` | Ad URL |
+| `{{ad.ctwa_clid}}` | WhatsApp click ID |
+
+## Facebook lead form
+
+In flows started by the **Facebook lead form** trigger:
+
+| Variable | Value |
+| --- | --- |
+| `{{lead.form_name}}` | Form name |
+| `{{lead.answers.full_name}}` | Full name (form answer) |
+| `{{lead.answers.email}}` | Email (form answer) |
+| `{{lead.answers.phone_number}}` | Phone (form answer) |
+| `{{lead.ad_id}}` | Ad ID |
+
+Any other answer is available by its question key: `{{lead.answers.your_key}}`.
+
+## Values made by steps
+
+Some steps create variables that later steps in the same run can use:
+
+| Step | Variables |
+| --- | --- |
+| **User Input** | The answer, named after where it's saved: `{{email}}`, `{{phone}}`, `{{first_name}}`, the custom field's name, or `{{answer}}` when not saved. |
+| **HTTP Request** | The names you gave under **Save response to fields**. |
+| **Get Row from Google Sheets** | The names you mapped, or prefix + column header. |
+| **WhatsApp Form (Flow)** | Each answer as `{{nfm.field_name}}`. |
+| **Book Meeting** | `{{meeting.link}}`, `{{meeting.date}}`, `{{meeting.time}}` |
+| **Request Google review** | `{{review.link}}`, `{{review.location}}` |
+| **Find Order** | The order variables above, such as `{{order.number}}` and `{{order.tracking_url}}`. |
+
+A variable you create with the same name as a system variable (for example `channel`) takes priority over it.
+
+## Where values come from in previews
+
+The builder's **Test run** and the live previews fill variables with sample values (a sample name, order and product) so you can read the message. Real runs use the contact's own data.
+
+## Related
+
+- [Message and question steps](/guide/automation/message-steps)
+- [The HTTP Request step](/guide/automation/webhook-step)
+- [Custom fields](/guide/contacts/custom-fields)

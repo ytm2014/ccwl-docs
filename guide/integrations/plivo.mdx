@@ -1,0 +1,56 @@
+---
+title: "Plivo"
+description: "Connect Plivo with your Auth ID, auth token and sender number to send and receive SMS, with delivery reports and line type lookup."
+keywords: ["Plivo", "SMS", "Auth ID", "auth token", "sender number", "webhook", "Number Lookup", "line type"]
+---
+
+The **Plivo** card on the [Integrations](/guide/integrations/overview) page connects your Plivo account as your workspace's SMS gateway. You can send and receive SMS, Plivo's delivery reports update each message's status, and failed numbers can be checked with a line type lookup. For what the SMS channel unlocks (inbox, broadcasts, the **Send SMS** step, delivery settings), see [SMS gateways](/guide/integrations/sms-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **SMS** tab.
+
+<Note>
+Don't see **Plivo**, or does it say **Not included in your plan**? Your plan or your platform doesn't include SMS yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Auth ID** | Your Plivo Auth ID. |
+| **Auth token** | Your Plivo auth token. |
+| **Sender number** | Your Plivo number, in international format (for example `+1500…`). |
+
+All three are required.
+
+## Connect Plivo
+
+<Steps>
+  <Step title="Copy your credentials">
+    In the Plivo Console, open **Account → API authentication** and copy your **Auth ID** and **Auth Token**.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **Plivo**. Paste both, enter your **Sender number**, and click **Connect**. The credentials are checked with Plivo first, then the SMS channel is created.
+  </Step>
+  <Step title="Set the webhook on your number">
+    Click **Copy** in the **Inbound & delivery webhook** panel. In Plivo, under **Phone Numbers → Manage numbers**, point the inbound-message URL and the delivery-report URL at that address.
+  </Step>
+</Steps>
+
+Replies to your number now appear in the inbox, and delivery reports update message status.
+
+## Line type lookup
+
+Plivo offers a Number Lookup, so the **Delivery settings** panel shows **Check failed numbers with a line type lookup**. Tick it and click **Save settings**. When Plivo reports an invalid destination, one lookup is made for that number (billed by Plivo and remembered for 30 days) to tell a landline from a typo. Landlines are then skipped in future sends.
+
+## Troubleshooting
+
+- **"Could not reach the Plivo API: …"** Plivo refused the Auth ID and token. Copy them again from **Account → API authentication**.
+- **Replies don't reach the inbox.** The inbound-message URL on your number isn't set to the URL from the page.
+- **Messages have no delivery status.** The delivery-report URL isn't set to the URL from the page.
+- **The card shows Error.** Plivo rejected the saved token. Paste the new one and click **Save & reconnect**.
+
+## Related
+
+- [SMS gateways](/guide/integrations/sms-gateways)
+- [Twilio](/guide/integrations/twilio)
+- [Integrations](/guide/integrations/overview)

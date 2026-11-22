@@ -1,0 +1,57 @@
+---
+title: "Twilio"
+description: "Connect Twilio with your Account SID, auth token and a number or Messaging Service to send and receive SMS, with delivery reports."
+keywords: ["Twilio", "SMS", "Account SID", "auth token", "Messaging Service", "phone number", "webhook", "status callback"]
+---
+
+The **Twilio** card on the [Integrations](/guide/integrations/overview) page connects your Twilio account as your workspace's SMS gateway. You can send and receive SMS worldwide, and Twilio's delivery reports update each message's status. For what the SMS channel unlocks (inbox, broadcasts, the **Send SMS** step, delivery settings), see [SMS gateways](/guide/integrations/sms-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **SMS** tab.
+
+<Note>
+Don't see **Twilio**, or does it say **Not included in your plan**? Your plan or your platform doesn't include SMS yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Account SID** | Your Twilio Account SID, starting with `AC`. |
+| **Auth token** | Your Twilio auth token. |
+| **From number / Messaging Service SID** | The Twilio number to send from, in international format (for example `+1500…`), or a Messaging Service SID starting with `MG`. |
+
+All three are required.
+
+## Connect Twilio
+
+<Steps>
+  <Step title="Copy your credentials">
+    In the Twilio Console, open **Account → API keys & tokens** and copy your **Account SID** and **Auth Token**.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **Twilio**. Paste both, enter your sending number or Messaging Service SID, and click **Connect**. The credentials are checked with Twilio first, then the SMS channel is created.
+  </Step>
+  <Step title="Set the webhooks on your number">
+    Click **Copy** in the **Inbound & delivery webhook** panel. In Twilio, open **Phone Numbers → Active numbers**, pick your number, and set both the incoming-message webhook and the status callback to that URL.
+  </Step>
+</Steps>
+
+Replies to your number now appear in the inbox, and delivery reports update message status.
+
+## Messaging Service or a single number
+
+- A **single number** sends every message from that number.
+- A **Messaging Service SID** lets Twilio pick the sender from the numbers in that service. Set the incoming-message webhook on every number in it, so replies reach the inbox.
+
+## Troubleshooting
+
+- **"Could not reach the Twilio API: …"** Twilio refused the Account SID and auth token. Check they belong to the same Twilio account, then paste them again.
+- **Replies don't reach the inbox.** The incoming-message webhook on your number isn't set to the URL from the page.
+- **Messages have no delivery status.** The status callback isn't set to the URL from the page.
+- **The card shows Error.** Twilio rejected the saved auth token, for example after you rotated it. Paste the new token and click **Save & reconnect**.
+
+## Related
+
+- [SMS gateways](/guide/integrations/sms-gateways)
+- [Plivo](/guide/integrations/plivo)
+- [Integrations](/guide/integrations/overview)

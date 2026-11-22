@@ -1,0 +1,91 @@
+---
+title: "Welcome message, ice breakers and menus"
+sidebarTitle: "Ice breakers and menus"
+description: "Set what each channel says first: the welcome message, the default reply, ice breakers, the persistent menu on Facebook and Instagram, the Telegram command menu, and WhatsApp ice breakers and commands."
+keywords: ["bot setup", "channel settings", "welcome message", "get started", "default reply", "ice breakers", "conversation starters", "persistent menu", "command menu", "telegram", "whatsapp commands", "conversational components"]
+---
+
+Besides flows, each messaging channel has a few always-on settings: "What this channel says first: the welcome message, the default reply, the ice breakers and the persistent menu." Ice breakers and menu items can start a flow, so they're a good front door to your automations.
+
+In the sidebar, open **Salesbot** > **More** > **Channel settings** ("Welcome message, menu and bot rules per channel") and pick the channel at the top of the page.
+
+## What each channel supports
+
+| Channel | Welcome message | Default reply | Ice breakers | Menu |
+| --- | --- | --- | --- | --- |
+| Facebook, Instagram | Yes, on Get Started | Yes | Up to 4 | Persistent menu |
+| Telegram | Yes, on /start | Yes | Up to 4 (buttons under the welcome) | Command menu |
+| WhatsApp | Welcome on new conversations | No | Up to 4 | Up to 30 commands |
+
+Other channels have nothing to set here: "Welcome message, default reply and menus apply to Facebook & Instagram channels."
+
+## Facebook and Instagram
+
+The page has the tabs **Messages**, **Persistent menu** and, for Facebook Pages that can use them, **Marketing permissions**. A **Live preview** shows "How a first-time visitor sees this channel's bot." Click **Save changes** when you're done.
+
+### Welcome message
+
+Turn on **Send a welcome message when someone taps Get Started**, write the **Message**, and optionally add up to 3 **Buttons**. Each button has **Button text** and an action: **Postback**, **Open URL** or **Start flow**.
+
+### Ice breakers
+
+"Up to 4 suggested questions shown to first-time visitors" (Instagram shows these on mobile only). For each, enter the **Question** (for example "What are your opening hours?") and choose what happens when it's tapped:
+
+- **Text reply**: send a fixed answer;
+- **Start flow**: start one of your flows.
+
+Click **Add ice breaker** for another.
+
+### Default reply
+
+Under **Advanced**, turn on **Default reply** to "Reply automatically when no keyword or flow matches". Choose when to **Send**: **Every time** or **Once per 24 hours per contact**, and write the **Message** (for example "Thanks for your message! A teammate will reply soon.").
+
+### Persistent menu
+
+On the **Persistent menu** tab, turn on **Show a persistent menu in the conversation** and build the menu:
+
+- Up to 3 items per level ("Meta allows 3 items per level"), with up to 3 levels.
+- Each item has a **Label** and a type: **Open URL**, **Postback**, **Start flow** or **Submenu**. **Convert to submenu** turns an item into a folder of sub items.
+- **Add item** adds another.
+
+"Saving syncs this menu to your connected" Page or Instagram account. "Turn it off and save to remove the menu." If your platform hasn't switched on Meta messaging yet, the settings are saved here and sent later ("Saved here, not yet sent to the platform").
+
+## Telegram
+
+The tabs are **Messages** and **Command menu**.
+
+- **Welcome message**: **Send a welcome message when someone sends /start**, with the **Message**.
+- **Ice breakers**: "Tappable buttons sent alongside the welcome message on /start. Telegram shows them as an inline keyboard under the first bot reply." Up to 4, each a **Text reply** or **Start flow**.
+- **Default reply**: as for Facebook, under **Advanced**.
+- **Command menu**: **Show a command menu in the conversation**, built like the persistent menu.
+
+The **Danger zone** at the bottom has **Disconnect bot**, which removes the bot's channel, conversations and automations.
+
+## WhatsApp
+
+Pick the WhatsApp number and open the **Conversational Components** tab. Your number must be connected on the **Configuration** tab first.
+
+- **Ice breakers**: "Up to 4 tappable prompts shown to first-time customers." Turn on **Show a welcome message to new conversations** if you want WhatsApp's welcome too. Click **Add ice breaker** for each prompt.
+- **Commands**: "Slash commands customers can type (e.g. /menu). Up to 30." Each has a name and a description. "Command names use lowercase letters, numbers and underscores only."
+
+Click **Save changes**. WhatsApp ice breakers and commands have no **Start flow** option here; to answer them automatically, use a flow on the **WhatsApp message** trigger whose keywords match your prompts and commands.
+
+## How Start flow works
+
+On Facebook, Instagram and Telegram, an ice breaker, welcome button or menu item set to **Start flow** starts the chosen flow for the contact, whatever that flow's own trigger is. The flow must be published, Live, and on the same channel or on **All profiles**.
+
+## Live preview
+
+For Facebook and Instagram, the preview on the right shows how a first-time visitor sees this channel's bot: the welcome message and buttons, the ice breakers, the default reply and, for Facebook, the menu.
+
+## Common questions
+
+**My ice breakers don't show.** They only appear to people who haven't messaged you before, and on Instagram only in the mobile app.
+
+**The default reply answered when a flow should have.** Check the flow's trigger; the default reply only sends when nothing else matched.
+
+## Related
+
+- [Triggers](/guide/automation/triggers)
+- [Facebook and Instagram steps](/guide/automation/facebook-instagram-steps)
+- [Create a flow](/guide/automation/create-a-flow)

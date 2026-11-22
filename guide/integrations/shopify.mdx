@@ -1,0 +1,104 @@
+---
+title: "Shopify"
+description: "Connect your Shopify store to sync products, customers and orders, start flows from store events and use the e-commerce steps in conversations."
+keywords: ["Shopify", "store", "orders", "abandoned checkout", "custom app", "Admin API", "webhooks", "e-commerce", "discount code"]
+---
+
+The **Shopify** card on the [Integrations](/guide/integrations/overview) page connects your Shopify store. Once connected, your products, customers and recent orders are synced, store events (an order paid, a checkout abandoned, an item back in stock) can start flows, and the e-commerce steps let a flow look up an order, send a product or create a discount code in the chat.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Commerce** tab.
+
+<Note>
+Don't see **Shopify**, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Before you start
+
+You need to be able to create a custom app in your Shopify admin (store owner, or a staff account with that permission).
+
+## Connect Shopify
+
+<Steps>
+  <Step title="Create a custom app in Shopify">
+    In Shopify admin, open **Settings → Apps and sales channels → Develop apps** and create a custom app.
+  </Step>
+  <Step title="Grant the scopes">
+    Give the app these Admin API scopes: read and write orders, customers, products and price rules, and read checkouts.
+  </Step>
+  <Step title="Allow customer data">
+    Turn on **Protected customer data access**, so order events include customers' names and phone numbers.
+  </Step>
+  <Step title="Copy the credentials">
+    Install the app and copy its Admin API access token (it starts with `shpat_`) and the app's API secret key.
+  </Step>
+  <Step title="Fill in the form">
+    In the sidebar, open **Integrations** > **Shopify**. Under **Store connection**, enter the **Store URL** as your `your-store.myshopify.com` address, then the **Admin API access token** and the **API secret key** (used to verify the events Shopify sends).
+  </Step>
+  <Step title="Connect">
+    Click **Connect store**. The store is checked first, then its webhooks are registered automatically and the first sync starts. The page confirms "Store connected — syncing products, customers and recent orders…".
+  </Step>
+</Steps>
+
+The setup guide also shows the **Webhook endpoint (registered automatically)**. You don't need to add it in Shopify yourself.
+
+## What syncs
+
+The **Synced data** panel counts the **Products**, **Customers** and **Orders** synced from your store, with the last sync time. After the first sync, Shopify sends changes as they happen. Click **Sync now** to run a full sync again, for example after importing products.
+
+## Webhook health
+
+**Webhook health** checks that your store is still sending events to this workspace:
+
+- Click **Check webhooks**. The panel then says "All expected subscriptions are active.", or lists the subscriptions that are **Missing** or **Disabled**, with the time of the check.
+- Click **Repair subscriptions** to register the missing ones again.
+
+## Store events that start flows
+
+Set a flow's trigger to one of these store events (see [Triggers](/guide/automation/triggers)):
+
+| Trigger | When it fires |
+| --- | --- |
+| **Order placed** | A new order is created. |
+| **Order paid** | An order is paid. |
+| **Payment failed** | A payment attempt on an order fails. |
+| **Checkout abandoned** | A checkout isn't completed within a while (an hour by default). |
+| **Order shipped** | An order is fulfilled. |
+| **Order cancelled** | An order is cancelled. |
+| **Order refunded** | A refund is created. |
+| **Product back in stock** | A product's stock goes from none to available. |
+| **Inventory low** | A product's stock falls low. |
+| **Customer milestone** | A customer reaches a milestone. |
+| **Store customer created** | A new customer account is created. |
+
+The same events are available to [Webhooks](/guide/integrations/webhooks), [Slack](/guide/integrations/slack) and [Zapier](/guide/integrations/zapier).
+
+## E-commerce steps
+
+Under **E-commerce** in the flow builder you'll find **Find Order**, **Order Status**, **Checkout Link**, **Send Product**, **Sync Contact**, **Create Discount Code** and **Update Store Note**. They use the connected store's data in the conversation.
+
+## Who gets messaged
+
+A store event only messages someone who can already be reached on the flow's channel:
+
+- **WhatsApp:** store customers are usually outside WhatsApp's 24-hour window, so send an approved template first. Only customers who already have a WhatsApp conversation with your number are messaged; an order never adds a new contact.
+- **Messenger and Instagram:** Meta only allows messages to people who messaged your page before, so store events for unknown customers are skipped on those channels.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The webhooks are removed from your store where possible, the credentials are deleted, and store triggers and steps stop working for this store.
+
+## Troubleshooting
+
+- **"Enter your store's myshopify.com address (your-store.myshopify.com)."** Use the myshopify.com address, not your own domain.
+- **"Could not reach the store API: …"** The token is wrong, the app isn't installed, or a scope is missing. Nothing is saved; fix it and connect again.
+- **"Some store webhooks could not be registered"** after connecting: the store is connected but some events won't arrive. Check the app's scopes, then use **Repair subscriptions**.
+- **"The store could not be read completely. Check its connection and retry the sync."** A sync stopped part-way. Check the card's status and click **Sync now**.
+- **Order events arrive without names or phone numbers.** Turn on **Protected customer data access** in the custom app.
+- **"Too many requests. Wait a minute, then try again."** Wait before the next sync or webhook check.
+
+## Related
+
+- [WooCommerce](/guide/integrations/woocommerce)
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [Flows](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

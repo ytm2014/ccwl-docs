@@ -1,0 +1,102 @@
+---
+title: "Agency console and sub-accounts"
+sidebarTitle: "Agency console"
+description: "If you resell the platform as an agency: open the agency console, create and manage sub-accounts, sell your own plans, connect your domain, Stripe and email, and brand the app."
+keywords: ["agency", "reseller", "whitelabel plan", "sub-accounts", "client workspaces", "agency plans", "custom domain", "stripe", "smtp", "branding", "self-signup", "agency webhooks", "agency api"]
+---
+
+import { AppName } from "/snippets/app-name.jsx";
+
+Some platforms let you resell <AppName /> under your own brand. With a whitelabel (reseller) plan you get an **agency console**: you create a **sub-account** for each customer, sell them plans you price yourself and bill through your own Stripe account, and they use the app on your domain with your logo.
+
+Don't see **Agency** in your user menu? Your account doesn't have a reseller plan, or your platform doesn't offer one.
+
+## Get a reseller plan
+
+Where offered, the plan picker has a **Standard plans** / **Whitelabel plans** switch. A whitelabel plan's card lists agency ceilings, such as how many sub-accounts, connected profiles, contacts and WhatsApp numbers you can have in total, instead of workspace limits. See [Choosing a plan](/guide/billing/choosing-a-plan).
+
+## Open the agency console
+
+Open your user menu (top right) and click **Agency**, or open **My Settings** and click **Agency** in the profile menu. The console opens with its own menu:
+
+| Item | What it's for |
+| --- | --- |
+| **Overview** | Your totals at a glance and recent sub-accounts. |
+| **Sub-accounts** | Your customers. |
+| **Plans** | The plans you sell. |
+| **Domain** | Your custom domain. |
+| **API** | Keys for the agency API, where your platform offers it. |
+| **Webhooks** | Endpoints that hear about your sub-accounts. |
+| **Settings** | Brand, sign-up, Stripe, email and scripts. |
+
+## Overview
+
+The **Overview** shows cards for **Sub-accounts**, **Plans**, **Contacts**, **WhatsApp numbers** and, where your plan has one, the **AI credits pool this month**, followed by **Recent sub-accounts** with their status (**Active** or **Suspended**). It warns you when you've reached your sub-account limit or when the AI credits pool is used up; while it's empty, your customers' AI pauses until it renews, but AI keys of their own still work.
+
+## Sub-accounts
+
+Each sub-account is a customer's workspace on a plan you sell.
+
+### Create a sub-account
+
+<Steps>
+  <Step title="Start">
+    On **Sub-accounts**, click **New sub-account**.
+  </Step>
+  <Step title="Enter the customer's details">
+    Fill in **Business name**, **Owner name**, **Owner email** and a **Temporary password** for the owner, and choose a **Plan** (or keep **Default plan**).
+  </Step>
+  <Step title="Create it">
+    Click **Create**. Pass the temporary password on to the owner securely.
+  </Step>
+</Steps>
+
+When you reach your plan's limit, the console says so; upgrade your reseller plan to add more customers.
+
+### Manage a sub-account
+
+From a sub-account's row you can:
+
+- **Open** it, to work in the customer's workspace. Signing in as a client is recorded in that workspace's audit log.
+- **Assign plan…** to change its plan, or leave it on **No plan**. A sub-account with no plan has no limits.
+- **Grant add-on…** to give it extra capacity, and **Remove** a granted add-on (it goes back to its plan's limit).
+- **Suspend** it: its members can't use the workspace until you **Restore** it.
+
+## Plans
+
+**Plans** are what you sell to your customers, billed through your own Stripe account. Create one before inviting customers.
+
+Click **New plan** and set its **Name**, **Currency**, **Monthly price** and **Yearly price** with **Your Stripe price ID (monthly)** and **(yearly)**, **Trial days**, and its **Status** (**Enabled** or **Disabled**). Under **Limits applied to sub-accounts**, use **Add a limit…** to cap what a customer on the plan can use. A plan can also be an **Add-on** of a chosen **Add-on type**, granting a set quantity per unit.
+
+A plan assigned to sub-accounts can't be deleted; delete removes it from what customers can choose.
+
+## Domain
+
+Your **branded address** always works. To serve the app on your own domain, enter it under **Custom domain**, click **Connect domain**, create one of the DNS records shown at your DNS provider, then click **Verify**. SSL is issued and renewed automatically once DNS points to the platform. Propagation can take a few minutes. **Remove** takes the domain away; customers can no longer reach your app on it.
+
+## Webhooks
+
+Click **New endpoint** to be notified when your sub-accounts are created, change plan or are suspended, and choose the **Events** to send. The endpoint's signing secret is shown once: copy it straight away.
+
+## Settings
+
+| Section | What you set |
+| --- | --- |
+| **Brand** | **Agency name**, **Product name**, **Logo URL**, **Dark-mode logo URL**, **Favicon URL** and **Your help centre URL**, shown to your customers in place of the platform's. |
+| **Customer signup** | **Self-signup** on or off, **Signup heading** and **Signup subheading** for the sign-up page on your domain, and whether each customer may have **Multiple workspaces per customer**. |
+| **Stripe** | Your **Publishable key**, **Secret key** and **Webhook signing secret**. Add the endpoint shown on the page in your Stripe dashboard (Developers → Webhooks). Your customers pay you directly. |
+| **SMTP** | Send your customers' emails from your own mail server (**Host**, **From address**, **From name**, **Encryption** and so on). Set up SPF and DKIM for your sending domain or emails will land in spam. Until then, platform mail is used. |
+| **Custom scripts** | Code added **Before &lt;/head&gt;** or **Before &lt;/body&gt;** on your branded pages only, such as analytics or a chat widget. |
+| **Your reseller allowance** | Read-only: the **Sub-accounts**, **Connected profiles**, **Total contacts** and **WhatsApp numbers** your plan allows. Contact the platform to raise them. |
+
+Fields marked **Leave blank to keep** keep their saved value when left empty.
+
+## How your customers pay
+
+Your customers see **Billing** in their user menu. It lists your plans (with any free trial) and lets them choose one; checkout runs through your Stripe account. If online checkout isn't set up yet, they're asked to contact you.
+
+## Related
+
+- [Choosing a plan](/guide/billing/choosing-a-plan)
+- [Add-ons](/guide/billing/add-ons)
+- [Team members and invitations](/guide/account/team-members)

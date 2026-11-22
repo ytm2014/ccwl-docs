@@ -1,0 +1,80 @@
+---
+title: "Quick automations"
+description: "Set up a one-step rule in a simple form: a trigger, optional conditions and a list of actions, with reply delay, active hours and once-per-contact limits."
+keywords: ["quick automation", "simple automation", "auto reply", "keyword reply", "comment reply", "actions", "conditions", "reply delay", "business hours", "once per contact", "edit in flow builder"]
+---
+
+A quick automation is a flow set up in one form instead of on a canvas. It has one trigger, optional conditions and a list of actions that run in order. Use it for simple rules such as "reply to every comment on this post and send the commenter a DM", or "answer anyone who writes *price*".
+
+Create one from **Salesbot** > **Flows** > **New flow**, pick a profile, then choose **Start blank** > **Quick automation**, or pick a template marked **Quick automation**. Quick automations always run on one profile, not on **All profiles**.
+
+## The form
+
+### Name and channel
+
+| Field | What to enter |
+| --- | --- |
+| **Name** | A name you'll recognise in the list. |
+| **Channel** | The profile it runs on. It shows **Fixed for this flow** once the flow exists; to change it later use **Move to a profile** in the flows list. |
+
+### Trigger
+
+Under **Trigger**, click the box (**Choose a trigger** / **What starts this flow?**) and pick an event from the trigger picker. The picker offers the same triggers as the flow builder for this profile; see [Triggers](/guide/automation/triggers).
+
+Depending on the trigger you also get:
+
+- **Trigger keywords**: "Comma-separated. Leave empty to trigger on any" message or comment.
+- **Which posts?** for comment triggers: **All posts** ("Triggers on comments on any of your posts (including future posts).") or **Specific posts**, picked from your recent posts. Story triggers ask **Which stories?** with **All stories** or **Specific stories**.
+- Store filters for store triggers: store, minimum and maximum order total, currency, payment method or the tag of contacts to notify. See [Store automations](/guide/automation/store-automations).
+
+### Conditions (optional)
+
+"No conditions — the actions run whenever the trigger fires." Click **Add condition** to only act when every condition is true. Each condition has a **Field**, an **Operator** and a value. Besides the usual contact fields (name, email, phone, tag, pipeline stage, custom field and so on) the quick form adds:
+
+- **Comment / message text** (Facebook and Instagram): contains, does not contain, is, or starts with a text.
+- **First-time contact**: Yes or No.
+
+Use **Remove condition** to delete one.
+
+### Actions
+
+Click **Add action** and choose what to do. Actions run top to bottom.
+
+| Action | What it does |
+| --- | --- |
+| **Reply to comment** | Posts a public reply under the comment (comment triggers only). |
+| **Reply to Comment with AI** | The AI writes one public reply to each comment (comment triggers only). |
+| **Send a DM** (**Send a message** on WhatsApp) | Sends a private message to the contact. |
+| **Send WhatsApp template** | Sends an approved template (WhatsApp only). Pick it under **Choose an approved template…** and fill **Value for** each variable. Templates can be sent outside the 24-hour window. |
+| **Like the comment**, **Hide the comment**, **Delete the comment** | Moderates the comment that started the flow, where the platform allows it. |
+| **Add a tag** | Tags the contact (for example *lead*). |
+| **Wait** | Pauses for a number of **Minutes**, **Hours** or **Days** "before the next action". |
+| **Handover to a human** | Assigns the conversation (**Assign to** a team member or **Unassigned**), optionally **Pause the bot**, and can send the contact an optional message. |
+
+Text actions can have alternate versions: click **Add another version** (up to five; "Maximum 5 versions reached."). "Versions are rotated so replies don't look automated." Use the variable button in a text box to insert contact details such as the first name; see [Variables](/guide/automation/variables).
+
+### Advanced: timing and limits
+
+Open **Advanced** (**Timing & limits**):
+
+| Setting | Options |
+| --- | --- |
+| **Reply delay** | **Immediately**, **After 5 seconds**, **After 1 minute** or **After 5 minutes**. |
+| **Active hours** | **24 / 7**, or **Business hours** only. |
+| **Only respond once per contact** | When on, a contact who writes or comments again doesn't start it a second time. |
+
+### Live preview
+
+The **Live preview** on the right shows the post, the comment and your reply, or the conversation, as your audience will see it.
+
+Click **Create flow** (or **Save flow** when editing). As with every flow, publish it and turn on **Live** before it runs; see [Publish, test and go live](/guide/automation/publish-and-test).
+
+## Move to the flow builder
+
+When a rule outgrows the form, click **Edit in Flow Builder**: "Continue building this as a visual flow (saved as a draft)." Your trigger, conditions and actions become steps on the canvas. Conditions become a single Condition step whose true branch runs the actions and whose false branch ends the flow. In the builder you can then add questions, branches and integrations, and adjust the AI reply's prompt and daily limit.
+## Related
+
+- [Create a flow](/guide/automation/create-a-flow)
+- [Triggers](/guide/automation/triggers)
+- [Comment automation and comment-to-DM](/guide/automation/comment-automation)
+- [The flow builder](/guide/automation/flow-builder)

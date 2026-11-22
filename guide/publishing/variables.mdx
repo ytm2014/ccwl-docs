@@ -1,0 +1,64 @@
+---
+title: "Variables"
+description: "Insert placeholders such as the account name or your own saved text, filled in for each account when the post goes out."
+keywords: ["variables", "variable manager", "placeholders", "signature", "account name", "platform name", "reusable text"]
+---
+
+A variable is a placeholder in curly brackets, such as `{{account}}`, that is replaced when the post is published. Use variables for text that changes per account, like the account's name, or for text you repeat in many posts, like a signature, a booking link or a disclaimer. Change the variable once and every post that uses it picks up the new text at publishing time.
+
+## Built-in variables
+
+Two variables are always available and marked **Default**:
+
+| Variable | Replaced with |
+| --- | --- |
+| `{{account}}` | The name of the account the post is published to. |
+| `{{platform}}` | The name of the network, for example Instagram or LinkedIn. |
+
+Because they are filled in per account, one post can say "Follow us on Instagram" on Instagram and "Follow us on LinkedIn" on LinkedIn.
+
+## Create your own variable
+
+<Steps>
+  <Step title="Open the Variable manager">
+    In the composer, click the variable button in the editor toolbar (**Open Variable Manager**).
+  </Step>
+  <Step title="Add a variable">
+    Click **New Variable**, then enter a **Name** (for example `signature`) and a **Value**, the text it stands for.
+  </Step>
+  <Step title="Save">
+    Click **Save Variable**, then **Done**.
+  </Step>
+</Steps>
+
+Variables belong to the workspace, so your teammates can use them too.
+
+## Insert a variable
+
+1. Put the cursor where the text should go.
+2. Open the **Variable manager**.
+3. Click **Use** next to the variable.
+
+The placeholder, such as `{{signature}}`, is inserted into the text. The preview and the post keep the placeholder until the post is published; then it is replaced with the value for each account.
+
+## Edit or delete a variable
+
+In the **Variable manager**, open a variable's **More actions** menu and choose **Edit** or **Delete**. The two built-in variables can't be changed or deleted.
+
+<Warning>
+If you delete a variable that scheduled posts still use, those posts no longer have a value to fill in. Check your scheduled posts before deleting one.
+</Warning>
+
+## Use variables as signatures
+
+There is no separate signature setting. To add the same sign-off to many posts, create a variable such as `signature` with your sign-off as its value, and insert it at the end of your posts or save it in a [template](/guide/publishing/templates).
+
+## Tips
+
+- Variables also work in [templates](/guide/publishing/templates), so one template can serve every account.
+
+## Related
+
+- [Templates](/guide/publishing/templates)
+- [Mentions](/guide/publishing/mentions)
+- [Create a post](/guide/publishing/create-a-post)

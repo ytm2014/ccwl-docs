@@ -1,0 +1,77 @@
+---
+title: "Meta Conversion Leads"
+description: "Tell Meta how each Facebook lead turned out, by sending lead and pipeline stage events to your CRM dataset, so your lead ads find better leads."
+keywords: ["Meta Conversion Leads", "Conversions API", "lead ads", "Facebook lead form", "dataset", "Events Manager", "pipeline stage", "test event code"]
+---
+
+The **Meta Conversion Leads** card on the [Integrations](/guide/integrations/overview) page reports back to Meta what happened to each lead your Facebook lead forms brought in. Each time such a contact moves along your pipeline, an event goes to your CRM dataset in Meta Events Manager. Meta then uses it to show your lead ads to people more likely to become customers.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Productivity** tab.
+
+<Note>
+Don't see **Meta Conversion Leads**, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Before you start
+
+- Your Facebook lead forms must bring leads into your workspace as contacts.
+- Your pipeline stages should match the steps a lead goes through (for example Qualified, Proposal, Won). See [Contacts](/guide/contacts/overview).
+- You need access to Meta Events Manager for the business that runs the ads.
+
+## Connect it
+
+<Steps>
+  <Step title="Open your CRM dataset">
+    In Meta Events Manager, create or open the CRM dataset you use for your lead ads, and copy its dataset ID.
+  </Step>
+  <Step title="Generate a token">
+    In the dataset's settings, under Conversions API, generate an access token and copy it.
+  </Step>
+  <Step title="Fill in the form">
+    In the sidebar, open **Integrations** > **Meta Conversion Leads**. Under **Your CRM dataset**, enter the **Dataset ID** and the **Conversions API access token**.
+  </Step>
+  <Step title="Test first (optional)">
+    Enter a **Test event code (optional)** from Events Manager. While it's set, events appear under Test events in Events Manager and don't count towards your ads. Clear it and click **Save** when you've finished testing.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The dataset is read with your token before anything is saved, so a typo fails here. The panel then shows **Sending to** with your dataset's name and ID.
+  </Step>
+  <Step title="Choose the optimisation stage">
+    In Events Manager, choose the stage your lead ads should optimise for.
+  </Step>
+</Steps>
+
+## What is sent to Meta
+
+- "Lead" when a Facebook lead form is captured.
+- The stage's own name each time that contact moves to a pipeline stage.
+
+Only contacts who came in through a Facebook lead form in the last 90 days are reported, and each stage only once per lead. Each event carries the lead's ID, and the contact's email and phone number hashed, never in plain text. No test event is ever sent to your live dataset: **Test connection** only reads the dataset.
+
+## Follow the results
+
+The **Last 7 days** panel counts events **Sent**, **Failed** and **Waiting**, and shows the reason for the last failure.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. Events stop being sent. Events Meta already received stay in your dataset.
+
+## Troubleshooting
+
+When connecting or testing fails, the message starts with "Could not reach that dataset:" followed by the reason:
+
+- **"Meta did not recognise that dataset ID or access token."** Check the ID is the CRM dataset's number and the token was generated for that dataset.
+- **"Meta could not be reached. Try again in a minute."** A temporary problem at Meta. Try again.
+
+Other problems:
+
+- **"The dataset ID is the number Events Manager shows for your CRM dataset."** You entered something other than the numeric ID.
+- **"Meta stopped accepting events from this connection."** The token was revoked or expired. Check the dataset ID, generate a new token, paste it and click **Save**.
+- **Nothing is sent.** Only leads from Facebook lead forms in the last 90 days are reported, and only when they change stage. Leads from other sources aren't sent.
+- **Events don't count for your ads.** A **Test event code** is still set. Clear it and save.
+
+## Related
+
+- [Meta Ads](/guide/integrations/meta-ads)
+- [Contacts](/guide/contacts/overview)
+- [Integrations](/guide/integrations/overview)

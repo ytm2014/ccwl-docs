@@ -1,0 +1,67 @@
+---
+title: "Claude"
+description: "Connect your Anthropic API key so AI Reply steps run on Claude models, with web search and function calling."
+keywords: ["Claude", "Anthropic", "API key", "AI replies", "web search", "functions"]
+---
+
+The **Claude** card on the [Integrations](/guide/integrations/overview) page connects your own Anthropic account. Your flows' **AI Reply** steps can then run on Claude models, billed to your Anthropic account. Claude supports **Web search**, **Functions** and **CRM contact tools**. It doesn't offer **File search** or **Reasoning effort**, so the page has no **Vector stores** tab. For how your own key fits with the built-in AI, see [AI providers](/guide/integrations/ai-providers).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **AI** tab.
+
+<Note>
+Don't see **Claude**, or does connecting say your plan uses the built-in AI? Your plan or your platform doesn't include your own AI keys.
+</Note>
+
+## Connect Claude
+
+<Steps>
+  <Step title="Create a key at Anthropic">
+    Open the Anthropic Console at console.anthropic.com. Under **Settings → API keys**, create a key and copy it. It starts with `sk-ant-`.
+  </Step>
+  <Step title="Paste it">
+    In the sidebar, open **Integrations** > **Claude**. Under **API credentials**, paste the key into **API key**.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The key is checked with Anthropic first; the page then confirms the connection and the card shows **Connected**.
+  </Step>
+</Steps>
+
+To change the key later, paste the new one and click **Save & reconnect**.
+
+## Models
+
+The **Capabilities** panel lists the models you can pick in the **AI Reply** step under **Models:**, and the default under **Default:**. Today these are:
+
+| Model | Notes |
+| --- | --- |
+| `claude-sonnet-5-5` | Default. |
+| `claude-opus-5-5` | |
+| `claude-haiku-5-5` | |
+| `claude-fable-5-1` | |
+
+The list on the page is always the current one.
+
+## What it unlocks
+
+- Claude models in the **AI Reply** step of your [flows](/guide/automation/overview).
+- Web search and function calling (including the CRM contact tools) inside AI replies.
+- With your own key connected, AI replies run on it first and don't use your plan's monthly AI allowance.
+
+If you want the AI to answer from your own documents, connect [OpenAI](/guide/integrations/openai) or [Google Gemini](/guide/integrations/gemini) as well: only they can search uploaded files.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The key is removed, and **AI Reply** steps fall back to another connected provider or the built-in AI, where your plan has it.
+
+## Troubleshooting
+
+- **"Could not reach the Claude (Anthropic) API: …"** Anthropic refused the key or couldn't be reached. Check the key is active and your Anthropic account has credit, then try again.
+- **The card shows Error.** Anthropic rejected the saved key during use. Create a new key and click **Save & reconnect**.
+- **"This plan uses the built-in AI."** Your plan doesn't allow own keys.
+
+## Related
+
+- [AI providers](/guide/integrations/ai-providers)
+- [OpenAI](/guide/integrations/openai)
+- [Flows and AI replies](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

@@ -1,0 +1,91 @@
+---
+title: "Lead qualification bots"
+sidebarTitle: "Lead qualification bots"
+description: "Qualify new leads automatically, either with an AI assistant that chats naturally or with a fixed set of questions, then tag and route the best ones to your team."
+keywords: ["lead qualification", "qualify leads", "lead bot", "sales bot", "ai lead qualification", "budget timeline", "hot lead", "round robin", "routing"]
+---
+
+A lead qualification bot talks to new enquiries, learns what they need, and passes the promising ones to your team while the rest get a friendly follow-up. You can build one in two ways: an AI assistant that holds a natural conversation, or a fixed-question flow that asks the same questions every time. Both start from templates in the **New flow** gallery.
+
+## Route A: the AI assistant
+
+The **AI Lead Qualification bot** template: "An AI agent greets visitors, qualifies inbound leads, captures their details, tags hot leads, and hands strong prospects to a human." It works on any messaging channel.
+
+### What's in it
+
+| Step | Set up as |
+| --- | --- |
+| Trigger | A new conversation starts (any message). |
+| **AI Reply** | A ready-written prompt, with the tools **Get contact info**, **Set custom fields**, **Add tags**, **Remove tags**, **Move CRM stage**, **Add a note** and **Hand over to a human** switched on. |
+| **End Flow** | "Lead qualified". |
+
+Because the AI step is the last step before End Flow, it keeps chatting with the lead for the rest of the conversation. See [When the AI keeps chatting](/guide/automation/ai-replies#when-the-ai-keeps-chatting).
+
+### How the assistant behaves
+
+The template's prompt asks the AI to:
+
+- greet the lead and let the conversation lead, one question at a time rather than a checklist;
+- find out what they need, their rough budget, their timeline and whether they make the decision;
+- save what it learns quietly: facts as custom fields (such as budget and timeline), intent tags (such as "Hot lead"), the pipeline stage ("Lead", "Qualified", "Opportunity") and a short summary note;
+- hand strong prospects, or anyone who asks for a person, to your team.
+
+### Set it up
+
+<Steps>
+  <Step title="Create what the AI will use">
+    The AI can only use tags and stages that exist. Create the tags (for example "Hot lead") under [Contacts > Tags](/guide/contacts/tags), the stages under [Pipeline](/guide/contacts/pipeline), and any custom fields under [Custom fields](/guide/contacts/custom-fields).
+  </Step>
+  <Step title="Install the template">
+    **Salesbot** > **Flows** > **New flow**, choose the profile, then pick **AI Lead Qualification bot** and **Use this template**.
+  </Step>
+  <Step title="Adjust the prompt">
+    Open the AI Reply step. Edit the prompt so it describes your business and what makes a good lead for you, and names your own tags and stages.
+  </Step>
+  <Step title="Add knowledge">
+    On **Built-in Tools**, point **AI Knowledge** at your product or service collection so it can answer questions while qualifying. See [AI Knowledge](/guide/automation/ai-knowledge).
+  </Step>
+  <Step title="Test and publish">
+    Try a few conversations in the **Playground**, publish, then use **Test bot** before switching it on.
+  </Step>
+</Steps>
+
+## Route B: fixed questions
+
+The **Lead Qualification Flow** template: "Ask interest, budget and timeline, then route hot leads to sales and nurture the rest."
+
+| Step | What it does |
+| --- | --- |
+| Trigger | A new conversation starts. |
+| **User Input** | "What are you interested in?", saved to the custom field `interest`. |
+| **User Input** | "Roughly what budget are you working with?", saved to `budget`. |
+| **User Input** | "And when are you hoping to start?", saved to `timeline`. |
+| **Condition** | Checks whether the answer suggests they're ready to buy (words such as "asap", "urgent", "this week"). |
+| **Assign Conversation** (round robin) | Hot leads go to the next team member. |
+| **Send Message** | Everyone else gets "Thanks! We'll keep in touch with helpful tips". |
+| **End Flow** | "Lead routed". |
+
+Change the questions, the fields they're saved to and the condition to match your sales process. Use **Multiple choice** questions where you can, so answers are easy to branch on. See [Message and question steps](/guide/automation/message-steps#user-input-ask-a-question).
+
+## Other templates that help
+
+- **Lead qualification flow** (Instagram): ask one question, branch on the answer, and tag the lead.
+- **Buyer Qualification**: "Qualify budget, location, financing and timeline, then tag & route."
+- **Welcome & qualify new chats**: "Greet new contacts and capture what they need."
+- **Quiz + Lead Tagging**: "Ask a multiple-choice question and tag contacts by their answer for targeted follow-up."
+- **Hot lead alert**: "When AI insights label a message as a lead, tag the contact and alert your team." (Needs AI insights.)
+
+Which ones you see depends on your channels and plan.
+
+## Before it goes live
+
+- Make sure every branch ends somewhere: an assignment, a message or End Flow.
+- Check another Live flow doesn't already answer new conversations on the same profile; only one flow answers each message.
+- Watch the first few days in the flow's **Analytics** and the [pipeline report](/guide/analytics/pipeline-report).
+
+## Related
+
+- [The AI Reply step](/guide/automation/ai-replies)
+- [AI agent tools](/guide/automation/ai-tools)
+- [Templates and automation packs](/guide/automation/templates-and-packs)
+- [Contact and hand-over steps](/guide/automation/contact-steps)

@@ -1,0 +1,70 @@
+---
+title: "Mailchimp"
+description: "Add your sales inbox contacts to a Mailchimp audience, automatically or from a flow step, with tags."
+keywords: ["Mailchimp", "email", "audience", "API key", "auto-sync", "contacts", "Add to Mailchimp", "tags"]
+---
+
+The **Mailchimp** card on the [Integrations](/guide/integrations/overview) page adds your sales inbox contacts to your Mailchimp audiences, so the people who message you can also get your email campaigns. Each contact is added to the audience, or updated when they're already in it. New members are added as subscribed.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Sales & CRM** tab.
+
+<Note>
+Don't see **Mailchimp**, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+<Warning>
+Only add people who agreed to receive your emails. Mailchimp and the law in many countries require consent.
+</Warning>
+
+## Connect Mailchimp
+
+<Steps>
+  <Step title="Get an API key">
+    In Mailchimp, open **Account → Extras → API keys** and create or copy a key. It ends with your account's datacenter, for example `-us21`, which is read from the key.
+  </Step>
+  <Step title="Paste the key">
+    In the sidebar, open **Integrations** > **Mailchimp**. Under **Mailchimp credentials**, paste it into **API key**.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The key is checked with Mailchimp; the page confirms "Mailchimp connected." and your audiences appear under **Audiences**.
+  </Step>
+  <Step title="Choose auto-sync (optional)">
+    Tick **Auto-sync every new & updated contact**, pick the audience under **Auto-sync into audience**, and click **Save**.
+  </Step>
+</Steps>
+
+To change the key later, paste the new one and click **Save**. A saved key shows as dots; leave the field blank to keep it.
+
+## Two ways to sync
+
+| Way | How it works |
+| --- | --- |
+| **Auto-sync** | Every contact with an email is added to the chosen audience when it's created or changed. No flow step is needed. |
+| **Add to Mailchimp** step | Add this step to a flow (under **Actions**), pick the **Audience** and, optionally, tags. Only contacts that reach the step are added, for example those who ask for your newsletter. See [Flows](/guide/automation/overview). |
+
+Either way, a contact needs an email address; contacts without one are skipped.
+
+## Audiences and synced count
+
+Once connected:
+
+- **Audiences** lists the audiences in your Mailchimp account. The same list appears in the **Add to Mailchimp** step and the auto-sync setting.
+- **Synced** shows how many contacts have been sent to Mailchimp so far.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The key and the saved audience list are removed, auto-sync stops and **Add to Mailchimp** steps skip their contacts. Members already in Mailchimp stay there.
+
+## Troubleshooting
+
+- **"Could not reach Mailchimp: that is not a Mailchimp API key (it ends with the datacenter, like -us21)."** Copy the whole key, including the part after the dash.
+- **"Could not reach Mailchimp: …"** Mailchimp refused the key. Check it hasn't been deleted, then paste it again.
+- **No audience to choose.** Create an audience in Mailchimp, then click **Save** on this page: saving reloads the audience list from Mailchimp.
+- **The card shows Error.** Mailchimp rejected the saved key. Paste a new one and click **Save**.
+
+## Related
+
+- [HubSpot](/guide/integrations/hubspot)
+- [Contacts](/guide/contacts/overview)
+- [Flows](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

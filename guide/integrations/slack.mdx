@@ -1,0 +1,76 @@
+---
+title: "Slack"
+description: "Post a message in a Slack channel when selected workspace events happen, and send custom Slack messages from your flows."
+keywords: ["Slack", "notifications", "incoming webhook", "channel", "events", "Send Slack message"]
+---
+
+The **Slack** card on the [Integrations](/guide/integrations/overview) page posts a message in a Slack channel of your choice whenever selected events happen in your workspace: a new contact, an inbound message, a payment, a meeting booked and more. Your flows can also post their own messages there with the **Send Slack message** step.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Productivity** tab.
+
+<Note>
+Don't see **Slack**, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Connect Slack
+
+<Steps>
+  <Step title="Create an incoming webhook in Slack">
+    Go to api.slack.com/apps, create or pick an app for your Slack workspace and turn on **Incoming Webhooks**. Click **Add New Webhook to Workspace**, choose the channel to post in, and copy the webhook URL. It starts with `https://hooks.slack.com/`.
+  </Step>
+  <Step title="Paste the URL">
+    In the sidebar, open **Integrations** > **Slack**. Under **Slack channel**, paste it into **Incoming webhook URL**.
+  </Step>
+  <Step title="Choose the channel scope">
+    Under **Channel scope**, keep **All channels** or pick one messaging channel (WhatsApp, Facebook (Messenger), Instagram, SMS or TikTok), so only events from that channel notify Slack.
+  </Step>
+  <Step title="Pick events">
+    Under **Events to notify**, tick the events you want.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The page confirms "Slack connected. Selected events will post to your channel."
+  </Step>
+</Steps>
+
+To change the events or scope later, edit them and click **Save Slack**. The saved webhook URL is never shown again; leave the field blank to keep it, or paste a new one to post somewhere else.
+
+## Events you can pick
+
+The events are grouped: **Contacts**, **Conversations**, **Message lifecycle**, **Automations**, **Broadcasts**, **Payments**, **Store (e-commerce)** and **Bookings**. Each event shows its name and code.
+
+The **Message lifecycle** events (sent, delivered, read / seen, failed) depend on what each channel reports:
+
+- With **All channels**, small chips next to the event show which channels report it fully, partly or not at all.
+- With one channel picked, an event that channel reports only partly is marked **Limited**, and one it can't report is greyed out and marked as not supported on that channel.
+
+Payment and store events only fire once a [payment gateway](/guide/integrations/payment-gateways) or a store is connected.
+
+## Send a test notification
+
+Once connected, pick an **Event** under **Send a test notification** and click **Send test**. A sample message is posted to your Slack channel and appears in the **Recent delivery log**. The page confirms the test was sent.
+
+## Send Slack message step
+
+Connecting Slack also unlocks the **Send Slack message** step in the flow builder, under **Actions**. Write the **Message**; it can include contact and order variables. The step posts to the channel of your connected webhook. Use it for alerts the event list doesn't cover, for example "a VIP asked for a call". See [Flows](/guide/automation/overview).
+
+## Delivery
+
+Failed notifications are retried up to 3 times. Each delivery appears in the **Recent delivery log**, green when Slack accepted it and red when it failed.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The webhook URL is removed and Slack stops receiving notifications. To also stop Slack accepting the old URL, remove the webhook from your Slack app.
+
+## Troubleshooting
+
+- **"Enter a Slack incoming-webhook URL (https://hooks.slack.com/…)."** The address isn't a Slack incoming webhook. Copy it again from your Slack app.
+- **"That event is not supported on the selected channel scope."** You tried to test an event your chosen channel can't report. Pick another event or set the scope to **All channels**.
+- **"Too many test events. Wait a minute, then try again."** Wait a minute between tests.
+- **Messages stopped arriving.** The webhook may have been removed in Slack, or the channel deleted. Create a new webhook and paste its URL.
+
+## Related
+
+- [Webhooks](/guide/integrations/webhooks)
+- [Zapier](/guide/integrations/zapier)
+- [Flows](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

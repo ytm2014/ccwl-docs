@@ -1,0 +1,52 @@
+---
+title: "Paystack"
+description: "Connect Paystack with your secret key to collect card and bank payments in chat in NGN, GHS, ZAR, KES or USD."
+keywords: ["Paystack", "payments", "secret key", "webhook", "Nigeria", "Ghana", "South Africa", "Kenya"]
+---
+
+The **Paystack** card on the [Integrations](/guide/integrations/overview) page connects your Paystack account, so you can collect card and bank payments in conversations. Paystack supports NGN, GHS, ZAR, KES and USD; amounts are charged in the currency's smallest unit. For how payment links, triggers and the inbox button work, see [Payment gateways](/guide/integrations/payment-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Payments** tab.
+
+<Note>
+Don't see **Paystack**, or does it say **Not included in your plan**? Your plan or your platform doesn't include payments yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Secret key** | Your Paystack secret key, starting with `sk_test_` or `sk_live_`. |
+
+Paystack needs no separate webhook secret: it signs each event with your secret key, and every event is checked against it.
+
+## Connect Paystack
+
+<Steps>
+  <Step title="Copy your secret key">
+    In the Paystack Dashboard, open **Settings → API Keys & Webhooks** and copy your **Secret key**.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **Paystack**, paste it into **Secret key** and click **Connect**. The **Webhook endpoint** panel appears.
+  </Step>
+  <Step title="Set the webhook URL">
+    Click **Copy** next to the webhook URL. Back on the same Paystack page, paste it into **Webhook URL** and save.
+  </Step>
+</Steps>
+
+## Test and live mode
+
+Test or live mode follows the key: an `sk_test_` key creates test payments, an `sk_live_` key real ones. Paystack keeps a separate webhook URL for each mode, so set it for live mode too when you switch keys.
+
+## Troubleshooting
+
+- **"Could not reach the Paystack API: …"** Paystack refused the key. Check you copied the secret key, not the public key.
+- **Payments stay Pending.** The webhook URL isn't set for the mode your key is in.
+- **A currency is refused.** Paystack only supports NGN, GHS, ZAR, KES and USD, and only those your account has enabled.
+- **The card shows Error.** Paystack rejected the saved key. Paste the new key and click **Save & reconnect**.
+
+## Related
+
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [Flutterwave](/guide/integrations/flutterwave)
+- [Integrations](/guide/integrations/overview)

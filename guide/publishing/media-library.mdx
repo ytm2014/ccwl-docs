@@ -1,81 +1,85 @@
 ---
 title: "Media library"
-description: "Upload, organise and reuse the images and videos for your posts."
-keywords: ["media", "media library", "upload", "folders", "favourites", "alt text", "stock photos", "GIFs", "Canva", "Google Drive", "Dropbox"]
+description: "Upload, organise and reuse the images and videos for your posts, with folders, favourites, search, usage badges and an image editor."
+keywords: ["media", "media library", "upload", "folders", "favourites", "alt text", "edit image", "storage", "AI images"]
 ---
 
-The **Media Library** keeps the images and videos you use in posts. Upload files once, sort them into folders, and pick them from the composer whenever you need them. The same library opens when you click **Add Media** in the composer.
+The **Media Library** keeps the images and videos you use in posts. Upload files once, sort them into folders and pick them from the composer whenever you need them. The same library opens when you click **Add Media** in the composer.
 
 In the sidebar, open **Media Library**. Every member can browse it; uploading, organising and deleting need the **Admin** or **Member** role.
-
-## Sources
-
-The tabs across the top are where media can come from. Which ones you see depends on your plan and platform.
-
-| Tab | What it does |
-| --- | --- |
-| **Upload** | Your own files, with folders. |
-| **Stock Photos** | Search a stock photo service and use a photo. |
-| **GIFs** | Search for GIFs. |
-| **New design** | Create a design for Adobe Express. |
-| **Canva** | Connect your Canva account and import your designs (**Import Design**), choosing format and quality. |
-| **Google Drive** and **Dropbox** | Pick files from your cloud storage. Larger files download in the background and you are notified when they are ready. |
-
-Media from stock, GIF and cloud sources is saved to your library when you use it.
 
 ## Upload files
 
 On the **Upload** tab:
 
 - Drag files or whole folders onto the page, or click **Browse**. Images and videos only.
-- **Upload folder** uploads a folder and keeps its structure.
+- **Upload folder** uploads a folder and keeps its structure. Folders nested too deep are flattened into the deepest level allowed.
 - **From URL**: paste an image or video link to upload it.
-- **AI**: describe an image and click **Generate** to create one. Only shown when AI images are available.
+- **AI**: describe an image (**Describe the image**) and click **Generate** to create one. It can take a couple of minutes. Shown only when AI images are available.
 
-Files go into the folder you have open. Unsupported formats show a message listing the formats you can use.
+Files go into the folder you have open. An upload panel shows the progress of each file (**Waiting...**, **Uploading**, **Complete** or **Failed**). Unsupported formats show a message listing the formats you can use.
+
+Where your plan has a storage limit, the library shows how much you have used, for example "2 GB of 10 GB used". **Get Storage** lets you add more where available.
 
 ## Folders
 
 Open the folder panel with the folder button beside the tabs.
 
-- Click **New folder** to create one, inside the open folder if you are in one.
-- Open a folder's **More actions** menu to **Rename folder**, add a **New folder** inside it, or delete it. **Delete folder** moves its files to the parent folder; **Delete folder and files** deletes the files too.
+- Click **New folder** to create one, inside the open folder if you are in one. Folders can be nested a few levels deep.
+- Open a folder's menu to **Rename folder**, add a folder inside it, move it, or delete it. **Delete folder** moves its files to the parent folder; **Delete folder and files** deletes the files too.
 - Use **Search folders** to find a folder.
+- Drop files on the page while a folder is open to upload them into it.
 
 The panel also has **Recents** and **Favourites**. Star a file (**Add to favourites**) to find it in **Favourites** later.
 
 ## Find files
 
 - **Search by name** searches the whole library.
-- **Filters** narrows by **Type** (images, GIFs or videos) and **Usage**: **Published**, **Scheduled**, **Draft** or **Not used** in posts. Each file also shows a badge when it is used in posts.
+- **Filters** narrows by **Type** (**Images**, **GIFs** or **Videos**) and **Usage**: **Published**, **Scheduled**, **Draft** or **Not used** in posts. Each file shows a badge when it is used in posts.
 - **Sort by**: **Newest first**, **Oldest first**, **Name (A-Z)** or **Largest first**.
 
 ## Work with a file
 
 Hover over a file and open **More actions**:
 
-- **Preview**: see the file full size, or play a video.
-- **Rename**.
-- **Edit alt text**: describe the image for screen readers. The dialog says which networks use it, and may offer **Generate with AI**.
-- **Edit image**: open the image editor. Your edits are saved as a new copy.
-- **Create for Adobe Express**: start a design from the file.
-- **Move to folder** or **Copy to folder**.
-- **Copy URL**: copy the file's address.
-- **Delete**.
+| Action | What it does |
+| --- | --- |
+| **Preview** | Shows the file full size, or plays a video. |
+| Rename | Changes the file's name. |
+| **Edit alt text** | Describes the image for screen readers; may offer **Generate with AI**. |
+| **Edit image** | Opens the image editor. Your edits are saved as a new copy ("Edited copy saved"). |
+| **Create for Adobe Express** | Starts a design from the file, where available. |
+| **Move to folder** / **Copy to folder** | Moves or copies it to another folder. |
+| **Copy URL** | Copies the file's address. |
+| Delete | Removes the file. |
 
 ## Work with several files
 
 Click files to select them. The bar that appears lets you:
 
-- **New post**: start a post with the selected files.
-- **Move to folder** or **Copy to folder** (on the **Upload** tab).
-- **Delete**, after you confirm.
+- **Create Post**: start a post with the selected files.
+- **Move to folder** or **Copy to folder**.
+- **Delete**, after you confirm ("Are you sure you want to delete selected media items?").
 
 <Warning>
 Deleting media removes it from the library. Check the usage badge first: a file used in scheduled posts may still be needed.
 </Warning>
 
+## Other sources
+
+Besides your uploads, the library has tabs for stock photos, GIFs, Canva, Google Drive, Dropbox and new designs. See [Media sources](/guide/publishing/media-sources).
+
+## Troubleshooting
+
+| Message | What to do |
+| --- | --- |
+| **The {format} file is not supported.** | Convert it to a listed format. |
+| **Error uploading media.** / **The media could not be uploaded. Try again.** | Try again; check the file size and your storage. |
+| **A folder with this name already exists here.** | Choose another name. |
+| **Folders can be nested up to ... levels deep.** | Create the folder higher up. |
+
 ## Related
 
-- [Create a post](/guide/publishing/create-a-post)
-- [Post templates](/guide/publishing/templates)
+- [Media sources](/guide/publishing/media-sources)
+- [Add media to a post](/guide/publishing/add-media)
+- [Templates](/guide/publishing/templates)

@@ -1,0 +1,56 @@
+---
+title: "Audit log"
+description: "See who made admin and destructive changes in your workspace, when, and from which IP address."
+keywords: ["audit log", "audit trail", "who changed what", "security", "deleted", "admin actions", "IP address"]
+---
+
+The audit log is a permanent record of admin and destructive actions in your workspace: contacts deleted or merged, flows turned on, broadcasts sent, roles changed, integrations connected, API keys created and more. Use it to answer "who did this, and when?".
+
+In the sidebar, open **Salesbot** > **More** > **Audit log**. It is available to workspace admins, and to others only if a custom role grants **View the audit log**. Members limited to some channels can't open it, because the log covers the whole workspace.
+
+## Entries can't be changed
+
+The log is append-only: nobody, including admins, can edit or delete an entry. Entries only disappear when they age out of the retention period, which is at least a year.
+
+## Filter the log
+
+- **Action**: **All actions**, or one kind of action such as **Contact deleted**, **Broadcast sent now**, **Automation published** or **Team role updated**.
+- **Date range**: **All time**, **Last 24 hours**, **Last 7 days** or **Last 30 days**.
+
+**Clear filters** resets both. If nothing matches you'll see **No audit entries match your filters.**
+
+## Read the list
+
+| Column | Shows |
+| --- | --- |
+| **When** | How long ago. |
+| **Who** | The team member. **System** means no person did it (an automatic action), or the member has since been removed from the workspace. |
+| **Action** | The kind of action, as a label. Hover it to see its code. |
+| **Summary** | A short description, for example "Deleted meeting type: Intro call". |
+| **IP** | The IP address the action came from, or a dash. |
+
+Click a row (or its summary) to open the details: the summary, **Who**, **Subject** (what was changed), **IP**, the exact time and a **Details** section with the technical record. The action's code is shown next to its label, which helps when you search for it with support.
+
+## What is recorded
+
+The log covers actions such as:
+
+| Area | Examples |
+| --- | --- |
+| Contacts | Deleted, bulk-deleted, erased, merged, restored, blocked, imported, exported, stage or tag changed in bulk. |
+| Conversations | Archived, deleted, purged; paused automations ended, resumed or skipped. |
+| Flows and sequences | Created, updated, published, turned on, paused, deleted. Comments liked, hidden or deleted by an automation. |
+| Broadcasts | Created, sent, paused, resumed, cancelled, approved, deleted; opt-in check overridden. |
+| Appointments | Appointment types created, updated, turned off or deleted; bookings cancelled, rescheduled, marked completed or no-show. |
+| Channels | WhatsApp numbers registered or disconnected, profile and compliance changes, Telegram bots connected, Live Chat widgets changed. |
+| Integrations | Integrations connected, disconnected, tested; Google Calendar or Sheets chosen; Meta ads account chosen; webhooks created, changed, deleted or their secret rolled; Zapier Zaps subscribed. |
+| Access | Team roles created, updated or deleted; API keys created or revoked; workspace webhooks changed. |
+| Other | AI Knowledge collections and sources deleted, media deleted, conversation settings updated. |
+
+Everyday actions such as replying to a message aren't in the audit log. For a log of what the system did, use [Activity](/guide/analytics/activity-log).
+
+## Related
+
+- [Activity log](/guide/analytics/activity-log)
+- [Sales inbox reports](/guide/analytics/overview)
+- [Roles and permissions](/guide/account/roles-and-permissions)

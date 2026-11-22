@@ -1,0 +1,79 @@
+---
+title: "The HTTP Request step"
+sidebarTitle: "HTTP Request (webhook)"
+description: "Call your own service or another app from a flow, send contact details as JSON, and use the response in later steps."
+keywords: ["http request", "webhook step", "call a webhook", "api call", "json body", "headers", "response", "save response to fields", "integration"]
+---
+
+The **HTTP Request** step sends a request to a web address while the flow runs. Use it to pass a lead to your CRM, look something up in your own system, or trigger an automation in another tool. Add it from the **Connect** tile in the builder.
+
+This page is about calling out from a flow. To receive events from your workspace in another app, see [Webhooks](/guide/integrations/webhooks).
+
+## The fields
+
+| Field | What to enter |
+| --- | --- |
+| **Method** | **GET**, **POST** or **PUT**. |
+| **Endpoint URL** | The full address, starting with `http://` or `https://`. |
+| **Headers** | Click **Add** for each header, with a **Header** name and a **Value**, for example an `Authorization` header with your API key. Up to 20 headers are sent. |
+| **JSON body** | For POST and PUT: the JSON to send, for example `{"email": "{{email}}"}`. |
+| **Save response to fields** | Click **Add** to copy a value from the response into a variable: the path in the response (for example `data.id`) and the variable name. |
+
+## Variables in the body
+
+Write the body as JSON and put variables inside the string values:
+
+```json
+{
+  "name": "{{name}}",
+  "email": "{{email}}",
+  "phone": "{{phone}}",
+  "source": "{{channel}}",
+  "order": "{{order.number}}"
+}
+```
+
+The JSON is read first and the variables are filled into its values afterwards, so a quote or backslash the customer typed can never break the structure. A body that isn't valid JSON is refused when you publish ("Body is not valid JSON.") and, if it slipped through, stops the run.
+
+See [Variables](/guide/automation/variables) for every variable you can use.
+
+## Using the response
+
+Each line under **Save response to fields** maps a path in the response to a variable. For a response like:
+
+```json
+{ "data": { "id": "A-1042", "status": "received" } }
+```
+
+map `data.id` to `ticket_id`, and later steps can use `{{ticket_id}}`, for example in a message (`Your ticket number is {{ticket_id}}`) or in a Condition.
+
+## When the call fails
+
+An external service being down must not strand the conversation, so:
+
+- The request waits up to 5 seconds for an answer (3 seconds to connect).
+- If the request fails or times out, the flow carries on to the next step. Mapped variables stay empty, so use fallbacks such as `{{ticket_id|pending}}` in messages.
+
+## What it refuses to call
+
+For safety, the step only calls public internet addresses. It refuses private or local network addresses, addresses with a username or password in them, redirects and proxies. A refused address stops the run with "The HTTP request was refused by the destination security check." and no request is made. "Only public addresses are called. Headers and bodies are never logged."
+
+## Test it
+
+**Send test request** shows an example response in the panel ("Demo response — live requests run when the flow engine is enabled."). It doesn't call your endpoint. To try the real call, publish the flow and use **Test bot** or **Test on the real channel**, then check the flow's [analytics](/guide/automation/publish-and-test#flow-analytics) or your service's logs.
+
+## Common problems
+
+| You see | What to do |
+| --- | --- |
+| "Endpoint URL is missing or not http(s)." | Enter a full `https://` address. |
+| "Body is not valid JSON." | Check quotes, commas and brackets. Variables go inside quotes. |
+| The step ran but your service got nothing | Check the method, the address and your headers. Your service must answer within 5 seconds. |
+| Later steps show empty values | Check the response path. Paths are case-sensitive and use dots, such as `data.id`. |
+
+## Related
+
+- [Integration steps](/guide/automation/integration-steps)
+- [Variables](/guide/automation/variables)
+- [Webhooks](/guide/integrations/webhooks)
+- [The AI Reply step: custom functions](/guide/automation/ai-tools#custom-functions)

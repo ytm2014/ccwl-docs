@@ -1,0 +1,75 @@
+---
+title: "SMS"
+description: "Connect Twilio, Plivo or a custom HTTP gateway so you can text contacts, receive replies in the Inbox and send SMS broadcasts."
+keywords: ["sms", "text message", "twilio", "plivo", "custom gateway", "webhook", "delivery reports", "opt-out", "line type lookup", "send sms"]
+---
+
+SMS uses your own account with an SMS gateway. You connect Twilio, Plivo or a custom HTTP gateway once, and your workspace gets one SMS channel for the Inbox, SMS broadcasts and the **Send SMS** flow step. Messages are sent from your gateway account and billed by your gateway.
+
+<Note>
+Connecting SMS needs the permission to manage integrations, which is admin-only unless a custom role grants it. Don't see SMS? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Before you start
+
+Have an account with your gateway and a number or sender that can send SMS:
+
+| Gateway | What you need |
+| --- | --- |
+| Twilio | **Account SID**, **Auth token**, and a **From number / Messaging Service SID** (a Twilio number, or a Messaging Service ID starting with MG). |
+| Plivo | **Auth ID**, **Auth token** and a **Sender number**. |
+| Custom HTTP gateway | A **Send URL** that uses the `{to}`, `{text}` and `{from}` tokens, the **HTTP method** (GET or POST), and optionally an **Authorization header value** and a **Sender ID**. |
+
+## Connect a gateway
+
+<Steps>
+  <Step title="Open the SMS settings">
+    In the sidebar, open **Accounts**, click **Add account** and choose **SMS**. This opens the **SMS** tab of **Integrations**.
+  </Step>
+  <Step title="Choose the gateway and enter the credentials">
+    Pick Twilio, Plivo or a custom gateway and fill in the **API credentials**. The page's **Setup guide** shows where to find each value in your gateway's console.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. Keys are encrypted and never shown in the browser again; to change them later, enter new ones and click **Save & reconnect**, or leave a field blank to keep the saved value.
+  </Step>
+  <Step title="Set the webhook">
+    Copy the **Inbound & delivery webhook** URL (**Copy**) and set it in your gateway's dashboard, as both the inbound-message and the status or delivery-report URL. Without it, replies don't reach the Inbox and delivery reports don't update.
+  </Step>
+</Steps>
+
+The panel shows what your gateway supports, for example *Inbound SMS: available · Delivery reports: available*, and your **Sender**, with counts of messages **Sent** and **Received**.
+
+<Warning>
+Custom gateways can only send. They don't deliver inbound replies or delivery reports, so you won't see customers' answers in the Inbox.
+</Warning>
+
+## Delivery settings
+
+Under **Delivery settings**, click **Save settings** after changing these:
+
+| Setting | What it does |
+| --- | --- |
+| **Add an opt-out line to SMS broadcasts** | Adds an opt-out line, on a new line, to each person's first SMS broadcast from this number, then at most once every 30 days, unless the message already mentions STOP. Broadcasts only, never replies or **Send SMS** flow steps. |
+| **Check failed numbers with a line type lookup** | When the gateway reports an invalid number, one lookup per number (billed by your gateway, remembered for 30 days) tells a landline from a typo. Landlines are then skipped. |
+
+## What you get
+
+- SMS conversations in the Inbox, with replies sent from your gateway.
+- SMS broadcasts.
+- The **Send SMS** step in flows.
+
+SMS has no reply window: you can write to a contact with a phone number at any time, within your gateway's and your country's rules. Long messages are split into several SMS parts by the network, and your gateway bills each part.
+
+## Troubleshooting
+
+**Replies don't arrive in the Inbox.** Check that the webhook URL is set in your gateway's dashboard for inbound messages, and that you're not using a custom gateway.
+
+**Messages stay without a delivery status.** The status or delivery-report URL isn't set to the webhook in your gateway.
+
+**Sending fails straight away.** Check the credentials and the sender number, and that your gateway account has credit. The Inbox shows the gateway's reason under the reply box.
+
+## Related
+
+- [Messaging channels](/guide/channels/overview)
+- [Broadcasts](/guide/broadcasts/overview)
+- [Integrations](/guide/integrations/overview)

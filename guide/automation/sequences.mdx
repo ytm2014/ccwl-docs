@@ -1,0 +1,94 @@
+---
+title: "Sequences"
+description: "Send a planned series of follow-up messages over days to contacts who subscribe, with templates on WhatsApp, and stop it when they reply."
+keywords: ["sequences", "drip campaign", "follow-up", "nurture", "send as", "whatsapp template", "stop when someone replies", "subscribe", "remove from sequence", "timeline"]
+---
+
+A sequence is a drip campaign: "ordered messages delivered on a schedule after a contact subscribes." Day 0 might welcome them, day 2 share a tip, day 5 make an offer. Contacts join from a flow and leave when the messages run out, when they reply (if you choose), when they opt out, or when a flow removes them.
+
+## Sequence, flow or broadcast?
+
+- A **flow** reacts to something the contact does, right away.
+- A **sequence** sends the same planned series to each subscriber, counted from the day they joined.
+- A **broadcast** sends one message to many contacts at once. See [Broadcasts](/guide/broadcasts/overview).
+
+## Where to find them
+
+In the sidebar, open **Salesbot** > **More** > **Sequences**, or click **Sequences** on the Flows page. Sequences belong to a profile, so the list shows those of the profile you're working in.
+
+<Note>
+Don't see **Sequences**? Your plan or your platform doesn't include them yet. If you see "Connect a channel first", connect a messaging channel before creating one.
+</Note>
+
+The list shows each **Sequence**, its **Channel**, **Steps**, **Subscribers**, **Status** (**Active** or **Paused**) and when it was **Updated**, with **Edit**, **Pause** / **Resume** and **Delete**.
+
+## Build a sequence
+
+<Steps>
+  <Step title="Start a new sequence">
+    Click **New sequence**. Enter a **Name** (for example "Welcome nurture") and check the **Channel**: "Sequences belong to the selected profile." Set the **Status** to **Active** or **Paused**.
+  </Step>
+  <Step title="Choose when people leave">
+    Turn on **Stop when someone replies** if a reply should end it: "Only that person leaves the sequence — everyone else keeps receiving it."
+  </Step>
+  <Step title="Add the messages">
+    Under **Messages**, click **Add step** for each message and fill in:
+
+    | Field | What to enter |
+    | --- | --- |
+    | **Day** | Days after subscribing. Day 0 is the day they join. |
+    | **From** / **To** | The time window the message goes out in on that day. |
+    | **Send as** | How the message is sent (see below). |
+    | **Message** | The text, or for a template step the **Template** and its **Template variables**. |
+
+    Reorder steps with **Move up** and **Move down**, or **Delete** one.
+  </Step>
+  <Step title="Check the timeline and save">
+    The **Timeline** shows each step by day. Click **Create sequence** (or **Save sequence** when editing).
+  </Step>
+</Steps>
+
+### What a step can send
+
+The **Send as** choices depend on the channel:
+
+| Channel | Send as |
+| --- | --- |
+| WhatsApp | **Standard send** ("Inside the 24-hour messaging window."), **Utility template** ("Pre-approved utility template (order updates, reminders), delivers outside the 24-hour window.") or **Marketing message** ("Pre-approved marketing template, delivers outside the 24-hour window.") |
+| Facebook, Instagram | **Standard send**, or **Human agent** ("Live-agent reply within 7 days of the contact's last message.") |
+| Other channels | **Standard send** |
+
+For a template step, pick an approved template of that kind under **Template** and fill every **Template variable**. With none you see "No approved templates of this kind on this number yet." and a link to **Manage templates**.
+
+<Tip>
+Sequence messages are sent days later, usually outside WhatsApp's 24-hour window. On WhatsApp use **Utility template** or **Marketing message** for any step after day 0, or the message won't be delivered.
+</Tip>
+
+## How contacts join
+
+"Delivery starts when a contact is subscribed via the flow builder's Sequence step." Add the **Sequence** step to a flow and choose the sequence. The Sequence step is available on Facebook and Instagram flows, and the sequence must belong to the same profile.
+
+- A new subscriber starts at the first step.
+- A contact who finished or left earlier starts again from the first step.
+- A contact who is already in the sequence stays where they are.
+
+## Taking a contact out
+
+A contact leaves a sequence when:
+
+- the last step has been sent;
+- they reply, if **Stop when someone replies** is on;
+- they opt out (an **Unsubscribe Contact** step, or the STOP keyword);
+- a flow reaches a **Remove from sequence** step, which works on every channel. Choose one sequence or **Every sequence they are in**. "It does not unsubscribe them or change their tags."
+
+## Pause, resume and delete
+
+- **Pause** stops sending for the whole sequence ("Sequence paused"); **Resume** carries on ("Sequence resumed").
+- **Delete** removes it: "Flows that subscribe to it will need a new target." Update or remove those Sequence steps, or the flows will fail to publish.
+
+## Related
+
+- [Contact and hand-over steps](/guide/automation/contact-steps#sequence-and-remove-from-sequence)
+- [Facebook and Instagram steps](/guide/automation/facebook-instagram-steps)
+- [Broadcasts](/guide/broadcasts/overview)
+- [Reply windows](/guide/inbox/reply-windows)

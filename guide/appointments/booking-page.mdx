@@ -1,0 +1,79 @@
+---
+title: "Booking page"
+description: "The public page where contacts pick a time, how it shows times, what it collects, and how contacts reschedule or cancel afterwards."
+keywords: ["booking page", "booking link", "public page", "reschedule", "cancel", "time zone", "web lead", "Insert booking link"]
+---
+
+Every active appointment type has its own public booking page. Visitors don't need an account: they pick a date and time, enter their details if needed, and confirm. After booking they get a personal page where they can see, reschedule or cancel the meeting.
+
+## Get the link
+
+- On the **Appointment types** tab (in the sidebar, open **Salesbot** > **More** > **Appointments** > **Appointment types**), open a type's **...** menu and click **Copy booking link** or **Open booking page**.
+- In the [inbox](/guide/inbox/overview), click the calendar button **Insert booking link** in the reply box. The **Booking links** list shows each active type with its length, location and address; clicking one adds the link to your reply.
+- In a [flow](/guide/automation/overview), the **Book Meeting** step can send the link for you instead of offering times in the chat.
+
+The address is made from the type's name when you create it and never changes, so links you've shared keep working after a rename. The page only works while the type is **Active**; otherwise visitors get a "not found" page.
+
+## What visitors see
+
+The page header shows your workspace name, the appointment type's name, its length and the kind of location: **Google Meet**, **Zoom**, **Phone call**, **In person** or **Custom location**. Your location details (phone number, address, private link) are not shown here; the contact gets them after booking.
+
+Below the header, under **Choose a time**:
+
+1. **Select a date**: a month calendar where days with free times can be clicked. Arrows move between months within the booking window.
+2. **Select a time**: the free start times on that day.
+3. A line saying **All times shown in** a time zone. This is the visitor's own time zone when their browser reports one; otherwise the contact's saved zone or the appointment type's zone.
+4. **Your details**: **Your name**, **Email** and **Phone (optional)**. The visitor clicks **Confirm booking**.
+
+If there are no free times in the booking window, the page says no times are available right now and asks the visitor to check back later.
+
+The page appears in your platform's branding. It is hidden from search engines.
+
+## Personal links from a flow
+
+When the **Book Meeting** step sends the link, it is personal to that contact. The page then shows **Booking as** and the contact's name instead of the details form, and the booking is attached to the conversation. The flow continues down its booked path once the contact books.
+
+## Plain links and new contacts
+
+A plain link (copied, inserted from the inbox, or shared on a website) doesn't know who the visitor is, so the page asks for name and email. The booking then goes to a web contact:
+
+- an earlier web contact with the same email that has no conversation, if there is one;
+- otherwise a new contact with the source **Booking Page**.
+
+For safety, a plain link never attaches the booking to an existing contact you chat with, even when the email matches, so a stranger typing someone's email can't make you message that person. Such a web contact has no chat channel, so confirmations and reminders can't reach them in a conversation; the booking still stands and the failed message is noted in [Activity](/guide/analytics/activity-log). Use a personal link from a flow when you want the booking tied to the chat.
+
+If your plan's contact limit is reached, the visitor can still book. The contact is created and your team gets an alert.
+
+## After booking: the contact's booking page
+
+Confirming takes the visitor to their personal booking page, which says **Booking confirmed.** and lists:
+
+- **When**, in their time zone,
+- **Duration**,
+- **Where**: the location, with **Join meeting** for an online link and **Join Google Meet** when there is a Meet link.
+
+While the meeting is still upcoming, the page offers:
+
+- **Reschedule**: shows **Pick a new time** with the free times. The contact picks one and clicks **Confirm new time**, or **Keep current time** to go back.
+- **Cancel meeting**: asks for confirmation, then cancels and shows that the meeting has been cancelled.
+
+Once the meeting has started, the page only says it has passed; contacts can't move or cancel it then. A cancelled meeting shows **This meeting was cancelled.**
+
+The same page is linked from the `{{meeting.reschedule_url}}` and `{{meeting.cancel_url}}` variables you can put in your messages. Anyone with the link can manage the booking, so treat it like a private link. See [Confirmations and reminders](/guide/appointments/messages-and-reminders).
+
+## Messages visitors may see
+
+| Message | Why |
+| --- | --- |
+| Sorry, that time was just taken — please choose another. | Someone else booked the slot first. |
+| We couldn't complete the booking. Please try another time. | The booking couldn't be created, for example the calendar or Zoom refused it. |
+| Please enter your name, a valid email and pick a time. | A field was missing or the email wasn't valid. |
+| That time was just taken — please pick another. | The new time chosen when rescheduling was taken. |
+| Could not reschedule. Please try again. | The reschedule failed or the meeting had already started. |
+
+## Related
+
+- [Create and edit appointment types](/guide/appointments/appointment-types)
+- [Availability and booking rules](/guide/appointments/availability)
+- [Manage bookings](/guide/appointments/manage-bookings)
+- [Confirmations and reminders](/guide/appointments/messages-and-reminders)

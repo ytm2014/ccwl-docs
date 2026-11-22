@@ -1,0 +1,66 @@
+---
+title: "Contact limits"
+description: "How your plan's contact limit is counted, what happens when you reach it, and how to make room."
+keywords: ["contact limit", "plan limit", "active contacts", "contacts meter", "limit reached", "contacts add-on", "upgrade"]
+---
+
+Some plans cap how many contacts a workspace can have. When yours does, a meter at the top of the contact list shows how close you are. If your plan has no contact limit, there's no meter and nothing on this page applies to you.
+
+## Read the meter
+
+In the sidebar, open **Salesbot** > **Contacts**. The meter above the table reads, for example, *1,840 of 2,000 contacts used*, with a percentage and a bar. The percentage turns amber from 90% and red at 100%.
+
+Your plan counts in one of two ways, and the meter says which:
+
+| Meter wording | What's counted |
+| --- | --- |
+| *of n contacts used* and *Your plan's total contact limit.* | Every contact stored in the workspace. |
+| *of n active contacts used* and *Counts contacts who interacted in the last n days.* | Only contacts who interacted recently. People who've gone quiet stop counting. |
+
+People who have only commented on your posts, without becoming a messaging contact in any other way, don't use up the limit.
+
+## What happens at the limit
+
+The limit only stops the ways *you* add contacts:
+
+- **New contact** by hand,
+- **Import** from CSV (a file that would go over is refused whole),
+- restoring a contact from **Recently deleted**,
+- creating contacts through the API or an AI assistant connection.
+
+You see *You've reached your plan's limit of n contacts.*
+
+<Note>
+Customers are never turned away. Someone who messages one of your channels is always added and their message always arrives, whatever the count. People who book on your booking page, start a website chat or fill in a Facebook lead form are also added over the limit, and your team gets a **Contacts limit reached** alert in the bell, at most once a day.
+</Note>
+
+## Alerts
+
+Teammates who can open Contacts and aren't limited to some channels may receive alerts in the bell:
+
+- **Approaching your contacts limit** when usage passes 90%,
+- **Contacts limit reached** at 100%.
+
+Each alert repeats at most once a week while usage stays high. Which alerts reach you also depends on your notification settings; see [Notifications](/guide/account/notifications).
+
+## Make room
+
+- **Delete contacts you don't need.** Deleted contacts stop counting straight away. Filter the list (for example by **Status** or a segment of long-inactive people) and use the bulk delete. See [The contact list](/guide/contacts/contact-list).
+- **Merge duplicates.** Two contacts for the same person count twice. See [Merge duplicate contacts](/guide/contacts/merge-duplicates).
+- **Add more contacts.** Where your platform offers it, an extra-contacts add-on raises your limit. See [Billing](/guide/billing/usage-and-limits).
+- **Change plan.** A higher plan may have a higher limit, or none.
+
+## Common questions
+
+**My import was refused although many rows are people I already have.** Every row counts towards the limit check, including rows that would only update an existing contact. Remove rows for people already in Contacts, or split the file.
+
+**I see *Contacts are being added to this workspace. Please try again in a moment.*** Someone else is adding contacts at the same time. Wait a few seconds and try again.
+
+**Restoring a contact failed.** Restoring counts as adding one. Make room first.
+
+## Related
+
+- [Contacts overview](/guide/contacts/overview)
+- [Import contacts from CSV](/guide/contacts/import-csv)
+- [Delete and restore contacts](/guide/contacts/delete-and-restore)
+- [Billing](/guide/billing/usage-and-limits)

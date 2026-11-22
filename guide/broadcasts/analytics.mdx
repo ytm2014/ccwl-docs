@@ -1,0 +1,100 @@
+---
+title: "Broadcast analytics"
+sidebarTitle: "Analytics"
+description: "Read a broadcast's report: delivery, reads, replies, link clicks, failures and skips with their reasons, and every recipient's send times."
+keywords: ["broadcast analytics", "broadcast report", "delivery rate", "read rate", "replies", "link clicks", "failed messages", "skipped", "recipients", "conversion funnel"]
+---
+
+Every broadcast has a report that shows what happened to each recipient. Open it by clicking the broadcast in the list, or with **View analytics** in its **...** menu. Anyone who can see broadcasts can read reports, viewers included.
+
+## The header
+
+The report's header shows the broadcast's name, a link back to **Broadcasts**, its status, and **Edit** while it can still be edited. Banners above the numbers tell you when something needs attention:
+
+- **Retargets** with the source broadcast's name, for a retargeting broadcast.
+- The reason a broadcast failed, if it did.
+- "Waiting for this number's WhatsApp messaging limit" with a count, while part of a WhatsApp audience is held for later days. They are sent automatically as the limit allows.
+- "This broadcast is awaiting approval before it can be sent", with **Approve & schedule** if you may approve it.
+
+## The numbers
+
+| Number | What it counts |
+| --- | --- |
+| **Sent** | Messages handed to the network. |
+| **Delivered** | Messages the network reported as delivered. |
+| **Read** | Messages the network reported as read. Depends on read receipts: people who turned them off never count as read. |
+| **Replies** | Recipients who replied. |
+| **Clicks** | Clicks on tracked links. Shown only when the broadcast tracked links. |
+| **Failed** | Messages that could not be sent or delivered. |
+
+The same totals, added up for every broadcast on the channel, appear at the top of the broadcasts list.
+
+## Conversion funnel
+
+**Conversion funnel** shows **Sent**, **Delivered**, **Read**, **Replies** and, with tracked links, **Clicks** as bars, each with its count and its share of the messages sent. It shows where people drop off.
+
+## Engagement over time
+
+**Engagement over time** charts the reads and direct replies recorded within 24 hours of each send. A zero means no receipt or reply was recorded. Older sends may lack timestamps.
+
+## Delivery breakdown (Facebook and Instagram)
+
+On Facebook and Instagram, **Delivery breakdown** shows how each person was reached:
+
+- **Sent in the 24h window**: the person had written to you in the last 24 hours.
+- **Delivered via opt-in**: reached through a notification opt-in.
+- **Skipped — window closed**: neither applied, so the message couldn't be sent.
+
+## Link clicks
+
+When the broadcast tracked links, **Link clicks** lists each **Link** with **People** (how many different recipients clicked it) and **Clicks** (all clicks, including repeats).
+
+## Message
+
+**Message** shows what was sent: the text, or for WhatsApp the template's name with the value used for each variable.
+
+## Failures and skips
+
+**Failures and skips** groups the recipients who failed, were skipped or have no confirmed outcome, by reason, with a count for each. Common reasons:
+
+| Reason shown | What it means and what to do |
+| --- | --- |
+| No WhatsApp opt-in is recorded for this contact, so marketing templates skip them. | See [audiences](/guide/broadcasts/audiences#contacts-without-a-whatsapp-opt-in). |
+| Contact asked WhatsApp to stop marketing messages from this number. | Respect it; the contact can't receive marketing templates from this number. |
+| Contact opted out of promotions. | Send a service update instead, if the message really is one. |
+| Contact carries the Unsubscribe tag. / Contact opted out of private messages. / Contact is blocked. | Left out by design. |
+| Messaging window closed. Use an approved WhatsApp template or an eligible opt-in. | The person hasn't written in the last 24 hours. |
+| A template value was blank or missing. | Give every variable a value, or a fallback for per-contact values. |
+| Template is not approved for this sending number. | Check the template's status on the templates page. |
+| Provider paused or disabled the template. | WhatsApp paused the template, usually for low quality. Use another template. |
+| Meta held this back to protect engagement: each person only gets so many marketing messages. | WhatsApp limits how many marketing messages one person receives. Nothing to fix on your side. |
+| Provider rate limit reached. Retry later. | Too many messages at once; send to these people later. |
+| Sending channel is unavailable. Reconnect it before retrying. | Reconnect the channel in **Accounts**. |
+| Landline: this number cannot receive SMS, so it was skipped. | Use another channel for this contact. |
+| The broadcast was paused, cancelled or held before this recipient. | The send stopped before reaching them. |
+| The provider’s response was not confirmed. It was not retried. | Check the conversation before sending to this person again, so they aren't messaged twice. |
+| The workspace plan no longer includes Broadcasts. | The plan changed during the send. See [Billing](/guide/billing/usage-and-limits). |
+
+## Last test
+
+If someone sent a test, **Last test** shows its status, the number it went to, the time and the result.
+
+## Recipients and send times
+
+The table at the bottom lists every recipient with their **Status** and the times their message was **Scheduled**, **Sent**, **Delivered**, **Read** and **Replied**. A failed or skipped recipient also shows the reason. A contact who was deleted since shows as **Deleted contact**.
+
+Use the status menu to show **All recipients** or only one status; each status shows its count. Page through with **Previous** and **Next**. If the list doesn't load, click **Retry**.
+
+<Tip>
+To re-message part of a broadcast, for example everyone who read it but didn't reply, or everyone whose send failed, create a new broadcast and choose **Retarget a past broadcast**. See [Choose a broadcast audience](/guide/broadcasts/audiences).
+</Tip>
+
+## WhatsApp template performance
+
+To compare templates rather than broadcasts, open the template's performance on the [templates page](/guide/broadcasts/message-templates#template-performance). It counts every send of that template, from broadcasts, flows and the inbox.
+
+## Related
+
+- [Choose a broadcast audience](/guide/broadcasts/audiences)
+- [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits)
+- [Message templates](/guide/broadcasts/message-templates)

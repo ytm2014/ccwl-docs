@@ -1,0 +1,106 @@
+---
+title: "Logic steps"
+description: "Branch with conditions, split contacts for A/B tests, wait for a time or a time window, jump to another flow, end the flow and leave notes for your team."
+keywords: ["condition", "branch", "if", "rules", "randomizer", "a/b test", "smart delay", "wait", "wait until", "business hours", "start another flow", "end flow", "note"]
+---
+
+Logic steps decide what happens next without sending anything themselves. Add them from the **Condition**, **Wait** and **Connect** tiles in the builder.
+
+## Condition
+
+A Condition checks one or more rules and sends the contact down **TRUE** or **FALSE**. "Connect the TRUE and FALSE ports to branch the flow."
+
+| Setting | Options |
+| --- | --- |
+| **Match** | **Any rule matches (OR)** or **All rules match (AND)**. |
+| **Rules** | Click **Add** for each rule: a field, an operator and a value. |
+
+### Fields you can check
+
+| Field | Operators | Value |
+| --- | --- | --- |
+| **Message text** | contains, doesn't contain, is, starts with, ends with | Text |
+| **Message type** | is, is not | Text, Image, Video, Audio, Document, Location, Button reply, List reply, Order |
+| **Received time** | is between | Two times (default 09:00 to 18:00) |
+| **Last activity** | within the last, older than | A number of minutes, hours or days |
+| **First name**, **Last name** | contains, is, has any value | Text |
+| **Email** | has any value, contains, is | Text |
+| **Phone number** | has any value, contains, starts with, is | Text, for example starts with +44 to target a country |
+| **Has tag** | is, is not | A tag |
+| **Pipeline stage** | is, is not | A stage from your pipeline |
+| **Contact group** | is, is not | A saved segment |
+| **Conversation status** | is | Open or Done |
+| **Contact status** | is, is not | Active, Paused or Blocked |
+| **Custom field** | is, contains, has any value | The field name and a value |
+| **24-hour window open** | is | Yes or No (WhatsApp) |
+| **Is a follower** | is | Yes or No (Instagram) |
+| **Marketing opt-in** | is | Yes or No |
+| **AI sentiment** | is, is not | Positive, Neutral or Negative |
+| **AI label** | is, is not | Question, Complaint, Praise, Lead or Other |
+| **Comment text** | contains, doesn't contain, is, starts with, ends with | Text (flows started by a comment) |
+| **Review star rating** | is at most, is at least, is, is not | 1 to 5 (Google Business flows) |
+
+**Contact group** needs segments in your plan. **AI sentiment** and **AI label** are "Set by AI inbox insights. Empty until the message is classified: use after a Wait or a reply, or start the flow with Message classified." Checking them straight after the trigger always takes **FALSE**, and the builder warns you.
+
+<Tip>
+**Has tag** needs the exact tag name. An empty value matches nobody.
+</Tip>
+
+## Randomizer
+
+"Contacts are split randomly across the branch ports — use it for A/B testing."
+
+- Start with two branches, A and B at 50% each. Click **Add** for more, up to five.
+- Set each branch's weight. "Weights total" must be 100%; **Distribute evenly** shares it equally.
+- Connect every branch. The canvas labels each connection with its branch and weight, such as "A · 50%".
+
+Combine it with [flow analytics](/guide/automation/publish-and-test#flow-analytics) or tags to compare how each version does.
+
+## Smart Delay
+
+Pauses the flow before the next step.
+
+| **Wait mode** | Settings |
+| --- | --- |
+| **Duration** | An **Amount** (at least 1) and a **Unit**: **Minutes**, **Hours** or **Days**. |
+| **Wait until** | **On these days** (pick at least one weekday), **From** and **To** times. "The next step sends in this window. Times use your workspace timezone." |
+
+Use **Wait until** to keep messages inside business hours: a contact who reaches the step at night continues the next morning within your window.
+
+If the workspace has been inactive for more than seven days after a step was due, the run is ended instead of sending late.
+
+## Start Another Flow
+
+Moves the contact into another flow. "The contact is moved to the selected flow. This node ends the current flow."
+
+- **Flow to start**: pick a flow on the same profile. With none, you see "No other flows yet — create one from the Flows list."
+- The target must be published and not paused, or the run stops with "The target flow needs to be published." or "The target flow is paused."
+- Flows can start each other only a limited number of times in a row ("Too many flows were started inside one another.").
+
+Use it to share one part, such as a lead form or a booking flow, between several flows.
+
+## End Flow
+
+Ends the run. Give it a **Summary** (by default "Conversation complete") so the flow reads clearly on the canvas. A branch that simply stops also ends the flow, but an End Flow step makes the intention obvious.
+
+## Note
+
+A sticky note on the canvas. "Notes are visible only to your team — they never send and don't affect the flow." Use them to explain a branch or leave a to-do for a colleague.
+
+## Common problems
+
+| You see | What to do |
+| --- | --- |
+| "TRUE branch is not connected." / "FALSE branch is not connected." | Connect both outputs, even if one just goes to End Flow. |
+| "No rules — add at least one." | Add a rule or remove the step. |
+| "Branch weights total 90% — must be 100%." | Adjust the weights or click **Distribute evenly**. |
+| "Needs at least 2 branches." | Add a branch. |
+| "Delay amount must be at least 1." | Enter 1 or more. |
+| "Pick at least one day to wait until." | Choose a day. |
+| "Choose a target for the Start Another Flow step." | Pick the flow to start. |
+
+## Related
+
+- [Contact and hand-over steps](/guide/automation/contact-steps)
+- [Variables](/guide/automation/variables)
+- [The flow builder](/guide/automation/flow-builder)

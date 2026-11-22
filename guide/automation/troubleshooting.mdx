@@ -1,0 +1,97 @@
+---
+title: "Troubleshooting flows"
+sidebarTitle: "Troubleshooting"
+description: "Why a flow doesn't reply, why publishing is refused, what the reasons for failed runs mean, and the common mistakes on WhatsApp, Facebook, Instagram and AI steps."
+keywords: ["troubleshooting", "flow not working", "bot not replying", "publish refused", "failed runs", "common mistakes", "window closed", "trigger conflict", "fix issues", "error"]
+---
+
+Start with the flow's **Analytics** (row menu > **Analytics**): **Recent failed runs** gives the reason for each failure and the step where it stopped. If the flow never ran at all, work through the first section.
+
+## The flow never replies
+
+Check these in order:
+
+1. **Is it Live?** The flow must be published and its **Live** switch on. A flow that was never published can't go Live.
+2. **Does the trigger match?** Check the trigger type and keywords. **Message is an exact match** needs the whole message to equal a keyword; **Message contains a keyword** is more forgiving. For comments, check **Which posts?**.
+3. **Is another flow answering?** Only one flow answers any one message. If two Live flows on the same profile listen to the same trigger with **Any message** or a shared keyword, the second can't be switched on and the message names the other flow.
+4. **Only respond once per contact?** With this on, your test account won't start the flow a second time. Test with another account or turn it off while testing.
+5. **Is the bot paused for this contact?** After a hand-over, flows don't reply to that contact until the bot is resumed.
+6. **Is the trigger delivered?** If the trigger shows "This installation is not receiving these events right now", the flow can't start until your platform switches those events on.
+7. **Is the profile active for automations?** A profile marked **Inbox only** in the profile picker isn't active for automations on your plan.
+8. **Has the contact opted out or been blocked?** Nothing is sent to them.
+
+## Publishing is refused
+
+When **Publish** fails, open **Fix N issues** in the toolbar; each line jumps to the step. Common ones:
+
+| Message | Fix |
+| --- | --- |
+| "Add at least one action after the trigger." | Add a step after the trigger. |
+| "Not connected — no incoming edge." | Connect the step or delete it. |
+| "Output "…" connects to N steps — each output can connect to only one next step." | Remove the extra connections. |
+| "Button "…" is not connected to a next step." / "Quick reply "…" is not connected to a next step." | Connect every reply button and quick reply. |
+| "TRUE branch is not connected." / "FOUND branch is not connected." | Connect every output, even to End Flow. |
+| "A keyword trigger needs at least one keyword and a match mode (exact, starts with or contains)." | Add keywords, or choose **Any message (no keyword filter)**. |
+| "Pick a date/time — without one this flow never fires." | Set the scheduled date. |
+| "Runs quietly is for background work. Remove customer message steps or turn Runs quietly off." | Remove message steps or turn off **Runs quietly**. |
+| "A flow started by a comment or a review cannot ask a question…" | Replace the question with a direct message. |
+| "“…” is not available on this instance. Delete this step." | The step came from elsewhere and can't run here. Delete it and reconnect the steps around it. |
+| "The "Sequence" step (…) subscribes contacts on Facebook and Instagram flows only." | Use the Sequence step only on those flows. |
+| "A flow can have at most 500 steps." | Split it with **Start Another Flow**. |
+
+## Why runs fail
+
+Reasons you may see under **Recent failed runs**:
+
+| Reason | What it means and what to do |
+| --- | --- |
+| "The messaging window closed. Use an approved WhatsApp template to reach this contact." | Normal messages can't be sent outside the window. Start with a **Send Template** step or add a template fallback. |
+| "The selected template is missing or has not been approved." | Pick an approved template. |
+| "A template variable was empty. Set a value or fallback." | Give each variable a value, or a fallback after a vertical bar, such as `{{first_name\|there}}`. |
+| "The message was empty after variables were filled in." | The text was only variables that were empty. Add fixed text or fallbacks. |
+| "The customer's answer did not pass validation within the allowed retries." | The contact gave three invalid answers. Allow skipping, or loosen the expected reply. |
+| "The contact opted out; nothing was sent." / "The contact opted out of promotions; nothing was sent." | Respect the opt-out. |
+| "The bot is paused for this contact." | The conversation was handed over. |
+| "The automation was paused while the run was in progress." | The flow was switched off. |
+| "This channel does not support the selected message type." | Use a step the channel can carry. |
+| "The HTTP request was refused by the destination security check." | The HTTP Request step only calls public addresses. |
+| "The target flow needs to be published." / "The target flow is paused." | Publish or switch on the flow that **Start Another Flow** points to. |
+| "The flow exceeded its step limit and stopped to prevent a loop." | Two parts of the flow start each other. Remove the loop. |
+| "The channel is not connected right now." | Reconnect the channel. |
+| "The workspace is not in good standing, so automations do not run." | Check your subscription. |
+| "The connected provider rejected the request. Check its connection and this step's settings." | Reconnect the channel or integration and check the step. |
+
+## WhatsApp traps
+
+- Anything a flow sends more than 24 hours after the customer's last message must be an approved template. Flows started by contact, store, scheduled or payment events almost always need one first.
+- Text messages carry at most 3 reply buttons of 20 characters, all different. Use **List Message** for more options (up to 10 rows).
+- **Catalog / Product** needs a catalog connected in Commerce Manager.
+
+## Facebook and Instagram traps
+
+- Messages are only accepted within 24 hours of the customer's last message (48 hours on TikTok). Store and scheduled flows may not reach them.
+- Instagram has no call or webview buttons, and its quick replies are text only.
+- Each comment can receive one private reply. The conversation continues once the person writes back.
+- Liking, hiding and deleting comments depend on the platform; Instagram can't like comments.
+
+## AI steps
+
+- "No AI provider is connected": connect a provider under Integrations, or ask your platform about the shared AI.
+- Replies stop when AI credits run out; connect the **OUT OF AI CREDITS** output where you see it.
+- An **AI sentiment** or **AI label** condition straight after a message trigger always takes FALSE, because the message isn't classified yet. Use the **Message classified** trigger instead.
+- The AI ignores your knowledge: check the step's **AI Knowledge** setting and that its provider supports knowledge.
+
+## Before you publish: a checklist
+
+- The trigger, keywords and posts are right.
+- Every output is connected.
+- Templates are approved and every variable has a value or fallback.
+- Tags, stages, team members and sequences named in steps exist.
+- You've tested with **Test run** and **Test bot**.
+
+## Related
+
+- [Publish, test and go live](/guide/automation/publish-and-test)
+- [The flow builder](/guide/automation/flow-builder)
+- [Triggers](/guide/automation/triggers)
+- [Reply windows](/guide/inbox/reply-windows)

@@ -1,0 +1,93 @@
+---
+title: "Overview dashboard"
+sidebarTitle: "Overview dashboard"
+description: "Read the sales inbox Overview: conversations, orders, revenue, reply rate, what needs attention, mood of incoming messages and flow performance."
+keywords: ["overview", "dashboard", "conversations", "reply rate", "revenue from chats", "orders from chats", "sentiment", "mood", "top flows", "needs attention"]
+---
+
+The Overview is the start page of the sales inbox. It shows how many people wrote to you, whether they got answers, what the chats earned, and anything that needs fixing, for the period and channels you choose.
+
+In the sidebar, open **Salesbot** > **Overview**. You need the **View the overview** permission; without it, **Salesbot** opens the first area you can use instead.
+
+<Note>
+Don't see **Overview**? Your plan or your platform doesn't include sales reports yet, or your role doesn't give you access.
+</Note>
+
+## Choose the period and channels
+
+The strip under the page title has two controls:
+
+- **Channel filter** (left): **All channels**, or one connected channel. Members limited to some channels only ever see their own channels.
+- **Period picker** (right): **This week**, **Last week**, **This month** (the default), **Last month**, **Last 3 months**, **This year**, or your own dates.
+
+Days follow your business's time zone.
+
+## Headline figures
+
+Four tiles across the top, each with its change against the previous period of the same length:
+
+| Tile | Meaning |
+| --- | --- |
+| **Conversations** | People who wrote to you in the period. |
+| **Orders from chats** | Paid orders and payment links from people who chatted with you. An order paid through a payment link counts once. |
+| **Revenue from chats** | The total of those orders, in the currency with the largest total. A note says how many other currencies were left out; currencies are never converted. |
+| **Reply rate** | The share of people who wrote in that got an answer in the period. Its change is shown in percentage points. |
+
+Orders and revenue need a connected store or payment provider; see [Integrations](/guide/integrations/overview).
+
+## Needs attention
+
+This panel lists only real problems, each with a button to fix it:
+
+| Row | Button |
+| --- | --- |
+| A number of channels need reconnecting, starting with the first one | **Reconnect** |
+| Flow runs failed this week | Opens [Activity](/guide/analytics/activity-log) to see what went wrong |
+| Conversations waiting more than an hour, and how long the oldest has waited | **Open inbox** |
+
+When there is nothing to fix it says **Nothing needs your attention right now.**
+
+## Get started
+
+Until all four steps are done, a **Get started** checklist shows your progress (for example **2 of 4 done**):
+
+1. **Connect a channel**, with **Connect**.
+2. **Add your first contacts**, with **Import contacts**.
+3. **Start a flow from a template**, with **Browse templates**.
+4. **Go live**: switch a flow on, with **Open flows**.
+
+Finished steps are ticked and struck through. The checklist disappears once everything is done.
+
+## Charts and lists
+
+- **Conversations**: people who wrote in, per day, across the period.
+- **Mood of incoming messages**: the share of **Positive**, **Neutral** and **Negative** incoming direct messages and comments in the period, with how many were classified. This needs sentiment insights in the inbox. If they are off, the panel says so, and people allowed to change it get a **Turn on sentiment insights** button that takes them to the inbox.
+- **Top flows**: your busiest flows with their **Runs** and how many **Completed**. **All flows** opens the flow list; click a flow to open it.
+- **Conversations by channel**: each channel's share of conversations in the period.
+
+## All metrics
+
+Click **All metrics** at the bottom to open the older, all-time view:
+
+- Totals: **Contacts**, **Messages sent**, **Reply rate**, **Flow completion**, **Broadcast delivery**, **Growth clicks**, **Opt-out rate** and **Active sequences**.
+- **Message volume**: outbound against inbound messages over the last 14 days.
+- **Flow outcomes**: where flow runs end up.
+- **Broadcast funnel**: recipients, sent, delivered, opened and replies.
+- **Contact sources**: where your contacts came from.
+- **Growth-tool attribution**: clicks and the contacts each growth tool brought in.
+- **Recent activity**: the latest events, with **View all** to open Activity.
+
+## Common questions
+
+**Revenue shows a note about other currencies.** Revenue is shown in one currency only. Orders in other currencies are counted in **Orders from chats** but not added to the revenue figure.
+
+**Mood says there are no classified messages.** Sentiment insights are on, but no incoming message in the period has been classified yet.
+
+**My figures differ from a colleague's.** Members limited to some channels see only their channels; check the channel filter and period too.
+
+## Related
+
+- [Sales inbox reports](/guide/analytics/overview)
+- [Activity log](/guide/analytics/activity-log)
+- [Pipeline report](/guide/analytics/pipeline-report)
+- [Inbox](/guide/inbox/overview)

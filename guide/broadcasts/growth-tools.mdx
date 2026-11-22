@@ -1,0 +1,109 @@
+---
+title: "Growth tools: links and QR codes"
+sidebarTitle: "Growth tools"
+description: "Create tracked chat links and QR codes that open a conversation with you, count every click and can start a flow for new contacts."
+keywords: ["growth tools", "ref link", "whatsapp link", "qr code", "wa.me", "m.me", "telegram start link", "click tracking", "start flow", "lead generation"]
+---
+
+Growth tools bring new people into a conversation with you. Each tool is a tracked link, optionally shown as a QR code, that opens a chat with one of your channels. You can put it on your website, in an email, on a poster or on packaging. Every click is counted, and the tool can start a flow so new contacts get an automatic welcome.
+
+To open them, in the sidebar open **Salesbot** > **More**, then **Growth tools** in the Grow group.
+
+<Note>
+Don't see **Growth tools**? Your plan or your platform doesn't include it yet. Growth tools come with the flow builder: without it in your plan, an upgrade card replaces **New growth tool**, and existing tools can still be copied and deleted.
+</Note>
+
+## Who can use them
+
+- Anyone who can view growth tools (admins, members and viewers by default) sees the tools and can copy their links and QR codes.
+- Creating, editing and deleting tools is for admins, unless a custom team role grants it, because a tool starts flows and publishes a public link.
+- A member limited to some channels only sees and manages the tools of their own channels.
+
+## Tools belong to a channel
+
+Each tool belongs to the channel selected in the channel picker at the top of the page, and the page shows only that channel's tools. To work on another channel's tools, switch the picker.
+
+A tool can open a chat on **WhatsApp**, **Telegram**, **Facebook** and **Instagram**, as far as your platform supports messaging on them. On a channel without a chat link, a tool must send people to a web page instead (see **Send people to** below).
+
+## Tool types
+
+| Type | What you get |
+| --- | --- |
+| **WhatsApp link** (on WhatsApp) or **Ref link** (on other channels) | A link that opens a chat with your channel. On WhatsApp, the chat opens with your prefilled message ready to send. On Telegram, it opens your bot with the ref attached. On Facebook and Instagram, it opens a Messenger or Instagram chat with the ref attached. |
+| **QR code** | The same link as a QR code you can download and print. |
+| **Website popup** | A WhatsApp sign-up popup for your website. See [Website popup](/guide/broadcasts/website-popup). |
+
+## Create a growth tool
+
+<Steps>
+  <Step title="Pick the channel">
+    Select the channel in the picker at the top of the page.
+  </Step>
+  <Step title="Click New growth tool">
+    The dialog shows the channel under **Profile**: the tool is created for that channel.
+  </Step>
+  <Step title="Fill in the fields">
+    See the table below. A live preview on the right shows the link, or the QR code for a QR tool.
+  </Step>
+  <Step title="Create it">
+    Click **Create**. The tool appears as a card on the page.
+  </Step>
+</Steps>
+
+| Field | What to enter |
+| --- | --- |
+| **Name** | For your team, for example *Spring campaign link*. Up to 80 characters. |
+| **Type** | **WhatsApp link** or **Ref link**, **QR code**, or **Website popup** (WhatsApp only, where offered). |
+| **Prefilled message (keyword)** (WhatsApp) or **Ref parameter** (other channels) | A short code such as `SPRING24`. It is filled in from the name until you edit it. Use letters, numbers, dashes and underscores, up to 60 characters. Each tool on a channel needs its own. On WhatsApp this is the text the chat opens with, so your keyword flows can match it. |
+| **Send people to (optional)** | Leave empty to open a chat on this channel. Enter a web address (starting with `http://` or `https://`) to send people to that page instead; clicks are still counted. |
+| **Starts flow (optional)** | The flow to start when someone arrives through the tool, chosen from this channel's flows, or **No flow — just opens the chat**. |
+
+## Use a tool
+
+Each card shows the QR code or a link icon, the tool's name and channel, where the link leads, the flow it starts (**Starts** with the flow's name, or **Opens the chat**) and its number of **clicks**.
+
+The card's **...** menu has:
+
+| Action | What it does |
+| --- | --- |
+| **Edit** | Changes the tool. Its channel stays the same. |
+| **Copy link** | Copies the tracked link to share. |
+| **Copy embed code** | For a website popup: copies the code to paste into your website. |
+| **Download QR** | For a QR tool: downloads the code as an SVG image. |
+| **Design it in QR Codes** | For a QR tool, when your workspace has Bio Links: opens [QR Codes](/guide/bio-links/qr-codes) to design a styled code. |
+| **Delete** | Deletes the tool after you confirm. |
+
+<Warning>
+Always share the link from **Copy link** or the downloaded QR code. They go through a tracking address that counts the click and then forwards the person. If you copy the destination shown on the card and share that instead, clicks aren't counted.
+</Warning>
+
+## What happens when someone uses it
+
+1. The person clicks the link or scans the code. The click is counted.
+2. They are forwarded to the chat (or to your web page, if you set **Send people to**).
+3. When they message you through it, the conversation is linked to the tool:
+   - On **WhatsApp**, a new contact whose first message is the prefilled text is attributed to the tool.
+   - On **Telegram**, the bot receives the ref when the person starts the chat.
+   - On **Facebook** and **Instagram**, the ref arrives with the conversation.
+4. If the tool has a flow, the flow starts for that contact. A contact is only credited to a growth tool once.
+
+## Delete a tool
+
+**Delete** asks you to confirm. Once deleted, its link and QR code stop working, so remove them from wherever you published them first.
+
+## Troubleshooting
+
+| Message or problem | What to do |
+| --- | --- |
+| This channel has no chat link. Fill in "Send people to" to point the link or QR at a web page. | The channel can't open a chat from a link. Enter a web address. |
+| Another growth tool on this profile already uses this ref. | Choose a different prefilled message or ref parameter. |
+| Choose one of your channels. | Select a channel you have access to, one that supports flows. |
+| The click count doesn't go up. | Make sure you shared the link from **Copy link**, not the destination address. |
+| The flow didn't start on WhatsApp. | The flow starts for new contacts whose first message is the prefilled text. Someone who already talked to you, or who changed the text before sending, isn't matched. |
+
+## Related
+
+- [Website popup](/guide/broadcasts/website-popup)
+- [QR Codes](/guide/bio-links/qr-codes)
+- [Automation](/guide/automation/overview)
+- [Broadcasts overview](/guide/broadcasts/overview)

@@ -1,0 +1,114 @@
+---
+title: "Contact and hand-over steps"
+sidebarTitle: "Contact and hand-over steps"
+description: "Tag contacts, move them along your pipeline, assign or hand conversations to your team, pause and resume the bot, close conversations, unsubscribe and resubscribe contacts, and manage sequences."
+keywords: ["tag action", "add tag", "remove tag", "pipeline stage", "update contact stage", "assign conversation", "round robin", "handover to human", "pause bot", "resume bot", "close conversation", "unsubscribe contact", "resubscribe", "clear ai memory", "remove from sequence"]
+---
+
+These steps change the contact or the conversation rather than sending a message. Most are under the **Update contact** tile; hand-over and closing steps are under **Connect** ("End or hand over"). They work on every channel unless noted.
+
+## Tag Action
+
+| Field | Options |
+| --- | --- |
+| **Action** | **Add tag** or **Remove tag** |
+| **Tag** | The tag name, for example "Engaged Lead" |
+
+Adding a tag can start other flows that use the **Tag applied** trigger. Tags are managed under [Contacts > Tags](/guide/contacts/tags).
+
+## Update Contact Stage
+
+"Moves the contact along your CRM pipeline when they reach this step." Choose the stage under **Move contact to pipeline stage**. With no stages yet you see "No pipeline stages yet — add stages on the Contacts → Pipeline page." Moving a contact can start **Pipeline stage changed** flows. See [Pipeline](/guide/contacts/pipeline).
+
+## Assign Conversation
+
+Routes the conversation to someone in your team.
+
+| Field | Options |
+| --- | --- |
+| **Assignment mode** | **Specific team member**, or **Round robin**: "Distribute new assignments across available workspace team members in turn." (Round robin appears where your plan includes it.) |
+| **Team member** | For a specific member: "Routes the conversation to this member's inbox. Invite more members from workspace settings." |
+
+Assigning does not pause the bot. To hand over and stop automated replies, use **Handover to Human**. See [Assign conversations](/guide/inbox/assign).
+
+## Handover to Human
+
+Passes the conversation to your team. "Works on WhatsApp, Messenger & Instagram — the conversation lands in your team inbox."
+
+| Field | Options |
+| --- | --- |
+| **Assign to** | **Anyone available** or a team member. |
+| **Pause bot replies** | On by default. "Stops automated replies so a human can take over the conversation." |
+| **Message to contact** (optional) | For example "A team member will be with you shortly." |
+
+While the bot is paused for a contact, flows don't reply to them until the bot is resumed, for example by a flow with a **Resume Bot** step.
+
+## Resume Bot
+
+"The inverse of "Handover to Human": lifts the bot pause so automated replies continue for this contact, and drops a note in the team inbox." A flow containing this step may run even while the contact is paused, so it can lift its own pause.
+
+**Message to contact** (optional) is "Sent just before the bot takes over again. Leave blank to resume silently."
+
+## Close Conversation
+
+"Marks the conversation done — the same as pressing **Close** in the inbox. No configuration needed." It also fires the conversation-closed webhook and the **Conversation closed** trigger, so another flow can follow on, for example a satisfaction survey. A conversation that's already closed is left alone, which also stops a conversation-closed flow ending in this step from looping. It's usually the last step of a flow.
+
+## Clear AI Memory
+
+"Resets what the AI Reply step remembers for this contact, so the next AI step starts fresh." Useful for a "start over" branch, or before switching the assistant to a different persona.
+
+| **What to clear** | Effect |
+| --- | --- |
+| **Everything (history + tools)** | Both of the below. |
+| **Chat history only** | Hides the earlier transcript from the AI (per channel). |
+| **Tool memory only** | Clears this run's record of tool calls and its turn count. |
+
+Nothing is deleted from your inbox.
+
+## Unsubscribe Contact
+
+Opts the contact out of automated messages, for example when they reply STOP.
+
+| Field | Options |
+| --- | --- |
+| **Also tag the contact** | On by default. "Adds a tag so unsubscribed contacts are easy to find." |
+| **Tag name** | By default "Unsubscribe". |
+| **Confirmation message** (optional) | "Sent before opt-out so it isn't blocked. Then automated messages stop." |
+| **Reply buttons** | Optional buttons under the confirmation, for example "Resubscribe". On WhatsApp, Messenger and Instagram they're tappable; a tap sends its label as a reply, so a button named "Resubscribe" can start your resubscribe flow. SMS sends text only. |
+
+## Resubscribe Contact
+
+Reverses an unsubscribe.
+
+| Field | Options |
+| --- | --- |
+| **Also remove the tag** | On by default. |
+| **Tag name** | The tag to remove, by default "Unsubscribe". |
+| **Welcome-back message** (optional) | "Opt-out is cleared first, so this message sends." |
+
+The **Marketing Unsubscribe** and **Marketing Resubscribe** templates set both up for you. See [Opt-outs](/guide/contacts/opt-outs).
+
+## Sequence and Remove from sequence
+
+- **Sequence** (Facebook and Instagram flows): "Subscribes the contact to the selected drip sequence." Pick one of the profile's sequences; **Manage sequences →** opens the list.
+- **Remove from sequence** (every channel): "Takes the contact out of the chosen sequence, so it sends them nothing more. It does not unsubscribe them or change their tags." Choose a sequence, or **Every sequence they are in**.
+
+See [Sequences](/guide/automation/sequences).
+
+## Common problems
+
+| You see | What to do |
+| --- | --- |
+| "Tag name is empty." | Enter a tag. |
+| "No pipeline stage chosen." | Pick a stage. |
+| "No team member selected." | Pick a member, or use round robin. Only members who can use the inbox are listed. |
+| "Set to "…" — pick a workspace member from the list to enable routing." | The step came from a template or import; choose a real member. |
+| "No sequence selected." | Pick a sequence. |
+| "The bot is paused for this contact." in a failed run | The contact was handed over. Resume the bot, or add **Resume Bot** to the flow. |
+
+## Related
+
+- [Logic steps](/guide/automation/logic-steps)
+- [Integration steps](/guide/automation/integration-steps)
+- [Contacts](/guide/contacts/overview)
+- [The Inbox](/guide/inbox/overview)

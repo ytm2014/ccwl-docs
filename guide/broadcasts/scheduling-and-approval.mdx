@@ -1,0 +1,95 @@
+---
+title: "Scheduling and approval"
+sidebarTitle: "Scheduling and approval"
+description: "Send a broadcast now or later, at one moment or in each contact's local time, hold it for team approval, and pause, resume, cancel, edit or delete it."
+keywords: ["schedule broadcast", "send later", "local time", "timezone", "approval", "approve broadcast", "pause broadcast", "cancel broadcast", "delete broadcast", "edit broadcast"]
+---
+
+The third step of the broadcast composer, **When should it send?**, decides when your broadcast goes out and whether a teammate must approve it first. After that, you control a broadcast from its row in the list or from its report.
+
+## Send now or later
+
+| Option | What happens |
+| --- | --- |
+| **Send immediately** | The broadcast is queued as soon as you create it and starts going out within a minute or so. If it needs approval, this option reads **Send immediately after approval**. |
+| **Schedule for later** | Pick a date and time in **Send at**. The broadcast waits as **Scheduled** until then. |
+
+A time that is less than a minute ahead, or already past, is treated as **Send immediately**.
+
+Messages don't all leave in the same second. Recipients are released in batches, so a large broadcast can stay **Sending** for a while. On WhatsApp, an audience bigger than the number's daily messaging limit is spread over several days (see [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits)).
+
+## One moment, or each contact's local time
+
+With **Schedule for later**, choose how the time is read:
+
+- **One moment for everyone**: everyone receives it at the same instant, whatever their timezone.
+- **This local time for each contact**: each person gets it at that clock time in their own timezone, so nobody is messaged at 3am. For a contact whose local time has already passed when the broadcast is due, the message goes out straight away.
+
+With the local-time option, the panel next to the composer shows **Time zone coverage**: how many of the audience have a known timezone. Contacts without one are sent at the chosen time in your own timezone, and the step tells you how many that affects.
+
+## Team approval
+
+You can make a teammate check a broadcast before it goes out.
+
+- If you are allowed to schedule broadcasts, tick **Require team approval before sending** in the schedule step.
+- If your role can't schedule broadcasts, you don't get the choice: the step tells you the broadcast will be submitted for approval, and the main button reads **Submit for approval**.
+
+A broadcast waiting for approval shows an **Awaiting approval** badge in the list, and its report shows "This broadcast is awaiting approval before it can be sent." It does not send until someone with the approval permission (admins by default) approves it.
+
+### Approve a broadcast
+
+<Steps>
+  <Step title="Find it">
+    In the sidebar, open **Salesbot** > **Broadcasts**. Broadcasts waiting for approval carry the **Awaiting approval** badge.
+  </Step>
+  <Step title="Check it">
+    Open the report to read the message and the audience, or open **Edit** to change it.
+  </Step>
+  <Step title="Approve">
+    Click **Approve & schedule** in the report's banner, or in the row's **...** menu. The broadcast goes out at its scheduled time, or straight away if that time has passed.
+  </Step>
+</Steps>
+
+## Pause, resume and cancel
+
+These actions need the permission to schedule broadcasts (admins by default). Find them in the row's **...** menu.
+
+| Action | Available when | Effect |
+| --- | --- | --- |
+| **Pause** | **Scheduled** or **Sending** | Stops releasing messages. Messages already sent stay sent. |
+| **Resume** | **Paused** | Carries on with the people who haven't been messaged yet. |
+| **Cancel send** | **Scheduled**, **Sending** or **Paused** | Stops the broadcast for good. Messages already sent stay sent, and the rest are never delivered. You are asked to confirm, and this can't be undone. |
+
+A cancelled broadcast shows **Cancelled**. Its report keeps every recipient, with the unsent ones marked as cancelled.
+
+## Edit a broadcast
+
+**Edit** is available for broadcasts that are **Draft** or **Scheduled**, and for a **Failed** broadcast that never reached anyone (saving it submits it again). Once a broadcast has started sending, it can no longer be edited; create a new broadcast instead.
+
+When you edit:
+
+- the channel can't be changed,
+- changing a scheduled broadcast needs the permission to schedule broadcasts; without it you are asked to save it as a draft or ask an admin,
+- if a teammate changed the broadcast while you were editing, you are asked to reload before making changes.
+
+## Delete a broadcast
+
+**Delete** (admins by default) removes the broadcast with its recipient records and its delivery report. You are asked to confirm.
+
+You can't delete a broadcast that is **Sending**: pause or cancel it first. You also can't delete a broadcast that another, unfinished broadcast retargets: cancel or delete that one first.
+
+## Troubleshooting
+
+| Message | What to do |
+| --- | --- |
+| Your role can save drafts but not schedule broadcasts. | Submit it for approval, or ask an admin to schedule it. |
+| Only a draft or scheduled broadcast can be edited. | The broadcast has started. Create a new one. |
+| Pause or cancel this broadcast before deleting it. | Pause or cancel it, then delete it. |
+| Another broadcast retargets this one. | Cancel or delete the retargeting broadcast first. |
+| This broadcast can no longer be cancelled. | It has finished or was already cancelled. |
+
+## Related
+
+- [Create a broadcast](/guide/broadcasts/create-broadcast)
+- [Broadcasts overview](/guide/broadcasts/overview)
+- [Broadcast analytics](/guide/broadcasts/analytics)

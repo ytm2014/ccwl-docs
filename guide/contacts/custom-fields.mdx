@@ -1,0 +1,71 @@
+---
+title: "Custom fields"
+description: "Define the extra details your workspace keeps on contacts, fill them in, and use them in segments and automations."
+keywords: ["custom fields", "contact fields", "field type", "user input", "import fields", "export fields", "workspace settings"]
+---
+
+Custom fields hold the details that matter to your business but aren't built in, such as a company name, a customer number or a renewal date. They're shared across every channel in the workspace and appear on the contact's profile once they have a value.
+
+## Define the workspace's fields
+
+The workspace's field list lives on the workspace settings page, which workspace admins can open.
+
+<Steps>
+  <Step title="Open workspace settings">
+    In the sidebar, open **Settings** > **Workspace**. Scroll to **Custom fields**.
+  </Step>
+  <Step title="Name the field">
+    Type a name in **Field name (e.g. Company)**, up to 60 characters.
+  </Step>
+  <Step title="Choose a type">
+    Pick **Text**, **Number**, **Email**, **Phone** or **Date**.
+  </Step>
+  <Step title="Add it">
+    Click **Add**. You see *Custom field added*.
+  </Step>
+</Steps>
+
+Each field in the list shows its type. Adding, deleting and the CSV tools need the **Manage custom fields** permission; without it the list is read-only.
+
+Don't see **Custom fields**? Your plan or your platform doesn't include the sales inbox yet.
+
+### Delete a field
+
+Click the bin next to the field, then **Delete field**. Your automations stop capturing it, but values already stored on contacts are kept.
+
+### Copy fields between workspaces
+
+Under the list:
+
+- **Export** downloads the field list as a CSV.
+- **Download sample** gives the format: a header with `name` and `type`, then one field per row, such as `Company,text`.
+- **Import CSV** adds the fields in a file. A field whose name already exists is skipped and keeps its type; an unknown type becomes **Text**; names longer than 60 characters are skipped. The file can be up to 1 MB.
+
+## Give a contact a value
+
+Values can come from several places:
+
+| Source | How |
+| --- | --- |
+| By hand | In **New contact** or **Edit contact**, click **Add field**, then enter a **Field name** and a **Value** (up to 500 characters). Use the same name as the workspace field so it lines up. Remove a row with its bin. |
+| Your automations | The **User Input** step can save a reply into a custom field. See [Automation](/guide/automation/overview). |
+| CSV import | The `custom_fields` column, as JSON: `{"company":"Acme"}`. See [Import contacts from CSV](/guide/contacts/import-csv). |
+
+When an import updates an existing contact, values the contact already has are kept and the file only adds new ones.
+
+<Note>
+The contact form accepts any field name, not only the ones in the workspace list. A name typed slightly differently (*company* instead of *Company*) is stored as a separate field, so check the spelling.
+</Note>
+
+## Where values show up
+
+- **Contact profile**: in the side panel, below the contact details, for every field with a value.
+- **Segments**: add a **Custom field** condition, choose the field, then an operator such as **is**, **contains**, **has any value**, **is empty**, **is greater than** or **is at most**. The comparison operators read the value as a number. See [Segments](/guide/contacts/segments).
+- **Export**: the `custom_fields` column of the contact export.
+
+## Related
+
+- [Segments](/guide/contacts/segments)
+- [Add and edit contacts](/guide/contacts/add-and-edit-contacts)
+- [The contact profile](/guide/contacts/contact-profile)
+- [Workspace settings](/guide/account/workspace-settings)

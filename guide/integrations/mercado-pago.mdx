@@ -1,0 +1,55 @@
+---
+title: "Mercado Pago"
+description: "Connect Mercado Pago with your access token and a webhook secret to collect Latin American payments with Checkout Pro links."
+keywords: ["Mercado Pago", "payments", "access token", "webhook secret", "Checkout Pro", "ARS", "BRL", "MXN", "Latin America"]
+---
+
+The **Mercado Pago** card on the [Integrations](/guide/integrations/overview) page connects your Mercado Pago account, so you can collect payments in conversations with Checkout Pro links. Mercado Pago serves Latin America (ARS, BRL, MXN, COP, PEN, UYU and more); each account charges in its own country's currency. For how payment links, triggers and the inbox button work, see [Payment gateways](/guide/integrations/payment-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Payments** tab.
+
+<Note>
+Don't see **Mercado Pago**, or does it say **Not included in your plan**? Your plan or your platform doesn't include payments yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Access token** | Your Mercado Pago access token: `APP_USR-…` for live, `TEST-…` for test. |
+| **Webhook secret** | The secret Mercado Pago shows for your webhook, under **Your integrations → Webhooks**. |
+
+## Connect Mercado Pago
+
+<Steps>
+  <Step title="Copy your access token">
+    In your Mercado Pago developer account, open your application's credentials and copy the **Access token** for the mode you want.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **Mercado Pago** and paste it into **Access token**. Every field must be filled in to connect: paste the **Webhook secret** if Mercado Pago already shows one, or type a temporary value for now. Click **Connect**. The **Webhook endpoint** panel appears.
+  </Step>
+  <Step title="Add the webhook">
+    Click **Copy** next to the webhook URL. In Mercado Pago, under **Your integrations → Webhooks**, add that URL for payment events and copy the secret it shows.
+  </Step>
+  <Step title="Save the webhook secret">
+    Paste it into **Webhook secret** and click **Save & reconnect**. Until the real secret is saved, payments can't be confirmed.
+  </Step>
+</Steps>
+
+Each event is checked against the webhook secret, so events that don't come from your account are ignored.
+
+## Test and live mode
+
+Test or live mode follows the token: a `TEST-` token creates test payments, an `APP_USR-` token real ones.
+
+## Troubleshooting
+
+- **"Could not reach the Mercado Pago API: …"** Mercado Pago refused the token. Copy it again from your application's credentials.
+- **Payments stay Pending.** The webhook isn't set up, or its secret differs from the one saved here.
+- **The amount is charged in another currency.** Each Mercado Pago account charges in its own country's currency. Use that currency in your payment requests.
+- **The card shows Error.** Mercado Pago rejected the saved token. Paste a new one and click **Save & reconnect**.
+
+## Related
+
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [Integrations](/guide/integrations/overview)

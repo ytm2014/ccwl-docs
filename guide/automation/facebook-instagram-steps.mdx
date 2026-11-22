@@ -1,0 +1,72 @@
+---
+title: "Facebook and Instagram steps"
+description: "Cards, carousels, marketing opt-in requests and the other steps only Messenger and Instagram flows get."
+keywords: ["facebook steps", "instagram steps", "messenger", "template card", "carousel", "marketing opt-in", "recurring notifications", "product catalog", "sequence step"]
+---
+
+Flows on a Facebook Page or an Instagram account get a group of steps for Messenger's rich messages. They appear in the step picker only on those flows, when your platform has Meta messaging on.
+
+| Step | Channels | What it does |
+| --- | --- | --- |
+| **Template Card** | Facebook, Instagram | One card with an image, title, subtitle and buttons. |
+| **Carousel** | Facebook, Instagram | Up to 10 cards the contact swipes through. |
+| **Marketing Opt-in** | Facebook | Asks permission to send marketing messages later. |
+| **Sequence** | Facebook, Instagram | Subscribes the contact to a sequence. See [Sequences](/guide/automation/sequences). |
+| **Product Catalog** | Facebook, Instagram | Sends products from a connected store. See [Selling in the chat](/guide/automation/selling-in-chat). |
+
+## Template Card
+
+| Field | What to enter |
+| --- | --- |
+| **Image URL** | The card image, or **Choose from library**. |
+| **Title** | Required. |
+| **Subtitle** | A line under the title. |
+| **Card click URL** (optional) | Where tapping the card itself goes. |
+| **Buttons** | Up to 3, each with **Button text** and a type (**Quick reply**, **Open URL**, and on Facebook also **Webview** or **Call number**). |
+
+Quick reply buttons each get their own output; link and call buttons open outside the chat and don't continue the flow.
+
+## Carousel
+
+A row of cards, from 1 to 10 ("1/10 cards"). Each card has the same fields as a Template Card (**Image URL**, **Title**, **Subtitle**, **Card click URL (optional)** and up to 3 buttons). Click **Add card** for another.
+
+Use a carousel to show a few products, services or options side by side. If you have more than ten, split them into categories and let the contact choose first.
+
+## Marketing Opt-in
+
+Asks the contact for permission to send marketing messages on Messenger. "Notification opt-ins are available on Facebook Messenger."
+
+| Field | Options |
+| --- | --- |
+| **Permission** | **One follow-up message**, or **Recurring subscription** when your Page is eligible. |
+| **Verified frequency** | For a recurring subscription: how often you may send. "Recurring requests need verified channel eligibility before they can send." |
+| **Request title** | The text on the request, for example "Get updates & offers". |
+| **Topic** (optional) | For example "Weekly deals". |
+| **Image URL** (optional) | An image for the request, or **Choose from library**. |
+
+"When someone accepts, their permission is saved. A recurring subscription keeps its own topic and lasts until it expires or they reply STOP. Paid Messenger messages need their own setup."
+
+The Page's marketing permissions are managed under **Salesbot** > **More** > **Channel settings** on the **Marketing permissions** tab, when your Page can use them. The **Marketing opt-in** condition field then lets later steps check whether the contact agreed.
+
+## Messaging windows
+
+Messenger and Instagram accept messages only within 24 hours of the customer's last message. A flow started by a contact, store, payment or scheduled event may therefore not reach them; the builder warns you when that's likely. Store flows skip customers who have never messaged the profile.
+
+## Common problems
+
+| You see | What to do |
+| --- | --- |
+| "Card title is empty." / "A card has no title." | Give every card a title. |
+| "Carousel has no cards." | Add at least one card. |
+| "More than 10 cards (Meta limit)." | Remove cards. |
+| "A card has more than 3 buttons." | Remove buttons. |
+| "Card click URL is not a valid link." | Use a full `https://` address. |
+| "Opt-in title is empty." | Write a request title. |
+| "Choose a verified frequency for the recurring request." | Pick a frequency, or use **One follow-up message**. |
+
+## Related
+
+- [Message and question steps](/guide/automation/message-steps)
+- [Comment automation and comment-to-DM](/guide/automation/comment-automation)
+- [Sequences](/guide/automation/sequences)
+- [Channel settings: welcome message, ice breakers and menus](/guide/automation/channel-settings)

@@ -1,0 +1,72 @@
+---
+title: "Channel troubleshooting"
+description: "What to check when a channel is connected but messages don't arrive, replies are refused, or a channel needs reconnecting."
+keywords: ["troubleshooting", "no messages", "not receiving", "reconnect", "missing permission", "reply refused", "whatsapp not working", "telegram not working", "sms replies", "live chat not showing"]
+---
+
+Most channel problems come down to one of three things: the connection lost a permission, the platform's reply window closed, or something on the platform's side (a token, a webhook, an account type) changed. This page goes through the messages you may see and what to do about each.
+
+## Start with these checks
+
+1. **Send a test message** to the channel from another account or phone. Does it reach the Inbox at all?
+2. **Look at the channel's status.** Check the number on the WhatsApp page or the account on **Accounts**. In the sidebar, **Salesbot** > **Overview** also points out channels that need reconnecting. See [Overview dashboard](/guide/analytics/sales-overview).
+3. **Check your access.** If only you can't see the messages, your role may limit you to some channels or to your own conversations. Ask an admin.
+
+## Nothing arrives
+
+| What you see or know | What to do |
+| --- | --- |
+| *Reconnect to enable messages* on a Facebook Page or Instagram account | The connection doesn't let the workspace receive messages yet. Reconnect it on **Accounts** and allow every permission requested. |
+| **Needs reconnecting** or **Missing a permission** | Reconnect the account on **Accounts** and allow everything it asks for. |
+| The profile was connected before messaging was switched on for your workspace | Reconnect it on **Accounts** so it's added as a messaging channel. |
+| WhatsApp: *Incoming WhatsApp messages are not set up yet* | Click **Retry** next to the number on the WhatsApp page. |
+| WhatsApp: *This connection expires soon* | Connect the number again. |
+| TikTok: a personal-account notice | Switch the account to a TikTok Business account and reconnect it. See [TikTok](/guide/channels/tiktok). |
+| Telegram: messages stopped after the token was used elsewhere | Another tool took the bot over. Connect it again here and choose **Take it over**. See [Telegram](/guide/channels/telegram). |
+| SMS: messages send but replies never arrive | Set the **Inbound & delivery webhook** URL in your gateway's dashboard. Custom gateways can't receive replies at all. See [SMS](/guide/channels/sms). |
+| Live chat: the widget isn't on the site | Check the snippet and the **Where it appears** rules. See [Live chat](/guide/channels/live-chat). |
+| X: no replies or mentions | X needs a paid X API tier (Basic or higher). |
+
+## Replies are refused
+
+When a reply can't be sent, the reason appears under the reply box and your draft is kept.
+
+| Reason | What to do |
+| --- | --- |
+| *Window closed* on WhatsApp | Send an approved template with **Choose template**. See [Reply windows](/guide/inbox/reply-windows). |
+| The reply window closed on Messenger, Instagram or TikTok | Wait for the customer to write again, or reach them on another channel under **Reply on**. |
+| WhatsApp only allows a reply after the customer has messaged you | Start the conversation with an approved template. |
+| *This contact is blocked* | **Unblock contact** if you want to reply. |
+| *Your role lets you read conversations but not reply to them.* | Ask an admin for permission to send replies. |
+| The channel needs reconnecting | Reconnect it on **Accounts**. |
+| *This conversation cannot be replied to right now.* or a platform message | The platform refused the message. Check the channel's status and try again later. |
+
+## WhatsApp-specific problems
+
+**Only 5 messages a day.** Meta provided the number and hasn't approved its display name yet. Connect your own number or wait for approval.
+
+**Sending stopped after a display name change.** Register the number again with **Register phone number** on the **Configuration** tab of the number's settings.
+
+**Can't reach many new customers in a day.** Your number's **Messaging limit** caps how many customers you can start conversations with in 24 hours. Completing **Business verification** at Meta raises it.
+
+**Your plan's connected-account limit has been reached.** You can reconnect a number you had before; adding a new one needs room in your plan.
+
+See [WhatsApp number settings](/guide/channels/whatsapp-settings).
+
+## Telegram connection errors
+
+| Message | What to do |
+| --- | --- |
+| *That bot token was rejected by Telegram.* | Copy the token again from @BotFather. |
+| *This bot is already connected to another workspace.* | Disconnect it there, or create another bot. |
+| *Telegram could not be reached to check this bot.* | Try again in a moment. |
+
+## Still stuck?
+
+Reconnecting a social profile or connecting a WhatsApp number again keeps its past conversations. (Disconnecting a Telegram bot, by contrast, removes its conversations.) If a channel still doesn't work after reconnecting with every permission, contact your platform's support with the channel name and the time of a message that didn't arrive.
+
+## Related
+
+- [Messaging channels](/guide/channels/overview)
+- [Reply windows](/guide/inbox/reply-windows)
+- [Reply to a conversation](/guide/inbox/reply)

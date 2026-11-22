@@ -1,0 +1,88 @@
+---
+title: "Conversation rules"
+description: "Decide what happens when a teammate replies, who owns a conversation, when closed conversations reopen, and how AI replies behave across your workspace."
+keywords: ["conversation rules", "conversation settings", "takeover", "auto assign", "round-robin", "reopen", "ai replies", "kill switch", "ai reply delay", "paused automation"]
+---
+
+Conversation rules set how conversations behave around the handover between your automations and your team. They apply to every channel in the workspace, so set them once and every conversation follows the same rules. Each rule starts on the behaviour described as the default below; you only need this page when you want something different.
+
+## Open the conversation rules
+
+- In the Inbox, click the gear (**Inbox settings**) in the header and choose **Conversation rules**, or
+- In the sidebar, open **Salesbot** > **More** > **Conversation rules**.
+
+Make your changes and click **Save changes**. Each save is recorded in the [audit log](/guide/analytics/audit-log).
+
+<Note>
+Changing the rules needs the permission *Change the conversation rules*. Admins have it, and so do members unless a custom role removes it. A member limited to some channels can't change them, because the rules affect every channel. Some sections only appear when your platform offers them.
+</Note>
+
+## Inbox
+
+### When an agent replies
+
+| Option | What happens |
+| --- | --- |
+| **Pause the automation** (default) | Replying is a takeover. The running flow freezes with its step, answers and remaining timer intact, and no new automation starts until someone hands it back. |
+| **Let the automation continue** | Your reply is just another message and the flow keeps going. Choose this if your team chats alongside the bot. |
+
+### Who owns the conversation after a reply
+
+| Option | What happens |
+| --- | --- |
+| **Assign it to whoever replied last** (default) | The conversation follows the person answering it. |
+| **Only claim it if nobody owns it** | Replying makes you the owner only when there is none, so nobody takes a conversation off a teammate by answering one message. |
+| **Never change the owner** | Assigning is always done by hand, with **Assign** in the thread header. |
+
+### A brand-new conversation
+
+| Option | What happens |
+| --- | --- |
+| **Leave new conversations unassigned** (default) | The team picks them up from **Open**. |
+| **Round-robin to the least busy member** | Each new conversation goes to the teammate with the fewest open conversations. Everyone with inbox access takes part. |
+
+### A message on a conversation you closed
+
+| Option | What happens |
+| --- | --- |
+| **Always reopen it** (default) | A new message from the customer moves the conversation back to **Open**. |
+| **Reopen only within a window of closing** | Enter the hours in **Reopen within … hours of closing** (24 by default, up to a year). After that, the message still arrives and counts as unread, but the conversation stays in **Done**. |
+| **Never reopen it** | New messages are visible under **Done** only. |
+
+## AI replies
+
+| Setting | What it does |
+| --- | --- |
+| **Let the AI reply** | The workspace-wide switch for AI-written replies. Turning it off stops every AI step at once; the rest of each flow keeps running. On by default. While it's off, the page says *AI replies are off.* |
+| **Wait before an AI reply** | A short pause in seconds, so an answer lands as if a person typed it. At most 5 seconds. A flow step that already waits longer keeps its own timing. |
+| **AI replies per person** | The most automated AI replies one person can get **a minute** and **an hour** (10 and 60 by default). Messages over the limit stay in the Inbox without an AI answer. 0 means no limit. |
+
+While **Let the AI reply** is off, **Wait before an AI reply** and both per-person limits can't be changed.
+
+<Tip>
+If the AI starts answering something it shouldn't, turn off **Let the AI reply** first and fix the flow or your AI Knowledge afterwards. Your other automations carry on in the meantime.
+</Tip>
+
+## Handing a paused automation back
+
+What happens to a flow that a takeover paused. When you close a conversation with a paused flow you're always asked what to do; this setting only pre-selects the answer, and decides whether the flow resumes by itself.
+
+| Option | What happens |
+| --- | --- |
+| **Only when someone hands it back** (default) | Closing a conversation doesn't prove the automation is still wanted, so the flow waits for someone to resume it. |
+| **When the conversation is closed** | Closing the conversation hands the flow back where it paused. |
+| **After a period of quiet** | Enter the hours in **Resume after … quiet hours** (up to 720). The flow resumes once the conversation has been quiet that long. |
+| **Never — a paused flow can only be ended** | A paused flow stays paused until someone ends it. |
+
+## Choosing your rules
+
+- **A small team that answers everything by hand**: keep **Pause the automation**, **Assign it to whoever replied last** and **Always reopen it**.
+- **A team that shares the load**: turn on **Round-robin to the least busy member** and choose **Only claim it if nobody owns it**, so ownership stays stable.
+- **A bot that does most of the work**: consider **Let the automation continue** and **After a period of quiet**, so flows pick up again without anyone remembering to resume them.
+
+## Related
+
+- [Take over from the bot](/guide/inbox/bot-handover)
+- [Assign conversations](/guide/inbox/assign)
+- [Conversation status](/guide/inbox/status)
+- [Flows](/guide/automation/overview)

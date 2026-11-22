@@ -1,0 +1,56 @@
+---
+title: "Posts failing to publish"
+sidebarTitle: "Posts failing"
+description: "Find posts that failed, read the error for each account, retry or continue publishing, and fix the common causes such as disconnected accounts and plan limits."
+keywords: ["post failed", "failed posts", "publishing failed", "retry", "continue publishing", "reconnect account", "access token expired", "post not published", "scheduled post did not go out", "publishing paused"]
+---
+
+When a scheduled post doesn't go out, the app keeps the post, marks it as failed for the accounts it couldn't reach, and tells you why. You can usually fix the cause and retry just the accounts that failed.
+
+## Find failed posts
+
+- In the sidebar, open **Posts**. The **Failed** tab lists posts that failed on at least one account. In a post list you can also filter on **Has failed accounts**.
+- The notifications bell can tell you **Post failed to publish** for posts you created or watch. See [Notifications](/guide/account/notifications).
+
+## Read what went wrong
+
+Open the post and look at its **Delivery** list. Each account has its own row with its status, and a failed account shows the error the network returned in red under its name.
+
+A post going to several accounts can succeed on some and fail on others. A post with several parts (for example a thread) can be partly published; the row then says, for example, **2 of 5 parts published**.
+
+## Retry
+
+On a failed account's row, click the retry icon (**Retry**). For a partly published post the button is **Continue publishing**: publishing continues from the part that failed, and the parts already published stay as they are.
+
+- Only an account that failed can be retried.
+- While the post is still publishing, wait for it to finish before retrying.
+
+Fix the cause first, or the retry fails again.
+
+## Common causes
+
+| Cause | What you see | Fix |
+| --- | --- | --- |
+| The account needs reconnecting | "The account needs to be reconnected. Re-authenticate it and try again." or "Access token has expired. Reconnect your account." The bell may also show **Social account needs reconnecting**. | Reconnect the account on the **Accounts** page, then retry. See [Social accounts](/guide/getting-started/social-accounts). |
+| The connection is about to expire | **Social account connection expiring** in the bell (within 7 days, when it can't renew itself). | Reconnect it before it expires. |
+| A payment failed | **Your last payment failed, so publishing is paused.** | Update your payment method; publishing resumes once the payment goes through. See [Payment method and receipts](/guide/billing/payment-and-receipts). |
+| The workspace is locked or the trial ended | The **Locked** or **Your free trial has ended** page. | Choose or reactivate a plan. See [Trials and locked workspaces](/guide/billing/trials-and-locked-workspaces). |
+| X posts are used up | **Your X posts for this period are used up. Add X posts or connect your own X app.** | Add an X posts add-on, connect your own X app, or wait for the next period. See [Add-ons](/guide/billing/add-ons). |
+| X isn't in your plan | **X is not available on your current plan.** | Change your plan. |
+| The network refused the media or text | The network's own error on the account's row, for example an upload error. | Change the media or text to meet the network's rules, then retry. See [Create a post](/guide/publishing/create-a-post). |
+
+## Posts that won't schedule
+
+If you can't schedule a post at all, you may have reached your plan's **Scheduled posts at a time** limit (**Maximum limit of scheduled posts reached.**). Published posts don't count; delete or publish some scheduled posts, or change your plan. See [Usage and plan limits](/guide/billing/usage-and-limits).
+
+## Prevent it
+
+- Turn on the bell's **Social account needs reconnecting** and **Social account connection expiring** notifications.
+- Check posts waiting for approval: **Approval needed soon** warns you when a post waiting for approval is close to its scheduled time or has missed it.
+
+## Related
+
+- [Social accounts](/guide/getting-started/social-accounts)
+- [Notifications](/guide/account/notifications)
+- [Usage and plan limits](/guide/billing/usage-and-limits)
+- [Messages not sending](/guide/troubleshooting/messages-not-sending)

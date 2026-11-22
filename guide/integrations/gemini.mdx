@@ -1,0 +1,86 @@
+---
+title: "Google Gemini"
+description: "Connect your Google AI Studio key so AI Reply steps run on Gemini models, with Google Search grounding, file search and vector stores."
+keywords: ["Gemini", "Google", "AI Studio", "API key", "AI replies", "vector store", "file search", "web search"]
+sidebarTitle: "Google Gemini"
+---
+
+The **Google Gemini** card on the [Integrations](/guide/integrations/overview) page connects your own Google AI Studio key. Your flows' **AI Reply** steps can then run on Gemini models, billed to your Google account. Gemini supports **File search**, **Web search** (grounded in Google Search), **Functions** and **CRM contact tools**. It doesn't offer **Reasoning effort**. For how your own key fits with the built-in AI, see [AI providers](/guide/integrations/ai-providers).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **AI** tab.
+
+<Note>
+Don't see **Google Gemini**, or does connecting say your plan uses the built-in AI? Your plan or your platform doesn't include your own AI keys.
+</Note>
+
+## Connect Gemini
+
+<Steps>
+  <Step title="Create a key in Google AI Studio">
+    Open Google AI Studio at aistudio.google.com. Click **Get API key**, create a key and copy it.
+  </Step>
+  <Step title="Paste it">
+    In the sidebar, open **Integrations** > **Google Gemini**. Under **API credentials**, paste the key into **API key**.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The key is checked with Google first; the page then confirms "Google Gemini connected." Vector stores unlock once you're connected.
+  </Step>
+</Steps>
+
+To change the key later, paste the new one and click **Save & reconnect**.
+
+## Models
+
+The **Capabilities** panel lists the models under **Models:** and the default under **Default:**. Today these are:
+
+| Model | Notes |
+| --- | --- |
+| `gemini-3.8-flash` | Default. |
+| `gemini-3.5-flash-lite` | |
+| `gemini-4-argon` | |
+
+The list on the page is always the current one.
+
+## Vector stores
+
+Once Gemini is connected, a **Vector stores** tab appears next to **Configuration** (where your plan includes AI knowledge). A vector store groups documents the AI can search when it writes a reply.
+
+<Steps>
+  <Step title="Create a store">
+    Under **Create a vector store**, enter a **Store name** (for example "Product docs") and click **Create**.
+  </Step>
+  <Step title="Add content">
+    In the store, click **+ Upload file** to add a PDF, TXT or MD file of up to 20 MB, or paste a web address and click **Add URL**. The page is fetched and indexed for you.
+  </Step>
+  <Step title="Use it in a step">
+    In an **AI Reply** step, turn on file search and pick the stores the AI may search.
+  </Step>
+</Steps>
+
+Under **Stores**, each store shows a status dot (green when ready, amber while processing, red on an error), its number of files, and each file's name and source. Click **Delete** and confirm to remove a store and its indexed files from Google; this can't be undone.
+
+To manage your workspace's knowledge base in one place, see [AI knowledge](/guide/automation/overview).
+
+## What it unlocks
+
+- Gemini models in the **AI Reply** step of your [flows](/guide/automation/overview).
+- Answers grounded in Google Search, and search in your own documents.
+- With your own key connected, AI replies run on it first and don't use your plan's monthly AI allowance.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The key is removed, and **AI Reply** steps fall back to another connected provider or the built-in AI, where your plan has it. Your vector stores stay listed.
+
+## Troubleshooting
+
+- **"Could not reach the Google Gemini API: …"** Google refused the key. Check it in AI Studio, then paste it again.
+- **The card shows Error.** Google rejected the saved key during use. Create a new key and click **Save & reconnect**.
+- **An upload fails with "Gemini did not return an upload session URL."** Google didn't accept the upload. Try again later, or with a smaller file.
+- **"Connect the provider first to manage vector stores."** Connect Gemini before you open **Vector stores**.
+
+## Related
+
+- [AI providers](/guide/integrations/ai-providers)
+- [OpenAI](/guide/integrations/openai)
+- [Flows and AI replies](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

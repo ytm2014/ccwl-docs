@@ -1,0 +1,102 @@
+---
+title: "Selling in the chat"
+description: "Show products in WhatsApp and Messenger, catch WhatsApp cart orders, and take payment with pay links, then follow up on payment events."
+keywords: ["sell on whatsapp", "whatsapp catalog", "whatsapp cart", "cart order", "product catalog", "send product", "request payment", "payment link", "pay now", "stripe", "paypal", "paystack", "razorpay", "myfatoorah", "payment succeeded"]
+---
+
+Flows can take a customer from browsing to paying without leaving the conversation: show products, catch the cart they send, and send a secure pay link. This page covers the selling steps and triggers; order lookups and store events are in [Store automations](/guide/automation/store-automations).
+
+<Note>
+The steps here depend on your channels, plan and connected services. Don't see one? Your plan or your platform doesn't include it yet, or the service isn't connected under **Integrations**.
+</Note>
+
+## Sell on WhatsApp
+
+### 1. Switch on catalog and cart
+
+Your product catalog must be connected to your WhatsApp Business Account in Meta's Commerce Manager. Then open **Salesbot** > **More** > **Channel settings**, pick the WhatsApp number and open the **Commerce** tab ("Control how your catalog and cart appear to customers in chat."):
+
+- **Show catalog**: "Let customers browse your connected product catalog."
+- **Enable cart**: "Allow customers to add products to a cart and send an order."
+
+Click **Save changes**.
+
+### 2. Put products in the conversation
+
+Add the **Catalog / Product** step (under **Sell**). "Requires a catalog connected to your WhatsApp Business Account in Commerce Manager."
+
+| Field | Options |
+| --- | --- |
+| **What to send** | **Full catalog**, **Single product** or **Product list**. |
+| **Body** | The message, for example "Browse our products". |
+| **Product ID** / **Product IDs (comma-separated)** | For a single product or a list: the product IDs from your catalog. |
+| **Section title** | For a product list, for example "Featured". |
+
+### 3. Catch the cart
+
+When a customer sends their cart, the **Cart order received** trigger ("A customer sends their WhatsApp cart") starts your flow. It isn't offered when the cart is switched off for the number.
+
+The cart is available to later steps as `{{cart.items_summary}}`, `{{cart.item_count}}`, `{{cart.total}}`, `{{cart.currency}}` and `{{cart.note}}`, with `{{customer.name}}`, `{{customer.phone}}` and `{{customer.email}}`.
+
+If no Live flow picks the cart up, or it can't be handled automatically, the conversation is handed to your team: the bot is paused and a note explains why.
+
+### 4. Take the money
+
+Follow with a **Request Payment** step (below), using `{{cart.total}}` as the amount. The **WhatsApp Cart Checkout** template does exactly this: "Turn a sent WhatsApp cart into a payment link, with a human fallback if anything goes wrong."
+
+## Product Catalog (Facebook and Instagram)
+
+On Messenger and Instagram flows, **Product Catalog** sends products from a connected store:
+
+| Field | What to enter |
+| --- | --- |
+| **Store** | The store name or ID. |
+| **Products** | Product IDs or a search term. |
+| **Buy button text** | For example "Buy now". |
+
+## Send Product (any channel)
+
+"Sends a product card: image, title, price and a Buy link — rendered natively per channel." Pick a synced product, or use the product from a back-in-stock trigger. See [Store automations](/guide/automation/store-automations#send-product).
+
+## Request Payment
+
+"Creates a secure payment link and sends it as a "Pay now" button. The amount and message accept contact and order variables."
+
+| Field | What to enter |
+| --- | --- |
+| **Gateway** | One of your connected gateways. With none: "No payment gateway connected. Connect Stripe, PayPal, Paystack, Razorpay or MyFatoorah under Integrations first." |
+| **Amount** | A number such as 49.00, or a variable such as `{{order.total}}` or `{{cart.total}}`. |
+| **Currency** | The currency to charge, for example USD. |
+| **Message** (optional) | "What is this payment for?" |
+| **Button text** | By default "Pay now". |
+
+A payment link can only be used once.
+
+## Follow up on payments
+
+Payment events start a flow for the paying contact. They're on the **Payment events** tab of the trigger picker ("A payment-gateway event (succeeded / failed / refunded) that starts your flow."):
+
+| Trigger | Starts when |
+| --- | --- |
+| **Payment succeeded** | A contact completes a payment |
+| **Payment failed** | A contact's payment fails |
+| **Payment refunded** | A payment is refunded |
+
+"Only payments made through our pay links." Payments made elsewhere don't start these flows; use [store triggers](/guide/automation/store-automations#store-triggers) for store orders.
+
+Use them to thank the customer, tag them as a customer, move them to a pipeline stage, or send a new link after a failed payment.
+
+## Locations
+
+Selling locally? The **Send Location** and **Request Location** steps on WhatsApp send your shop's pin or ask the customer for theirs. See [WhatsApp steps](/guide/automation/whatsapp-steps#send-location).
+
+## Ready-made selling flows
+
+Look in the template gallery for **WhatsApp Cart Checkout**, **Food Order via WhatsApp** ("Collect the order and hand it to the kitchen (add a payment link if you take prepayment)."), **Sell from Reel comments**, **Keyword-triggered product info**, **Invoice Payment Reminder** and **Payment Failed Recovery**.
+
+## Related
+
+- [Store automations](/guide/automation/store-automations)
+- [WhatsApp steps](/guide/automation/whatsapp-steps)
+- [Variables](/guide/automation/variables)
+- [Integrations](/guide/integrations/overview)

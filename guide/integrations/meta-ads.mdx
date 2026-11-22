@@ -1,67 +1,68 @@
 ---
-title: "Meta Ads and Conversion Leads"
-description: "Connect your Meta ad account to compare ad spend with conversations, and report how your Facebook leads turned out to Meta."
-keywords: ["Meta Ads", "Facebook ads", "ad account", "ad spend", "Conversion Leads", "Conversions API", "lead ads", "dataset"]
-sidebarTitle: "Meta Ads"
+title: "Meta Ads"
+description: "Connect your Meta ad account so the Ads report can compare ad spend, impressions and clicks with the conversations and sales your ads bring in."
+keywords: ["Meta Ads", "Facebook ads", "Instagram ads", "ad account", "ad spend", "ROAS", "Ads report", "click-to-message"]
 ---
 
-Two Meta cards on the [Integrations](/guide/integrations/overview) page connect your advertising to your conversations: **Meta Ads** brings in ad spend so you can compare it with the conversations and sales your ads produce, and **Meta Conversion Leads** tells Meta how each Facebook lead turned out, so your lead ads can find people more likely to become customers. Both appear under the **Productivity** tab.
+The **Meta Ads** card on the [Integrations](/guide/integrations/overview) page connects your business ad account. Your workspace already knows which conversations started from an ad; with Meta Ads connected, it also brings in what those ads cost and how they were delivered, so the Ads report can show spend, cost per conversation and return on ad spend next to the conversations and revenue.
 
-You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Productivity** tab.
 
 <Note>
-Don't see a card, or does it say **Not available yet** or **Not included in your plan**? Your plan or your platform doesn't include it yet.
+Does the card say **Not available yet** (the page reads "Meta Ads is not available yet.") or **Not included in your plan**? Your platform or your plan doesn't include it yet.
 </Note>
 
-## Meta Ads
+## Connect Meta Ads
 
 <Steps>
   <Step title="Connect with Meta">
-    Open **Integrations** > **Meta Ads** and click **Connect with Meta**. Sign in to Meta and allow access to your business ad account.
+    In the sidebar, open **Integrations** > **Meta Ads** and click **Connect with Meta**. Sign in to Meta and allow access to your business ad account.
   </Step>
   <Step title="Choose the ad account">
-    Back on the page, pick your account under **Ad account** (each shows its name, ID and currency) and click **Save ad account**. The account is verified before it is saved.
+    Back on the page, pick your account under **Ad account**. Each option shows the account's name, ID and currency.
+  </Step>
+  <Step title="Save it">
+    Click **Save ad account**. The button reads **Verifying account…** while Meta confirms you can read that account; the page then says "Ad account selected."
   </Step>
 </Steps>
 
-Once connected, the page shows the **Account currency** and the **Last complete refresh**. If Meta reports a problem, the message appears on the page. Selecting an account starts reporting; paid messaging needs separate setup.
+Selecting an account starts reporting. Paid messaging (sending paid marketing messages through Meta) needs separate setup and isn't turned on by this card.
 
-To change accounts or renew access, click **Reconnect with Meta**.
+## What the page shows
 
-If the page says Meta Ads is not enabled for this workspace, your saved referral history stays available in reports.
+| Item | Meaning |
+| --- | --- |
+| **Account currency** | The currency Meta reports spend in, or **Not provided**. |
+| **Last complete refresh** | When delivery and spend were last fetched in full, or **Not synced yet**. |
+| A warning | "The last refresh was incomplete. Check the connection and retry." when the last fetch failed part-way. |
 
-## Meta Conversion Leads
+Use **Test connection** at the top to check the grant and the selected account still work; it answers "Meta verified the ad account grant." To change accounts or renew access, click **Reconnect with Meta**.
 
-Conversion Leads sends events to a CRM dataset in Meta Events Manager:
+## What it adds to the Ads report
 
-- "Lead" when a Facebook lead form is captured.
-- The stage's own name each time that contact moves to a pipeline stage.
+The Ads report (in the sales inbox reports) lists conversations, leads, recorded revenue and first-ad contacts per ad, whether or not Meta Ads is connected. Connecting adds Meta's measurements:
 
-Only contacts who came in through a Facebook lead form in the last 90 days are reported, each stage once per lead. Their email and phone number are hashed before they are sent.
+- **Spend**, **Impressions** and **Clicks** per ad, with when each was measured.
+- **Cost / conversation** and **Cost per lead**.
+- **ROAS** (return on ad spend), withheld when currencies are mixed, measurements are missing or refunds are unresolved. Currencies are never converted.
 
-### Connect it
+You can export the report as CSV or PDF. See [Ad attribution report](/guide/analytics/ad-attribution).
 
-<Steps>
-  <Step title="Open your dataset in Events Manager">
-    In Meta Events Manager, create or open the CRM dataset you use for your lead ads. Copy its dataset ID, then generate a Conversions API access token in the dataset's settings.
-  </Step>
-  <Step title="Fill in the form">
-    Open **Integrations** > **Meta Conversion Leads**. Under **Your CRM dataset**, enter the **Dataset ID** and the **Conversions API access token**.
-  </Step>
-  <Step title="Test first (optional)">
-    Enter a **Test event code (optional)** from Events Manager. While it is set, events appear under Test events in Events Manager and don't count towards your ads. Clear it when you've finished testing.
-  </Step>
-  <Step title="Save">
-    Click **Connect**. The panel then shows **Sending to** with your dataset's name and ID.
-  </Step>
-  <Step title="Choose the optimisation stage in Meta">
-    In Events Manager, choose the stage your lead ads should optimise for.
-  </Step>
-</Steps>
+## Disconnect
 
-**Last 7 days** shows how many events were **Sent**, **Failed** and are **Waiting**, and the reason for the last failure. If Meta stops accepting events, a message asks you to check the dataset ID, generate a new token and save again.
+Click **Disconnect** at the top of the page. The grant and the selected account are removed and the page confirms "Meta Ads disconnected." Spend and delivery stop refreshing; your conversation and revenue history stays in the report.
+
+If the page says "Meta Ads is not enabled for this workspace. Your saved referral history remains available in reports.", your plan or platform has turned the feature off; your past data is kept.
+
+## Troubleshooting
+
+- **"That account could not be verified on the current Meta grant. Reconnect or refresh the account list."** Your Meta sign-in can't read that ad account. Click **Reconnect with Meta** and make sure you allow access to it.
+- **"The current grant or selected ad account could not be verified. Reconnect Meta Ads."** Meta no longer accepts the saved access. Click **Reconnect with Meta**.
+- **The report says the account is awaiting its first synchronization.** Wait for the first refresh after you saved the account.
+- **The card shows Error.** Meta rejected the saved grant. Click **Reconnect with Meta**.
 
 ## Related
 
+- [Meta Conversion Leads](/guide/integrations/meta-conversion-leads)
+- [Ad attribution report](/guide/analytics/ad-attribution)
 - [Integrations](/guide/integrations/overview)
-- [CRM and spreadsheets](/guide/integrations/crm-and-spreadsheets)

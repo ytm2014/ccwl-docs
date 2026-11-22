@@ -1,0 +1,88 @@
+---
+title: "Create a flow"
+description: "Start a new flow: choose the profile it runs on, pick a template or start blank, and choose the quick form or the visual builder."
+keywords: ["new flow", "create flow", "create automation", "start from scratch", "start blank", "profile", "all profiles", "which profile", "flow builder", "quick automation"]
+---
+
+Every new flow starts from the same dialog. You choose where the flow runs, then either install a template or start blank. This page walks through each screen.
+
+<Note>
+You need permission to manage automations to create flows. If your plan doesn't include the flow builder, a card on the Flows page explains how to add it, and flows open read-only.
+</Note>
+
+## Start the flow
+
+<Steps>
+  <Step title="Open the Flows page">
+    In the sidebar, open **Salesbot** > **Flows** and click **New flow**.
+  </Step>
+  <Step title="Choose the profile">
+    Under **Which profile should this flow run on?**, pick one of your connected profiles, or **All profiles**. "Templates and triggers follow the profile you choose." Use **Search profiles** if you have many.
+  </Step>
+  <Step title="Pick a template or start blank">
+    The **New flow** gallery opens: "Start from a working example. You can change every step." Click a template card to preview it, or click **Start blank** (or **Start from scratch**) for an empty flow.
+  </Step>
+  <Step title="Choose how to build it">
+    For a blank flow you're asked **How do you want to build it?**: **Quick automation** or **Flow builder**. A template already knows which builder it uses.
+  </Step>
+</Steps>
+
+The new flow is created as a draft. Nothing runs until you publish it and switch it on. See [Publish, test and go live](/guide/automation/publish-and-test).
+
+## Choosing a profile
+
+The profile decides which triggers, steps and templates you are offered.
+
+| Choice | What it means |
+| --- | --- |
+| A single profile | The flow runs on that profile only. You get its own message and comment triggers, plus contact, store and payment events. |
+| **All profiles** | "One flow for every profile: contact, schedule and payment events, or a message trigger heard on every profile of its platform. Triggers that need one profile are not offered." A quick automation always needs a single profile. |
+
+Some profiles carry a badge in the picker:
+
+- **Comments only**: the platform has no direct messages here (for example Threads, YouTube, LinkedIn, Reddit or Google Business). The flow can only start on that platform's own comment or review trigger and reply in public.
+- **Inbox only**: the profile is not active for automations on your plan, so a flow there would never start.
+- **Not yet**: flows are not available for this platform yet.
+
+A personal TikTok account can't be used: you're asked to switch it to a TikTok Business account and reconnect it.
+
+You can change the profile later with **Move to a profile** in the flows list.
+
+## The template gallery
+
+Templates are working flows you install and then adjust. The gallery only shows templates that work on the profile you chose.
+
+- **Recommended for** *(your channel)* comes first, followed by every template grouped by goal.
+- Use **Search templates** to search by name.
+- **Advanced filters** narrows the list **By builder** (**Quick automations** or **Flow builder**), **By trigger** and **By industry**. The goal tabs along the top filter by goal. **Clear filters** resets everything.
+
+Click a card to open its preview. The preview shows the **Trigger**, the **Flow steps**, where it **Works on**, and **What to customize** before it can run. Some templates are marked **Needs AI insights** (they start on the Message classified trigger) or **Not available yet**. Click **Use this template** (or **Install & set up** when it needs setup) to create your copy.
+
+See [Templates and automation packs](/guide/automation/templates-and-packs) for more on what's in the gallery.
+
+## Quick automation or flow builder?
+
+| | Quick automation | Flow builder |
+| --- | --- | --- |
+| Best for | One trigger with a fixed set of replies, such as replying to every comment with a DM | Conversations with questions, branches, AI, waits and integrations |
+| Editing | A single form | A visual canvas |
+| Branching | No | Yes |
+| Integrations | Tag, wait, hand over, WhatsApp template | Every step your channel and plan allow |
+
+You can start with a quick automation and later click **Edit in Flow Builder** to continue on the canvas. The visual copy is saved as a draft.
+
+<Tip>
+Don't see **Quick automation**? Your platform has switched it off; **Start from scratch** then opens the flow builder straight away.
+</Tip>
+
+## Name your flow
+
+New flows get a name from the template or a default one. Rename it in the builder's **Flow name** field at the top, or in the quick automation form's **Name** field. Pick something you will recognise in the list, such as "Comment to DM, spring sale".
+
+## Related
+
+- [How flows work](/guide/automation/overview)
+- [Templates and automation packs](/guide/automation/templates-and-packs)
+- [Quick automations](/guide/automation/quick-automations)
+- [The flow builder](/guide/automation/flow-builder)
+- [Triggers](/guide/automation/triggers)

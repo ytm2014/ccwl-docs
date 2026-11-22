@@ -1,0 +1,101 @@
+---
+title: "How flows work"
+sidebarTitle: "How flows work"
+description: "What a flow is, what can start one, how drafts, publishing and the Live switch fit together, and where to find your flows."
+keywords: ["flows", "automations", "chatbot", "bot", "how automation works", "draft", "live", "publish", "trigger", "steps", "flows list"]
+---
+
+A flow is an automation that answers for you. It starts when something happens on one of your channels or in your contact list, such as a new message, a comment on a post, a tag being added or a store order, and then runs a series of steps: send a message, ask a question, let the AI answer, wait, tag the contact, hand the conversation to a person, call another service, and so on.
+
+In the sidebar, open **Salesbot** > **Flows** to see every flow in your workspace.
+
+<Note>
+Don't see **Flows**? Your plan or your platform doesn't include it yet. To create or edit flows you also need permission to manage automations. With view-only access you can open a flow but not change it ("You can view this flow. Editing it needs permission to manage automations.").
+</Note>
+
+## The parts of a flow
+
+| Part | What it does |
+| --- | --- |
+| **Trigger** | The event that starts the flow, with its own options (keywords, which posts, which tag, a schedule...). Every flow has exactly one. See [Triggers](/guide/automation/triggers). |
+| **Steps** | What happens next: messages, questions, AI replies, conditions, waits, contact updates and calls to other services. See [Add steps](/guide/automation/message-steps). |
+| **Connections** | The lines between steps. A step with several outcomes (a condition's Yes and No, each reply button, FOUND and NOT FOUND) has one output for each, and each output connects to one next step. |
+| **Profile** | The connected profile the flow runs on, or **All profiles**. The profile decides which triggers and steps you can use. |
+
+## Two ways to build
+
+When you create a flow you choose how to build it:
+
+- **Quick automation**: "A single trigger and reply, set up in a simple form. Best for one-step rules." See [Quick automations](/guide/automation/quick-automations).
+- **Flow builder**: "A visual canvas with branching and multiple steps. Best for conversations." See [The flow builder](/guide/automation/flow-builder).
+
+A quick automation can be turned into a visual flow at any time with **Edit in Flow Builder**.
+
+## Steps depend on the channel
+
+Each messaging channel carries different things. WhatsApp has reply buttons, lists, templates and forms; Facebook and Instagram have cards, carousels and quick replies; SMS is text only; comment platforms can reply in public. The builder only offers the steps the flow's profile can deliver, and it refuses to publish a step the channel cannot send. Comment actions (reply, like, hide, delete) appear only when a comment or review starts the flow.
+
+## Draft, publish, Live
+
+A flow has a working copy and a published version:
+
+1. Everything you change in the builder is saved as a draft (automatically, or with **Save draft**). The draft never changes what runs.
+2. **Publish** checks the flow and makes the current draft the version that runs.
+3. The **Live** switch, in the builder and on the flows list, turns the flow on or off.
+
+A flow that has never been published cannot go Live: you're asked to publish it first. A contact who is already part-way through a flow keeps the version they started on. See [Publish, test and go live](/guide/automation/publish-and-test).
+
+## The flows list
+
+The list has three tabs: **All**, **Live** and **Drafts**. Each row shows:
+
+| Column | Meaning |
+| --- | --- |
+| **Flow** | The flow's name and, underneath, its trigger. |
+| **Runs on** | The profile it runs on, **All profiles**, or **Profile removed** if that profile was disconnected. |
+| **Type** | Which builder it uses, for example **Flow builder**. |
+| **Status** | **Live**, **Paused**, **Draft** or **Failed**. |
+| **Usage** | The flow's usage count. |
+| **Runs (30 d)** | How many times it ran in the last 30 days. |
+| **Last run** | When it last ran. |
+| **Live** | The on/off switch. |
+
+Use **Search flows** to find a flow by name, description, trigger keywords or profile. **Filters** adds **Type** (or **All builders**), **Trigger** (**All triggers**) and **Status** (**All statuses**); **Clear filters** resets them. Sequences can also be listed here when you pick **Sequences** as the type.
+
+### Row actions
+
+Open a row's menu for:
+
+- **Open builder** (or **Edit** for a quick automation)
+- **Analytics**: runs, completion rate and failures for this flow
+- **Test bot**: start a real test conversation with the published flow
+- **Duplicate**: a copy, saved as a draft
+- **Export JSON**: download the flow as a `.flow.json` file
+- **Move to a profile** and **Duplicate to another profile**
+- **Delete**
+
+Deleting a flow cannot be undone. If contacts are in the middle of it, their runs are cancelled and nothing more is sent to them.
+
+To move a Live flow to another profile, turn it off first. It stays off after the move, and if some of its steps belonged to the old profile it must be published again before it can go Live.
+
+### Import a flow
+
+**Import** loads a flow from a JSON file (up to 1 MB), such as one exported from another workspace. You choose which profile it runs on, and it arrives as a draft. The file must contain the flow's steps and connections and a trigger; otherwise you see why it was refused, for example "The flow in the file has no trigger." or "Two steps in the file share an id."
+
+## What can I automate?
+
+**What can I automate?** on the Flows page (and in the profile picker) opens a read-only list of what can start a flow on each connected platform, plus the contact, store and payment events. Use it to check whether a trigger exists for a channel before you build. Triggers marked **Not available here** can't be used in your workspace.
+
+## Flow, sequence or broadcast?
+
+- A **flow** reacts to something that happens, one contact at a time.
+- A **sequence** sends a planned series of follow-up messages over days to the contacts subscribed to it. See [Sequences](/guide/automation/sequences).
+- A **broadcast** sends one message to many contacts at a time you choose. See [Broadcasts](/guide/broadcasts/overview).
+
+## Related
+
+- [Create a flow](/guide/automation/create-a-flow)
+- [Triggers](/guide/automation/triggers)
+- [The flow builder](/guide/automation/flow-builder)
+- [Publish, test and go live](/guide/automation/publish-and-test)
+- [Troubleshooting flows](/guide/automation/troubleshooting)

@@ -1,0 +1,69 @@
+---
+title: "Contacts overview"
+sidebarTitle: "Overview"
+description: "What a contact is, where people come from, and how the Contacts area is laid out."
+keywords: ["contacts", "crm", "contact list", "channels", "identities", "board", "segments", "permissions"]
+---
+
+**Contacts** is the address book behind the sales inbox. Everyone who writes to one of your connected messaging channels becomes a contact on their own, and you can add more by hand or from a CSV file. One contact is one person: their conversations, tags, stage, custom fields and notes sit on a single profile, whichever channel they used.
+
+## Open Contacts
+
+In the sidebar, open **Salesbot** > **Contacts**. The page header shows the total number of contacts, a **New contact** button and a **More contact actions** menu (the three dots). Below the header, three tabs switch between views:
+
+| Tab | What it shows |
+| --- | --- |
+| **List** | Every contact in a searchable, filterable table. See [The contact list](/guide/contacts/contact-list). |
+| **Board** | Contacts as cards in pipeline stage columns. See [Pipeline board and stages](/guide/contacts/pipeline). |
+| **Segments** | Saved audiences built from stage, tags, activity and conditions. See [Segments](/guide/contacts/segments). |
+
+The **More contact actions** menu holds **Import**, **Export**, **Manage tags**, **Opted-out contacts** and **Recently deleted**. Each item only appears when your role allows it.
+
+Don't see **Contacts** or the **Segments** tab? Your plan or your platform doesn't include it yet, or your role doesn't give you access to contacts.
+
+## One profile, many channels
+
+A person can reach you on more than one channel, for example WhatsApp and Instagram. Each of those is a channel identity on the same contact, so replies, history and CRM details are shared. The list shows how many channel identities a contact has, and the profile lists each one, with the primary channel marked **Primary**.
+
+When the same person ends up as two contacts (for example, you imported them and later they messaged you), merge the two. See [Merge duplicate contacts](/guide/contacts/merge-duplicates).
+
+## Where contacts come from
+
+- **Inbound messages.** Someone who messages a connected channel is added automatically. This never fails because of a plan limit.
+- **By hand.** **New contact** on the list or the board. See [Add and edit contacts](/guide/contacts/add-and-edit-contacts).
+- **CSV import.** **More contact actions** > **Import**. See [Import contacts from CSV](/guide/contacts/import-csv).
+- **Other tools in the workspace**, such as booking pages, website chat or forms, where your platform includes them.
+
+The profile's **Source** row and the first entry of its activity timeline show where a contact came from, for example *Manual* or *CSV import*.
+
+<Note>
+A contact you add by hand or import is not linked to any channel until that person writes in. The one exception is WhatsApp: a workspace admin can link a new contact to a WhatsApp number if the person agreed to receive WhatsApp messages.
+</Note>
+
+## Who can do what
+
+Contacts hold other people's personal data, so every action has its own permission in your team role. Buttons you can't use are hidden. The main ones:
+
+| Permission | Lets you |
+| --- | --- |
+| **View contacts** | Open the list, the board, segments and profiles |
+| **Create contacts** | Use **New contact** |
+| **Edit contacts, their stage and notes** | Edit profiles, tags, stages, notes, bulk tag and stage changes, pause the bot |
+| **Delete contacts** / **Delete contacts in bulk** | Delete one contact, or many at once |
+| **Import contacts** / **Export contacts** | Use **Import** and **Export** |
+| **Manage tags**, **Manage custom fields**, **Manage pipeline stages**, **Manage segments** | Change the workspace's tags, fields, stages and segments |
+| **Merge contacts**, **See deleted contacts and restore them**, **Erase a contact past recovery** | Admin-only unless a custom role grants them |
+
+A teammate limited to some channels sees only the contacts on those channels and can't create, import, merge, bulk-delete, restore or erase contacts. Some roles see phone numbers and email addresses masked; the form then shows *Hidden by your role*. Roles are set up under **Settings** > **Team Members**; see [Roles and permissions](/guide/account/roles-and-permissions).
+
+## Contact limits
+
+Some plans cap how many contacts a workspace can store. A meter at the top of the list shows your usage. See [Contact limits](/guide/contacts/contact-limits).
+
+## Related
+
+- [The contact list](/guide/contacts/contact-list)
+- [The contact profile](/guide/contacts/contact-profile)
+- [Tags](/guide/contacts/tags)
+- [Inbox](/guide/inbox/overview)
+- [Broadcasts](/guide/broadcasts/overview)

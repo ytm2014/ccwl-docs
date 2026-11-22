@@ -1,0 +1,72 @@
+---
+title: "Automation not triggering"
+sidebarTitle: "Automation not triggering"
+description: "Work through why a flow didn't start or didn't send anything: publishing, the profile, the trigger, takeovers, AI limits, reply windows and chains."
+keywords: ["automation not working", "flow not triggering", "flow not starting", "automation not running", "draft", "publish", "active", "paused", "only run once per contact", "takeover", "ai replies off", "automation failed"]
+---
+
+A flow only starts when everything around it allows it: the flow is live, the profile can run automations, the message matches the trigger, and nothing has paused the conversation. Work through the checks below in order; most problems are found in the first three.
+
+## 1. Is the flow published and active?
+
+In the sidebar, open **Salesbot** > **Flows**.
+
+- A flow under **Drafts** has never been published and doesn't run. Open it in the builder, check the steps and click **Publish**. Switching on a flow that was never published shows **Publish this flow first**.
+- A published flow must be **Active**. A **Paused** flow doesn't start.
+- If the builder shows **Publishing was refused — click to review**, something in the flow needs fixing before it can go live. Click the message to see what.
+- A flow added from a pack or duplicated, imported or converted from a quick automation starts as a draft. Review and publish it.
+
+Only active, published flows listen for triggers.
+
+## 2. Can this profile run automations?
+
+On the **Accounts** page, check the profile the customer wrote to. If it is marked **Inbox only** (sales inbox off), you can still reply from the inbox, but automations, broadcasts and sequences don't run there. Turn the sales inbox on for the profile; if all your profiles for that channel are in use, switch one off or add more with an add-on. See [Add-ons](/guide/billing/add-ons#sales-inbox-profiles).
+
+If a profile needs reconnecting, reconnect it before switching the sales inbox on.
+
+## 3. Does the trigger match?
+
+- **Keywords**: check how the trigger matches (for example contains or is exactly) and the spelling of each keyword.
+- **Channel and account**: the trigger may be limited to some profiles or posts.
+- **Only run once per contact**: when this is on, someone who already went through the flow doesn't start it again, however often they write.
+- **Comments on ad posts**: after you publish, comments on the selected unpublished ad posts are checked every few minutes, not instantly.
+- **Date and scheduled triggers**: they are checked on a schedule (hourly or once a day, as the trigger says), and each contact starts the flow at most once per date or per day.
+
+Test with a contact who hasn't been through the flow before.
+
+## 4. Did someone take over the conversation?
+
+With the conversation rule **When an agent replies** set to **Pause the automation**, a reply from your team is a takeover: the running flow freezes and no new automation starts on that conversation until someone hands it back. Hand it back from the conversation, or change the rule. See [Conversation rules](/guide/inbox/conversation-rules).
+
+Pausing the bot on a conversation (from the inbox) has the same effect for that contact.
+
+## 5. Did it start but send nothing?
+
+| Cause | Fix |
+| --- | --- |
+| **The messaging window is closed.** Contacts who start a flow from a store event, a schedule or a date are usually outside WhatsApp's 24-hour window, where only approved templates are delivered. | Start the flow with an approved WhatsApp template step, or use a step's template fallback. |
+| **AI replies are off.** With **Let the AI reply** off, every AI step is skipped; the rest of the flow runs. | Turn it back on in [Conversation rules](/guide/inbox/conversation-rules#ai-replies). |
+| **The per-person AI limit was reached.** Messages over **AI replies per person** stay in the inbox without an AI answer. | Raise or clear the limit (0 means none). |
+| **AI credits are used up.** | Wait for them to renew on your billing day, or add AI credits. See [Usage and plan limits](/guide/billing/usage-and-limits). |
+| **The send failed.** | Open the conversation and read the failure reason under the message. See [Messages not sending](/guide/troubleshooting/messages-not-sending). |
+
+## 6. Is it a chain of flows?
+
+A step that tags a contact or changes a field can start another flow. Such chains stop after three flows in a row, so two flows can't keep starting each other. A flow's own messages never trigger a flow.
+
+## 7. Is the feature in your plan?
+
+If **Flows** shows **Not included in your plan**, the Flow Builder isn't in your plan; quick automations are, and you can add the Flow Builder with an add-on. See [Add-ons](/guide/billing/add-ons).
+
+## Find what happened
+
+- **Activity log**: in the sidebar, open **Salesbot** > **More**, then **Activity**. Filter **Event** to automations or bots and **Status** to **Error**, and open an entry to read the error. See [Activity log](/guide/analytics/activity-log).
+- **Automation failed** notification: turn it on in the bell's **Settings** to hear when a run stops with an error. See [Notifications](/guide/account/notifications).
+- A step marked as coming from a flow made elsewhere can't run here. Delete it and connect the steps around it again.
+
+## Related
+
+- [Conversation rules](/guide/inbox/conversation-rules)
+- [Messages not sending](/guide/troubleshooting/messages-not-sending)
+- [Activity log](/guide/analytics/activity-log)
+- [Flows](/guide/automation/overview)

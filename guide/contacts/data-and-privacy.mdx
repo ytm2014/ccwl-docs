@@ -1,0 +1,76 @@
+---
+title: "Data, privacy and consent"
+sidebarTitle: "Data and privacy"
+description: "Answer a data-access request with one contact's full record, read their consent history, and understand masking and audit."
+keywords: ["privacy", "gdpr", "data access request", "download all data", "consent history", "masked phone", "masked email", "audit log", "erase"]
+---
+
+Contacts are other people's personal data. This page covers the tools for handling it carefully: downloading everything held about one person, the consent history, masking for some roles, and the audit trail. To delete or erase a person, see [Delete and restore contacts](/guide/contacts/delete-and-restore).
+
+## Download all data for one person
+
+When someone asks what you hold about them, open their profile and find the **Privacy** panel (*Consent history and the person's data.*).
+
+<Steps>
+  <Step title="Open the profile">
+    In the sidebar, open **Salesbot** > **Contacts** and click the person's name.
+  </Step>
+  <Step title="Download">
+    In **Privacy**, click **Download all data**. A ZIP file downloads.
+  </Step>
+  <Step title="Send it">
+    Check the files and send them to the person in the way your process requires.
+  </Step>
+</Steps>
+
+The ZIP holds every record kept about the person, one file per kind of record, with a README describing each file. It includes their profile (name, phone, email, stage, tags, custom fields and channels), each channel identity, messages and the other records linked to them. Media and documents are listed with their links rather than included. Passwords, tokens and similar secrets show as *[withheld]*.
+
+Each download is recorded: it appears on the contact's **Activity** tab, and in the workspace's audit log.
+
+### Who can download it
+
+You need the **Export contacts** permission, and you must be able to see all of the person's data. The download is refused, with a message saying why, when your role:
+
+- is limited to some channels,
+- sees phone numbers or email addresses masked,
+- only sees conversations assigned to you.
+
+You can download up to ten archives a minute; after that you see *Too many data downloads in a row. Try again in a minute.*
+
+Don't see the **Privacy** panel? Your plan or your platform doesn't include it yet.
+
+## Consent history
+
+Below **Download all data**, **Consent history** lists each time the person agreed to or withdrew from messages, newest first:
+
+- **Agreed** or **Withdrew**,
+- where it came from, for example **Keyword**, **Website pop-up**, **Messenger opt-in**, **CSV import**, **Added by hand**, **Team member**, **Automation**, **API**, **WhatsApp setting** or **Facebook lead form**,
+- **Promotions only** when it was about promotions rather than all messages,
+- the date and time, the wording the person agreed to, the page it happened on and, for team decisions, *Declared by* and the teammate's name.
+
+With nothing recorded yet, you see *No consent decisions recorded yet.* The full history is also in the data download.
+
+## Masked phone numbers and emails
+
+A custom role can hide phone numbers and email addresses. Without **See full phone numbers (otherwise masked)** or **See full email addresses (otherwise masked)**, those values show partly hidden everywhere, including the export.
+
+- In the edit form, masked fields are read-only and say *Hidden by your role*. Saving leaves the real value untouched.
+- Search only finds a masked phone number or email address when you type the whole value, not part of it.
+- Roles are managed by workspace admins under **Settings** > **Team Members**. See [Roles and permissions](/guide/account/roles-and-permissions).
+
+## The audit trail
+
+These contact actions are written to the workspace's audit log with who did them and when: exporting contacts, importing, deleting, merging, restoring, erasing, pausing or resuming the bot, downloading a person's data and confirming WhatsApp consent. Workspace admins can read the audit log.
+
+## A practical checklist
+
+- Before messaging an imported list on WhatsApp, make sure each person agreed, and only then tick the consent box.
+- Resubscribe or allow promotions again only when the person asked, and note how.
+- Answer data-access requests with **Download all data**.
+- For a deletion request, use **Erase permanently** so no recovery copy is kept.
+
+## Related
+
+- [Opt-outs and blocking](/guide/contacts/opt-outs)
+- [Delete and restore contacts](/guide/contacts/delete-and-restore)
+- [The contact profile](/guide/contacts/contact-profile)

@@ -1,0 +1,112 @@
+---
+title: "Publish, test and go live"
+sidebarTitle: "Publish, test and go live"
+description: "Save drafts, publish a flow, switch it on and off, test it on a real channel, and check how it performs with flow analytics."
+keywords: ["publish", "go live", "live switch", "draft", "save draft", "test bot", "test on the real channel", "flow analytics", "runs", "completion rate", "failed runs", "fix issues", "pause flow"]
+---
+
+A flow only answers customers once it's published and switched on. This page covers the path from draft to Live, how to test safely, and how to see what your flow has been doing.
+
+## Draft and published
+
+Each flow has a working draft and, once published, a published version.
+
+- **Save draft** (and the builder's autosave) stores your changes without affecting what runs.
+- **Publish** checks the draft and, if it passes, makes it the version that runs.
+- The **Live** switch turns the published version on or off.
+
+Contacts who are already part-way through a flow continue on the version they started with. New runs use the latest published version.
+
+## Publish a flow
+
+<Steps>
+  <Step title="Clear the issues">
+    If the toolbar shows **Fix N issues**, click it. Each line names a problem and clicking it jumps to the step. Fix what you can.
+  </Step>
+  <Step title="Click Publish">
+    In the builder's top bar, click **Publish**. If the flow has blocking problems, publishing is refused and the message tells you why ("Publishing was refused — click to review").
+  </Step>
+  <Step title="Switch it on">
+    Turn on **Live** in the builder, or the switch in the flow's row on the Flows list. You see "Flow turned on".
+  </Step>
+</Steps>
+
+### What blocks publishing
+
+Publishing is refused for problems that would break the flow, for example:
+
+- no trigger, more than one trigger, or no step after the trigger ("Add at least one action after the trigger.");
+- a step or connection pointing at something missing;
+- an output connected to more than one next step;
+- a step your channel or plan can't run ("“…” is not available on this instance. Delete this step.");
+- a keyword trigger with no keywords, a scheduled trigger with no date, a store trigger with nothing to notify, and similar incomplete trigger settings;
+- **Runs quietly** on a flow that still messages the customer;
+- a question in a flow started by a comment or review;
+- more than 500 steps.
+
+### Warnings that don't block
+
+Some findings are advice. When you switch on a flow that has them, a dialog **Before this flow goes Live** says "The builder found N things to check… They do not stop it from running." Click **Go live anyway** or **Open builder** to look first. Examples: an AI sentiment condition checked before the message is classified, a trigger this installation isn't receiving right now, or a message step that may fall outside Messenger's, Instagram's or TikTok's reply window.
+
+### When switching on is refused
+
+- **Publish this flow first**: the flow has never been published. "Open the builder, check the steps and publish it, then switch it on here."
+- **Trigger conflict**: only one flow answers any one message. If another Live flow on the same profile already answers the same trigger with **Any message**, or with one of the same keywords, the new one is refused and the other flow is named. Change the keywords, or switch the other flow off.
+- **Plan limits**: your plan may limit how many flows can be Live on a profile, and a flow can only go Live while your plan includes the flow builder.
+- **Moved flows**: a flow moved to another profile must be published again if its trigger belonged to the old profile.
+
+Switching a flow off is never refused. Contacts who are in the middle of a paused flow stop where they are ("The automation was paused while the run was in progress.").
+
+## Test your flow
+
+### Test run (preview)
+
+In the builder, **Test run** shows the conversation as it would look on the channel, without sending anything. See [The flow builder](/guide/automation/flow-builder#test-run).
+
+### Test bot and Test on the real channel
+
+Use **Test bot** in the flow's row menu, or **Test on the real channel** in the builder's **More** menu, to try the published flow for real.
+
+1. The dialog **Test** *(flow name)* shows the **Trigger words:** to send, if the trigger uses keywords.
+2. "This starts a real conversation with the published bot. Normal messages and configured actions apply."
+3. Click **Open test widget** or **Open conversation** and send the trigger message from your own account.
+
+You may instead see:
+
+- "This flow has no published version. Publish it in the builder before testing."
+- "This bot is switched off. Activate it before testing."
+- "This workspace can't run flows right now, so the bot won't answer a test."
+- "The test link is unavailable. Check that the bot and channel still exist."
+
+<Tip>
+Test with your own account, not a customer's. Steps that tag, assign or call webhooks really run during a test, so remove test tags afterwards if needed.
+</Tip>
+
+## Flow analytics
+
+Open **Analytics** from the flow's row menu, or the **Analytics** tab in the builder: "Real activity & performance for this flow."
+
+| Figure | Meaning |
+| --- | --- |
+| **Runs** | How many times the flow started. |
+| **Completion rate** | The share of runs that reached the end. |
+| **Messages sent** | Messages the flow sent. |
+| **Active now** | Contacts currently in the flow (waiting for an answer or a delay). |
+| **Failed** | Runs that stopped with an error. |
+| **Last run** | When it last ran, or **Never run**. |
+
+**Recent failed runs** lists each failure with the **Contact** (or **Deleted contact**), the step where it stopped and the reason, for example "The messaging window closed. Use an approved WhatsApp template to reach this contact." **Activity** lists what the flow did recently. See [Troubleshooting flows](/guide/automation/troubleshooting) for what each reason means.
+
+### Per-step stats
+
+In the builder, **More** > **Stats** ("Show per-step stats") shows on each step how many times it **ran** and how many messages it **sent**. It's available once the flow has been published.
+
+## Turn flows on and off from the list
+
+The **Live** switch on each row of **Salesbot** > **Flows** works like the one in the builder. You see "Flow turned on" or "Flow paused". Only people with permission to manage automations see the switch; others see the status.
+
+## Related
+
+- [The flow builder](/guide/automation/flow-builder)
+- [Troubleshooting flows](/guide/automation/troubleshooting)
+- [How flows work](/guide/automation/overview)

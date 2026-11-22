@@ -1,0 +1,72 @@
+---
+title: "Confirmations and reminders"
+sidebarTitle: "Confirmations and reminders"
+description: "The confirmation, reminder, reschedule and cancellation messages contacts get, how to change them, and the variables you can use."
+keywords: ["confirmation message", "reminder", "cancellation message", "reschedule", "meeting variables", "meeting.link", "templates"]
+---
+
+When a meeting is booked, moved or cancelled, the contact gets a message in their conversation, and reminders go out before it starts. Each appointment type has its own texts and reminder times.
+
+## Choose reminder times
+
+In the type's editor (in the sidebar, open **Salesbot** > **More** > **Appointments** > **Appointment types**, then click the type), click the **Reminders** you want: **1 day before**, **2 hours**, **1 hour**, **30 min** and **10 min**. Selected options are highlighted; click again to remove one. New types start with **1 day before** and **1 hour**.
+
+Reminders are planned when the meeting is booked or rescheduled. A reminder whose time has already passed at booking is skipped; for example, a meeting booked 90 minutes ahead gets the 1-hour reminder but not the 2-hour one.
+
+## Change the messages
+
+Open **Messages sent to the contact** in the editor. It holds three boxes:
+
+| Box | Sent when | Default text (when left blank) |
+| --- | --- | --- |
+| **Confirmation message** | The meeting is booked, and also when it is rescheduled | Confirms the type, date and time, with the join link. For a reschedule, the default says the meeting has been moved to the new date and time. |
+| **Reminder message** | At each reminder time | Reminds the contact of the type, date and time, with the join link. |
+| **Cancellation message** | The meeting is cancelled | Says the meeting on that date and time has been cancelled. |
+
+The placeholder in each box shows the default text. Leave a box blank to keep the default. Each message can be up to 2,000 characters. If you write your own confirmation, it is also used when the meeting is rescheduled, so word it so it reads well in both cases.
+
+## Variables
+
+Type a variable in double curly brackets and it is replaced when the message is sent. Dates and times are shown in the contact's time zone.
+
+| Variable | Becomes |
+| --- | --- |
+| `{{meeting.type}}` | The appointment type's name. |
+| `{{meeting.date}}` | The date, for example Tuesday, March 4, 2027. |
+| `{{meeting.time}}` | The time with the time zone abbreviation. |
+| `{{meeting.datetime}}` | The date and time together. |
+| `{{meeting.link}}` | The Google Meet link, or else the location (a Zoom link, phone number, address or your custom details). |
+| `{{meeting.location}}` | The location. |
+| `{{meeting.duration}}` | The length, for example 30 min. |
+| `{{meeting.reschedule_url}}` | A link to the contact's booking page, ready to reschedule. |
+| `{{meeting.cancel_url}}` | A link to the contact's booking page, ready to cancel. |
+
+You can also use your contact variables, such as the contact's name. See [Contacts](/guide/contacts/overview).
+
+## How messages are delivered
+
+Booking messages are sent as a normal message in the contact's conversation, on the channel they last used, and follow the same rules as any automated message:
+
+- **Messaging window**: channels such as WhatsApp only allow free-form messages for a while after the contact's last message. A message outside the window isn't sent.
+- **Consent**: a contact who opted out or is blocked doesn't get them.
+- **Paused bot**: reminders are skipped for a contact whose bot is paused.
+- **No channel**: a contact created by a plain booking-page link has no conversation, so nothing can be sent to them.
+
+Each message is attempted once and never sent twice. If a reminder can't be sent, it is skipped rather than retried, because the meeting time is fixed. Reminders for meetings that were cancelled, moved or have started are dropped. Messages that couldn't be sent are listed in [Activity](/guide/analytics/activity-log). In every case the booking itself stands.
+
+## Who triggers which message
+
+| Event | Message |
+| --- | --- |
+| Booked on the booking page | Confirmation. |
+| Booked in the chat by a flow's **Book Meeting** step | The step's own confirmation. See [Flows](/guide/automation/overview). |
+| Booked by a connected AI assistant | Confirmation, unless the assistant was told not to notify. |
+| Rescheduled by your team or the contact | Confirmation (or the default reschedule text), and new reminders. |
+| Cancelled by your team or the contact | Cancellation; pending reminders are dropped. |
+| Marked completed or no-show | No message; pending reminders are dropped. |
+
+## Related
+
+- [Create and edit appointment types](/guide/appointments/appointment-types)
+- [Manage bookings](/guide/appointments/manage-bookings)
+- [Activity log](/guide/analytics/activity-log)

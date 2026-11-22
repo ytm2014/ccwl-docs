@@ -1,0 +1,79 @@
+---
+title: "The contact list"
+sidebarTitle: "Contact list"
+description: "Search and filter your contacts, read the table, and act on many contacts at once."
+keywords: ["contact list", "search contacts", "filters", "bulk actions", "add tag", "move to stage", "select all", "export csv", "per page"]
+---
+
+The **List** tab is the main view of **Contacts**: one row per person, with search, filters, bulk actions and an export that follows whatever you've filtered.
+
+In the sidebar, open **Salesbot** > **Contacts**, then make sure **List** is selected.
+
+## Read the table
+
+| Column | Shows |
+| --- | --- |
+| **Contact** | Name, with the phone number or handle underneath. Click it to open the profile. |
+| **Stage** | The contact's pipeline stage, with its colour. |
+| **Tags** | The first two tags; hover **+n** to see the rest. |
+| **Channel** | The primary channel and its name, plus *n channel identities* when the person is known on several channels. |
+| **Status** | **Active**, **Paused** or **Blocked**. |
+| **Last seen** | How long ago the contact last interacted. |
+
+Under the table you can choose how many rows to show per page (10, 25, 50 or 100), and see how many contacts match your search and how many of them are active.
+
+Each row's actions menu has **View details**, **Edit**, **Delete** and, for admins, **Erase permanently**. See [Delete and restore contacts](/guide/contacts/delete-and-restore).
+
+## Search and filter
+
+Type in **Search by keyword** to search names, handles, phone numbers, email addresses and the last message. The list updates as you type.
+
+Click **Filters** to narrow the list. A number on the button shows how many filters are on.
+
+| Filter | Options |
+| --- | --- |
+| **Segment** | **All contacts** or one of your [segments](/guide/contacts/segments) |
+| **Stage** | **All stages**, **No stage** or one stage |
+| **Tags** | One or more tags |
+| **Status** | **All statuses**, **Active**, **Paused** or **Blocked** |
+| **Channel** | **All channels** or one connected channel. A contact matches on its primary channel or any of its identities. |
+
+Click **Clear filters** to reset them. If nothing matches, the list says so and offers **Clear filters**.
+
+## Act on several contacts
+
+Tick the box on each row you want, or tick the header box to select the whole page. When the whole page is selected and more contacts match, **Select all *n* matching** selects every contact that matches your search and filters. A bar appears with the actions your role allows:
+
+| Action | What it does |
+| --- | --- |
+| **Add tag** | Asks for a **Tag name** (pick an existing one or type a new one) and adds it to every selected contact. |
+| **Remove tag** | Asks for a **Tag name** and removes it. |
+| **Move to stage** | Asks for a **Stage** (or **No stage**) and moves every selected contact there. |
+| **Merge selected** | Shown when exactly two contacts are ticked on the page. See [Merge duplicate contacts](/guide/contacts/merge-duplicates). |
+| Delete (bin icon) | Deletes the selected contacts and their conversations after you confirm. |
+
+Click **Apply** in the dialog to run a tag or stage action.
+
+### Limits on bulk actions
+
+- Ticking boxes by hand works for up to 500 contacts. For more, use **Select all *n* matching**.
+- One bulk action can reach up to 25,000 contacts, and a bulk delete up to 5,000. If more match, you're asked to narrow the filters.
+- Actions on more than 50 contacts run in the background. Depending on your notification settings, the bell tells you when they finish.
+- Bulk deleting needs the **Delete contacts in bulk** permission, which isn't part of a member's defaults.
+
+## Export the list
+
+Choose **More contact actions** > **Export** to download a CSV of the contacts that match your current search and filters. The file has the import columns first (`name`, `country_code`, `phone`, `email`, `tags`, `stage`, `notes`, `custom_fields`), so you can re-import it, followed by `source`, `opted_out_at` and `created_at`.
+
+- Tags are separated by `|`, and custom fields are written as JSON.
+- If your role sees phone numbers or email addresses masked, they stay masked in the export.
+- Every export is recorded in the workspace's audit log.
+
+For one person's complete record, use **Download all data** on their profile instead. See [Data, privacy and consent](/guide/contacts/data-and-privacy).
+
+## Related
+
+- [Add and edit contacts](/guide/contacts/add-and-edit-contacts)
+- [Import contacts from CSV](/guide/contacts/import-csv)
+- [Segments](/guide/contacts/segments)
+- [Pipeline board and stages](/guide/contacts/pipeline)

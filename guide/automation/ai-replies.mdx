@@ -1,0 +1,90 @@
+---
+title: "The AI Reply step"
+sidebarTitle: "AI replies"
+description: "Let AI answer customers in a flow: write the prompt, choose the provider and model, set fallbacks and limits, and understand when the AI keeps chatting."
+keywords: ["ai reply", "ai step", "chatbot", "ai assistant", "prompt", "system prompt", "provider", "model", "openai", "claude", "gemini", "deepseek", "fallback message", "ai credits", "playground"]
+---
+
+
+The **AI Reply** step lets an AI model answer the customer in your flow. You describe how it should behave, and it replies using the recent conversation, your AI Knowledge and any tools you give it. Add it from the **AI reply** tile in the builder ("Answers with Knowledge and Brand Voice").
+
+<Note>
+Don't see the **AI reply** tile? Your plan or your platform doesn't include AI in flows yet.
+</Note>
+
+The step's settings open in a wider panel with five tabs: **Prompt**, **Configuration**, **Built-in Tools**, **Functions** and **Playground**. Tools and functions are covered in [AI agent tools](/guide/automation/ai-tools).
+
+## Which AI runs the step
+
+There are two ways the step can run:
+
+- **The platform's shared AI.** The panel says "This step runs on the platform's shared AI" and names the model. "The model, reasoning effort, reply length and history are managed by the platform, so there is nothing to set here. Your prompt, tools and functions still shape the assistant." Each AI reply on the shared AI uses your workspace's AI credits.
+- **Your own provider.** Where your plan allows your own AI keys, connect OpenAI, Claude, Gemini or DeepSeek under **Integrations** (see [AI providers](/guide/integrations/ai-providers)) and choose it on the **Configuration** tab. Replies on your own key don't use AI credits; your provider bills you.
+
+If neither is available you see "No AI provider is connected. Connect OpenAI, Claude, Gemini or DeepSeek under Integrations to configure this node."
+
+## The Prompt tab
+
+| Field | What it does |
+| --- | --- |
+| **System prompt / instructions** | How the AI should behave: its role, tone, what it should and shouldn't do. Use `{{ }}` to insert contact variables; "The recent conversation is sent automatically." |
+| **Fallback message (on error / empty reply)** | Sent if the AI fails or returns nothing, for example "Sorry, I couldn't process that just now — a team member will follow up shortly." |
+| **Options list button** / **Options list heading** | "Shown when the AI offers more than 3 options on WhatsApp." |
+| **Follow-up messages** | Extra messages "(sent after the AI reply)". |
+| **Typing delay before reply (seconds)** | A pause before the reply is sent. |
+
+AI steps that answer comments or reviews in public also have a **Public reply** box:
+
+- **Daily reply limit on this profile**: "Public AI replies a day on this profile, from every flow. Leave it empty for the platform's safe default; 0 means no limit."
+- **Add an "AI-assisted" note to each reply**.
+
+### Writing a good prompt
+
+- Say who the assistant is and who it speaks for: "You are the friendly assistant for a bike shop in Leeds."
+- Say what it should do and when to stop: answer product questions, collect a name and email, hand over for refunds.
+- Say what it must not do: invent prices, promise delivery dates, discuss competitors.
+- Keep facts in [AI Knowledge](/guide/automation/ai-knowledge) rather than in the prompt, so you can update them in one place.
+- Tell it when to use each tool you switch on, for example "When the customer asks for a person, call Hand over to a human."
+
+## The Configuration tab
+
+With your own provider:
+
+| Field | What it does |
+| --- | --- |
+| **Provider** | One of your connected AI providers. |
+| **Model** | "Choose a suggestion or type any model id your provider supports." |
+| **Reasoning effort** | For reasoning models: on or off, and the effort level. With another model you see which models support it. |
+| **Max tokens** | The longest reply the model may write. |
+| **Conversation history (messages)** | How many recent messages the model sees (12 by default). |
+
+On the shared AI this tab has nothing to set.
+
+## The Playground tab
+
+"Test this configuration without sending a real message." Type a **Test message** (for example "What are your business hours?") and click **Run**. The panel shows the **Reply** and any **Tool calls** the AI made. Tool calls run against demo data, so nothing in your contacts changes. The playground isn't available on the shared AI.
+
+## When the AI keeps chatting
+
+- If the AI Reply step is the last step of the flow (nothing after it, or only End Flow), it keeps replying to the customer's follow-up messages, up to 40 follow-ups in one run. It acts as your conversation handler.
+- If more steps follow it, it replies once and the flow moves on.
+- If the AI hands the conversation to a person, it stops replying.
+
+## When the AI doesn't reply
+
+- **Error or empty reply**: the **Fallback message** is sent and your team gets an internal note saying why.
+- **Three failed replies in a row**: the conversation is passed to a teammate and the customer is told so.
+- **Out of AI credits**: where your platform shows it, the step has an **OUT OF AI CREDITS** output. Connect it to a message or a hand-over so the customer isn't left waiting.
+- **The 24-hour window has closed** (WhatsApp, Messenger, Instagram): the reply can't be sent and the reason appears in the conversation.
+- **The contact is handed over or the bot is paused**: the AI doesn't reply.
+
+<Warning>
+AI replies go to real customers under your name. Test in the **Playground** and with **Test bot** before switching a flow on, and keep a hand-over option in your prompt.
+</Warning>
+
+## Related
+
+- [AI agent tools](/guide/automation/ai-tools)
+- [AI Knowledge](/guide/automation/ai-knowledge)
+- [Lead qualification bots](/guide/automation/lead-qualification)
+- [AI providers](/guide/integrations/ai-providers)

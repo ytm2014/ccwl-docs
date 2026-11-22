@@ -1,0 +1,79 @@
+---
+title: "Workspace settings"
+sidebarTitle: "Workspace settings"
+description: "Find your way around workspace settings: rename the workspace, change its avatar, copy its ID for the API, manage custom fields, and delete the workspace."
+keywords: ["workspace settings", "settings", "workspace name", "workspace avatar", "workspace id", "usage in api", "custom fields", "services", "delete workspace", "brand voice", "ai knowledge"]
+---
+
+Workspace settings hold everything that belongs to the workspace as a whole: its name and picture, its team, its subscription and its AI settings. They are for workspace admins; members and viewers don't see the **Settings** menu.
+
+## Open workspace settings
+
+In the sidebar, open **Settings**. Its menu has:
+
+| Item | Opens |
+| --- | --- |
+| **Workspace** | The workspace's **Settings** page, described below. |
+| **Team Members** | The **Team** page. See [Team members and invitations](/guide/account/team-members). |
+| **Subscription** | Your plan and billing. See [Choosing a plan](/guide/billing/choosing-a-plan). |
+| **Brand Voice** | How the AI writes for this workspace, where AI is on. |
+| **AI Knowledge** | What the AI knows when it answers customers, where the sales inbox includes it. |
+
+Once you are on a settings page, a second menu on the left groups every settings screen:
+
+| Group | Entries |
+| --- | --- |
+| **Workspace** | **Settings**, **Team**, and **Services** where your platform lets a workspace use its own service credentials |
+| **Billing** | **Subscription**, **Usage**, **Receipts**, and where offered **Add-ons** and **Inbox storage** |
+| **AI** | **Brand Voice** and **AI Knowledge**, where offered |
+| **Security** | **Delete workspace**, shown to the owner only |
+
+## Details
+
+The **Details** panel of the **Settings** page has:
+
+| Field | What it does |
+| --- | --- |
+| **Avatar** | The workspace's picture, shown in the workspace switcher. Upload an image, or remove the current one. |
+| **Name** | The workspace's name, shown to everyone in it. |
+
+Click **Save** after changing the name. The avatar is saved as soon as you upload or remove it.
+
+## Usage in API
+
+Where the API is available, the **Usage in API** panel shows the workspace's ID with a button to copy it. Tools that call the API or an AI assistant connected through MCP use this ID to say which workspace they mean. See [Quickstart](/quickstart).
+
+## Custom fields
+
+If the sales inbox is part of your workspace, the **Settings** page also has a **Custom fields** panel: workspace-wide fields your flows can capture with the User Input step and that contacts show on their profile. They are shared across every channel. You can add fields, import or export them as CSV, and download a sample file. See [Custom fields](/guide/contacts/custom-fields).
+
+## Services
+
+**Services** appears only when your platform lets a workspace connect some services with its own credentials instead of the platform's. What you can set there depends on your platform.
+
+## Delete the workspace
+
+Only the workspace's owner sees **Security** in the settings menu.
+
+<Steps>
+  <Step title="Open Security">
+    In the settings menu, under **Security**, click **Delete workspace**.
+  </Step>
+  <Step title="Read the warning">
+    Deleting the workspace deletes all its data. If the workspace has an active subscription, the confirmation tells you it will be cancelled immediately and you won't be charged again.
+  </Step>
+  <Step title="Confirm">
+    Click **Delete workspace**, type the workspace's name in the box, and confirm.
+  </Step>
+</Steps>
+
+<Warning>
+This can't be undone, and everyone in the workspace loses access. If you only want to stop paying, cancel the subscription instead: your data is kept. See [Cancel or resume your subscription](/guide/billing/cancelling).
+</Warning>
+
+## Related
+
+- [Workspaces](/guide/getting-started/workspaces)
+- [Team members and invitations](/guide/account/team-members)
+- [Conversation rules](/guide/inbox/conversation-rules)
+- [Storage](/guide/account/storage)

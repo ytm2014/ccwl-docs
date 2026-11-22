@@ -1,0 +1,174 @@
+---
+title: "Triggers"
+description: "Every event that can start a flow, grouped by channel, contact, store and payment events, with each trigger's options."
+keywords: ["triggers", "what starts a flow", "keyword trigger", "comment trigger", "story reply", "ad trigger", "click-to-whatsapp", "no reply", "outgoing message", "scheduled", "birthday", "tag applied", "pipeline stage changed", "conversation closed", "message classified", "facebook lead form", "store events", "payment events"]
+---
+
+The trigger is the first step of every flow: the event that starts it. A flow has exactly one trigger, and each trigger has its own options, such as keywords, which posts to watch or a schedule.
+
+To set it, click the trigger step on the canvas. Under **Start flow when…** you see the current trigger; click it, or **Change trigger**, to open the trigger picker. The picker has a tab for the flow's channel and tabs for **Contact Events**, **Store events** and **Payment events**, plus a search box.
+
+## Which triggers you see
+
+The picker only offers triggers that can work for this flow:
+
+- A flow on one profile gets that platform's triggers plus the contact, store and payment events.
+- A flow on **All profiles** gets contact, schedule and payment events, and message triggers heard on every profile of their platform. Triggers that need one profile are hidden.
+- A comment-only profile (Threads, YouTube, LinkedIn, Reddit, Google Business) gets its own platform triggers only.
+- Store and payment events appear only when a store or payment gateway can be connected in your workspace, ad triggers only when your platform has them on, and some channels (TikTok messaging, SMS, Live Chat, Reddit) only when they are available to you.
+
+Some triggers carry a short note under their name, for example "Only replies sent from our inbox, not from the platform's own app." If a flow's trigger stops being delivered, the builder says so: "This installation is not receiving these events right now, so the flow will not start until they are switched on."
+
+## Options every trigger has
+
+| Option | What it does |
+| --- | --- |
+| **Summary** | The text shown on the trigger step on the canvas. It's filled in when you pick a trigger; change it if you like. |
+| **Only respond once per contact** | "When on, this flow runs just once for each contact — repeat messages or comments from the same person won't start it again." |
+| **Runs quietly** (under **Advanced**) | For background flows that only tag, update fields or call webhooks. A quiet flow can't contain steps that message the customer. |
+
+## Channel triggers
+
+### WhatsApp
+
+| Trigger | Starts when |
+| --- | --- |
+| **WhatsApp message** | User sends a message |
+| **Click-to-WhatsApp ad** | User sends a message from a Click-to-WhatsApp ad |
+| **WhatsApp URL** | User clicks a link (one of your WhatsApp growth links) |
+| **Outgoing WhatsApp message** | You or an agent sends a message |
+| **Customer didn't reply** | A contact doesn't reply within a set time |
+| **Cart order received** | A customer sends their WhatsApp cart |
+
+### Facebook and Instagram
+
+| Trigger | Starts when |
+| --- | --- |
+| **Messenger message** | User sends a message on your Facebook Page |
+| **Messenger ad** | User starts a conversation from a Messenger ad |
+| **Facebook comments** | User comments on your post or ad |
+| **Outgoing Messenger message** | You or an agent sends a message |
+| **Instagram message** | User sends a message |
+| **Instagram ad** | User starts a conversation from an Instagram ad |
+| **Post or Reel comments** | User comments on your Post or Reel |
+| **Story reply** | User replies to your Story |
+| **Story mentions** | User mentions you in their Story |
+| **Live comments** | User comments on your Live |
+| **Outgoing Instagram message** | You or an agent sends a message |
+
+### Other channels
+
+| Trigger | Starts when |
+| --- | --- |
+| **TikTok message**, **Video comments**, **Outgoing TikTok message** | A TikTok DM, a comment on your video, or a message you or an agent sends |
+| **Telegram message** | User sends a message to your Telegram bot |
+| **Live Chat message** | A visitor sends a message from your website chat widget |
+| **SMS message** | User sends an SMS (not offered on an SMS gateway that only sends) |
+| **Mastodon message**, **Mastodon mentions** | A direct message, or someone mentions or replies to you |
+| **Bluesky message**, **Bluesky replies** | A direct message, or a reply to your post |
+| **Threads replies** | User replies to your thread |
+| **YouTube comments** | User comments on your video |
+| **LinkedIn comments** | User comments on your Page post |
+| **Reddit comments** | User comments on your post |
+| **Google review** | A customer leaves a review on your Business Profile |
+
+## Options for message and comment triggers
+
+### Trigger type (keywords)
+
+Message and comment triggers have a **Trigger type**:
+
+| Trigger type | Starts the flow when |
+| --- | --- |
+| **Any message (no keyword filter)** | Any message or comment arrives. |
+| **Message contains a keyword** | The text contains one of your keywords. |
+| **Message is an exact match** | The whole text equals one of your keywords. |
+| **Message starts with a keyword** | The text begins with one of your keywords. |
+| **Only questions** (comment triggers only) | "Runs for comments that ask something (a question mark or a question word). Emojis, tags and short praise are skipped." |
+
+For the keyword types, type each keyword under **Trigger keywords** and press Enter (or the plus button). Common keywords are offered under **Suggestions:**. With no keywords the builder warns "Add at least one keyword, or switch to "Any message"."
+
+### Which posts or stories?
+
+Comment triggers ask **Which posts?**: **All posts** (any of your posts, including future ones) or **Specific**, where you tick posts from your recent ones. Story triggers ask **Which stories?** the same way.
+
+On Facebook and Instagram you can also paste a **Post ID (including an ad's post)** and click **Add**. "Use the post ID behind the ad, not its campaign or ad ID. Facebook IDs use PageID_PostID. All posts already includes ad posts delivered by the platform." Where your ad account is connected, **Load posts from active ads** lists posts used by your running ads; "After you publish, comments on selected unpublished ad posts are checked every few minutes."
+
+### Ad triggers
+
+**Click-to-WhatsApp ad**, **Messenger ad** and **Instagram ad** ask **Which ad?**: **Any ad** or **Specific ad**, with the **Ad ID from Meta Ads Manager**. "A specific ad takes priority over any-ad and keyword replies. Ad details are available in the variable picker." See [Variables](/guide/automation/variables#ad-referral).
+
+### Outgoing message triggers
+
+The outgoing triggers ask **Sent by**: **Anyone (agent or bot)**, **A human agent** or **The bot / API**. "Use this to pause the bot when an agent replies, or to follow up after outreach." They only see replies sent from the inbox here, not from the platform's own app.
+
+### Customer didn't reply
+
+Set **No reply within** a number of **Minutes**, **Hours** or **Days** (24 hours by default). "Fires when the contact hasn't replied to your last message within this window."
+
+### WhatsApp URL
+
+Choose **A specific link** (pick one of your WhatsApp links under **Choose a link…**) or **Any of my links**. The links are created in your growth tools; with none yet you see **Create one under Growth tools**. The flow starts when the contact sends the prefilled first message from the link.
+
+## Contact Events
+
+These triggers don't need a message, so they work on any profile and on **All profiles**.
+
+| Trigger | Starts when | Options |
+| --- | --- | --- |
+| **New contact** | New contact is created | None |
+| **Tag applied** / **Tag removed** | A tag is added to or removed from a contact | **Which tag?** (empty = any) |
+| **Field changed** | Custom field value is changed | **Which custom field?** (empty = any) |
+| **Pipeline stage changed** | A contact moves to a different pipeline stage | **Moved from** and **Which stage?** (each **Any stage** or one stage) |
+| **Scheduled date** | A date/time you set arrives, sent to an audience | See below |
+| **Birthday / key date** | A contact's birthday or a key date arrives | See below |
+| **Conversation closed** | A conversation is marked done / resolved | None |
+| **Message classified** | AI insights classify a message or comment | **AI sentiment** and **AI label** (each **Any** or one value) |
+| **Facebook lead form** | Someone submits one of your Facebook lead forms | **Which form starts this?** |
+
+**Pipeline stage changed**: the same stage on both sides never fires, and a deleted stage shows as **Deleted stage** and stops the trigger until you choose another.
+
+**Message classified** "Runs once per message, after AI inbox insights classify it. Spam is never matched." It needs AI insights switched on in the inbox's AI settings. Sentiment is Positive, Neutral or Negative; the label is Question, Complaint, Praise, Lead or Other.
+
+**Facebook lead form**: choose **Any lead form** or **A specific form** (pick it, or enter its **Form ID**). A lead form is not WhatsApp opt-in; **Set up WhatsApp consent per form** opens the page where you decide which form's consent question counts. The form's name and answers are available as `{{lead.form_name}}` and `{{lead.answers.full_name}}`.
+
+### Scheduled date
+
+| Field | Options |
+| --- | --- |
+| **Run** | **Once** (pick a **Date & time**) or **Repeating** |
+| **Repeats** | **Every day**, **Every week** (pick days under **On these days**) or **Every month** (a **Day of month** from 1 to 28) |
+| **Time** | The time of day for repeating runs |
+| **Time zone** | An IANA name such as Europe/London. "Times are read in" this zone; **Use my time zone** switches to yours. |
+| **Send to** | **All contacts on this channel**, **Contacts with a tag** (enter the exact **Tag name**) or **A saved segment** |
+
+"Opted-out and bot-paused contacts are always skipped, and each run is capped at 500 contacts." On WhatsApp, start a scheduled flow with an approved template, because these contacts are usually outside the 24-hour window.
+
+### Birthday / key date
+
+| Field | Options |
+| --- | --- |
+| **Which date?** | **Contact birthday**, or **A custom date field…** with its **Custom field key** (for example `renewal_date`) |
+| **Send this many days before** | 0 to 365. 0 is the day itself. Only month and day are matched, so it repeats every year. |
+| **Send at** | A whole hour from 00:00 to 23:00 |
+
+The check runs every hour, on each contact's own date and clock (their time zone, or yours when they have none). Each contact starts the flow at most once per date.
+
+## Store events
+
+**Order placed**, **Order paid**, **Payment failed**, **Checkout abandoned**, **Order shipped**, **Order cancelled**, **Order refunded**, **Product back in stock**, **Inventory low**, **Customer milestone** and **Store customer created** start a flow from your connected Shopify or WooCommerce store. Their filters are described in [Store automations](/guide/automation/store-automations).
+
+## Payment events
+
+**Payment succeeded**, **Payment failed** and **Payment refunded** start a flow for the paying contact. They only see payments made through pay links sent from your flows (the Request Payment step). See [Selling in the chat](/guide/automation/selling-in-chat).
+
+## Messaging windows
+
+Contact, store, payment, scheduled and conversation-closed triggers start a flow when the customer hasn't just written to you. Messenger and Instagram only accept messages within 24 hours of the customer's last message, and TikTok within 48 hours, so message steps in such flows may be refused. The builder warns you about this. On WhatsApp, start these flows with an approved template.
+
+## Related
+
+- [The flow builder](/guide/automation/flow-builder)
+- [Comment automation and comment-to-DM](/guide/automation/comment-automation)
+- [Variables](/guide/automation/variables)
+- [Reply windows](/guide/inbox/reply-windows)

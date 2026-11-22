@@ -1,0 +1,83 @@
+---
+title: "Telegram"
+description: "Connect your own Telegram bot with a BotFather token so Telegram chats reach your Inbox, then set its welcome message, ice breakers, default reply and command menu."
+keywords: ["telegram", "telegram bot", "botfather", "bot token", "start", "command menu", "ice breakers", "default reply", "disconnect bot"]
+---
+
+Telegram conversations reach your Inbox through a bot that you own. You create the bot in Telegram with BotFather, paste its token into your workspace, and every message people send to the bot appears in the Inbox. Flows and broadcasts can use it too.
+
+<Note>
+This is the messaging bot. Posting to a Telegram channel or group is a separate connection, **Telegram channel (posting)**, covered in [Connect social accounts](/guide/getting-started/social-accounts).
+</Note>
+
+## Create the bot in Telegram
+
+1. In Telegram, open a chat with **@BotFather**.
+2. Send `/newbot` and follow the prompts to choose a name and a username for your bot.
+3. BotFather replies with a token. Copy it; you'll paste it in the next step.
+
+Keep the token private: anyone who has it can control the bot.
+
+## Connect the bot
+
+<Steps>
+  <Step title="Open the Telegram bot tile">
+    In the sidebar, open **Accounts**, click **Add account** and choose **Telegram bot (Salesbot)**.
+  </Step>
+  <Step title="Paste the token">
+    Paste it into **Bot token**. Optionally give the channel a **Name (optional)**, such as *Support bot*.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. You see *Telegram bot connected — your bot is now receiving messages.*
+  </Step>
+</Steps>
+
+The bot then shows as a card on the **Accounts** page, and as a Telegram channel in the Inbox and the messaging pages. Send it a message from your own Telegram account to check that it arrives.
+
+## Set up the bot
+
+In the sidebar, open **Salesbot** > **More** > **Channel settings** and choose the Telegram bot under **Workspace channel**. The page has a **Messages** tab and a **Command menu** tab, plus a live preview of how a first-time contact sees the bot.
+
+### Welcome message
+
+Turn on *Send a welcome message when someone sends /start* and write the **Message**. `/start` is how every Telegram conversation begins, so this is the first thing a new contact sees. Links from growth tools (such as `t.me/yourbot?start=REF`) also land here, so make the message useful on its own.
+
+### Ice breakers
+
+Tappable buttons sent with the welcome message, shown under the bot's first reply. Click **Add ice breaker**, enter the **Question**, and choose **Text reply** with the answer to send, or **Start flow** with a flow.
+
+### Default reply
+
+Under **Advanced**, turn on *Reply automatically when no keyword or flow matches*, write the reply and choose **Every time** or **Once per 24 hours per contact**.
+
+### Command menu
+
+On the **Command menu** tab, turn on *Show a command menu in the conversation* and add menu items. Saving turns each item into a `/command` on your bot and shows the menu button next to Telegram's message box. Labels become command names (*Talk to us* becomes `/talk_to_us`), so keep them short. Turn the menu off and save to clear the commands.
+
+Click **Save changes**.
+
+## Disconnect the bot
+
+In the bot's channel settings, under **Danger zone**, click **Disconnect bot** and confirm. This removes the channel with its conversations and automations. Your bot itself stays in BotFather, and you can connect it again later with the same token.
+
+## No reply window
+
+Telegram has no reply window: you can answer a contact at any time after they've started the bot.
+
+## Troubleshooting
+
+| Message | What to do |
+| --- | --- |
+| *That bot token was rejected by Telegram.* | Copy the token again from BotFather; it may be incomplete or revoked. |
+| *This bot is already connected to another workspace.* | Disconnect it there first, or create another bot. |
+| *This is the bot this platform publishes with…* | You can't connect the platform's own posting bot. Create your own with BotFather. |
+| *This bot is used elsewhere — take it over?* | The bot is set up to send its messages to another address, such as another tool. **Take it over** connects it here; the other address stops receiving its messages. **Cancel** leaves it alone. |
+| *Telegram could not be reached to check this bot.* or *This bot is being connected somewhere else right now.* | Wait a moment and try again. |
+
+If messages stopped arriving after you used the token in another tool, that tool may have taken the bot over. Connect it again here.
+
+## Related
+
+- [Messaging channels](/guide/channels/overview)
+- [The Inbox](/guide/inbox/the-inbox)
+- [Growth tools](/guide/broadcasts/growth-tools)

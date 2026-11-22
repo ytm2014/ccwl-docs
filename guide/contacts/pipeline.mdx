@@ -1,0 +1,86 @@
+---
+title: "Pipeline board and stages"
+sidebarTitle: "Pipeline and stages"
+description: "Set up your pipeline stages, move contacts through them on the board, and mark stages as won or lost."
+keywords: ["pipeline", "board", "kanban", "stages", "move to stage", "won", "lost", "pipeline report", "stage colour"]
+---
+
+The pipeline shows where each contact stands in your sales process, from first enquiry to won or lost. Each contact has one stage (or **No stage**), and the **Board** tab shows contacts as cards in stage columns.
+
+## Open the board
+
+In the sidebar, open **Salesbot** > **Contacts** and select the **Board** tab. Use **Search by keyword** to find a card.
+
+- **No stage** is always the first column and can't be moved or deleted.
+- Each stage column shows its colour, its name, a count of the cards in it and, for stages marked as won or lost, **Won** or **Lost**.
+- Each card shows the contact's name, their last message or phone, their channel, up to two tags and when they were last active.
+
+<Note>
+The board shows the 300 most recently active contacts. When there are more, a notice says so, and column counts only describe the cards on the board. Use the [contact list](/guide/contacts/contact-list) with the **Stage** filter to find everyone in a stage.
+</Note>
+
+## Move a contact to another stage
+
+You need the **Edit contacts, their stage and notes** permission.
+
+- **Drag** a card into another column.
+- Or open the card's menu and pick a stage under **Move to stage**. This works without dragging.
+
+You can also change a stage from:
+
+- the **Stage** drop-down in the contact profile's side panel or the inbox's contact details,
+- the **Stage** field when editing a contact,
+- the list, for many contacts at once: tick them and choose **Move to stage**.
+
+Each card's menu also has **View**, **Edit** and **Delete**.
+
+## Set up your stages
+
+Adding, renaming, recolouring, reordering and deleting stages need the **Manage pipeline stages** permission.
+
+### Add a stage
+
+<Steps>
+  <Step title="Open the dialog">
+    Click **Add stage** after the last column.
+  </Step>
+  <Step title="Name it">
+    Enter a **Stage name** (up to 60 characters). Click the colour dot beside it to pick a **Stage colour**.
+  </Step>
+  <Step title="Choose its outcome">
+    Where the pipeline report is available, set **Counts as** to **In progress**, **Won** or **Lost**.
+  </Step>
+  <Step title="Save">
+    Click **Add**.
+  </Step>
+</Steps>
+
+### Edit, reorder or delete a stage
+
+Open a column's menu (three dots):
+
+| Option | What it does |
+| --- | --- |
+| **Edit stage** | Change the name, colour and **Counts as**, then **Save**. |
+| **Move left** / **Move right** | Move the column one place. You can also drag a column by its handle. |
+| **Delete** | Delete the stage after you confirm. Its contacts move to **No stage**; they aren't deleted. |
+
+The order of the columns is the order of your pipeline everywhere stages are listed.
+
+## Won, lost and the pipeline report
+
+**Counts as** tells the pipeline report which stages mean a deal was won or lost; **In progress** is everything in between. Click **View report** at the top of the board to open the report. See [Reports](/guide/analytics/overview).
+
+Don't see **Counts as** or **View report**? Your plan or your platform doesn't include the pipeline report yet, or your role can't view reports.
+
+## Stages elsewhere
+
+- **Segments** can be limited to one **Contact stage**. See [Segments](/guide/contacts/segments).
+- **CSV import** sets a stage when the `stage` column holds the exact name of an existing stage.
+- **Automations** can start when a contact's stage changes. See [Automation](/guide/automation/overview).
+
+## Related
+
+- [The contact list](/guide/contacts/contact-list)
+- [The contact profile](/guide/contacts/contact-profile)
+- [Segments](/guide/contacts/segments)

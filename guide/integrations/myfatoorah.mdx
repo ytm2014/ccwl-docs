@@ -1,0 +1,56 @@
+---
+title: "MyFatoorah"
+description: "Connect MyFatoorah with your API token, your region's base URL and a webhook secret to collect payments in the Middle East and North Africa."
+keywords: ["MyFatoorah", "payments", "API token", "base URL", "webhook secret", "KWD", "SAR", "AED", "invoice"]
+---
+
+The **MyFatoorah** card on the [Integrations](/guide/integrations/overview) page connects your MyFatoorah account, so you can collect payments in conversations through MyFatoorah hosted invoices. MyFatoorah serves the Middle East and North Africa (KWD, SAR, AED, BHD, QAR, EGP, USD and more). For how payment links, triggers and the inbox button work, see [Payment gateways](/guide/integrations/payment-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Payments** tab.
+
+<Note>
+Don't see **MyFatoorah**, or does it say **Not included in your plan**? Your plan or your platform doesn't include payments yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **API token** | Your MyFatoorah API key. |
+| **API base URL** | `https://apitest.myfatoorah.com` while testing, or your region's live address. It is region-specific. |
+| **Webhook secret key** | The webhook secret from the MyFatoorah portal. |
+
+## Connect MyFatoorah
+
+<Steps>
+  <Step title="Copy your token">
+    In the MyFatoorah portal, open **API Keys** and copy your **API token**.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **MyFatoorah**. Enter the token and your **API base URL**. Every field must be filled in to connect: paste the **Webhook secret key** if the portal already shows it, or type a temporary value for now. Click **Connect**. The **Webhook endpoint** panel appears.
+  </Step>
+  <Step title="Add the webhook in the portal">
+    Click **Copy** next to the webhook URL. In the portal, add it under **Webhooks** and copy the webhook's secret.
+  </Step>
+  <Step title="Save the webhook secret">
+    Paste it into **Webhook secret key** and click **Save & reconnect**. Until the real secret is saved, payments can't be confirmed.
+  </Step>
+</Steps>
+
+Each event is checked against the webhook secret, so events that don't come from your account are ignored.
+
+## Test and live
+
+The base URL decides test or live: the test address works with test tokens, your region's live address with live tokens. When you go live, change both the token and the **API base URL**, and set up the webhook in the live portal.
+
+## Troubleshooting
+
+- **"That API base URL is not a MyFatoorah address reachable publicly (…)."** Enter a MyFatoorah API address starting with `https://`, such as the test address or your region's live one.
+- **"Could not reach the MyFatoorah API: …"** The token doesn't match the base URL (for example a live token with the test address).
+- **Payments stay Pending.** The webhook isn't set in the portal, or the secret differs from the one saved here.
+- **The card shows Error.** MyFatoorah rejected the saved token. Paste a new one and click **Save & reconnect**.
+
+## Related
+
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [Integrations](/guide/integrations/overview)

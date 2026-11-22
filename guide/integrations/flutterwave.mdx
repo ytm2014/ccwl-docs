@@ -1,0 +1,58 @@
+---
+title: "Flutterwave"
+description: "Connect Flutterwave with your secret key and a secret hash you make up to collect card, bank-transfer and mobile-money payments in chat."
+keywords: ["Flutterwave", "payments", "secret key", "secret hash", "mobile money", "NGN", "KES", "GHS", "Africa"]
+---
+
+The **Flutterwave** card on the [Integrations](/guide/integrations/overview) page connects your Flutterwave account, so you can collect card, bank-transfer and mobile-money payments in conversations, across Africa and beyond. Flutterwave collects NGN, GHS, KES, ZAR, TZS, MWK, EGP, USD, GBP, EUR and more, depending on what your account has enabled. For how payment links, triggers and the inbox button work, see [Payment gateways](/guide/integrations/payment-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Payments** tab.
+
+<Note>
+Don't see **Flutterwave**, or does it say **Not included in your plan**? Your plan or your platform doesn't include payments yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Secret key** | Your Flutterwave secret key: `FLWSECK-…` for live, `FLWSECK_TEST-…` for test. |
+| **Secret hash** | A long secret you make up. You type the same value in Flutterwave's webhook settings. |
+
+Flutterwave has no signing key of its own, which is why you choose the secret hash yourself, and why you enter it before connecting.
+
+## Connect Flutterwave
+
+<Steps>
+  <Step title="Copy your secret key">
+    In your Flutterwave dashboard, open **Settings → API Keys** and copy your secret key.
+  </Step>
+  <Step title="Make up a secret hash">
+    Choose a long, random value and keep it somewhere safe for the next steps.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **Flutterwave**. Paste the key into **Secret key**, enter your hash in **Secret hash**, and click **Connect**. The webhook URL appears once you're connected.
+  </Step>
+  <Step title="Set the webhook in Flutterwave">
+    In Flutterwave, open **Settings → Webhooks**. Paste the webhook URL, type the same secret hash, tick every box (webhook retries included) and save.
+  </Step>
+</Steps>
+
+Test and live mode each have their own webhook settings in Flutterwave, so set up the mode your key is for.
+
+## How payments are confirmed
+
+Every event must carry your secret hash. Each payment is then re-checked with Flutterwave before it is marked paid. A payment that comes up short, or arrives in another currency, is not marked paid: check it in your Flutterwave dashboard.
+
+## Troubleshooting
+
+- **"That is your public key (FLWPUBK…). Paste the secret key (FLWSECK…) instead."** You copied the public key. Copy the secret key from **Settings → API Keys**.
+- **Payments stay Pending.** The webhook isn't set for this mode, or the secret hash in Flutterwave differs from the one saved here.
+- **A payment isn't marked paid although the customer paid.** It may have been short or in another currency. Check it in Flutterwave.
+- **The card shows Error.** Flutterwave rejected the saved key. Paste a new one and click **Save & reconnect**.
+
+## Related
+
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [Paystack](/guide/integrations/paystack)
+- [Integrations](/guide/integrations/overview)

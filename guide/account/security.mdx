@@ -1,0 +1,97 @@
+---
+title: "Password and two-factor authentication"
+sidebarTitle: "Password and two-factor"
+description: "Change your password, protect your account with two-factor authentication, keep your recovery codes, and remove apps that can sign in as you."
+keywords: ["security", "password", "change password", "two-factor authentication", "2fa", "totp", "authenticator", "recovery codes", "connected apps", "disconnect", "oauth"]
+---
+
+Your password and two-factor authentication protect every workspace you belong to, so they live on your own profile rather than in a workspace. Open your user menu (your avatar, top right) and click **My Settings**; the security panels are below your preferences.
+
+## Change your password
+
+The **Update Password** panel asks for:
+
+| Field | What to enter |
+| --- | --- |
+| **Current password** | The password you sign in with today. |
+| **New password** | The new one. Use a long, random password you don't use anywhere else. |
+| **Confirm new password** | The new password again. |
+
+Click **Save**. You see **Password have been changed** when it worked; if the current password is wrong or the two new ones don't match, the field shows the error.
+
+<Tip>
+If your platform lets you sign in with an identity provider instead of a password, you may be asked to sign in again with that provider before a sensitive change, instead of typing a password.
+</Tip>
+
+## Two-factor authentication
+
+Two-factor authentication adds a code from an authenticator app to your password each time you sign in. Someone who learns your password still can't get in without your phone.
+
+The **Two Factor Authentication** panel only appears if your platform offers it. Its badge shows **Enabled** or **Disabled**.
+
+### Turn it on
+
+<Steps>
+  <Step title="Install an authenticator app">
+    Install a TOTP-compatible authentication app, such as Google Authenticator, on your phone or computer.
+  </Step>
+  <Step title="Click Enable">
+    If you haven't confirmed your password recently, you are asked for it first ("For your security, please confirm your password to continue").
+  </Step>
+  <Step title="Add the account to your app">
+    Scan the QR code with your app. If you can't scan it, type **Your secret key** into the app instead.
+  </Step>
+  <Step title="Confirm with a code">
+    Type the **Code** your app shows and click **Confirm**. If the code is refused, check that your phone's clock is set automatically and try the next code.
+  </Step>
+  <Step title="Save your recovery codes">
+    The panel lists recovery codes. Store them in a secure password manager. Each one gets you back into your account if you lose the device with your authenticator app.
+  </Step>
+</Steps>
+
+From then on, signing in asks for a code after your password.
+
+### Recovery codes
+
+While two-factor authentication is on, the panel offers:
+
+- **Show recovery codes** to see your current codes again.
+- **Regenerate recovery codes** to replace them, for example after you used some or think someone saw them. The old codes stop working.
+
+### Turn it off
+
+Click **Disable** (you may be asked to confirm your password). Your account goes back to password-only sign-in. You can turn it on again at any time; you'll scan a new QR code.
+
+<Warning>
+If you lose your device and your recovery codes, you can't pass the code step yourself. Contact your platform's support.
+</Warning>
+
+## Connected apps
+
+**Connected apps**, in the profile menu, lists the apps you allowed to sign in to your account, such as ChatGPT or Claude, with the date each was **Connected**. An app connected this way acts as you, with your role in each workspace.
+
+To remove one, click **Disconnect** on its row and confirm. Its access ends straight away. You can connect it again later from the app itself.
+
+If you have connected nothing, the page says that apps you connect with sign-in appear there. Don't see **Connected apps**? Your platform doesn't offer it.
+
+## API keys
+
+Personal API keys also act as you. They are listed under **API** in the profile menu. See [API keys](/guide/integrations/api-keys) and [Authentication](/authentication).
+
+## Who can see what you do
+
+Roles decide what each person can do in a workspace, and the sales inbox keeps an [audit log](/guide/analytics/audit-log) of admin and destructive actions, including API keys created and revoked. See [Roles and permissions](/guide/account/roles-and-permissions).
+
+## Common questions
+
+**I'm not asked for a code when I sign in.**
+Two-factor authentication is off for your account, or your platform doesn't offer it. Check the badge on the panel.
+
+**Does turning on two-factor authentication affect my teammates?**
+No. It's per person. Each teammate turns it on for their own account.
+
+## Related
+
+- [Your profile and preferences](/guide/account/profile)
+- [Roles and permissions](/guide/account/roles-and-permissions)
+- [API keys](/guide/integrations/api-keys)

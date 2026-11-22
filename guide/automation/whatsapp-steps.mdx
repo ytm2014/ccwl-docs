@@ -1,0 +1,104 @@
+---
+title: "WhatsApp steps"
+description: "Buttons and list messages, link buttons, templates, locations, phone number requests, CSAT surveys, and the template fallback for when the 24-hour window is closed."
+keywords: ["whatsapp steps", "buttons message", "list message", "cta url", "send template", "send location", "request location", "request phone number", "ask for phone number", "csat survey", "24-hour window", "template fallback"]
+---
+
+WhatsApp flows get their own group of steps for WhatsApp's interactive messages. They appear in the step picker only when the flow runs on a WhatsApp profile and your plan includes them. WhatsApp Forms have their own page: see [WhatsApp Forms](/guide/automation/whatsapp-forms). The catalog step is covered in [Selling in the chat](/guide/automation/selling-in-chat).
+
+## Buttons Message
+
+A message with up to three reply buttons. Each button has its own output, so every tap can lead somewhere different.
+
+| Field | Limits and options |
+| --- | --- |
+| **Header** | **No header**, **Text** (up to 60 characters), **Image**, **Video** or **Document** (pick from the library). |
+| **Body** | Up to 1,024 characters. Variables allowed. |
+| **Footer** (optional) | Up to 60 characters. |
+| **Reply buttons** | 1 to 3, each with a **Button title** of up to 20 characters. Titles must all differ. |
+
+"Each button gets its own port — connect every button to the next step."
+
+## List Message
+
+Opens a tap-to-pick sheet; "Each row routes through its own port."
+
+| Field | Limits and options |
+| --- | --- |
+| **Header text** (optional) | Up to 60 characters. |
+| **Body** | Up to 1,024 characters. |
+| **Footer** (optional) | Up to 60 characters. |
+| **Menu button label** | The button that opens the list, for example "View options". |
+| **Sections** | Up to 10 sections, each with a **Section title**. |
+| Rows | Up to 10 rows in total. Each has a **Row title** (up to 24 characters) and an optional **Description** (up to 72 characters). |
+
+## CTA URL
+
+"Sends a tappable URL button instead of a raw link." Set an optional header, the **Body**, an optional **Footer**, the **Button text** and the link. The button opens the page; it does not continue the flow on its own.
+
+## Send Template
+
+Sends one of your approved WhatsApp message templates. "Templates are the only messages allowed outside the 24-hour window. Marketing/utility per-message pricing applies."
+
+1. Under **Template**, choose an approved template. With none yet you see "No approved templates yet — create one under Broadcasts → Manage templates."
+2. Under **Variables**, fill **Value for** each placeholder. You can insert contact variables.
+3. Check the preview, then fill any offer fields the template asks for (such as a coupon code).
+
+If a template is later rejected or deleted, the run stops at this step ("The selected template is missing or has not been approved."). An empty variable also stops it ("A template variable was empty. Set a value or fallback."), so use a fallback such as `{{first_name|there}}`.
+
+## Send Location
+
+Sends a location pin. Enter a **Place name** and **Address**, then **Pick on the map** (search a place or click the map and drag the pin) or type the **Latitude** and **Longitude**.
+
+## Request Location
+
+Sends your **Message** with WhatsApp's native "Send location" button. "The RECEIVED port continues once the contact shares it."
+
+## Request Phone Number
+
+Use this to ask for a phone number, for example when a contact writes from a WhatsApp username and you don't have their number yet.
+
+- **Message**: the request text. It "Also acts as the "or just reply with your number" prompt — a typed reply is captured too."
+- **Fallback template** (optional): outside the 24-hour window WhatsApp blocks interactive messages, so the step sends this approved template instead. Leave it blank to use the default template name shown in the field. If no approved template matches, the step continues on **RECEIVED** without sending.
+
+The shared or typed number is saved to the contact's **Phone** field, then the **RECEIVED** output continues.
+
+<Tip>
+Only ask when you need to. The **Ask for phone number when missing** template starts on every WhatsApp message, checks with a Condition whether the contact already has a phone number, and only asks when they don't.
+</Tip>
+
+## CSAT Survey
+
+Asks the contact to rate you, with one output per score so you can, for example, send low scores straight to a person.
+
+| Field | Options |
+| --- | --- |
+| **Question** | For example "How would you rate our support today?" |
+| **Scale** | 5 or 3 stars. |
+| **Low label** / **High label** | The words for the ends of the scale (by default Poor and Excellent). |
+| **List button** / **List heading** | The labels of the list the ratings appear in (by default "Rate us" and "Your rating"). |
+
+"Each score is its own port — route detractors straight to a human." The **Post-chat CSAT survey** template sends this survey when you close a conversation.
+
+## The 24-hour fallback
+
+WhatsApp only lets you send normal messages within 24 hours of the customer's last message. Outside that window only approved templates are delivered. Message, media, buttons, list, CTA URL, card, carousel, location, catalog, form and product steps on a WhatsApp flow can carry a fallback for this case.
+
+Open the step's **Advanced** section and use **When the 24-hour window is closed**:
+
+| Option | What happens outside the window |
+| --- | --- |
+| **Stop this message (no fallback)** | The step isn't sent. |
+| An approved template | "Use this approved template only when a normal message cannot be sent. Its parameters must match the template." Fill in each **Parameter**. |
+
+If the template has reply buttons, **Which reply continues on which branch** lets you pick, for each button, which of the step's outputs it continues on (or **No branch**). For other templates, enter the "Words the customer can reply with, separated by commas" for each branch.
+
+A step with a fallback shows **Out of window** on the canvas. If the chosen template isn't approved on this number yet, the builder warns that outside the window the step will not send.
+
+## Related
+
+- [Message and question steps](/guide/automation/message-steps)
+- [WhatsApp Forms](/guide/automation/whatsapp-forms)
+- [Selling in the chat](/guide/automation/selling-in-chat)
+- [Reply windows](/guide/inbox/reply-windows)
+- [Broadcasts](/guide/broadcasts/overview)

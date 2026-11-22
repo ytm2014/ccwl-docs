@@ -1,0 +1,102 @@
+---
+title: "AI agent tools"
+description: "Give the AI Reply step knowledge to search, web search, CRM tools that update the contact, and custom functions that call your own services."
+keywords: ["ai tools", "ai agent", "crm contact tools", "function calling", "custom functions", "ai knowledge", "web search", "file search", "hand over to a human", "tags", "pipeline stage"]
+---
+
+An AI Reply step can do more than talk. On its **Built-in Tools** and **Functions** tabs you choose what it may look up and what it may change. The AI decides during the conversation when to use each tool, guided by your prompt.
+
+Open an AI Reply step in the builder and switch to the **Built-in Tools** tab. For the step itself, see [The AI Reply step](/guide/automation/ai-replies).
+
+## Before the tools do anything
+
+- A tool is only used if it's switched on for that step. Mentioning it in the prompt is not enough.
+- Tell the AI in the prompt when to use each tool: "When the customer gives their budget, save it with Set custom fields."
+- Tools act on the current contact only.
+- The AI can chain a few tool calls in one reply (for example look up the contact, add a tag, then answer).
+
+## AI Knowledge
+
+"Let the assistant answer from your own knowledge — files, web pages, FAQs and pasted text." Choose what the step may search:
+
+| Option | Searches |
+| --- | --- |
+| **No knowledge** | Nothing. |
+| **All workspace knowledge** | Every collection. |
+| **Selected collections** | Only the collections you tick. |
+| **Selected sources** | Only the sources you pick (search a collection to add them). |
+
+Set **Max results** for how many snippets the AI receives. **Manage** opens AI Knowledge. With no collections yet you see "No knowledge yet — add collections under Salesbot → AI Knowledge."
+
+Knowledge needs a provider that can search files. Otherwise the tab says "AI Knowledge and document search are not available for this provider." See [AI Knowledge](/guide/automation/ai-knowledge).
+
+### Document search (File Search)
+
+With your own provider you can also switch on **Document search (File Search)** and tick vector stores you created on the provider's Integration page (**Vector stores** tab), with **Max results** (1 to 50). AI Knowledge is the simpler way to do this; use document search only if you already manage vector stores yourself.
+
+## Web search
+
+Where the provider supports it, **Web search** lets "the model search the web to ground its answer." Use it for questions your knowledge doesn't cover, and tell the AI in the prompt which sites to trust or avoid.
+
+## CRM contact tools
+
+"Abilities the AI can act on for the current contact." Tick the ones this step may use:
+
+| Tool | What the AI can do |
+| --- | --- |
+| **Get contact info** | Read the contact's details, tags and fields. |
+| **Update phone number** | Save a phone number the customer gives. |
+| **Move CRM stage** | Move the contact to a pipeline stage. Only existing stages can be used. |
+| **Add tags** / **Remove tags** | Tag or untag the contact. Only existing tags can be used. |
+| **Add a note** | Add a note to the contact for your team. |
+| **Set custom fields** | Save facts, such as budget or company, to custom fields. |
+| **Move to unassigned queue** | Put the conversation in the unassigned queue. |
+| **Auto-assign to an agent** | Assign the conversation to the next available team member. |
+| **Hand over to a human** | Pass the conversation to your team; the AI then stops replying. |
+
+<Tip>
+Create the tags, stages and custom fields first, and name them in the prompt ("use the tag Hot lead"). If the AI asks for one that doesn't exist, the tool refuses and lists the ones that do.
+</Tip>
+
+### Example
+
+A lead qualification assistant might have **Get contact info**, **Set custom fields**, **Add tags**, **Remove tags**, **Move CRM stage**, **Add a note** and **Hand over to a human**, with a prompt that says: save budget and timeline as custom fields, tag strong prospects "Hot lead", move them to the "Qualified" stage, write a short summary note, and hand over when they ask for a person. The **AI Lead Qualification bot** template is set up this way; see [Lead qualification bots](/guide/automation/lead-qualification).
+
+## Custom functions
+
+On the **Functions** tab, **Custom functions** are "(HTTP calls the AI can invoke)": your own endpoints the AI can call, for example to check stock, look up an order or create a booking. "The AI calls these, sends the JSON arguments to your URL, and uses the response."
+
+Click **Add function** and fill in:
+
+| Field | What to enter |
+| --- | --- |
+| Name | A short name such as `check_stock`. |
+| Description | "What does this function do? (helps the AI decide when to call it)" Be specific about when to call it. |
+| Method and URL | **GET**, **POST** or **PUT**, and the endpoint, for example `https://api.example.com/stock`. |
+| **Headers** | **+ Add** for each, for example `Authorization` with `Bearer …`. |
+| **Parameters (JSON Schema)** | The arguments the AI must send, as a JSON Schema. An error shows if it isn't valid JSON. |
+
+A minimal parameters schema:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "sku": { "type": "string", "description": "The product code" }
+  },
+  "required": ["sku"]
+}
+```
+
+Keep responses short and clear; the AI reads them to answer the customer.
+
+## Test before you publish
+
+On the **Playground** tab, type a test message and click **Run**. The result shows the **Reply** and the **Tool calls** the AI made. Tool calls in the playground run against demo data, so your real contacts aren't changed. Then try the published flow with **Test bot**.
+
+## Related
+
+- [The AI Reply step](/guide/automation/ai-replies)
+- [AI Knowledge](/guide/automation/ai-knowledge)
+- [The HTTP Request step](/guide/automation/webhook-step)
+- [Contact and hand-over steps](/guide/automation/contact-steps)

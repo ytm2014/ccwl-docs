@@ -1,0 +1,72 @@
+---
+title: "System templates"
+sidebarTitle: "System templates"
+description: "The WhatsApp templates the product itself needs, what each one is for, and how to customise one or reset it to the default wording."
+keywords: ["system templates", "managed templates", "built-in templates", "customized template", "reset to default", "assignment alert", "csat template", "request phone template"]
+---
+
+Some features have to message people on WhatsApp outside the 24-hour window, when only an approved template is allowed. For those, the product ships its own **system templates**. They appear on the templates page under the **System** tab, next to the templates you write yourself under **Your templates**.
+
+To see them, in the sidebar open **Salesbot** > **More** > **Message templates**, select a WhatsApp number, and click the **System** tab.
+
+## The system templates
+
+All system templates are in the **Utility** category and written in English. Their names start with `salesbot_`.
+
+| Template | When it is sent | What it says |
+| --- | --- | --- |
+| `salesbot_conversation_assigned` | A conversation is assigned to a teammate who has a WhatsApp number on their profile. It goes from your workspace's default WhatsApp number to that teammate. | Tells the teammate which contact's conversation was assigned to them and asks them to open the inbox to reply. |
+| `salesbot_request_phone` | A flow's request-phone-number step runs for a contact who reached you without a phone number on file, and the 24-hour window has closed. | Asks the contact to reply with their phone number. |
+| `salesbot_csat` | A flow's satisfaction survey step runs after the 24-hour window has closed. | Thanks the contact and asks them to rate their experience with five buttons: **5 - Excellent**, **4 - Good**, **3 - Average**, **2 - Fair** and **1 - Poor**. |
+
+If a system template isn't approved on the number, the feature that needs it can't reach people outside the window. The assignment alert, for example, is simply not sent.
+
+## Badges
+
+- **Managed**: the template has the product's wording. When the product updates that wording, the template is updated too.
+- **Customized**: someone in your workspace edited the template. It is now yours, and product updates no longer change it.
+
+## Submitting system templates
+
+System templates are added to a number's business account as drafts. Depending on your platform, they are sent to Meta automatically, or you submit them yourself. When automatic submission is off, the **System** tab says: "Automatic submissions are paused. Open a template and save it to submit it manually. Refresh only checks review status."
+
+To submit one yourself:
+
+<Steps>
+  <Step title="Open it">
+    On the **System** tab, open the template's **...** menu and click **Edit**.
+  </Step>
+  <Step title="Save it">
+    Click **Save** without changing anything. The template is sent to Meta for review and stays **Managed**.
+  </Step>
+  <Step title="Check the status">
+    Click **Refresh templates** later to see whether Meta approved it.
+  </Step>
+</Steps>
+
+## Customise a system template
+
+You can change a system template's wording, for example to match your tone of voice. Open **Edit**, change the text and click **Save**. The template is submitted again and marked **Customized**.
+
+Keep in mind:
+
+- The variables are filled in by position, so keep the same placeholders in the same order. Moving them around puts values in the wrong place.
+- For the satisfaction survey, keep the button texts as they are: the flow reads the rating from the button that was tapped.
+- System templates can't contain **Visit website** buttons. The builder doesn't offer them for these templates.
+
+## Reset to default
+
+If a customised template keeps being rejected, or you want the product's wording back, use **Reset to default** in the template's **...** menu. You are asked to confirm. The product's wording replaces yours, the template is submitted to WhatsApp again, and it goes back to **Managed**, so future product updates apply again.
+
+**Reset to default** also appears on a managed template whose wording is older than the product's current version.
+
+## Deleting
+
+System templates can't be deleted: the menu doesn't offer **Delete template** for them, because the feature that sends them would stop working.
+
+## Related
+
+- [WhatsApp message templates](/guide/broadcasts/message-templates)
+- [Create a WhatsApp template](/guide/broadcasts/create-template)
+- [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits)
+- [Automation](/guide/automation/overview)

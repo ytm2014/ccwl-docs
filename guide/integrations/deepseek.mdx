@@ -1,0 +1,60 @@
+---
+title: "DeepSeek"
+description: "Connect your DeepSeek API key so AI Reply steps run on DeepSeek models with function calling, optionally through your own proxy."
+keywords: ["DeepSeek", "API key", "AI replies", "functions", "base URL", "proxy"]
+---
+
+The **DeepSeek** card on the [Integrations](/guide/integrations/overview) page connects your own DeepSeek account. Your flows' **AI Reply** steps can then run on DeepSeek models, billed to your DeepSeek account. DeepSeek supports **Functions** and **CRM contact tools**. It doesn't offer **File search**, **Web search** or **Reasoning effort**, so the page has no **Vector stores** tab. For how your own key fits with the built-in AI, see [AI providers](/guide/integrations/ai-providers).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **AI** tab.
+
+<Note>
+Don't see **DeepSeek**, or does connecting say your plan uses the built-in AI? Your plan or your platform doesn't include your own AI keys.
+</Note>
+
+## Connect DeepSeek
+
+<Steps>
+  <Step title="Create a key at DeepSeek">
+    Sign in to the DeepSeek platform at platform.deepseek.com. Under **API keys**, create a key and copy it.
+  </Step>
+  <Step title="Paste it">
+    In the sidebar, open **Integrations** > **DeepSeek**. Under **API credentials**, paste the key into **API key**.
+  </Step>
+  <Step title="Set a proxy (optional)">
+    Fill in **Base URL (optional)** only if you reach DeepSeek through your own proxy. It must be a public `https://` address. Leave it empty to use DeepSeek directly.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The key is checked with DeepSeek first; the page then confirms "DeepSeek connected."
+  </Step>
+</Steps>
+
+To change the key later, paste the new one and click **Save & reconnect**.
+
+## Models
+
+The **Capabilities** panel lists the models under **Models:** and the default under **Default:**. Today these are `deepseek-flash` (the default) and `deepseek-v4-pro`. The list on the page is always the current one.
+
+## What it unlocks
+
+- DeepSeek models in the **AI Reply** step of your [flows](/guide/automation/overview).
+- Function calling, including the CRM contact tools, inside AI replies.
+- With your own key connected, AI replies run on it first and don't use your plan's monthly AI allowance.
+
+DeepSeek can't read images, search the web or search your documents. For those, connect [OpenAI](/guide/integrations/openai), [Claude](/guide/integrations/claude) or [Google Gemini](/guide/integrations/gemini) as well and pick that model in the steps that need it.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The key is removed, and **AI Reply** steps fall back to another connected provider or the built-in AI, where your plan has it.
+
+## Troubleshooting
+
+- **"That base URL is not reachable publicly (…)."** The proxy address must start with `https://` and be reachable from the internet. Fix it or leave the field empty.
+- **"Could not reach the DeepSeek API: …"** DeepSeek refused the key, or your proxy didn't answer. Check the key and your DeepSeek balance.
+- **The card shows Error.** DeepSeek rejected the saved key during use. Create a new key and click **Save & reconnect**.
+
+## Related
+
+- [AI providers](/guide/integrations/ai-providers)
+- [Flows and AI replies](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

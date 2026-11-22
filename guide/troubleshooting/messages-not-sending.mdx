@@ -1,0 +1,68 @@
+---
+title: "Messages not sending"
+sidebarTitle: "Messages not sending"
+description: "Find out why a reply, automated message or broadcast message didn't reach the customer, what each failure reason means, and how to fix it."
+keywords: ["message failed", "not delivered", "failed", "24-hour window", "window closed", "template", "opted out", "rate limited", "reconnect", "access token", "delivery not confirmed", "message not sent"]
+---
+
+When a message you send from the inbox, or one your automations send, doesn't go through, the conversation tells you why. Start with what the message itself says, then check the channel and the logs.
+
+## Read the message status
+
+Under each message you sent, the inbox shows its status:
+
+| What you see | What it means |
+| --- | --- |
+| One tick | Sent. If you hover and see **Sent, delivery not confirmed**, the platform didn't confirm delivery. That isn't a failure. |
+| Two ticks | Delivered (or read). |
+| **· failed** followed by a reason | The message didn't go through. Hover the reason to read it in full. |
+
+## What each failure reason means
+
+| Reason | What to do |
+| --- | --- |
+| **The contact opted out of messages.** | The customer unsubscribed. Don't message them unless they opt in again. See [Opt-outs](/guide/contacts/opt-outs). |
+| **The reply window is closed — an approved template is required to re-engage.** | The messaging window has closed (on WhatsApp, 24 hours after the customer last wrote). Send an approved template, or wait for the customer to write again. See [Reply windows](/guide/inbox/reply-windows). |
+| **The WhatsApp template is missing or not approved.** | Check the template's status in your message templates and pick an approved one. |
+| **The template had an empty field — the provider rejects blank template values.** | Fill every template variable. Check that the contact has the data a variable uses, such as a first name. |
+| **The channel is not fully connected.** | Finish connecting the channel, or reconnect it. |
+| **The channel's access token is missing — reconnect it.** | Reconnect the channel or social account. |
+| **This contact has no identity on the channel the reply was sent from.** | The customer has never written on that channel. Reply on the channel they used. |
+| **The attachment could not be uploaded to the provider.** | Try a smaller file or another format. |
+| **The provider is rate-limiting this channel — try again shortly.** | Wait a few minutes, then send again. |
+| **The comment this reply answers no longer exists.** | The comment was deleted, so there's nothing to reply to. |
+| **This platform cannot post a public reply from the inbox.** | Reply in a private message instead, where the platform allows it. |
+| **The message was empty.** | Add text or an attachment. |
+| **This platform cannot receive that kind of message.** | Send plain text, or a type the channel supports. |
+| **Sandbox mode — nothing was actually sent.** | The channel is in a test mode. Ask your platform. |
+
+Any other text is the reason the network itself gave.
+
+### WhatsApp: the window is closed
+
+When WhatsApp's 24-hour customer-care window has closed, the conversation shows a banner: free-form messages are blocked by Meta until the customer texts back, so to re-engage you need to send an **APPROVED template**.
+
+On numbers lent by the platform, WhatsApp may also refuse messages because of the number's display name or daily limits; the failure reason then says what it means and what helps.
+
+## Automated messages aren't sending at all
+
+If your replies from the inbox work but automations, broadcasts and sequences send nothing on a profile, check that the sales inbox is on for that profile. On the **Accounts** page, a profile marked **Inbox only** (sales inbox off) still posts and still lets you reply, but automations, broadcasts and sequences don't send there. See [Add-ons](/guide/billing/add-ons#sales-inbox-profiles).
+
+Also see [Automation not triggering](/guide/troubleshooting/automation-not-triggering).
+
+## Check the channel
+
+- The notifications bell warns you when a channel needs attention: for example, a connection has expired so messages can no longer be sent or received, or the platform refused a request because a permission is missing. Follow **Review the channel**.
+- On the **Accounts** page, reconnect any account that is marked as needing it.
+
+## Check the activity log
+
+The activity log records every send, with the error when one failed. In the sidebar, open **Salesbot** > **More**, then **Activity** under **Reports**. Filter **Status** to **Error** and **Platform** to the channel, or search for the contact. See [Activity log](/guide/analytics/activity-log).
+
+## Related
+
+- [Reply windows](/guide/inbox/reply-windows)
+- [Channel troubleshooting](/guide/channels/troubleshooting)
+- [Automation not triggering](/guide/troubleshooting/automation-not-triggering)
+- [Activity log](/guide/analytics/activity-log)
+- [Notifications](/guide/account/notifications)

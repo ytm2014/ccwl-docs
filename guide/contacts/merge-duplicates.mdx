@@ -1,0 +1,79 @@
+---
+title: "Merge duplicate contacts"
+sidebarTitle: "Merge duplicates"
+description: "Combine two contacts for the same person into one profile, from the profile's suggestions or from the list."
+keywords: ["merge contacts", "duplicates", "possible duplicates", "same person", "channel identities", "combine contacts"]
+---
+
+The same person sometimes ends up as two contacts. Typical causes: you imported or added them by hand before they messaged you, or they wrote in on a second channel that couldn't be matched to them. Merging combines the two into one profile, so the team sees one history and every channel replies from the same place.
+
+Merging needs the **Merge contacts** permission. It's admin-only unless a custom role grants it, and a teammate limited to some channels can't merge.
+
+<Warning>
+A merge can't be undone. The history can't be split apart again afterwards.
+</Warning>
+
+## What a merge does
+
+You always keep one contact and fold the other into it.
+
+- The kept contact receives the other one's channels, conversations, notes and tags.
+- Automations still running for the duplicate are stopped; the kept contact's automations carry on.
+- The duplicate is then deleted.
+- The deleted duplicate appears in **Recently deleted** marked **Merged: contact record only**. Restoring it brings back only the contact record, not the conversations that moved. See [Delete and restore contacts](/guide/contacts/delete-and-restore).
+
+## Merge from a profile's suggestions
+
+When other contacts share a phone number or email address with the one you're viewing, the profile shows a **Possible duplicates** panel listing each one with its phone or email and message count.
+
+<Steps>
+  <Step title="Open the contact to keep">
+    Open the profile of the contact you want to keep.
+  </Step>
+  <Step title="Pick the duplicate">
+    In **Possible duplicates**, click **Merge** next to the other contact.
+  </Step>
+  <Step title="Confirm">
+    The **Merge contacts** dialog says which contact will be merged into which. Click **Merge into this profile**.
+  </Step>
+</Steps>
+
+The panel only appears for people who can merge.
+
+## Merge any two contacts from the list
+
+Use this when two contacts don't share a phone or email, for example an Instagram contact and a WhatsApp contact you know are the same person.
+
+<Steps>
+  <Step title="Find both">
+    In the contact list, search or filter so both contacts are on the same page.
+  </Step>
+  <Step title="Tick exactly two">
+    Tick the two rows. **Merge selected** appears in the selection bar only when exactly two contacts are ticked by hand (not with **Select all matching**).
+  </Step>
+  <Step title="Confirm">
+    The dialog names the contact that is kept and the one whose channels, conversations, notes and tags move into it. Confirm to merge.
+  </Step>
+</Steps>
+
+The contact listed first on the page is the one that's kept. If you want to keep the other one, merge from its profile instead.
+
+## Before you merge
+
+- Decide which profile to keep: it's the one that remains, under its own name.
+- Look at the **Channels** panel of each to be sure they're the same person.
+- If one is a contact you restored from **Recently deleted** after the person wrote in again, merging is the way to put the two back together.
+
+## Common questions
+
+**I tried to restore a deleted contact and it isn't linked to its channel any more.** The person wrote in again after the delete and became a new contact, which kept the channel. Merge the two from the profile.
+
+**Why don't I see Merge selected?** Tick exactly two contacts on the current page, and check that your role can merge.
+
+**Can I merge three contacts?** Merge two, then merge the result with the third.
+
+## Related
+
+- [The contact profile](/guide/contacts/contact-profile)
+- [The contact list](/guide/contacts/contact-list)
+- [Delete and restore contacts](/guide/contacts/delete-and-restore)

@@ -1,0 +1,138 @@
+---
+title: "Create a WhatsApp template"
+sidebarTitle: "Create a template"
+description: "Build a WhatsApp message template and submit it to Meta: name, category, language, header, body, variables, footer, buttons, carousels, offers and authentication codes."
+keywords: ["create whatsapp template", "template builder", "template variables", "carousel template", "limited-time offer", "copy code button", "authentication template", "template library", "submit template"]
+---
+
+The template builder lets you write a WhatsApp template and send it to Meta for review in one go. As you type, a **Preview** on the right shows how the message will look in WhatsApp. You can start from scratch or from ready-made copy in the library.
+
+<Note>
+Building templates needs the permission to create WhatsApp templates (admins and members by default) and isn't offered on every platform. A member limited to some channels can't build templates.
+</Note>
+
+## Start a new template
+
+1. In the sidebar, open **Salesbot** > **More** > **Message templates**.
+2. Select the WhatsApp number in the channel picker. The template is created on that number's business account.
+3. Click **Add template**.
+
+## Details
+
+| Field | What to enter |
+| --- | --- |
+| **Template name** | Lowercase letters, numbers and underscores only, for example `spring_sale_2026`. This is the name Meta uses. |
+| **Category** | **Marketing** (promotions and announcements), **Utility** (updates about an order, booking or account) or **Authentication** (one-time codes). The category decides who a broadcast can reach; see [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits#template-categories-matter). |
+| **Supported language** | The language the template is written in. |
+
+Once a template has been submitted, its name and language can't be changed. Use **Duplicate** on the templates page to make a new one.
+
+## Marketing: choose the type of message
+
+For a marketing template, pick the **Type of marketing message**:
+
+| Type | What it is |
+| --- | --- |
+| **Custom Message** | Promotions, offers and announcements with text, media and buttons. |
+| **Catalog Message** | Shows products from your connected catalog. A **View Catalog** button is added automatically. |
+| **Carousel Message** | Up to 10 swipeable cards, each with media and buttons. |
+| **Limited-time offer** | An offer line, an optional countdown and a coupon code the customer can copy. Only shown where your platform offers it. |
+
+## Content
+
+### Header (optional)
+
+Choose a **Header type**: **None**, **Text**, **Image**, **Video** or **Document**.
+
+- **Text**: up to 60 characters.
+- **Image**, **Video** or **Document**: Meta reviews media templates against a sample, so upload one in **Sample header media**. Images can be JPG or PNG up to 5 MB, videos MP4 up to 16 MB, documents PDF up to 100 MB. When the upload works you see **Sample uploaded**.
+
+### Body
+
+Write the message in **Body** (up to 1,024 characters).
+
+To personalise it, place the cursor and click **Add variable**. Each variable becomes a numbered placeholder, and a field appears below to enter a **sample value**, for example a first name. Meta reviews the template with these samples, so make them realistic. When you send the template, each variable gets a real value: in a broadcast you fill them in per broadcast or per contact.
+
+### Footer (optional)
+
+A short line under the message, up to 60 characters. New templates start with a suggested unsubscribe line, which you can change.
+
+## Buttons
+
+Click **Add button** and choose the **Button type**. Button text can be up to 25 characters.
+
+| Type | What it does | Extra fields |
+| --- | --- | --- |
+| **Quick reply** | A tap sends the button's text back to you as the customer's reply. | None. |
+| **Visit website** | Opens a web page. | **URL type**: **Static** (one fixed address) or **Dynamic** (part of the address changes per message; add a **sample URL** for Meta's review). |
+| **Call phone number** | Calls your number. | **Phone number**, with country code. |
+| **Copy code** | Copies a code, such as a coupon, to the customer's clipboard. | **Example code** (up to 15 characters) for Meta's review. The real code is filled in each time you send. |
+
+Meta's limits, which the builder checks before you save:
+
+- at most 10 buttons in total,
+- at most 2 **Visit website** buttons,
+- at most 1 **Call phone number** button,
+- at most 1 **Copy code** button.
+
+If you go over a limit, the builder tells you which one and won't save until you fix it.
+
+## Carousel cards
+
+A **Carousel Message** has between 2 and 10 cards. For each card, choose the **Card type** (**Image**, **Video** or **Document**), upload the **Sample media**, write the **Card body**, and add up to 2 buttons. Click **Add card** for another card; the bin icon removes one (you can't go below two).
+
+## Limited-time offers
+
+For a **Limited-time offer**, enter the **Offer text** (up to 16 characters, for example *20% off*) and tick **Show a countdown to when the offer ends** if you want one. Meta's rules for these templates:
+
+- a message of up to 600 characters,
+- an image or video header, or none,
+- a **Visit website** button,
+- no footer,
+- only in the **Marketing** category.
+
+The offer's end time and the coupon code are not part of the template: you fill them in each time you send it.
+
+## Authentication templates
+
+Authentication templates send one-time codes. Their content is fixed by WhatsApp and can't be edited; you only set the options:
+
+- **Code delivery setup**: customers copy the code and paste it into your app.
+- **Add security recommendation**: adds a security recommendation to the message.
+- **Add expiration time for the code**: shows how many minutes the code is valid (**Expires in**).
+- **Set custom validity period for your message**: how many minutes WhatsApp may keep trying to deliver the message before it expires (**Validity period**).
+
+## Save and submit
+
+Check the **Preview**, then click **Save**. The template is stored and sent to Meta for review straight away. Its status shows on the templates page: **Pending** while Meta reviews it, then **Approved** or **Rejected**. Click **Refresh templates** there to fetch the latest status.
+
+If the number's connection can't reach WhatsApp, the template is saved as **Not submitted**; reconnect the number and use **Submit to WhatsApp** on the templates page.
+
+## Start from the copy library
+
+**Browse library** on the templates page opens the **Template copy library**: ready-made marketing copy written against Meta's review rules.
+
+1. Search with **Search the library**, or filter by industry (**All industries**) and occasion (**All occasions**), such as a flash sale, a win-back or a back-in-stock notice.
+2. On a card, choose:
+   - **Customize** to open the copy in the builder and change it before saving.
+   - **Submit as-is** to send it to WhatsApp for review exactly as written. You are asked to confirm. If Meta rejects it, you can edit it afterwards.
+
+Nothing is created until you use an entry.
+
+## Troubleshooting
+
+| Message | What to do |
+| --- | --- |
+| Use lowercase letters, numbers and underscores only. | Rename the template. |
+| Select the WhatsApp number this template belongs to before saving it. | Pick a WhatsApp number in the channel picker. |
+| The name and language of a submitted WhatsApp template cannot be changed. | Duplicate the template instead. |
+| A submission is already in progress. | Refresh the templates page before saving another change. |
+| This WhatsApp number's connection cannot reach WhatsApp right now, so the edit was not saved. | Reconnect the number, then save again. The template keeps its current status. |
+| Upload failed. Try a smaller or different file. | Check the file type and size limits above. |
+| Limited-time offer templates are not available on this workspace. | Use a **Custom Message** instead. |
+
+## Related
+
+- [WhatsApp message templates](/guide/broadcasts/message-templates)
+- [System templates](/guide/broadcasts/system-templates)
+- [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits)

@@ -1,0 +1,81 @@
+---
+title: "Opt-outs and blocking"
+sidebarTitle: "Opt-outs and blocking"
+description: "How contacts unsubscribe or stop promotions, how blocking works, and how to review and reverse opt-outs."
+keywords: ["opt-out", "unsubscribe", "stop", "start", "resubscribe", "blocked", "suppressions", "opted-out contacts", "promotions", "stop offers"]
+---
+
+People can tell you to stop messaging them, and your team can block people who shouldn't reach you. Both put the contact on the **Opted-out contacts** list, where automated messages no longer reach them.
+
+## How a contact opts out
+
+Depending on your platform, a contact opts out by sending **STOP** (or a similar word in a supported language) as a private message. On Telegram, `/stop` works too.
+
+- The whole message must be the word: *STOP*, *Stop!* or *stop.* count, but *please stop* is an ordinary message.
+- Comments on your posts never opt anyone out.
+- Words that often mean something else, such as *cancel*, *end* or *quit*, don't opt the person out straight away on chat channels. The contact is asked to reply STOP to confirm, and the message carries on to your automations as usual. On SMS these words act at once.
+- Tapping a button titled *Cancel* or *End* is treated as an answer to the question the button asked, not an opt-out. A tapped *Stop* or *Unsubscribe* button still opts out.
+
+When a contact opts out:
+
+- they're marked as unsubscribed and get the **Unsubscribe** tag,
+- automations running for them are cancelled and sequences they're in are stopped,
+- a line is added to the conversation so your team can see it happened,
+- the message itself is still recorded in the inbox.
+
+Sending **START** (or `/start` on Telegram) reverses it for someone who had opted out: the unsubscribed mark and the tag are removed.
+
+## Promotions only
+
+Where your platform includes it, a contact can say no to promotions while still hearing from you about their orders, bookings and conversations. They do this by sending **STOP OFFERS** (or a similar phrase), or your team can do it from the profile.
+
+On the contact's profile, the side panel shows **Receives promotions** or **No promotions since** a date, with *Promotional broadcasts, sequences and automated marketing templates. Service messages and your replies still go.*
+
+- To stop promotions, turn the switch off and confirm **Stop promotions for this contact?**
+- To allow them again, turn it back on and confirm **Allow promotions again?** Only do this if the person asked; your name and the time are recorded.
+
+A contact who opted out of all messages shows *Opted out of all messages, so promotions are blocked too*, and the switch isn't available.
+
+## Blocking
+
+Your team blocks a contact from their conversation in the inbox. A blocked contact has the status **Blocked**, gets no automated messages and appears on the **Opted-out contacts** list. See [Inbox](/guide/inbox/overview).
+
+## Review opted-out contacts
+
+Choose **More contact actions** > **Opted-out contacts** on the contact list. The page lists blocked and unsubscribed contacts.
+
+- Tabs: **All suppressed**, **Blocked** (with a count) and **Unsubscribed** (with a count).
+- **Search suppressions** finds a contact in the list.
+- Columns: **Contact**, **Phone / handle**, **Channel**, **Type** (**Blocked**, **Unsubscribed** or both) and **When**.
+
+Don't see **Opted-out contacts**? Your plan or your platform doesn't include it yet.
+
+### Unblock a contact
+
+Click **Unblock** on a blocked contact's row. You need permission to block contacts in the inbox.
+
+### Resubscribe a contact
+
+Only resubscribe someone who asked to receive messages again. Once resubscribed, automated messages and broadcasts reach them.
+
+<Steps>
+  <Step title="Start">
+    Click **Resubscribe** on the contact's row. You need the **Edit contacts, their stage and notes** permission.
+  </Step>
+  <Step title="Confirm they asked">
+    Tick **This person asked to receive messages again**.
+  </Step>
+  <Step title="Say how (optional)">
+    In **How did they ask? (optional)**, note how, for example *replied to our email on 3 November* (up to 300 characters).
+  </Step>
+  <Step title="Resubscribe">
+    Click **Resubscribe**. The decision is added to the contact's consent history.
+  </Step>
+</Steps>
+
+## Related
+
+- [Data, privacy and consent](/guide/contacts/data-and-privacy)
+- [Tags](/guide/contacts/tags)
+- [Broadcasts](/guide/broadcasts/overview)
+- [Automation](/guide/automation/overview)

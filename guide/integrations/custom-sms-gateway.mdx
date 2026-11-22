@@ -1,0 +1,58 @@
+---
+title: "Custom HTTP gateway"
+description: "Connect any SMS provider that sends a text from a web address, using the {to}, {text} and {from} placeholders. Send only."
+keywords: ["custom SMS gateway", "HTTP", "send URL", "SMS provider", "placeholders", "authorization header", "sender ID"]
+sidebarTitle: "Custom HTTP gateway"
+---
+
+The **Custom HTTP gateway** card on the [Integrations](/guide/integrations/overview) page connects an SMS provider that isn't listed, as long as it can send a text when called at a web address. You describe that address once, with placeholders for the recipient, the text and the sender, and every SMS from your workspace is sent through it. For what the SMS channel unlocks, see [SMS gateways](/guide/integrations/sms-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **SMS** tab.
+
+<Warning>
+A custom gateway only sends. Replies don't reach the inbox, and messages get no delivery reports. If your provider is Twilio or Plivo, use their own cards instead.
+</Warning>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Send URL (use {to} {text} {from} tokens)** | Your provider's send address, with placeholders where the values go, for example `https://gw.example.com/send?to={to}&msg={text}`. Required. |
+| **HTTP method** | **GET** or **POST**, as your provider expects. |
+| **Authorization header value** | Optional. The value sent in the Authorization header, for example `Bearer xxx`. Stored like a password. |
+| **Sender ID** | Optional. The sender name or number, used for `{from}`. |
+
+| Placeholder | Replaced with |
+| --- | --- |
+| `{to}` | The recipient's phone number. |
+| `{text}` | The message text. |
+| `{from}` | The **Sender ID**. |
+
+## Connect a custom gateway
+
+<Steps>
+  <Step title="Build the send URL">
+    From your provider's documentation, take the address that sends an SMS and put `{to}`, `{text}` and `{from}` where the recipient, message and sender go.
+  </Step>
+  <Step title="Fill in the form">
+    In the sidebar, open **Integrations** > **Custom HTTP gateway**. Enter the **Send URL**, choose the **HTTP method**, and add an **Authorization header value** and **Sender ID** if your provider needs them.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The address is checked to be a public one, then the SMS channel is created. No test text is sent, so send yourself a message to confirm it works.
+  </Step>
+</Steps>
+
+After saving, the **Send URL** field shows your address with its query values masked, because providers often put a key there. Type the full address again only if you want to change it.
+
+## Troubleshooting
+
+- **"Enter the send URL for your gateway."** The **Send URL** is required.
+- **"That URL is not reachable publicly (…)."** The address must be a public web address your workspace can reach, not a local or private one.
+- **Connected, but texts don't arrive.** Connecting only checks that the address is public; it doesn't send a test text. Check the address, method and Authorization header against your provider's documentation, and look at your provider's logs.
+- **Messages send but replies never arrive.** Expected: a custom gateway can't receive. Use Twilio or Plivo if you need two-way SMS.
+
+## Related
+
+- [SMS gateways](/guide/integrations/sms-gateways)
+- [Twilio](/guide/integrations/twilio)
+- [Integrations](/guide/integrations/overview)

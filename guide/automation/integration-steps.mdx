@@ -1,0 +1,111 @@
+---
+title: "Integration steps"
+description: "Send rows to Google Sheets and read them back, post to Slack, text by SMS, add contacts to Mailchimp or HubSpot, book meetings and ask for Google reviews from a flow."
+keywords: ["integration steps", "google sheets", "get row from google sheets", "slack", "send sms", "mailchimp", "hubspot", "book meeting", "request google review", "connect"]
+---
+
+Integration steps connect a flow to the services you've linked under **Integrations** in the sidebar. Each step appears in the builder only when that integration is available on your plan and platform, and most need the service connected first; until then the step shows where to connect it.
+
+For calling any other web service, use the [HTTP Request step](/guide/automation/webhook-step). Store and payment steps are covered in [Store automations](/guide/automation/store-automations) and [Selling in the chat](/guide/automation/selling-in-chat).
+
+## Send to Google Sheets
+
+Appends a row to a spreadsheet each time the step runs, for example to log every new lead.
+
+| Field | What to enter |
+| --- | --- |
+| **Spreadsheet** | One of the spreadsheets registered under Integrations. With none: "No spreadsheets yet — connect Google Sheets under Integrations first." |
+| **Tab** | The sheet tab, for example Sheet1. |
+| **Columns** | "One row is appended per run." For each column, the **Header** and the value. "Values support variables — contact fields, answers collected with User Input, and order data." |
+
+By default it fills Name with `{{name}}` and Phone with `{{phone}}`.
+
+## Get Row from Google Sheets
+
+"Reads a row back FROM the sheet", for example to look up an order, a booking or a price list.
+
+| Field | What to enter |
+| --- | --- |
+| **Spreadsheet** and **Tab** | As above. |
+| **Search column (header)** | "The header of the column to search. Matched case-insensitively against the first row." |
+| **Match value** | "The first row whose column equals this wins. Tip: collect it with a User Input step first." For example `{{order_number}}`. |
+| **Save columns to variables** | For each column you want, the **Header** and a variable name. "Later steps reference these as `{{variable_name}}`." |
+| **Or save every column with a prefix** (optional) | For example `row_`: every column becomes a variable named prefix + header, lowercased with other characters turned into "_". Up to 30 columns. |
+
+Connect both outputs: **FOUND** and **NOT FOUND**. A miss, an unconfigured step and a read error all take **NOT FOUND**, so the conversation never dead-ends.
+
+## Send Slack message
+
+"Posts to your connected Slack channel." Write the **Message**; it supports contact and order variables, for example "New activity from `{{name}}`". Use it to alert your team about hot leads or big orders.
+
+## Send SMS
+
+"Texts the contact's phone via your connected SMS gateway — works from any flow."
+
+| Field | What to enter |
+| --- | --- |
+| **Message** | The text. Variables allowed. |
+| **Send to** (optional) | Defaults to the contact's phone. You can use `{{phone}}` or a custom field instead. |
+
+This is how a WhatsApp, Messenger or store flow can also reach the contact by text.
+
+## Add to Mailchimp
+
+"Upserts the contact into the audience (requires an email — skipped otherwise)." Choose the **Audience**. With none: "No audiences yet — connect Mailchimp under Integrations."
+
+## Sync to HubSpot
+
+"Upserts the contact (name, email, phone) into HubSpot CRM. Requires an email — skipped + logged otherwise." There's nothing to set; connect HubSpot under Integrations first.
+
+<Tip>
+Mailchimp and HubSpot need an email address. Put a **User Input** step asking for the email (saved to **Email**) before them.
+</Tip>
+
+## Book Meeting
+
+Books a meeting from inside the chat. "Books on your Google Calendar with a Meet link, then exposes `{{meeting.link}}`, `{{meeting.date}}` and `{{meeting.time}}` for later steps."
+
+| Field | Options |
+| --- | --- |
+| **Meeting type** | One of your meeting types. With none: "No meeting types yet. Connect Google Calendar under Integrations, then create a meeting type under Meetings." |
+| **How to book** | **In-chat slot picker** or **Send hosted booking link**. "In-chat shows tappable times on WhatsApp/Messenger/Instagram and automatically sends a booking link on SMS." |
+| **Slots to offer** | 2, 3, 4, 5, 6, 8 or 10 times (in-chat only). |
+| **Prompt** (optional) | For example "Pick a time that works for you:" |
+| **Confirmation message** (optional) | "Defaults to the meeting type's confirmation." |
+| **No-availability message** (optional) | Sent when there are no free times (in-chat only). |
+| **Times list button** / **Times list heading** | On WhatsApp, more than three times go out as a list with this button (up to 20 characters) and heading (up to 24). |
+
+The step has three outputs: **BOOKED**, **NO SLOTS** and **FAILED**. Connect the last two to a fallback, such as a booking link or a hand-over. See [Appointments](/guide/appointments/overview).
+
+## Request Google review
+
+Asks the contact for a Google review. It's offered on every channel; the message is sent the way the channel allows.
+
+| Field | Options |
+| --- | --- |
+| **Google Business location** | **The first connected location**, or a specific one. A location marked "(needs reconnecting)" must be reconnected. Its review link is read from Google the first time the step runs. |
+| **Review link** (optional) | "Leave blank to use the location's own Google review link." |
+| **Message** | `{{review.link}}` is the review link and `{{review.location}}` the location's name. "If the message leaves the link out, it is added at the end." |
+| **Button text** | By default "Leave a review". |
+
+On WhatsApp, outside the 24-hour window only an approved template can be sent: choose one in the step's fallback and pass `{{review.link}}` as a parameter, or the request isn't sent.
+
+"If the request cannot be sent (no location or link, the contact opted out of promotions, or WhatsApp's window has closed with no template), the flow continues along FAILED when it is connected, otherwise to the next step."
+
+## Common problems
+
+| You see | What to do |
+| --- | --- |
+| "No spreadsheet selected." | Pick a spreadsheet and tab. |
+| "Add at least one column." / "A column has no value." | Add columns and give each a value. |
+| "Lookup value is empty." | Set the match value. |
+| "FOUND branch is not connected." / "NOT FOUND branch is not connected." | Connect both outputs. |
+| "A "Book Meeting" step has no meeting type selected." | Pick a meeting type. |
+| Mailchimp or HubSpot skipped | The contact has no email. Ask for it first. |
+
+## Related
+
+- [The HTTP Request step](/guide/automation/webhook-step)
+- [Integrations](/guide/integrations/overview)
+- [Appointments](/guide/appointments/overview)
+- [Variables](/guide/automation/variables)

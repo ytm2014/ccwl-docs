@@ -1,0 +1,68 @@
+---
+title: "Tags"
+description: "Label contacts with tags, manage the workspace's tag list, and move tag lists between workspaces with CSV."
+keywords: ["tags", "manage tags", "tag colour", "add tag", "remove tag", "unsubscribe tag", "import tags", "export tags"]
+---
+
+Tags are short labels you put on contacts, such as *VIP*, *Wholesale* or *Asked for a quote*. They're shared by every channel in the workspace, so a tag added on an Instagram conversation is the same tag you filter on for a WhatsApp broadcast. Use them to filter the list, build [segments](/guide/contacts/segments) and drive automations.
+
+## Tag a contact
+
+There are several places to add or remove tags. Each needs the **Edit contacts, their stage and notes** permission.
+
+| Where | How |
+| --- | --- |
+| New or edit contact form | In **Tags**, pick tags or type a new tag name and press Enter to create it. |
+| Contact profile | Click the pencil next to **Tags** (**Edit tags**) to open the edit form. |
+| Inbox contact details | Click **+** (**Add tag**) to add one, or the **×** on a tag to remove it. |
+| Contact list, many at once | Tick contacts, then **Add tag** or **Remove tag**. See [The contact list](/guide/contacts/contact-list#act-on-several-contacts). |
+| CSV import | Fill the `tags` column. See [Import contacts from CSV](/guide/contacts/import-csv). |
+
+The list shows a contact's first two tags and a **+n** for the rest; the board cards do the same.
+
+## Manage the tag list
+
+Choose **More contact actions** > **Manage tags** on the **List** or **Board** tab. You need the **Manage tags** permission.
+
+### Add a tag
+
+1. At the bottom of **Manage tags**, type a **New tag name** (up to 60 characters).
+2. Optionally click the colour square beside it to pick a colour.
+3. Click **Add**, or press Enter.
+
+### Rename or recolour a tag
+
+Change the name in its row, or click its colour square to pick a new colour, then click the tick (**Save**) at the end of the row. The change applies to every contact that has the tag.
+
+### Delete a tag
+
+Click the bin at the end of the row and confirm. The tag is removed from all contacts.
+
+Click **Done** to close the dialog.
+
+## The Unsubscribe tag
+
+The tag named **Unsubscribe** marks people who opted out of messages. It's added and removed for you when someone opts out or back in, and it can't be renamed or deleted (*Required for opt-out compliance — can't be deleted.*). See [Opt-outs and blocking](/guide/contacts/opt-outs).
+
+## Import and export tags
+
+At the top of **Manage tags**:
+
+- **Export** downloads every tag with its colour as a CSV.
+- **Download sample** gives the format: a header row with `name` and `hex_color`, then one tag per row, for example `VIP,#ef4444`.
+- **Import CSV** reads such a file. Tags that already exist (same name) are skipped, names longer than 60 characters are skipped, and a tag with no valid colour gets a neutral grey. A message says how many were imported and skipped.
+
+Exporting from one workspace and importing into another copies your tag set across. The file can be up to 1 MB.
+
+## Tips
+
+- Keep names short and consistent; segments and filters match tags exactly.
+- Use tags for facts that can be true at the same time (*VIP* and *Newsletter*). For a single step in a sales process, use a [pipeline stage](/guide/contacts/pipeline) instead.
+- To find everyone with a tag, filter the list by **Tags**, or build a segment with **Contact tags**.
+
+## Related
+
+- [Segments](/guide/contacts/segments)
+- [The contact list](/guide/contacts/contact-list)
+- [Opt-outs and blocking](/guide/contacts/opt-outs)
+- [Automation](/guide/automation/overview)

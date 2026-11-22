@@ -1,0 +1,104 @@
+---
+title: "Roles and permissions"
+sidebarTitle: "Roles and permissions"
+description: "What admins, members and viewers can do, and how team roles give someone a tailored set of permissions and channels in the sales inbox and posting."
+keywords: ["roles", "permissions", "admin", "member", "viewer", "owner", "team roles", "custom role", "channel access", "limit channels", "receptionist", "manage roles"]
+---
+
+Access in a workspace has two layers. Every person has a **workspace role**: **Admin**, **Member** or **Viewer**. Where the sales inbox is part of the workspace, admins can also create **team roles**: named sets of permissions, such as a "Receptionist" who can answer conversations but not delete contacts, that give someone more than a plain member and less than an admin.
+
+## Workspace roles
+
+| Role | What they can do |
+| --- | --- |
+| **Admin** | Can access and edit everything, including the configuration: workspace settings, team, social accounts, subscription and billing. Admins always hold every team-role permission. |
+| **Member** | Can access and edit everything except the configuration. Members create and schedule posts; what else they can do in the sales inbox depends on their team role or their own access options. |
+| **Viewer** | Can access everything except the configuration, but cannot edit or schedule posts. In the sales inbox a viewer can look at the messaging areas (Inbox, Contacts, Broadcasts, Automation and so on) but cannot edit, send or change configuration, even if a role grants more. |
+
+The person who created the workspace is its **Owner**. The owner is always an admin, can't be removed or have their role changed, and is the only one who can delete the workspace.
+
+You choose the workspace role when you invite someone and change it with **Edit role** on the Team page. See [Team members and invitations](/guide/account/team-members).
+
+## Team roles
+
+Team roles decide what a member or viewer can do in the sales inbox, plus post approval, Bulk Posts, RSS Campaigns and which channels they work on.
+
+Don't see team roles? Your plan or your platform doesn't include them yet. On a plan without them, the page shows **Not included in your plan** with a button to see add-ons. See [Add-ons](/guide/billing/add-ons).
+
+### Open the roles page
+
+- Admins: in the sidebar, open **Settings** > **Team Members**, then the **Roles** tab. It is also a shortcut card on **Salesbot** > **More**.
+- Members and viewers whose role lets them manage roles: open your user menu (top right) and click **Team Roles**.
+
+The list shows each role's **Name** and description, how many **Permissions** it has with its channel limit (**All channels**, or how many channels), and how many **Members** hold it. Each row has **Edit** and **Delete**.
+
+### Create a role
+
+<Steps>
+  <Step title="Start">
+    Click **New role**.
+  </Step>
+  <Step title="Name it">
+    Enter a **Name** and, if you like, a **Description**.
+  </Step>
+  <Step title="Pick its permissions">
+    Under **Permissions**, permissions are grouped by area. Tick an area's name to select all of it, or tick permissions one by one; a partly selected area shows a count such as (3/11). A greyed-out permission is one you can't grant (see below).
+  </Step>
+  <Step title="Choose its channels">
+    Under **Channel access**, choose **All channels (including ones connected later)** or **Only these channels**. With **Only these channels**, search the list, tick profiles one by one or use **Select all** for a network. Each profile shows whether it is used for **Posting**, the sales inbox, or both. Pick at least one channel, or choose all channels.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+Members of a role limited to some channels only see and manage posts, analytics and conversations for those channels. What they can do on them is set by the permissions. Only a workspace admin can change a role's channels.
+
+<Note>
+In some workspaces the channel part is called **Channels** and covers sales inbox channels only. Ticking none there means every channel.
+</Note>
+
+### Give someone a role
+
+On the Team page, open the person's menu, click **Edit role**, choose the role and click **Update**. A role applies to members and viewers; an admin always has full access whatever role is selected.
+
+### Edit or delete a role
+
+Click **Edit** to change a role; the change applies to everyone who holds it. Click **Delete** and confirm to remove it. Its members go back to the access stored for them before (their own Inbox, Bulk Posts, RSS and post approval settings).
+
+## The permissions
+
+| Area | Permissions |
+| --- | --- |
+| **Posting** | Approve posts; Bulk posts; RSS feeds |
+| **Inbox** | View conversations; see every conversation, not only those assigned to them; send replies; assign conversations; mark conversations done and reopen them; manage saved replies; pause and resume the bot on a conversation; block and unblock contacts; archive and unarchive; delete archived conversations permanently; see comments, mentions and reviews of every account |
+| **Contacts** | View contacts; see full phone numbers and full email addresses (otherwise masked); create, edit, delete, bulk delete, import and export contacts; manage tags, custom fields, pipeline stages and segments; merge contacts; see deleted contacts and restore them; erase a contact past recovery; erase a deleted contact for good |
+| **Automations** | View automations; create, edit, publish and switch automations |
+| **Payments** | Add payment requests and discount codes to automations |
+| **Sequences** | View; create, edit, pause and delete sequences |
+| **Growth tools** | View; create, edit and delete growth tools |
+| **AI Knowledge** | View collections and sources; add, edit, delete and test AI Knowledge |
+| **Meetings** | View meetings and meeting types; manage meeting types; cancel and reschedule meetings |
+| **WhatsApp templates** | View; create, edit and submit; delete templates (also at WhatsApp) |
+| **Broadcasts** | View broadcasts and reports; create and edit drafts and send a test to yourself; schedule, pause, resume and cancel; approve broadcasts that need approval; delete broadcasts and their reports |
+| **Reports** | View the overview; view the activity log; view ad attribution, spend and revenue |
+| **Channels** | Connect, rename and disconnect channels; edit the bot setup |
+| **Settings** | Change the conversation rules; connect integrations and manage webhooks |
+| **Team** | Manage team roles; view the audit log |
+
+Areas your workspace doesn't include are left out of the list.
+
+## How access is decided
+
+- **Admins** hold every permission.
+- **A member or viewer with a role** holds exactly the role's permissions. For a viewer, only the read permissions count (viewing, exporting, reading logs).
+- **A member without a role** keeps what a member with inbox access could always do. That leaves out the actions that are an admin's unless a role grants them, such as managing automations, payments, sequences, growth tools, AI Knowledge, integrations, channels and team roles, merging, restoring or erasing contacts, and seeing ad attribution or the audit log, and the destructive ones: bulk deleting contacts, deleting conversations or WhatsApp templates, and sending, approving or deleting broadcasts.
+- **No one can hand out more than they have.** Someone below admin who manages roles can only tick permissions they hold themselves, and can only delete a role if they hold everything its members would fall back to.
+- **A member limited to some channels** can't create or import contacts, merge, restore or erase them, connect channels, change the conversation rules, manage integrations, AI Knowledge, meeting types or WhatsApp templates, see ad attribution or the audit log, whatever their role says. These act on data that belongs to every channel.
+
+## Related
+
+- [Team members and invitations](/guide/account/team-members)
+- [Conversation rules](/guide/inbox/conversation-rules)
+- [Audit log](/guide/analytics/audit-log)
+- [Add-ons](/guide/billing/add-ons)

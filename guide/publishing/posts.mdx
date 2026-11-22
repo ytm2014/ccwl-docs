@@ -1,13 +1,12 @@
 ---
-title: "Manage your posts"
-sidebarTitle: "Posts"
-description: "Find, filter, edit, duplicate, delete and restore posts in the Posts list."
-keywords: ["posts", "drafts", "scheduled", "published", "failed", "needs approval", "trash", "filter", "duplicate", "import"]
+title: "Posts list"
+description: "Find posts by status, search and filter them, sort the list and open a post to edit, duplicate or delete it."
+keywords: ["posts", "drafts", "scheduled", "published", "failed", "needs approval", "filter", "search", "sort", "duplicate"]
 ---
 
-The **Posts** list shows every post in your workspace, from drafts to published and failed posts. Use it to find a post, check how it went out, and open it to make changes.
+The posts list shows every post in your workspace, from first drafts to published and failed posts. Use it to find a post, check how it went out, and open it to make changes.
 
-In the sidebar, open **Posts** (in the newer sidebar, **All Posts** under the posts group).
+In the sidebar, open **Posts** > **All Posts**.
 
 ## Status tabs
 
@@ -15,81 +14,78 @@ The tabs along the top filter the list by status:
 
 | Tab | Shows |
 | --- | --- |
-| **All** | Every post that is not in the trash. |
-| **Drafts** | Posts with no scheduled time yet. Everything you write is saved as a draft until you schedule it. |
-| **Needs approval** | Posts waiting for someone with approval rights. Only shown when there are some; the badge shows how many. |
+| **All** | Every post that isn't in the trash. |
+| **Drafts** | Posts without a scheduled time. Everything you write is a draft until you schedule it. |
+| **Needs approval** | Posts waiting for someone who can approve them. Shown only when there are some, with a count. See [Approvals](/guide/publishing/approvals). |
 | **Scheduled** | Posts waiting to go out. |
 | **Published** | Posts that have gone out. |
-| **Failed** | Posts that could not be published to at least one account. Only shown when there are some. |
-| **Repeated Posts** | Your repeating posts. See [Repeating posts](#repeating-posts). |
+| **Failed** | Posts that could not be published to at least one account. Shown only when there are some. See [Failed posts](/guide/publishing/failed-posts). |
+| **Repeated Posts** | Your repeating posts. See [Repeating posts](/guide/publishing/repeating-posts). |
 
-Each row shows the post's status, its text, media, accounts and labels. A post that went out to some accounts but not others shows how many succeeded, for example "(2 of 3)". The **Publishing** status means the post is on its way right now.
+## Reading a row
+
+Each row shows the post's **Status**, **Content**, **Media**, **Accounts** and **Labels**.
+
+- **Publishing** means the post is going out right now ("This post is being published, check back shortly!").
+- A post that went out to some accounts but not others shows how many succeeded, for example **Published (2 of 3)**.
+- Click the media thumbnail to preview the media without opening the post.
+
+When posts are added or changed by someone else while you are looking, a bar says "... posts added or changed" with **Refresh**.
 
 ## Search, filter and sort
 
-- **Search**: type in the search box to find posts by their text.
-- **Filters**: narrow the list by **Date** (created, scheduled or published date, with ranges such as **Last 7 days** or a **Custom range**), **Labels**, **Social Accounts**, **Platforms**, **Created by**, **Media** (text only, images or video), **Source** (RSS feed, repeating or imported posts) and **Publishing result** (partly published, or has failed accounts).
-- **Sort by**: choose an order such as **Created: newest first**, **Scheduled: earliest first** or **Published: newest first**.
+- **Search**: click the search icon and type to find posts by their text.
+- **Filters**: narrow the list by any of these:
 
-The filters you apply show as chips under the tabs. Remove one with its **x**, or click **Clear all**. If a filter leaves nothing, **Clear filter** brings the full list back.
+| Filter | Options |
+| --- | --- |
+| **Date** | **Filter by** **Created date**, **Scheduled date** or **Published date**, for **Today**, **Last 7 days**, **Last 30 days**, **Next 7 days**, **Next 30 days**, **This month** or a **Custom range**. |
+| **Labels** | One or more [labels](/guide/publishing/labels). |
+| **Social Accounts** | One or more accounts. |
+| **Platforms** | One or more networks. |
+| **Created by** | The team member who created the post. |
+| **Media** | **Text only**, **Images** or **Video**. |
+| **Source** | **RSS feed**, **Repeating** or **Imported** posts. |
+| **Publishing result** | **Partly published** or **Has failed accounts**. |
+| **Trash** | Show posts in the trash. See [Delete and restore posts](/guide/publishing/delete-and-restore). |
+
+- **Sort By**: **Default order**, **Created: newest first** or **oldest first**, **Scheduled: earliest first** or **latest first**, **Published: newest first** or **oldest first**, or **Updated: newest first**.
+
+The filters you apply show as chips under the tabs. Remove one with its **x**, or click **Clear all**. When a filter leaves nothing, **No posts found.** appears with **Clear filter**.
 
 ## Open and edit a post
 
-Click a row to open the post in the composer. You can edit drafts, scheduled posts and posts that need approval. Published and failed posts open read-only (posts in history cannot be edited), as do posts in the trash. Click the media thumbnail to preview the media without opening the post.
+Click a row to open the post in the composer. You can edit drafts, scheduled posts and posts that need approval. Published and failed posts open read-only ("Posts in history cannot be edited."), as do posts in the trash.
 
-To change a published post, duplicate it and edit the copy.
+To change something that has already been published, duplicate the post and edit the copy.
 
 ## Post actions
 
 Open the **More actions** menu (three dots) at the end of a row:
 
-- **Duplicate**: makes a copy of the post as a new draft.
-- **Delete**: moves the post to the trash, or deletes it from the social networks too. See below.
-- **Restore**: brings a post back from the trash.
-- **Copy UUID**: copies the post's ID for use with the [REST API](/quickstart). Only shown when your workspace can use the API.
+| Action | What it does |
+| --- | --- |
+| **Duplicate** | Makes a copy of the post as a new draft. |
+| **Delete** | Moves the post to the trash, or deletes it from the networks too. |
+| **Restore** | Brings a post back from the trash. |
+| **Copy UUID** | Copies the post's ID for use with the [REST API](/quickstart). Shown when your workspace can use the API. |
 
 These actions need the **Admin** or **Member** role.
 
-## Delete posts
+## Select several posts
 
-<Steps>
-  <Step title="Choose the posts">
-    Use **Delete** in a row's menu, or tick several rows and click the bin icon in the bar that appears.
-  </Step>
-  <Step title="Choose where to delete from">
-    For posts that have been published, choose **From application only**, **From application and social platforms**, or **From social platforms only**. If a network doesn't support deleting that type of post, a note tells you.
-  </Step>
-  <Step title="Confirm">
-    Click **Delete**.
-  </Step>
-</Steps>
+Tick the boxes on several rows to select them, then use the bin button in the bar that appears to delete them together. See [Delete and restore posts](/guide/publishing/delete-and-restore).
 
-Posts deleted from the application go to the trash first. To see them, open **Filters** and switch on **Trash**. Deleting a post from the trash deletes it permanently.
+## Bring in posts from your networks
 
-<Warning>
-Deleting from the social platforms removes the post from the network itself. That can't be undone from here.
-</Warning>
+**Import Existing Posts**, at the top of the page, brings recent posts from Facebook, Instagram or TikTok into your workspace. See [Import existing posts](/guide/publishing/import-posts).
 
-## Approve posts
+## Empty list
 
-If you have the **Can approve** permission, open a post from the **Needs approval** tab and click **Approve**. The post is then scheduled for its time. See [Create a post](/guide/publishing/create-a-post#approval).
-
-## Repeating posts
-
-The **Repeated Posts** tab lists posts set to repeat, with their **Frequency** (every so many days), **Start Date**, **End Date** and accounts. From a row you can view the dates the post is scheduled for, edit the repetition (**Repeat Frequency (Days)** and **Repeat Until**), or delete the repetition. You set a repeat when you schedule a post, with **Repeat this post**.
-
-## Import existing posts
-
-**Import Existing Posts**, at the top of the page, brings recent posts from a connected Facebook Page, Instagram or TikTok account into your workspace so you can reuse or republish them.
-
-1. Click **Import Existing Posts**.
-2. Choose the account under **Select Account** and the **Number of Posts to Import** (up to 60).
-3. Click **Import**.
-
-If the account needs reconnecting, you see a message asking you to re-authenticate it first.
+A brand-new workspace shows **No posts yet**, with a prompt to write your first post or, if no account is connected yet, to connect one first.
 
 ## Related
 
-- [Create a post](/guide/publishing/create-a-post)
 - [Calendar](/guide/publishing/calendar)
-- [Bulk posts and RSS campaigns](/guide/publishing/bulk-posts-and-rss)
+- [Failed posts](/guide/publishing/failed-posts)
+- [Delete and restore posts](/guide/publishing/delete-and-restore)

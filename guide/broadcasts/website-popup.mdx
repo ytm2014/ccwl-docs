@@ -1,0 +1,90 @@
+---
+title: "Website popup"
+sidebarTitle: "Website popup"
+description: "Add a WhatsApp sign-up popup to your website that collects visitors' consent and opens a chat, recording their WhatsApp opt-in once they message you."
+keywords: ["website popup", "whatsapp popup", "whatsapp opt-in", "embed code", "lead capture", "consent", "growth tools", "sign-up form"]
+---
+
+A website popup is a growth tool that invites visitors on your website to stay in touch on WhatsApp. The visitor leaves their phone number and agrees to receive marketing messages, then WhatsApp opens with a message ready to send. Once they send it, their WhatsApp opt-in is recorded, so your marketing templates and broadcasts can reach them.
+
+<Note>
+Don't see **Website popup** as a type when you create a growth tool? Your plan or your platform doesn't include it yet, or the selected channel isn't a WhatsApp number. Popups need a connected WhatsApp number.
+</Note>
+
+## Create a popup
+
+<Steps>
+  <Step title="Open Growth tools">
+    In the sidebar, open **Salesbot** > **More** > **Growth tools**, and select your WhatsApp number in the channel picker.
+  </Step>
+  <Step title="Start a new tool">
+    Click **New growth tool**, enter a **Name**, and choose **Website popup** as the **Type**.
+  </Step>
+  <Step title="Set the prefilled message">
+    Enter a short code in **Prefilled message (keyword)**, such as `SHOP`. For a popup it becomes the start of each visitor's confirmation code.
+  </Step>
+  <Step title="Fill in the popup">
+    Complete the fields in the table below and turn on **Enable this popup**.
+  </Step>
+  <Step title="Choose a flow (optional)">
+    In **Starts flow (optional)**, pick a flow to greet people who arrive through the popup.
+  </Step>
+  <Step title="Create it">
+    Click **Create**.
+  </Step>
+</Steps>
+
+| Field | What it does |
+| --- | --- |
+| **Enable this popup** | Shows the popup on your website. While it is off, the popup doesn't appear. |
+| **Headline** | The popup's title, up to 90 characters. Starts as *Stay in touch on WhatsApp*. |
+| **Description** | A short explanation, up to 300 characters. |
+| **Button label** | The button text, up to 40 characters. Starts as *Continue to WhatsApp*. |
+| **Website origins (one per line)** | The websites the popup may run on, for example `https://shop.example.com`. Up to 20. Required while the popup is enabled. The popup refuses to load on any other site. |
+| **Additional consent wording (optional)** | Extra text added after the standard consent line, up to 200 characters. |
+| **Show after (seconds)** | How long a visitor is on the page before the popup appears, from 0 to 300. Default 5. |
+| **Remember dismissal (days)** | How long the popup stays hidden for a visitor who closed it, from 1 to 365. Default 14. |
+
+The consent line always names your business, says the messages are WhatsApp marketing, and tells people they can reply STOP at any time. You can add to it, but not remove it.
+
+## Add it to your website
+
+On the popup's card, open the **...** menu and click **Copy embed code**. Paste the code into your website's pages, as you would any other snippet, on a site you listed under **Website origins**.
+
+The card shows a **Website popup · Enabled** or **Website popup · Disabled** badge.
+
+## What the visitor sees and does
+
+1. After the delay you set, the popup appears with your headline, description and the consent line.
+2. The visitor enters their phone number (and optionally their name), ticks the consent box and clicks your button.
+3. WhatsApp opens with a message ready to send: the consent wording and a personal confirmation code. Saving the form doesn't send them anything.
+4. The visitor sends the message to your WhatsApp number.
+
+## What gets recorded
+
+- When the form is sent, the visitor's consent is stored as evidence, and a contact is created for a new number.
+- When their WhatsApp message with the code arrives, the opt-in is confirmed. If the contact had no opt-in source yet, **Opt-in through** shows that it came from the website popup.
+- If you chose a flow, it starts for them.
+
+Only a confirmed opt-in counts. Someone who fills in the form but never sends the WhatsApp message isn't opted in, because nothing proves the number is theirs.
+
+## Limits and protection
+
+- A visitor's repeated submissions with the same number and wording count once.
+- Each visitor (by IP address) can sign up a limited number of times per hour, and each workspace has a daily maximum of popup sign-ups.
+- If your plan's contact limit is reached, new sign-ups are refused and the visitor sees "Temporarily unavailable."
+
+## Troubleshooting
+
+| Message or problem | What to do |
+| --- | --- |
+| Connect a WhatsApp number before creating a popup. | Popups need a connected, authorised WhatsApp number. Reconnect it in **Accounts**. |
+| Add the website origin where this popup will appear. | Enter at least one address under **Website origins** before enabling the popup. |
+| The popup doesn't appear on my site. | Check that **Enable this popup** is on, that the site's address exactly matches a listed origin (including `https://` and any `www.`), and that you haven't dismissed it yourself within the **Remember dismissal** period. |
+| Sign-ups don't show an opt-in. | The visitor has to send the WhatsApp message. Until then, the opt-in isn't confirmed. |
+
+## Related
+
+- [Growth tools: links and QR codes](/guide/broadcasts/growth-tools)
+- [Choose a broadcast audience](/guide/broadcasts/audiences)
+- [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits)

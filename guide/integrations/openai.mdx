@@ -1,0 +1,89 @@
+---
+title: "OpenAI"
+description: "Connect your OpenAI API key so AI Reply steps run on OpenAI models, with file search, web search, reasoning effort and vector stores."
+keywords: ["OpenAI", "GPT", "API key", "AI replies", "vector store", "file search", "reasoning effort", "web search"]
+---
+
+The **OpenAI** card on the [Integrations](/guide/integrations/overview) page connects your own OpenAI account. Your flows' **AI Reply** steps can then run on OpenAI models, billed to your OpenAI account. OpenAI supports every capability the AI step offers: **File search**, **Web search**, **Reasoning effort**, **Functions** and **CRM contact tools**. For how your own key fits with the built-in AI, see [AI providers](/guide/integrations/ai-providers).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **AI** tab.
+
+<Note>
+Don't see **OpenAI**, or does connecting say your plan uses the built-in AI? Your plan or your platform doesn't include your own AI keys.
+</Note>
+
+## Connect OpenAI
+
+<Steps>
+  <Step title="Create a key at OpenAI">
+    Sign in to the OpenAI platform at platform.openai.com. Under **API keys**, create a new secret key and copy it. It starts with `sk-`.
+  </Step>
+  <Step title="Paste it">
+    In the sidebar, open **Integrations** > **OpenAI**. Under **API credentials**, paste the key into **API key**.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The key is checked with OpenAI first; the page then confirms "OpenAI connected." and the card shows **Connected**.
+  </Step>
+</Steps>
+
+To change the key later, paste the new one and click **Save & reconnect**.
+
+## Models
+
+The **Capabilities** panel lists the models you can pick in the **AI Reply** step under **Models:**, and the one used when you don't choose under **Default:**. Today these are:
+
+| Model | Notes |
+| --- | --- |
+| `gpt-6-luna` | Default. |
+| `gpt-6.1-sol` | |
+| `gpt-6-astra` | |
+| `gpt-5.6-terra` | |
+| `gpt-5.6-sol` | |
+
+The list on the page is always the current one. Steps that still name a retired OpenAI model are moved to its replacement automatically.
+
+All of these models support **Reasoning effort**. In the **AI Reply** step you can choose how much the model thinks before it answers: the GPT-6 models accept low, medium, high, xhigh and max. A higher effort gives more considered replies but takes longer and costs more at OpenAI.
+
+## Vector stores
+
+Once OpenAI is connected, a **Vector stores** tab appears next to **Configuration** (where your plan includes AI knowledge). A vector store groups documents the AI can search when it writes a reply.
+
+<Steps>
+  <Step title="Create a store">
+    Under **Create a vector store**, enter a **Store name** (for example "Product docs") and click **Create**.
+  </Step>
+  <Step title="Add content">
+    In the store, click **+ Upload file** to add a PDF, TXT or MD file of up to 20 MB, or paste a web address and click **Add URL**. The page is fetched and indexed for you.
+  </Step>
+  <Step title="Use it in a step">
+    In an **AI Reply** step, turn on file search and pick the stores the AI may search.
+  </Step>
+</Steps>
+
+Under **Stores**, each store shows a status dot (green when ready, amber while processing, red on an error), its number of files, and each file's name and source (PDF, Text or URL). Click **Delete** and confirm to remove a store and its indexed files from OpenAI; this can't be undone.
+
+To manage your workspace's knowledge base in one place, see [AI knowledge](/guide/automation/overview).
+
+## What it unlocks
+
+- OpenAI models in the **AI Reply** step of your [flows](/guide/automation/overview).
+- Document search from your vector stores, and web search, inside AI replies.
+- With your own key connected, AI replies run on it first and don't use your plan's monthly AI allowance.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The key is removed, and **AI Reply** steps fall back to the built-in AI where your plan has it. Your vector stores stay listed.
+
+## Troubleshooting
+
+- **"Could not reach the OpenAI API: …"** OpenAI refused the key. Check it hasn't been deleted, that your OpenAI project has billing set up, then paste it again.
+- **The card shows Error.** OpenAI rejected the saved key during use. Create a new key and click **Save & reconnect**.
+- **"Connect the provider first to manage vector stores."** Connect OpenAI before you open **Vector stores**.
+- **A file stays amber or turns red.** OpenAI is still processing it, or couldn't read it. Delete the file's store if needed and upload a clean PDF, TXT or MD file.
+
+## Related
+
+- [AI providers](/guide/integrations/ai-providers)
+- [Google Gemini](/guide/integrations/gemini)
+- [Flows and AI replies](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

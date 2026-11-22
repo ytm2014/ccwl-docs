@@ -1,0 +1,81 @@
+---
+title: "Bulk posts from a CSV file"
+sidebarTitle: "Bulk posts"
+description: "Schedule many posts at once by uploading a CSV file with one row per post."
+keywords: ["bulk posts", "CSV", "bulk scheduling", "spreadsheet", "upload", "bulk upload"]
+---
+
+**Bulk Posts** schedules a batch of posts from a CSV file: one row per post, with its text, date and time, and optional media, post type, repetition, Pinterest and YouTube titles and a first comment. Every post in the file goes to the accounts you choose on the page.
+
+In the sidebar, open **Posts** > **Bulk Posts**.
+
+<Note>
+Don't see **Bulk Posts**? Your plan or your platform doesn't include it yet, or your role doesn't give you access. Admins have it; for other members, access comes with the role their admin gives them.
+</Note>
+
+## Prepare the CSV file
+
+Click **Click to open CSV template** on the Bulk Posts page to download the template, and fill in one row per post. The first row is the header and is skipped. The columns, in order, are:
+
+| Column | Content |
+| --- | --- |
+| 1 | The post text. |
+| 2 | Year, for example `2026`. |
+| 3 | Month. |
+| 4 | Day of the month. |
+| 5 | Hour. |
+| 6 | Minute. |
+| 7 | Post type: `post`, `reel`, `story` or `livestream`. Empty means `post`. |
+| 8 | A link to an image or video to attach (optional). |
+| 9 | Number of repetitions (optional). |
+| 10 | Interval between repetitions (optional). |
+| 11 | Pinterest title (optional). |
+| 12 | Pinterest link (optional). |
+| 13 | YouTube video or Short title (optional). |
+| 14 | First comment (optional). |
+
+Save it as a CSV file. Files made before the first-comment column existed (13 columns) still work.
+
+<Tip>
+Keep the media links public and pointing straight at the image or video file, so they can be downloaded when the post is created.
+</Tip>
+
+## Upload and schedule
+
+<Steps>
+  <Step title="Choose the accounts">
+    Use the account picker to select the accounts every post in the file goes to.
+  </Step>
+  <Step title="Set network options">
+    Options for the selected networks appear under the accounts, as in the composer: for example a Pinterest board, TikTok privacy or a Reddit title. See [Networks: options and limits](/guide/publishing/networks/overview).
+  </Step>
+  <Step title="Add the file">
+    Drag the CSV file onto the upload area, or click **Browse**.
+  </Step>
+  <Step title="Schedule">
+    Click **Schedule Posts**. Each row becomes a post scheduled for its date and time, and you are taken to the posts list.
+  </Step>
+</Steps>
+
+A message confirms "Bulk Posts Created Successfully". The new posts behave like any scheduled post: you can open, edit, reschedule or delete them.
+
+## Check the results
+
+- Open **Posts** > **All Posts** > **Scheduled**, or look at the [calendar](/guide/publishing/calendar).
+- Open a few of the new posts to check them for errors, such as text too long for a network. See [Preview and checks](/guide/publishing/preview-and-checks).
+
+## Troubleshooting
+
+| Message | What to do |
+| --- | --- |
+| **Please select account** | Choose at least one account before scheduling. |
+| **Please upload CSV file** | Add the file first. |
+| **Invalid CSV format** / **Required columns are missing** | Start again from the template and keep the column order. |
+| **Error uploading CSV file** | Check the file is saved as CSV and try again. |
+| A row's post type is refused | Use one of `post`, `reel`, `story` or `livestream`, and one the selected networks accept. |
+
+## Related
+
+- [RSS campaigns](/guide/publishing/rss-campaigns)
+- [Posts list](/guide/publishing/posts)
+- [Repeating posts](/guide/publishing/repeating-posts)

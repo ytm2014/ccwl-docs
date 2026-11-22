@@ -1,0 +1,102 @@
+---
+title: "WhatsApp message templates"
+sidebarTitle: "Message templates"
+description: "Manage the WhatsApp templates Meta must approve: sync them, read their status, fix rejections, check performance, and duplicate or delete them."
+keywords: ["whatsapp templates", "message templates", "template approval", "meta review", "rejected template", "pending template", "refresh templates", "template performance", "delete template"]
+---
+
+WhatsApp only lets a business message someone outside the 24-hour customer-service window with a **message template** that Meta has approved. Every WhatsApp broadcast sends one, and flows and the inbox use them too when the window is closed. The templates page is where you see all of them, follow their review, and build new ones.
+
+## Open the templates page
+
+In the sidebar, open **Salesbot** > **More**, then **Message templates** in the WhatsApp group. You can also click **WhatsApp templates** on the **Broadcasts** page.
+
+Templates belong to a WhatsApp number's business account, so select a **WhatsApp** channel in the channel picker first. With another channel selected, the page explains that templates are for WhatsApp. All numbers on the same WhatsApp business account share the same templates.
+
+<Note>
+Don't see **Message templates**? Your plan or your platform doesn't include it yet, or your role can't view templates. If the page says template management is not available for your account, ask your workspace admin for access.
+</Note>
+
+## Who can do what
+
+| Action | Who can do it by default |
+| --- | --- |
+| View templates and their status | Admins, members and viewers |
+| Create, edit, duplicate, submit and reset templates | Admins and members |
+| Delete templates | Admins |
+
+A member who is limited to some channels can't create, edit or delete templates, because a template changes what every number on the business account can send. They see only the templates of their own numbers. Building templates also depends on your platform: without it, the page lists templates but has no **Add template** or **Browse library**.
+
+## The templates list
+
+The header has three buttons:
+
+- **Refresh templates** fetches every template and its review status from WhatsApp. It submits nothing. If you click it twice within a short time, you are told templates were synced a moment ago. The time of the last sync shows under the list.
+- **Browse library** opens the copy library (see [Create a WhatsApp template](/guide/broadcasts/create-template#start-from-the-copy-library)).
+- **Add template** opens the template builder.
+
+Two tabs split the list: **Your templates** and **System** (templates the product needs for its own features; see [System templates](/guide/broadcasts/system-templates)). Each tab shows its count. Use **Search templates** to find one by name, and **Sort By** to order by **Created At · Latest First**, **Created At · Oldest First**, **Name · A–Z** or **Name · Z–A**.
+
+Each row shows:
+
+| Column | What it shows |
+| --- | --- |
+| **Name** | The template's name. System templates carry **Managed**, or **Customized** once you edited one. |
+| **Category** | **Marketing**, **Utility** or **Authentication**. |
+| **Language** | The template's language. |
+| **Status** | Its review status (below). |
+| **Sent**, **Delivered**, **Read**, **Replied** | All-time counts for this template, with read and reply rates. |
+| **Actions** | **View performance**, **Preview**, and the **...** menu. |
+
+## Template statuses
+
+| Status | Meaning | What to do |
+| --- | --- | --- |
+| **Draft** | Saved here, not yet confirmed by WhatsApp. | Wait, or open and save it again. |
+| **Not submitted** | Saved, but it never reached WhatsApp, for example because the number's connection had no usable access token. The reason shows under the status. | Click **Submit to WhatsApp** on the row. Reconnect the number first if the reason says so. |
+| **Pending** | Meta is reviewing it. | Wait, then click **Refresh templates**. |
+| **Approved** | Ready to send. Only approved templates appear in broadcasts, flows and the inbox. | Use it. |
+| **Rejected** | Meta refused it. Meta's reason shows under the status. | Click **Edit to fix**, change what the reason points at, and save to submit it again. |
+
+## Template performance
+
+Click **View performance** (the chart icon) on a row. The panel shows the template's **Last 30 days**: **Sent**, **Delivered**, **Read**, **Replied** and **Failed**, a daily chart, and **Recent failed sends** with the contact and WhatsApp's error for each. Counts include every send of the template: from broadcasts, flows, notifications and the inbox.
+
+**Replied** counts replies that quote the template message, such as a button tap or a swipe-reply. A free-text answer that doesn't quote the template isn't counted. Counts start from the day per-template analytics were introduced; there is no history before that.
+
+## Preview a template
+
+Click **Preview** (the eye icon) to see the template as it appears in WhatsApp, with its header, body, footer and buttons.
+
+## Row menu
+
+| Action | What it does |
+| --- | --- |
+| **Edit** | Opens the template in the builder. Saving submits the change to WhatsApp. |
+| **Duplicate** | Makes a copy with a free name ending in `_copy`. Use it to change a submitted template's name or language, which can't be edited. |
+| **Reset to default** | System templates only: puts back the product's wording and submits it again. |
+| **Delete template** | Deletes the template here **and at WhatsApp**, for every number on its business account. You are asked to confirm. System templates can't be deleted. |
+
+If WhatsApp refuses the delete, or the number that could reach the template is disconnected, nothing is deleted and the page shows why.
+
+## Where templates are used
+
+- **Broadcasts**: the Message step lists approved templates. See [Create a broadcast](/guide/broadcasts/create-broadcast).
+- **Inbox**: when the 24-hour window is closed, choose an approved template from **WhatsApp templates** in the reply box. **Manage templates** there brings you back to this page.
+- **Flows and sequences**: steps that message a contact on WhatsApp can send an approved template. See [Automation](/guide/automation/overview).
+
+## Troubleshooting
+
+| Message | What it means |
+| --- | --- |
+| WhatsApp refused template submissions for this business account. | The account itself is restricted. Check the connected business account and its restrictions in WhatsApp Manager; changing the wording may not help. |
+| Some WhatsApp templates could not be refreshed. | WhatsApp didn't answer for one of your numbers. Try again later, and check the number is still connected. |
+| Not sent to WhatsApp: the selected number's connection has no usable access token. | Reconnect the WhatsApp number, then click **Submit to WhatsApp**. |
+| This WhatsApp number already has a template with this name and language. | Pick another name, or edit the existing template. |
+
+## Related
+
+- [Create a WhatsApp template](/guide/broadcasts/create-template)
+- [System templates](/guide/broadcasts/system-templates)
+- [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits)
+- [Create a broadcast](/guide/broadcasts/create-broadcast)

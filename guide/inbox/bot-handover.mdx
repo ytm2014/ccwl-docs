@@ -1,0 +1,70 @@
+---
+title: "Take over from the bot"
+description: "Pause automated replies on a conversation, handle it yourself, and hand it back to the flow that was running."
+keywords: ["bot", "pause the bot", "resume the bot", "human takeover", "handover", "flow paused", "skip step", "end flow", "ai on", "ai off"]
+---
+
+Flows and AI replies can answer customers on their own. When a conversation needs a person, you can take it over: stop the bot for that one contact, answer yourself, and decide what happens to the automation afterwards. Everything here works per conversation; your flows keep running for everyone else.
+
+## Pause or resume the bot
+
+In the thread header, a badge shows **AI on** or **AI off** for this contact. Click **Pause the bot** to stop automated replies to them, and **Resume the bot** to let automations answer again.
+
+The **AI handling** quick filter in the conversation list shows conversations where the bot isn't paused and sent the last message, which is a quick way to check what the bot is doing on your behalf.
+
+Pausing and resuming needs the permission *Pause and resume the bot on a conversation*, which admins and members have unless a custom role removes it.
+
+## When your reply pauses a flow
+
+By default, replying to a customer while a flow is running for them counts as a takeover: the flow freezes where it is. It keeps its current step, the answers it has collected and the time left on any wait, and no new automation starts for that contact until someone hands it back. Your [conversation rules](/guide/inbox/conversation-rules) can change this to **Let the automation continue**, in which case your reply is just another message and the flow carries on.
+
+When a flow is paused this way, a card at the top of the thread names it (*Flow paused —* and the flow's name) with three buttons:
+
+| Button | What it does |
+| --- | --- |
+| **Resume** | Hands the conversation back. The automation carries on from the same step. |
+| **Skip step** | You answered that step yourself, so the flow continues from the next one. |
+| **End flow** | You finished it manually. The automation ends and won't repeat that work. |
+
+The same card appears on comment threads in the **Engagements** tab.
+
+## Closing a conversation with a paused flow
+
+If you mark the conversation done while a flow is still paused on it, a dialog asks *This conversation has a paused automation* and offers four choices:
+
+- Hand the conversation back, so the automation carries on from the same step.
+- Continue from the next step, because you answered this one yourself.
+- Leave it paused and decide later from the card in the thread.
+- End the automation, because you finished it manually.
+
+Your conversation rules pre-select one of these, but you always choose.
+
+## Handing back automatically
+
+Under **Handing a paused automation back**, your conversation rules decide whether a paused flow ever resumes on its own:
+
+| Option | What happens |
+| --- | --- |
+| **Only when someone hands it back** | The flow waits until someone clicks **Resume**. This is the default. |
+| **When the conversation is closed** | Marking the conversation done hands the flow back where it paused. |
+| **After a period of quiet** | The flow resumes once the conversation has been quiet for the number of hours you set. |
+| **Never — a paused flow can only be ended** | The flow stays paused until someone ends it. |
+
+Not every platform shows this section.
+
+## Stop all AI replies at once
+
+If AI answers need to stop everywhere, an admin can turn off **Let the AI reply** in the conversation rules. Every AI step stops immediately; the rest of each flow keeps running. See [Conversation rules](/guide/inbox/conversation-rules#ai-replies).
+
+## Common questions
+
+
+**The flow card disappeared.** Someone resumed, skipped or ended the flow, or it was handed back by your conversation rules.
+
+**Why didn't my reply pause anything?** Your rules may be set to **Let the automation continue**, or no flow was running for that contact.
+
+## Related
+
+- [Conversation rules](/guide/inbox/conversation-rules)
+- [Flows](/guide/automation/overview)
+- [Conversation status](/guide/inbox/status)

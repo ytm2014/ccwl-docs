@@ -1,0 +1,102 @@
+---
+title: "Payment gateways"
+description: "How payment gateways work: connect one, send payment links from the inbox or a flow, and start flows when a payment succeeds, fails or is refunded."
+keywords: ["payments", "payment link", "Request Payment", "checkout", "Stripe", "PayPal", "Paystack", "Razorpay", "MyFatoorah", "Mercado Pago", "Flutterwave", "payment webhook"]
+---
+
+The cards under the **Payments** tab of the [Integrations](/guide/integrations/overview) page connect a payment gateway, so you can collect payments inside conversations. You send a secure payment link (as a "Pay now" button), the contact pays on the gateway's own page, and the gateway tells your workspace whether the payment succeeded, failed or was refunded. This page covers what all gateways share; each gateway has its own page for its credentials.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
+
+<Note>
+Don't see the **Payments** tab, or does a card say **Not included in your plan**? Your plan or your platform doesn't include payments yet.
+</Note>
+
+## Available gateways
+
+| Gateway | Typical region | Webhook secret |
+| --- | --- | --- |
+| [Stripe](/guide/integrations/stripe) | Worldwide | From Stripe, after you add the webhook |
+| [PayPal](/guide/integrations/paypal) | Worldwide | A webhook ID from PayPal |
+| [Paystack](/guide/integrations/paystack) | Africa | Your secret key signs the events |
+| [Razorpay](/guide/integrations/razorpay) | India | You choose it in Razorpay |
+| [MyFatoorah](/guide/integrations/myfatoorah) | Middle East and North Africa | From the MyFatoorah portal |
+| [Mercado Pago](/guide/integrations/mercado-pago) | Latin America | From Mercado Pago |
+| [Flutterwave](/guide/integrations/flutterwave) | Africa and beyond | A hash you make up |
+
+You can connect more than one gateway and pick which one to use each time you ask for a payment.
+
+## Connect a gateway
+
+Every gateway follows the same pattern:
+
+<Steps>
+  <Step title="Enter the credentials">
+    In the sidebar, open **Integrations** and click the gateway's card. Fill in the **API credentials** fields, following the page's **Setup guide**. Every field is needed to connect; where a webhook secret or ID only exists after you add the webhook, type a temporary value for now (each gateway's page says when).
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The credentials are checked with the gateway first. The page then asks you to set the webhook URL in your gateway's dashboard.
+  </Step>
+  <Step title="Add the webhook">
+    The **Webhook endpoint** panel now shows a URL. Click **Copy** and add it as a webhook in the gateway's dashboard, so payments that succeed, fail or are refunded are reported back.
+  </Step>
+  <Step title="Finish the webhook settings">
+    If the gateway gives you a secret or ID for the webhook, paste it into the form and click **Save & reconnect**.
+  </Step>
+</Steps>
+
+Below the fields, a note lists the currencies the gateway supports. Test or live mode follows the keys you use, so use test keys while you set things up.
+
+## Ask for a payment
+
+Once a gateway is connected, there are two ways to send a payment link:
+
+### From a conversation
+
+In the inbox, click the card button (**Request a payment**) in the reply box. Pick the gateway, enter the amount, choose the currency, optionally say what it's for, and click **Send payment link**. The button only shows when a gateway is connected and you're allowed to reply. See [Inbox](/guide/inbox/overview).
+
+### From a flow
+
+Add the **Request Payment** step (under **E-commerce** in the flow builder):
+
+| Field | What to enter |
+| --- | --- |
+| **Gateway** | One of your connected gateways. |
+| **Amount** | The amount; it can use contact and order variables. |
+| **Currency** | One of the listed currencies, for example USD, EUR, GBP, NGN, INR or BRL. |
+| **Message (optional)** | Text sent with the link; it can use variables. |
+| **Button text** | The label of the button, "Pay now" by default. |
+
+See [Flows](/guide/automation/overview).
+
+## Follow the payment
+
+- Each connected gateway's page has a **Payments** panel counting payments that **Succeeded** and are **Pending**.
+- The **Recent delivery log** lists the latest payment events.
+- Three flow triggers react to payments made through your payment links: **Payment succeeded**, **Payment failed** and **Payment refunded**. Use them to thank the customer, send a receipt or follow up.
+- The same events (**Payment succeeded**, **Payment failed**, **Payment refunded**) can go to [Webhooks](/guide/integrations/webhooks), [Slack](/guide/integrations/slack) and [Zapier](/guide/integrations/zapier).
+
+Payments made outside your payment links (for example directly on your website) don't start these triggers. For store orders, use the store triggers of [Shopify](/guide/integrations/shopify) or [WooCommerce](/guide/integrations/woocommerce).
+
+## Disconnect
+
+Click **Disconnect** at the top of a gateway's page. All its credentials (including the webhook secret or ID) are removed, and it no longer appears in **Request a payment** or the **Request Payment** step.
+
+## Troubleshooting
+
+| Message or symptom | What to do |
+| --- | --- |
+| "Enter the …" | A required field is empty. Fill it in. |
+| "Could not reach the … API: …" | The gateway refused the credentials. Check you copied the right keys for the right mode, then try again. |
+| A payment stays **Pending** | The webhook isn't reaching your workspace. Check the webhook URL and secret in the gateway's dashboard, and that the right events are ticked. |
+| "Choose a supported currency." | Pick a currency from the list. |
+| "The payment amount must be greater than zero." | Enter a positive amount, or check the variable you used. |
+| The step says no payment gateway is connected | Connect a gateway first. |
+| The card shows **Error** | The gateway rejected the saved keys, for example after you rolled them. Paste new ones and click **Save & reconnect**. |
+
+## Related
+
+- [Inbox](/guide/inbox/overview)
+- [Flows](/guide/automation/overview)
+- [Shopify](/guide/integrations/shopify)
+- [Integrations](/guide/integrations/overview)

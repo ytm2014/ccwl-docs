@@ -1,88 +1,53 @@
 ---
-title: "Calendar and shared calendars"
-sidebarTitle: "Calendar"
-description: "See your posts by month or week, move them by dragging, and share a read-only calendar with clients."
-keywords: ["calendar", "month", "week", "reschedule", "drag and drop", "shared calendar", "client approval"]
+title: "Calendar"
+description: "See your posts by month or week, filter them, start a post on a day, and reschedule by dragging."
+keywords: ["calendar", "month", "week", "reschedule", "drag and drop", "content calendar", "filters"]
 ---
 
-import { AppName } from "/snippets/app-name.jsx";
+The **Calendar** shows your posts on the days and times they are scheduled or were published. Use it to spot gaps, move posts around and start a new post on a particular day. Every member of the workspace can view it.
 
-The **Calendar** shows your posts on the days and times they are scheduled or were published. Use it to spot gaps, move posts around, and start a new post on a particular day. A shared calendar lets people outside your workspace, such as a client, see the plan through a link and, if you allow it, approve posts.
-
-In the sidebar, open **Calendar**. Every member of the workspace can view it.
+In the sidebar, open **Calendar**.
 
 ## Month and week views
 
-- Switch between **Month** and **Week** at the top left.
-- Use **Previous**, **Next** and **Today** to move through dates.
-- In the month view, a busy day shows **+N more**; click it to see the rest.
-- Use **Filters** to show only certain labels, accounts, platforms and so on, the same filters as the [Posts list](/guide/publishing/posts#search-filter-and-sort).
+- Switch between **Month** and **Week** at the top.
+- Use the arrows to move back and forward, and **Today** to return to the current date.
+- In the month view, a busy day shows **+... more**; click it to see the rest.
+- Use **Filters** to show only certain labels, accounts, platforms and so on. These are the same filters as the [posts list](/guide/publishing/posts#search-filter-and-sort).
 
-Each card shows the post's text, the networks it goes to, its time and its status. Click a card to open the post. Cards marked **Upcoming repeat** are future dates of a [repeating post](/guide/publishing/posts#repeating-posts); clicking one opens the original post.
+## Post cards
+
+Each card shows the post's text, the networks it goes to, its time and its status, for example **Scheduled**, **Needs approval**, **Published** or **Failed**. A partly published post shows its score, such as **Published (2 of 3)**.
+
+- Click a card to open the post in the composer.
+- Cards marked **Upcoming repeat** are future dates of a [repeating post](/guide/publishing/repeating-posts). Clicking one opens the original post.
 
 ## Add a post on a day
 
-Hover over a day (month view) or a time slot (week view) and click **+**. The composer opens with that date and time filled in. This needs the **Admin** or **Member** role, and past dates are not available.
+Hover over a day (month view) or a time slot (week view) and click **+**. The composer opens with that date and time filled in. This needs the **Admin** or **Member** role, and past dates aren't available.
 
 ## Reschedule by dragging
 
-Drag a card to another day or time slot to move it. In the week view the post lands on the nearest quarter hour under your pointer. The new time is saved when you drop the card, and a message confirms it.
+Drag a card to another day or time slot to move it. In the week view, the post lands on the nearest quarter hour under your pointer. The new time is saved when you drop the card, and a message confirms it.
 
-You can drag drafts, scheduled posts and posts that need approval. Published posts, posts being published and upcoming repeats can't be moved. Dragging needs the **Admin** or **Member** role.
+- You can drag drafts, scheduled posts and posts that need approval.
+- Published posts, posts being published and upcoming repeats can't be moved.
+- Dragging needs the **Admin** or **Member** role.
 
-## Shared calendars
+If the post's accounts have their own times, you are asked whether to **Keep the gaps between accounts** or **Give every account the new time**. See [Schedule or publish a post](/guide/publishing/schedule-a-post#give-each-account-its-own-time).
 
-A shared calendar is a link to a calendar of selected accounts and dates that anyone with the link can open without signing in to <AppName />.
+## Share the calendar
 
-### Create a shared calendar
+Click **Shared Calendar** to create a read-only link of selected accounts and dates for a client, who can also approve posts if you allow it. See [Shared calendars](/guide/publishing/shared-calendars).
 
-<Steps>
-  <Step title="Open the shared calendars">
-    On the **Calendar** page, click **Shared Calendar**. The list shows your existing shared calendars.
-  </Step>
-  <Step title="Start a new one">
-    Click **Create Shared Calendar Setup**.
-  </Step>
-  <Step title="Fill in the form">
-    Set the fields below.
-  </Step>
-  <Step title="Turn on the link">
-    Click **Enable Link Sharing**. The calendar is saved and its link is created.
-  </Step>
-</Steps>
+## Tips
 
-| Field | What it does |
-| --- | --- |
-| **Shared calendar name** | A name to recognise it by. |
-| **Start Date** | The first date the shared calendar shows. |
-| **End Date** | The last date the shared calendar shows. |
-| **Filter by Profile** | The accounts whose posts appear. Search for accounts, or pick a group under **Select Group (optional)**. |
-| **Filter Posts by Tags** | Only show posts with these labels. |
-| **Enable/Disable Post Approval** | **Allowed** lets people with the link approve or reject posts. **Not allowed** makes the calendar view-only. |
-| **Shared calendar expiration date** | The date the link stops working. |
-
-### Manage shared calendars
-
-The shared calendar list shows each calendar's accounts, labels, **Link Sharing**, **Post Approval**, **Expiration Date** and **Date Created**.
-
-- Turn **Link Sharing** off to stop the link working, and on again to restore it.
-- Turn **Post Approval** on or off.
-- From a row's menu, use **Copy link** to copy the address to send, edit the calendar, or **Delete** it.
-
-### What the recipient sees
-
-The recipient opens the link and sees the posts for the chosen accounts and dates, in a **Month** or **Week** view. Clicking a post shows a preview.
-
-When post approval is allowed, posts that need approval show **Approve Post** and **Reject Post**. The recipient confirms the choice, and the post is then scheduled or rejected. Posts whose scheduled time has passed can't be approved.
-
-If comments are switched on for your platform, the recipient can also **Leave a comment** with their name. The comment is sent to your team.
-
-<Tip>
-Use post approval with team members who don't have **Can approve**: their scheduled posts wait as **Needs approval**, and the client can approve them from the shared calendar.
-</Tip>
+- Use the week view to see exact times and how close posts are to each other.
+- Filter by a label to see one campaign or client at a time.
+- **Home** shows the next two days in **Today & tomorrow**, with free slots you can fill and **Open the calendar**.
 
 ## Related
 
-- [Create a post](/guide/publishing/create-a-post)
-- [Manage your posts](/guide/publishing/posts)
+- [Shared calendars](/guide/publishing/shared-calendars)
+- [Schedule or publish a post](/guide/publishing/schedule-a-post)
 - [Posting schedule and queue](/guide/publishing/posting-schedule)

@@ -1,0 +1,87 @@
+---
+title: "Sales inbox overview"
+sidebarTitle: "Overview"
+description: "How the messaging side of your workspace fits together: the Inbox, Contacts, Flows, Broadcasts and the More page."
+keywords: ["sales inbox", "salesbot", "messaging", "overview", "inbox", "contacts", "flows", "broadcasts", "more", "workspace channel"]
+---
+
+import { AppName } from "/snippets/app-name.jsx";
+
+The messaging side of <AppName /> answers and follows up with the people who write to you on WhatsApp, Messenger, Instagram, TikTok, Telegram, SMS, your website chat and the other networks your platform supports. It has two entry points in the sidebar: **Inbox**, where your team reads and answers every conversation, and **Salesbot**, the menu that holds everything around those conversations: your contacts, automated flows, broadcasts and settings.
+
+<Note>
+Don't see **Inbox** or **Salesbot**? Your plan or your platform doesn't include it yet, or your team role doesn't give you access to it.
+</Note>
+
+## Where everything lives
+
+| Sidebar item | What you do there |
+| --- | --- |
+| **Inbox** | Read and answer direct messages, comments, mentions and reviews from every connected channel. A red count shows unread conversations. |
+| **Salesbot** > **Overview** | See how your messaging is doing: conversations, replies, top flows and what needs attention. See [Overview dashboard](/guide/analytics/sales-overview). |
+| **Salesbot** > **Contacts** | The people you talk to, their stage, tags, notes and history. |
+| **Salesbot** > **Flows** | Automated replies and conversations that run without your team. |
+| **Salesbot** > **Broadcasts** | One message to many contacts, now or later. |
+| **Salesbot** > **More** | Every other messaging page, grouped as cards (see below). |
+| **Accounts** | Connect the profiles, numbers, bots and widgets that messages arrive on. |
+
+You only see the items your role allows. For example, **Overview** needs permission to view reports and **Flows** needs permission to view automations.
+
+### The More page
+
+In the sidebar, open **Salesbot** > **More**. Each card opens a page and, where it helps, shows a short count such as the number of scheduled broadcasts or pending templates.
+
+| Group | Cards |
+| --- | --- |
+| **Grow** | **Broadcasts**, **Growth tools**, **Appointments**, **Sequences** |
+| **WhatsApp** | **Numbers**, **Message templates**, **Forms** |
+| **Channels** | **Channel settings**, **Live chat widget**, **Conversation rules** |
+| **Reports** | **Activity**, **Ad attribution**, **Pipeline**, **Audit log** |
+| **Shortcuts** | **Integrations**, **AI Knowledge**, **Team roles** |
+
+A card only appears when your plan, your platform and your role include that page. If nothing is open to you, the page says *Nothing else is open to you in Salesbot yet.*
+
+## The workspace channel
+
+The Inbox shows every channel at once. Most other messaging pages (flows, broadcasts, growth tools, channel settings) work on one channel at a time. At the top of those pages, **Workspace channel** lets you pick the platform and then the profile on it; the page reloads with that channel's data. If no channel is connected yet, those pages offer **Set up a channel**, which takes you to your accounts.
+
+<Tip>
+A personal TikTok account can't be used for messages, comments or automations. When you pick one, the page explains how to switch it to a TikTok Business account and reconnect it. See [TikTok](/guide/channels/tiktok).
+</Tip>
+
+## How a conversation flows through the area
+
+1. A customer writes on a connected [channel](/guide/channels/overview). The message lands in the [Inbox](/guide/inbox/the-inbox) and, if they are new, they are added to your [contacts](/guide/contacts/overview).
+2. A [flow](/guide/automation/overview) or the AI may answer first. Your [conversation rules](/guide/inbox/conversation-rules) decide what happens when a teammate steps in.
+3. Someone on your team [replies](/guide/inbox/reply), [assigns](/guide/inbox/assign) the conversation, leaves [notes](/guide/inbox/notes) and marks it [done](/guide/inbox/status) when it's handled.
+4. Later you reach the same people again with [broadcasts](/guide/broadcasts/overview) or book them in through [appointments](/guide/appointments/overview).
+
+## Who can use the inbox
+
+Workspace admins can do everything. A member gets the inbox when an admin gives them inbox access; without a custom role, a member can do everything except the admin-only actions, such as connecting channels and deleting conversations for good. Viewers have no inbox unless a custom role lets them read it, and a viewer can never reply.
+
+Custom team roles can grant or remove each of these inbox permissions:
+
+| Permission | What it allows |
+| --- | --- |
+| View conversations | Open the Inbox and read threads. |
+| Send replies | Use the reply box, AI suggestions, voice notes and payment requests. |
+| Assign conversations to teammates | Change the conversation's owner. |
+| Mark conversations done and reopen them | Change the status. |
+| Manage saved replies | Create, edit and delete saved replies. Anyone with access can insert them. |
+| Pause and resume the bot on a conversation | Take over from automations and hand back. |
+| Block and unblock contacts | Stop or allow messages from a contact. |
+| Archive and unarchive conversations | Move threads in and out of **Archived**. |
+| Delete archived conversations permanently | Remove a thread for good. Admin only unless a role grants it. |
+| See comments, mentions and reviews of every account | Use the **Engagements** tab across all accounts. |
+
+A role can also limit someone to certain channels; they then see only conversations on those channels. Where your platform offers it, a role can also limit a member to the conversations assigned to them. See [Roles and permissions](/guide/account/roles-and-permissions).
+
+## Related
+
+- [The Inbox](/guide/inbox/the-inbox)
+- [Messaging channels](/guide/channels/overview)
+- [Contacts](/guide/contacts/overview)
+- [Flows](/guide/automation/overview)
+- [Broadcasts](/guide/broadcasts/overview)
+- [Overview dashboard](/guide/analytics/sales-overview)

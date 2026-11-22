@@ -1,0 +1,111 @@
+---
+title: "Create a broadcast"
+sidebarTitle: "Create a broadcast"
+description: "Build a broadcast in four steps: audience, message, schedule and review, then test it and send it or submit it for approval."
+keywords: ["create broadcast", "new broadcast", "campaign", "broadcast message", "whatsapp template broadcast", "sms broadcast", "telegram broadcast", "send test message", "personalise"]
+---
+
+The broadcast composer walks you through four steps, one open at a time: **Choose your audience**, **Choose your message**, **When should it send?** and **Review & send**. A closed step shows a one-line summary and a pencil button to open it again. Next to the steps you see a live **Preview** of the message and a panel with the audience count and a list of **Checks**.
+
+<Note>
+Creating a broadcast needs the permission to create broadcast drafts, which admins and members have by default. Queueing it to send needs the permission to schedule broadcasts (admins by default). Without it, your broadcast is submitted for approval instead. See [Scheduling and approval](/guide/broadcasts/scheduling-and-approval).
+</Note>
+
+## Before you start
+
+1. In the sidebar, open **Salesbot** > **Broadcasts**.
+2. In the channel picker at the top of the page, select the channel you want to send from. The broadcast is fixed to that channel: you can't change it later.
+3. Click **New broadcast**.
+
+On WhatsApp, make sure you have at least one approved [message template](/guide/broadcasts/message-templates), because a WhatsApp broadcast can only send a template.
+
+## Step 1: Choose your audience
+
+The **Channel** field shows the selected channel, marked **Fixed for this broadcast**. Then choose one of:
+
+- **Contact segment**: all contacts, active contacts, or one of your saved segments. Each option shows how many contacts it reaches.
+- **Retarget a past broadcast**: re-message people who received an earlier broadcast on this channel, chosen by how they engaged, for example everyone who read it but never replied.
+
+On WhatsApp, the step also warns you when part of the audience has no recorded WhatsApp opt-in, and when the number's messaging limit means not everyone can be reached today.
+
+The details of each option, and who is always left out, are on [Choose a broadcast audience](/guide/broadcasts/audiences). Click **Continue**.
+
+## Step 2: Choose your message
+
+Enter a **Campaign name**, for example *Spring Launch*. Only your team sees it.
+
+What comes next depends on the channel.
+
+### WhatsApp: pick a template
+
+1. In **Message template**, select a template. Only approved templates are listed. If you are allowed to build templates, **Create new template** opens the template builder.
+2. If the template has variables, **Body parameters** shows one field per variable (**Enter parameter 1**, **Enter parameter 2**, ...). Type a fixed value, or click the **{ }** button to insert a value that changes per recipient, such as their first name, phone number or a custom field.
+3. If the template has a copy-code button, enter the **Coupon code** it copies (up to 15 characters; you can also insert a per-contact value).
+4. If it is a limited-time offer, set **Offer ends**: the countdown shows until then, and a message that would go out after it is not sent. The time is in your own time zone.
+
+### Facebook, Instagram, Telegram and SMS: type the message
+
+1. Type the text in **Message**. Click **{ }** to personalise it, for example with the contact's first name.
+2. On **SMS**, a counter shows the number of characters and how many SMS each person receives. Long messages split into several segments, and an SMS can be at most 1,600 characters including the opt-out line. If your SMS channel adds an opt-out line, the counter tells you it is added for anyone who hasn't had it in the last 30 days.
+3. On **Telegram**, the message is sent straight from your bot. Contacts who blocked the bot are skipped.
+4. If your workspace lets contacts opt out of promotions only, choose the **Message purpose**:
+   - **Promotion** skips contacts who opted out of promotions.
+   - **Service update** (an order, booking or account notice) still reaches them.
+
+On WhatsApp there is no purpose to choose: a marketing template counts as a promotion, a utility or authentication template as a service message.
+
+### Track link clicks
+
+If **Track link clicks** is shown, links in your message are sent as short links that record who clicked. The numbers appear in the broadcast's [report](/guide/broadcasts/analytics). Links that are fixed inside an approved WhatsApp template are sent as they are and aren't counted.
+
+Click **Continue**.
+
+## Step 3: When should it send?
+
+Choose **Send immediately** or **Schedule for later**. For a later send, pick the date and time, and whether everyone gets it at **One moment for everyone** or at **This local time for each contact**. You can also tick **Require team approval before sending**. All of this is explained in [Scheduling and approval](/guide/broadcasts/scheduling-and-approval).
+
+## Step 4: Review & send
+
+The review lists the **Campaign**, **Channel**, the message or **Template**, the **Audience**, the **Schedule** (and **Timezone**) and whether **Approval** is **Required** or **Not required**. A note repeats how many contacts the broadcast will reach and when.
+
+The **Checks** panel confirms each part is ready (**Audience chosen**, **Message ready**, **Send time set**) and flags anything to look at, such as contacts left out for missing opt-in, or that the broadcast waits for a teammate to approve it.
+
+When everything is right, click the button at the top of the page:
+
+| Button | When you see it | What happens |
+| --- | --- | --- |
+| **Create broadcast** | A new broadcast, and you may schedule broadcasts | The broadcast is queued: now, or at the chosen time. If you ticked **Require team approval before sending**, it waits for approval first. |
+| **Submit for approval** | A new broadcast, and your role can't schedule broadcasts | The broadcast is saved and waits until someone allowed to approve it releases it. |
+| **Save broadcast** | You are editing an existing broadcast | Your changes are saved and the broadcast is queued or held as above. |
+
+Clicking the button from an earlier step takes you to the review first. If a required field is missing, the composer opens that step and asks you to **Complete the required fields in this step before continuing.**
+
+## Send a test message (WhatsApp)
+
+On a WhatsApp broadcast with a template selected, **Send test message** sends the template to your own WhatsApp number first, so you can see exactly what recipients get.
+
+- Tests go only to the WhatsApp number on your profile. Add it to your profile first if it is missing.
+- That number must already be a contact on this WhatsApp number, which means you have messaged the business number at least once.
+- Variables are filled with your contact's saved details.
+- You can make ten test attempts an hour.
+- Normal messaging charges and consent rules apply.
+
+The result appears at the top of the composer as **Last test**, with its status, the number and the time, and stays on the broadcast's report.
+
+## Common questions
+
+**Why can't I type a message on WhatsApp?**
+WhatsApp only accepts approved templates for messages sent to people who haven't written to you in the last 24 hours, and a broadcast is sent to many such people at once. See [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits).
+
+**The template I want isn't in the list.**
+Only approved templates appear. Check its status on the [templates page](/guide/broadcasts/message-templates), and click **Refresh templates** there if it was approved recently.
+
+**My role saved a draft, but I can't schedule it.**
+Your role can create broadcasts but not send them. Submit it for approval, or ask an admin to schedule it.
+
+## Related
+
+- [Choose a broadcast audience](/guide/broadcasts/audiences)
+- [Scheduling and approval](/guide/broadcasts/scheduling-and-approval)
+- [Message templates](/guide/broadcasts/message-templates)
+- [Broadcast analytics](/guide/broadcasts/analytics)

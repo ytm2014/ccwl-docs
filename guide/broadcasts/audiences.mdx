@@ -1,0 +1,102 @@
+---
+title: "Choose a broadcast audience"
+sidebarTitle: "Audiences"
+description: "Send a broadcast to all contacts, active contacts or a saved segment, or retarget the recipients of an earlier broadcast, and see who is always left out."
+keywords: ["broadcast audience", "segment", "retarget", "retargeting", "eligible contacts", "opt-out", "opt-in", "unsubscribe", "blocked contacts", "whatsapp opt-in"]
+---
+
+The first step of the broadcast composer decides who receives the message. You either pick a group of contacts or re-message people from an earlier broadcast. In both cases the final list is worked out again when the broadcast sends, so people who opted out in the meantime are not messaged.
+
+## Contacts on this channel only
+
+A broadcast belongs to one channel, so it only reaches contacts known on that channel: a WhatsApp broadcast reaches contacts you can message on that WhatsApp number, a Telegram broadcast people who have talked to that bot, and so on. A contact who exists in your workspace but has never been linked to this channel isn't counted.
+
+## Option 1: Contact segment
+
+Choose **Contact segment** and pick one of:
+
+| Option | Who it includes |
+| --- | --- |
+| **All contacts** | Every eligible contact on this channel. |
+| **Active contacts** | Eligible contacts whose contact status is active. |
+| A saved segment | The eligible contacts that match one of your saved segments. Segments can combine tags, pipeline stages and other conditions. |
+
+Each option shows its count of eligible contacts. The panel next to the composer repeats it under **Audience breakdown**, with the note that opted-out and blocked contacts are excluded and that eligibility is checked again at send time.
+
+Saved segments are created and edited in **Contacts**. See [Segments](/guide/contacts/segments).
+
+## Option 2: Retarget a past broadcast
+
+Retargeting re-messages people who received an earlier broadcast, chosen by how they engaged with it.
+
+1. Choose **Retarget a past broadcast**.
+2. In **Choose a broadcast…**, pick the source. The list shows broadcasts on the same channel that are sending or already sent, with their number of recipients. If there are none, you see **No sent broadcasts on this channel yet**: send one first.
+3. In **Select an engagement…**, choose who to re-message:
+
+| Engagement | Who it includes from the source broadcast |
+| --- | --- |
+| **All Sent** | Everyone the message was sent to, including those who later received or read it. |
+| **All Delivered** | Everyone whose message was delivered, including those who read it. |
+| **All Read** | Everyone who read it. |
+| **All Replied** | Everyone it was sent to who replied. |
+| **All Sent But Not Replied** | Everyone it was sent to who never replied. |
+| **All Failed** | Everyone whose send failed, for example because the messaging window was closed. People who were skipped, or whose send was cancelled, are not included, since nothing was ever attempted for them. |
+
+Recipients are resolved when the retargeting broadcast sends, so late replies are taken into account. Because of that, the composer can't show a count in advance; the review step reads, for example, "This will re-message All Read from Spring Launch".
+
+Good to know:
+
+- A broadcast can't retarget itself.
+- While a retargeting broadcast is still a draft, scheduled, sending or paused, its source can't be deleted. Cancel or delete the retargeting broadcast first.
+- The usual exclusions below still apply to a retargeted audience.
+
+## Who is always left out
+
+Whatever audience you choose, these contacts are never messaged:
+
+- contacts who **opted out** of private messages,
+- **blocked** contacts,
+- contacts who carry the **Unsubscribe** tag.
+
+Depending on the channel and message, more people are skipped:
+
+| Situation | Who is skipped |
+| --- | --- |
+| A **Promotion** (or a WhatsApp marketing template), when your workspace lets contacts opt out of promotions only | Contacts who opted out of promotions. A **Service update** or a WhatsApp utility template still reaches them. |
+| A WhatsApp **marketing** template | Contacts who asked WhatsApp to stop marketing messages from this number. Nobody can override this. |
+| A WhatsApp **marketing** template | Contacts with no recorded WhatsApp opt-in, unless an admin includes them (see below). |
+| **Telegram** | People who never started a chat with your bot, or blocked it. |
+| **SMS** | Landline numbers, which can't receive SMS. |
+
+Skipped contacts show in the broadcast's report under **Failures and skips**, each with its reason.
+
+## Contacts without a WhatsApp opt-in
+
+A WhatsApp marketing template only goes to contacts with a recorded opt-in. A contact has one when, for example:
+
+- you confirmed their consent when you added or imported them,
+- they agreed through a [website popup](/guide/broadcasts/website-popup) and then sent the WhatsApp message it opened,
+- they answered yes to the WhatsApp consent question of a Facebook lead form that you set up to count as opt-in.
+
+Writing to you doesn't record an opt-in by itself. A contact's **Opt-in through** field shows where theirs came from.
+
+When part of your audience has none, the Audience step shows a warning such as "120 of these contacts have no recorded WhatsApp opt-in. A marketing template leaves them out; a utility template reaches them." The panel next to the composer shows the same number as **Without opt-in**, and **Checks** lists it.
+
+If you are an admin, you can tick **Include them anyway (admins only; recorded in the audit log)**. Every change to that box is written to the audit log. Only include people you know agreed to hear from you on WhatsApp.
+
+## WhatsApp messaging limit warnings
+
+On WhatsApp the Audience step also checks the number's messaging limit (how many different people it may message with templates in 24 hours):
+
+- If the audience is larger than what is left today, you see how many go out now and that the rest are sent automatically over the next days.
+- If WhatsApp hasn't reported the number's limit, you see that it could not be checked and that recipients over the limit may be refused.
+
+See [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits).
+
+## Related
+
+- [Create a broadcast](/guide/broadcasts/create-broadcast)
+- [WhatsApp rules and limits](/guide/broadcasts/whatsapp-rules-and-limits)
+- [Broadcast analytics](/guide/broadcasts/analytics)
+- [Segments](/guide/contacts/segments)
+- [Opt-outs](/guide/contacts/opt-outs)

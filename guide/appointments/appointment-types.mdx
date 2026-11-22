@@ -1,0 +1,111 @@
+---
+title: "Create and edit appointment types"
+sidebarTitle: "Appointment types"
+description: "Set up what contacts can book: name, length, location, calendar, availability, reminders and messages."
+keywords: ["appointment type", "meeting type", "duration", "location", "Google Meet", "Zoom", "phone call", "in person", "booking link", "deactivate"]
+---
+
+An appointment type is a template for a meeting people can book, such as a 30-minute intro call or a 60-minute consultation. Each type has its own length, location, availability, reminders and messages, and its own booking page.
+
+Open the **Appointment types** tab: in the sidebar, open **Salesbot** > **More** > **Appointments**, then click **Appointment types**. The table lists each type with its **Name**, **Duration**, **Where**, the number of **Bookings** and its **Status** (**Active** or **Inactive**).
+
+<Note>
+Creating, editing and deleting types needs the **Create, edit and delete meeting types** permission. Without it you can still see the types and copy their booking links.
+</Note>
+
+## Create an appointment type
+
+<Steps>
+  <Step title="Start a new type">
+    Click **New appointment type**. The editor opens with sensible defaults: 30 minutes, Monday to Friday 09:00–17:00, reminders 1 day and 1 hour before, and your browser's time zone.
+  </Step>
+  <Step title="Name and describe it">
+    Enter a **Name** (required) and an optional **Description (optional)**. The description appears on the booking page and in the calendar event.
+  </Step>
+  <Step title="Set the length">
+    Enter the **Duration (min)** and the **Slot interval (min)**: how far apart the start times offered to contacts are. A 30-minute meeting with a 15-minute interval offers 09:00, 09:15, 09:30 and so on.
+  </Step>
+  <Step title="Choose the location">
+    Pick a **Location** and, for anything other than Google Meet, fill in **Location details** (a phone number, address or link). See the table below.
+  </Step>
+  <Step title="Pick a calendar">
+    If a Google Calendar is connected, choose the **Calendar account** and **Calendar** the bookings go to, or **No calendar (don't sync)**.
+  </Step>
+  <Step title="Set availability and limits">
+    Turn days on or off under **Weekly availability**, add time ranges with **+ Add time**, choose the **Time zone**, and set **Buffer before**, **Buffer after**, **Min notice (min)** and **Days ahead**. See [Availability and booking rules](/guide/appointments/availability).
+  </Step>
+  <Step title="Choose reminders and messages">
+    Click the **Reminders** you want, and open **Messages sent to the contact** to change the confirmation, reminder and cancellation texts. See [Confirmations and reminders](/guide/appointments/messages-and-reminders).
+  </Step>
+  <Step title="Save">
+    Leave **Active (available for booking)** on and click **Save appointment type**.
+  </Step>
+</Steps>
+
+## Field reference
+
+| Field | Notes |
+| --- | --- |
+| **Name** | Up to 120 characters. Also used to make the booking page address, which never changes afterwards, even if you rename the type. |
+| **Description (optional)** | Up to 2,000 characters. |
+| **Duration (min)** | 5 to 1,440 minutes. |
+| **Slot interval (min)** | 5 to 480 minutes. |
+| **Location** | **Google Meet (auto link)**, **Phone call**, **In person**, **Custom (your own link/notes)**, and **Zoom (auto link)** when Zoom is available to your workspace. |
+| **Location details** | Up to 500 characters. Shown only for locations other than Google Meet. |
+| **Calendar account**, **Calendar** | Only when a Google Calendar is connected. |
+| **Weekly availability** | Up to ten time ranges per day. |
+| **Time zone** | The time zone your hours are in. |
+| **Buffer before**, **Buffer after** | 0 to 480 minutes. |
+| **Min notice (min)** | 0 to 43,200 minutes (30 days). The default is 120. |
+| **Days ahead** | 1 to 365. The default is 30. |
+| **Reminders** | Any of **1 day before**, **2 hours**, **1 hour**, **30 min**, **10 min**. |
+| **Confirmation message**, **Reminder message**, **Cancellation message** | Up to 2,000 characters each. Blank means the default text. |
+| **Active (available for booking)** | Off hides the booking page and stops new bookings of this type. |
+
+## Locations
+
+| Location | What happens on each booking |
+| --- | --- |
+| **Google Meet (auto link)** | With a calendar chosen, the calendar event gets a Google Meet link, which goes into the contact's messages. Without a calendar, no link is created. |
+| **Zoom (auto link)** | A Zoom meeting is created on your connected Zoom account and its join link is used as the location. |
+| **Phone call** | The booking page only says "Phone call". The **Location details** (for example your number) are given to the contact after they book. |
+| **In person** | The address in **Location details** is shared after booking, not on the public page. |
+| **Custom (your own link/notes)** | Your own link or notes, shared after booking. |
+
+Location details are never shown on the public booking page before someone books; they appear in the confirmation and on the contact's booking page afterwards.
+
+## Without a calendar
+
+If no Google Calendar is connected, the **Appointment types** tab shows a warning that meetings won't sync to a calendar or get Meet links, with a link to connect one (the link only works for people who can manage integrations). You can still create types and take bookings; availability then comes only from your weekly hours and existing bookings.
+
+## Copy or open the booking link
+
+Each type's **...** menu has:
+
+- **Edit**: opens the editor. You can also click the type's name.
+- **Copy booking link**: copies the public booking page address and shows "Booking link copied".
+- **Open booking page**: opens the page in a new tab.
+- **Delete**: see below.
+
+## Turn off or delete a type
+
+Switch off **Active (available for booking)** to pause a type: its booking page stops working and flows can't book it, but existing bookings stay.
+
+**Delete** asks you to confirm. A type that already has bookings is not deleted; it is turned off instead, so its booking history stays intact. A type with no bookings is removed.
+
+Every create, update, deactivation and deletion is recorded in the [audit log](/guide/analytics/audit-log).
+
+## Common questions
+
+**"Please check the form" when saving.** A value is outside the limits in the table above, for example a duration under 5 minutes or more than 365 days ahead.
+
+**A time range I typed disappeared.** Ranges whose end is not after their start, or with an invalid time, are dropped when you save.
+
+**I don't see Zoom in the location list.** Zoom isn't available to your workspace. Ask your platform.
+
+## Related
+
+- [Availability and booking rules](/guide/appointments/availability)
+- [Booking page](/guide/appointments/booking-page)
+- [Calendar and video meetings](/guide/appointments/calendar-and-video)
+- [Confirmations and reminders](/guide/appointments/messages-and-reminders)

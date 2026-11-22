@@ -1,0 +1,78 @@
+---
+title: "Appointments overview"
+sidebarTitle: "Overview"
+description: "How appointment types, booking links and the bookings list fit together so contacts can book time with you."
+keywords: ["appointments", "meetings", "bookings", "appointment types", "booking link", "booking page", "Book Meeting"]
+---
+
+import { AppName } from "/snippets/app-name.jsx";
+
+Appointments let your contacts book time with you without a back-and-forth about dates. You describe what can be booked once, as an **appointment type**, and <AppName /> works out the free times, takes the booking, sends the confirmation and reminders, and keeps everything in one list.
+
+## Where to find it
+
+In the sidebar, open **Salesbot** > **More** and click **Appointments** (it sits in the **Grow** group and shows how many bookings you had this month). The page has two tabs:
+
+- **Bookings**: the meetings contacts have booked, split into **Upcoming** and **Past**.
+- **Appointment types**: what people can book.
+
+<Note>
+Don't see **Appointments**? Your plan or your platform doesn't include it yet, or your role doesn't give you access to it.
+</Note>
+
+## The pieces
+
+| Piece | What it is |
+| --- | --- |
+| Appointment type | A bookable meeting: name, length, where you meet, when you're free, buffers, reminders and the messages the contact gets. See [Appointment types](/guide/appointments/appointment-types). |
+| Availability | The weekly hours and booking limits of a type. Free times are your hours minus busy time in your connected calendar and minus meetings already booked. See [Availability and booking rules](/guide/appointments/availability). |
+| Booking page | A public page for each active type where a visitor picks a date and time. See [Booking page](/guide/appointments/booking-page). |
+| Calendar and video | Optional Google Calendar and Zoom connections that add calendar events, busy-time checks and meeting links. See [Calendar and video meetings](/guide/appointments/calendar-and-video). |
+| Messages and reminders | The confirmation, reminder and cancellation messages sent to the contact in their conversation. See [Confirmations and reminders](/guide/appointments/messages-and-reminders). |
+| Bookings | The list where your team reschedules, cancels and records how a meeting went. See [Manage bookings](/guide/appointments/manage-bookings). |
+
+## How a booking comes in
+
+Every booking records its **Source**, shown in the bookings list:
+
+- **Flow**: the **Book Meeting** step in one of your [flows](/guide/automation/overview) offered times in the chat and the contact picked one.
+- **Page**: the contact booked on the booking page. The link can come from a flow, from the **Insert booking link** button in the [inbox](/guide/inbox/overview), or from anywhere you pasted it.
+- **Agent**: an AI assistant connected to your workspace booked it for you. See [MCP](/mcp/overview).
+
+Whatever the source, the same rules apply: a time is only booked if it is still free when the contact confirms, and two people can't take the same slot.
+
+## Get started
+
+<Steps>
+  <Step title="Connect a calendar (optional)">
+    Under **Integrations** in the sidebar, connect Google Calendar if you want calendar events, Google Meet links and checks against your busy time, or Zoom for Zoom links. You can skip this and still take bookings. See [Calendars and meetings](/guide/integrations/google-calendar).
+  </Step>
+  <Step title="Create an appointment type">
+    Open **Appointments** > **Appointment types** and click **New appointment type**. Set the length, location and weekly availability, then save.
+  </Step>
+  <Step title="Share it">
+    Use **Copy booking link**, insert the link from the inbox, or add a **Book Meeting** step to a flow.
+  </Step>
+  <Step title="Work the bookings">
+    New bookings appear on the **Bookings** tab. Reschedule or cancel them there, and mark them completed or no-show once they have started.
+  </Step>
+</Steps>
+
+## Who can do what
+
+Access follows your team role:
+
+| Permission | Lets you |
+| --- | --- |
+| View meetings and meeting types | Open both tabs and see the bookings of the contacts you can see. Viewers can hold this. |
+| Create, edit and delete meeting types | Add, change and delete appointment types. A member limited to some channels can't have this, because types belong to the whole workspace. |
+| Cancel and reschedule meetings | Reschedule, cancel, and mark meetings completed or no-show. |
+
+Members limited to some channels only see bookings of contacts on their channels. Roles are set up in your team settings; see [Roles and permissions](/guide/account/roles-and-permissions).
+
+## Related
+
+- [Appointment types](/guide/appointments/appointment-types)
+- [Booking page](/guide/appointments/booking-page)
+- [Manage bookings](/guide/appointments/manage-bookings)
+- [Calendars and meetings](/guide/integrations/google-calendar)

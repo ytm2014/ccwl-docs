@@ -1,0 +1,92 @@
+---
+title: "Reply to a conversation"
+description: "Answer a customer from the Inbox: choose the channel, write and send, and add media, voice notes, templates, forms, booking links, AI drafts and payment links."
+keywords: ["reply", "send message", "composer", "reply on", "send from", "voice note", "attachment", "whatsapp template", "whatsapp formatting", "booking link", "ai reply", "payment link", "draft"]
+---
+
+import { AppName } from "/snippets/app-name.jsx";
+
+Every reply you send from the Inbox goes out on the customer's own channel: they get it in WhatsApp, Messenger, Instagram, Telegram, as an SMS or in your website chat, not as an email from <AppName />. This page covers the reply box under the thread and everything its toolbar can add.
+
+## Send a reply
+
+<Steps>
+  <Step title="Open the conversation">
+    In the sidebar, open **Inbox** and click the conversation. The thread shows every message, the replies to specific messages and, while a teammate is writing, a line such as *Sam is typing…*.
+  </Step>
+  <Step title="Check where the reply goes">
+    If the person can be reached on more than one channel, chips above the reply box let you pick one under **Reply on**. If the same channel has more than one of your numbers or profiles, **Send from** picks the one that sends it.
+  </Step>
+  <Step title="Write and send">
+    Type your message. Press Enter to send, or Shift+Enter for a new line. You can also click **Send**.
+  </Step>
+</Steps>
+
+To answer one message in particular, hover it and click **Reply**. A *Replying to* bar appears above the reply box; **Cancel reply** removes it.
+
+Your unsent text is kept as a draft for that conversation and channel, so you can switch conversations and come back to it. Drafts are saved in your browser, not shared with your team.
+
+## The toolbar
+
+The buttons under the reply box depend on the channel you're replying on and on what your workspace has set up. A button that the channel can't use doesn't appear.
+
+| Button | What it does |
+| --- | --- |
+| **Attach image / video** | Pick an image or video from your media library or upload one. |
+| **Attach file** | Send a document. |
+| **Record a voice note** | Record in the browser and send it as audio. Click the microphone again (**Stop recording**) to finish. Your browser asks for microphone access the first time. |
+| **WhatsApp text formatting** | Wrap the selected text for WhatsApp: **Bold** (`*text*`), **Italic** (`_text_`), **Strikethrough** (`~text~`) or **Monospace** (` ```text``` `). |
+| **WhatsApp template** | Pick an approved template and fill in its values. |
+| **Send a form** | Attach one of your WhatsApp forms. **Remove form** takes it off again. |
+| **Saved replies** | Insert an answer your team saved. See [Saved replies](/guide/inbox/saved-replies). |
+| **Insert booking link** | Add the booking link of one of your appointment types. The list shows each type's length and location. **Manage meeting types** opens your appointment types. |
+| **Suggest a reply with AI** | Get AI drafts written from the conversation, your Brand Voice and your AI Knowledge. |
+| **Request a payment** | Send a payment link through a connected payment gateway. |
+
+### Send a WhatsApp template
+
+<Steps>
+  <Step title="Open the template list">
+    Click **WhatsApp template**. Use **Search templates** to find one. Only templates WhatsApp has approved, for the number you're sending from, are listed.
+  </Step>
+  <Step title="Fill in the values">
+    For each variable, a **Value for** field appears above the reply box. Use the variables button in a field to insert contact details such as first name, phone or a custom field.
+  </Step>
+  <Step title="Send">
+    The reply box reads *Sending a template — fill the values above, then Send.* Click **Send**. **Remove template** cancels it.
+  </Step>
+</Steps>
+
+If the list says there are no approved templates yet, create one first. See [WhatsApp templates](/guide/broadcasts/message-templates).
+
+### Get an AI draft
+
+Click **Suggest a reply with AI**. One or more drafts appear above the reply box, marked *AI draft: uses your Brand Voice and AI Knowledge*. Click a draft to put it in the reply box, then edit it before sending. If AI isn't set up for your workspace, you see *AI is not configured yet*; an admin connects an AI provider under **Integrations**. The contact panel offers the same help as **Suggested reply** (see [The contact panel](/guide/inbox/contact-panel)).
+
+### Request a payment
+
+Click **Request a payment**, choose the gateway, enter the amount and currency, and optionally add *What's this for?*. Click **Send payment link**. The button only appears when a payment gateway is connected under **Integrations**.
+
+## Reply windows
+
+Some channels only let you write freely for a while after the customer's last message. A chip above the reply box shows the time left, such as *3h 20m left*, and turns to *Window closed* when it runs out. On WhatsApp you can then only send an approved template; on other channels you wait for the customer to write again. See [Reply windows](/guide/inbox/reply-windows).
+
+## When a reply can't be sent
+
+If sending fails, the reason appears under the reply box and your text stays where it was: *The message could not be sent. Your draft has been kept.* A failed message in the thread is marked *· failed*. Common reasons:
+
+- **Your role is read-only.** The reply box says *Your role lets you read conversations but not reply to them.*
+- **The reply window has closed.** Send a template on WhatsApp, or wait for the customer.
+- **The contact is blocked.** The thread says so and offers **Unblock contact**.
+- **The channel needs reconnecting.** See [Channel troubleshooting](/guide/channels/troubleshooting).
+- **The conversation has no message from the customer** on a channel that only allows replies, such as WhatsApp. The reply box explains this.
+
+Other refusals show the platform's own reason, or *This conversation cannot be replied to right now.*
+
+## Related
+
+- [Reply windows](/guide/inbox/reply-windows)
+- [Saved replies](/guide/inbox/saved-replies)
+- [Notes and teamwork](/guide/inbox/notes)
+- [Take over from the bot](/guide/inbox/bot-handover)
+- [AI Knowledge and Brand Voice](/guide/automation/overview)

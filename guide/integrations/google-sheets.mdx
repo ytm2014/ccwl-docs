@@ -1,0 +1,84 @@
+---
+title: "Google Sheets"
+description: "Sign in with Google, add spreadsheets, and let your flows append rows to a sheet or look up a row and use its values."
+keywords: ["Google Sheets", "spreadsheet", "Google", "rows", "flow step", "lookup", "Send to Google Sheets", "Get Row from Google Sheets"]
+---
+
+The **Google Sheets** card on the [Integrations](/guide/integrations/overview) page connects a Google account so your flows can write to and read from spreadsheets. Use it to log every new lead in a sheet, keep an order list your team already works from, or look up an order number a customer sends and reply with its status.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Productivity** tab.
+
+<Note>
+If the card says **Not available yet** and the page reads "Google is not available yet.", your platform hasn't set up Google sign-in. If it says **Not included in your plan**, your plan doesn't include it.
+</Note>
+
+## Connect Google Sheets
+
+<Steps>
+  <Step title="Sign in with Google">
+    In the sidebar, open **Integrations** > **Google Sheets** and click **Sign in with Google**.
+  </Step>
+  <Step title="Allow access">
+    Choose your Google account and allow access to your spreadsheets and Drive files. You're brought back to the page.
+  </Step>
+  <Step title="Check the account">
+    The **Google account** panel now shows **Connected as** with your Google address, and the card shows **Connected**.
+  </Step>
+</Steps>
+
+## Add spreadsheets
+
+Your flows can only use spreadsheets listed under **Spreadsheets** on this page. Add them in either of two ways:
+
+- **Create a new one.** Click **New spreadsheet**, enter a **Name** and, optionally, **Headers (optional)** as a comma-separated list (for example `Name, Phone, Email, Order`), then click **Create**. The headers are written as the first row.
+- **Add an existing one.** Paste the address of a Google Sheet into the field next to **New spreadsheet** and click **Add**. The Google account you connected must be able to open it.
+
+Each spreadsheet in the list shows its number of tabs and its headers. Click its name to open it in Google Sheets. The bin button takes it off this list; the spreadsheet itself stays in your Google Drive.
+
+## Use it in a flow
+
+Connecting Google Sheets unlocks two steps in the flow builder, under **Actions**:
+
+### Send to Google Sheets
+
+Appends one row each time the flow runs.
+
+| Field | What to enter |
+| --- | --- |
+| **Spreadsheet** | One of the spreadsheets on this page. |
+| **Tab** | The tab to write to. |
+| **Columns (one row is appended per run)** | For each column, a header and a value. Values can use variables: contact fields, answers collected with a **User Input** step, and order data. |
+
+### Get Row from Google Sheets
+
+Reads a row back from a sheet and saves its values for later steps.
+
+| Field | What to enter |
+| --- | --- |
+| **Spreadsheet** and **Tab** | Where to look. |
+| **Search column (header)** | The header of the column to search, matched against the first row without regard to case. |
+| **Match value** | The value to find, often a variable such as the customer's last message. The first matching row wins. |
+| **Save columns to variables** | Pairs of a header and a variable name, so later steps can use the value. |
+| **Or save every column with a prefix** | Saves every column as a variable named with your prefix plus the header. |
+
+The step has two exits: **FOUND** and **NOT FOUND**. A miss, a step that isn't set up, and a read error all take **NOT FOUND**, so the conversation never stops there. Connect both exits.
+
+See [Flows](/guide/automation/overview) for building flows.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The Google sign-in is removed and the Sheets steps stop writing or reading until you connect again. Your spreadsheets stay in Google Drive.
+
+## Troubleshooting
+
+- **The step says "No spreadsheets yet — connect Google Sheets under Integrations first."** Connect Google Sheets and add at least one spreadsheet on this page.
+- **Rows land in the wrong columns.** The values are written in the order of the step's columns, starting at the first column of the tab; the headers in the step are only labels. Put the columns in the same order as the sheet.
+- **Nothing is written, but the flow carries on.** The step skips the row (and the flow continues) when Google Sheets isn't connected, or when the spreadsheet was removed from this page. Check both.
+- **Get Row always takes NOT FOUND.** Check the **Search column (header)** spelling, that the value really exists in that column, and that the step's tab is the right one.
+- **The card shows Error.** Google rejected the saved sign-in, for example because access was removed in your Google account. Click **Sign in with Google** again.
+
+## Related
+
+- [Google Calendar](/guide/integrations/google-calendar)
+- [Flows](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

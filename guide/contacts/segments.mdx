@@ -1,0 +1,87 @@
+---
+title: "Segments"
+description: "Build saved audiences from stage, tags, inactivity and grouped conditions, and use them for broadcasts and filtering."
+keywords: ["segments", "audience", "saved filter", "conditions", "exclude tags", "inactive contacts", "broadcast audience", "birthday month"]
+---
+
+A segment is a saved set of rules, such as "tagged *VIP*, not tagged *Unsubscribe*, quiet for 30 days". It isn't a fixed list: each time you use it, it picks up whoever matches at that moment. Use segments to target [broadcasts](/guide/broadcasts/overview) and to filter the contact list.
+
+## See your segments
+
+In the sidebar, open **Salesbot** > **Contacts** and select the **Segments** tab. The table shows each segment's **Name**, its rules as badges (stage, included tags, crossed-out excluded tags, *Inactive ≥ n d*, and the number of conditions) and how many contacts match right now. A segment with no rules shows **All contacts**.
+
+Anyone who can view contacts can see the list. Creating, editing and deleting need the **Manage segments** permission.
+
+Don't see **Segments**? Your plan or your platform doesn't include it yet.
+
+## Create a segment
+
+<Steps>
+  <Step title="Start">
+    Click **New segment**.
+  </Step>
+  <Step title="Describe the audience">
+    Fill in the **Audience** panel (below). Only **Segment name** is required.
+  </Step>
+  <Step title="Add conditions if you need them">
+    In **Conditions**, add groups of rules to narrow the segment further.
+  </Step>
+  <Step title="Check the count">
+    **Contacts matching** on the right updates as you edit.
+  </Step>
+  <Step title="Save">
+    Click **Create**.
+  </Step>
+</Steps>
+
+### The Audience panel
+
+| Field | Meaning |
+| --- | --- |
+| **Segment name** | Up to 80 characters. |
+| **Contact stage** | One stage, or **Any stage**. |
+| **Contact tags** | Contacts that have *all* the selected tags are included. |
+| **Exclude contacts with tags** | Contacts with *any* of these tags are removed. |
+| **Number of days since last activity** | Only contacts inactive for at least this many days. Leave empty for no limit. |
+
+## Conditions
+
+Conditions apply on top of the Audience panel: a contact must match both. With no conditions, the segment uses the panel on its own.
+
+1. Click **Add condition group**. A group starts with one rule.
+2. For each rule, choose a field, an operator and, where needed, a value. Click **Add condition** for more rules in the group.
+3. In each group, choose whether contacts must match **all** or **any** of its rules.
+4. With several groups, choose at the top whether contacts must match **all** or **any** of these groups.
+
+Remove a rule with **Remove condition** or a whole group with **Remove group**. Removing a group's last rule removes the group.
+
+| Field | Operators | Value |
+| --- | --- | --- |
+| **Contact source** | is, is not, contains, does not contain, has any value, is empty | Text, such as *CSV import* |
+| **Custom field** | is, is not, contains, does not contain, has any value, is empty, is greater than, is less than, is at least, is at most | Pick the field, then type a value |
+| **Birthday month** | is, is not | A month |
+| **Tag** | is applied, is not applied | A tag |
+| **Channel** | is reachable on, is not reachable on | A channel type |
+| **Subscription** | is subscribed, is unsubscribed | None |
+
+Limits: up to 20 groups, with up to 30 rules in each.
+
+If a rule is incomplete (no value, or no custom field chosen), a warning says how many will be ignored when saving; the count only uses complete rules.
+
+## Use a segment
+
+- **Broadcasts**: choose the segment as the audience. See [Broadcasts](/guide/broadcasts/overview).
+- **Contact list**: open **Filters** and pick it under **Segment**. Bulk actions with **Select all matching** and **Export** then follow the segment too.
+
+## Edit or delete a segment
+
+Click a segment's name, or choose **Edit** from its actions menu, change it and click **Save**.
+
+To delete, choose **Delete** from the actions menu and confirm. A segment can't be deleted while a broadcast that hasn't started yet is waiting to send to it; the message explains why. Deleting a segment never deletes contacts.
+
+## Related
+
+- [Tags](/guide/contacts/tags)
+- [Custom fields](/guide/contacts/custom-fields)
+- [The contact list](/guide/contacts/contact-list)
+- [Broadcasts](/guide/broadcasts/overview)

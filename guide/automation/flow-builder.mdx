@@ -1,0 +1,120 @@
+---
+title: "The flow builder"
+sidebarTitle: "Flow builder"
+description: "Find your way around the visual flow builder: the canvas, adding and connecting steps, step settings, autosave, undo, import and export, and the test preview."
+keywords: ["flow builder", "canvas", "visual builder", "add a step", "connect steps", "step settings", "autosave", "undo", "redo", "export flow", "import flow", "test run", "arrange", "stats"]
+---
+
+The flow builder is a canvas where your flow reads from left to right: the trigger first, then each step, joined by connections. Open it from **Salesbot** > **Flows** by clicking a flow's name or **Open builder** in its row menu.
+
+<Note>
+Editing needs permission to manage automations, and the flow builder must be part of your plan. Without them the flow opens view-only: you can look at every step, but **Save draft**, **Publish**, the **Live** switch and the step picker are hidden.
+</Note>
+
+## The screen
+
+| Area | What's there |
+| --- | --- |
+| **Top bar** | **Back to Flows**, the **Flow name**, the profile it runs on (or **All channels**), the autosave status, **Test run**, the **Live** switch, **Save draft**, **Publish** and the **More** menu. |
+| **Toolbar** | The **Editor** and **Analytics** tabs, **Undo** and **Redo**, the flow's **Runs** count, and **Fix N issues** when something needs attention. |
+| **Canvas** | Your steps and connections. A line at the bottom shows how many steps and connections the flow has. |
+| **Right panel** | **Add a step** when nothing is selected, or the settings of the selected step. |
+
+The canvas has **Zoom in**, **Zoom out** and **Fit** ("Fit the whole flow on screen") controls, and a small **Flow overview** map.
+
+### The More menu
+
+- **Test on the real channel**: start a real test conversation with the published flow (see [Publish, test and go live](/guide/automation/publish-and-test)).
+- **Arrange**: auto-arrange the steps in tidy columns.
+- **Stats**: "Show per-step stats": how many times each step ran and sent, once the flow is published.
+- **Reset view**: back to the default zoom and position.
+- **Export flow (.json)**: download the flow.
+- **Import flow…**: replace this flow's steps with a flow from a JSON file.
+
+## Add a step
+
+With no step selected, the right panel shows **Add a step**: "Click to add it to the canvas, then connect the dots." Steps are grouped into eight tiles:
+
+| Tile | Covers |
+| --- | --- |
+| **Send message** | Text, media, cards, templates, comment replies |
+| **Ask a question** | Quick replies, e-mail, phone, lists, forms |
+| **AI reply** | Answers with Knowledge and Brand Voice |
+| **Condition** | Tag, field, channel, time, sentiment, label |
+| **Wait** | Delay and business-hours waits |
+| **Update contact** | Tag, field, stage, assign, pause bot |
+| **Sell** | Payment, product, checkout, order status |
+| **Connect** | Webhook, Sheets, Slack, hand over, go to flow, end |
+
+A **Recommended for** *(channel)* row offers the most useful steps for the flow's channel first. The search box ("Search steps, e.g. carousel, webhook, tag") finds any step by name. **Hide steps** collapses the panel; **Show steps** opens it again.
+
+The steps offered depend on the flow's channel, your plan and what your platform has switched on: WhatsApp steps only on WhatsApp flows, card and carousel steps only on Facebook and Instagram, comment actions only when a comment starts the flow, and SMS flows only get text steps. Each step is described in:
+
+- [Message and question steps](/guide/automation/message-steps)
+- [WhatsApp steps](/guide/automation/whatsapp-steps)
+- [Facebook and Instagram steps](/guide/automation/facebook-instagram-steps)
+- [Logic steps](/guide/automation/logic-steps)
+- [Contact and hand-over steps](/guide/automation/contact-steps)
+- [Integration steps](/guide/automation/integration-steps)
+- [The HTTP Request step](/guide/automation/webhook-step)
+- [The AI Reply step](/guide/automation/ai-replies)
+- [Store automations](/guide/automation/store-automations) and [Selling in the chat](/guide/automation/selling-in-chat)
+
+## Connect steps
+
+Every step has an input on the left and one or more output dots on the right. Drag from an output dot to another step to connect them. Drop on empty canvas instead to add a new step there, already connected.
+
+Steps with several outcomes have one output for each: a Condition's **TRUE** and **FALSE**, each reply button or list row, a randomizer's branches, **FOUND** and **NOT FOUND**, **SUCCESS** and **FAILED**. Each output can connect to only one next step. A step with nothing connected to its input never runs, and the builder lists it under **Fix N issues** ("Not connected — no incoming edge.").
+
+To remove a connection, click it and press Delete, or click the × that appears when you hover over it.
+
+## Edit a step
+
+Click a step to open its settings on the right. Each step has its own fields; the bottom of the panel has **Duplicate**, **Delete node** and **Done**. The trigger can't be deleted: "Entry point — this step starts the flow and can't be removed."
+
+Many steps also have an **Advanced** section:
+
+| Setting | What it does |
+| --- | --- |
+| **Show typing indicator** and **Typing delay (seconds)** | Shows "typing…" before the step is sent. Available on message, question, AI and WhatsApp interactive steps. |
+| **When the 24-hour window is closed** | On WhatsApp message steps: an approved template to send instead when a normal message can't be sent. See [WhatsApp steps](/guide/automation/whatsapp-steps#the-24-hour-fallback). |
+| **Runs quietly** | On the trigger only: "Use for background work such as tags and webhooks. Customer message steps must be removed before publishing a quiet flow." |
+
+Text fields with a variable button let you insert contact and order details. See [Variables](/guide/automation/variables).
+
+## Keyboard shortcuts
+
+| Keys | Action |
+| --- | --- |
+| Ctrl+Z | Undo |
+| Ctrl+Y | Redo |
+| Ctrl+D | Duplicate the selected step |
+| Delete or Backspace | Delete the selected step or connection |
+| Esc | Cancel a connection you're drawing, or clear the selection |
+
+## Saving
+
+The builder saves your work in the background. The status next to **Test run** reads **Unsaved changes**, **Saving…** or **All changes saved**. If it shows **Autosave failed — use Save draft**, click **Save draft**.
+
+Saving never changes what runs. Only **Publish** does. See [Publish, test and go live](/guide/automation/publish-and-test).
+
+## Test run
+
+**Test run** opens a preview of the conversation beside the canvas, as it would look on the flow's channel. "Main path shown; branches & actions are summarised." Steps that don't send anything (tags, webhooks, assignments) appear as short notes such as "tag updated" or "HTTP request sent". Click **Close test run** to hide it. Nothing is sent to anyone.
+
+## Import and export
+
+**Export flow (.json)** downloads the flow so you can keep a copy or load it into another workspace. **Import flow…** replaces the current steps with those in a file. A file larger than 1 MB, without a trigger, or with two steps sharing an id is refused with the reason. An imported flow still has to be published.
+
+## Limits
+
+- One trigger per flow.
+- At most 500 steps per flow.
+- Each output connects to one next step.
+
+## Related
+
+- [Triggers](/guide/automation/triggers)
+- [Variables](/guide/automation/variables)
+- [Publish, test and go live](/guide/automation/publish-and-test)
+- [Troubleshooting flows](/guide/automation/troubleshooting)

@@ -1,0 +1,68 @@
+---
+title: "Availability and booking rules"
+sidebarTitle: "Availability"
+description: "Set the weekly hours, time zone, buffers, notice and booking window that decide which times contacts can book."
+keywords: ["availability", "weekly hours", "time zone", "buffer", "minimum notice", "days ahead", "slot interval", "free busy", "double booking"]
+---
+
+Each appointment type decides for itself when it can be booked. You set weekly hours and a few limits in the type's editor, and every place that offers times (the booking page, the **Book Meeting** step in a flow, the reschedule picker and connected AI assistants) uses the same rules.
+
+To change them, open the type: in the sidebar, open **Salesbot** > **More** > **Appointments** > **Appointment types**, then click the type's name.
+
+## Weekly availability
+
+Under **Weekly availability** there is a row for each day from **Mon** to **Sun**.
+
+- Turn a day on with its switch. It starts with 09:00–17:00.
+- Change the start and end times, or click **+ Add time** to add another range on the same day, for example 09:00–12:00 and 14:00–17:00.
+- Remove a range with its delete button. A day with no ranges shows **Unavailable**.
+
+You can have up to ten ranges a day. Ranges whose end isn't after their start are dropped when you save.
+
+## Time zone
+
+**Time zone** is the zone your weekly hours are in. A new type starts with your browser's zone when it is in the list. Daylight saving changes are followed automatically, so 09:00 stays 09:00 local time all year.
+
+Contacts see times in their own zone where it is known (see [Booking page](/guide/appointments/booking-page)); the hours you set don't move.
+
+## Booking limits
+
+| Setting | What it does |
+| --- | --- |
+| **Slot interval (min)** | The gap between the start times offered. With 09:00–11:00 hours, a 60-minute meeting and a 30-minute interval, the offers are 09:00, 09:30 and 10:00. |
+| **Buffer before** | Minutes kept free before each meeting. |
+| **Buffer after** | Minutes kept free after each meeting, for notes or travel. |
+| **Min notice (min)** | How soon a meeting can start after someone books. 120 means nobody can book a slot starting in the next two hours. |
+| **Days ahead** | How far into the future people can book. |
+
+## How free times are worked out
+
+Free times start from your weekly hours over the next **Days ahead** days. Then these are removed:
+
+1. times that break **Min notice (min)** or fall past **Days ahead**;
+2. busy time in the connected Google Calendar for this type, including the buffers around each slot;
+3. meetings already booked for this type, with their buffers.
+
+What is left is offered to contacts. A busy check only happens when the type has a usable Google Calendar connection. If Google doesn't answer the busy check, the time is treated as free.
+
+<Note>
+Busy time is read from the calendar chosen for the type. Meetings of other appointment types are blocked only if they are on that calendar too; without a calendar, two different types can be booked at the same time.
+</Note>
+
+## Two people, one slot
+
+The slot is checked again at the moment someone confirms. If another person took it a second earlier, the second booking is refused: the booking page says the time was just taken and asks for another, the flow step offers fresh times, and the reschedule picker shows "That time is no longer available".
+
+## Common questions
+
+**The booking page says no times are available.** Check that at least one day is switched on, that **Days ahead** is long enough, that **Min notice (min)** isn't longer than the booking window, and that your calendar isn't fully busy. Also check the type is **Active**.
+
+**A time I'm free shows as unavailable.** Something in the type's calendar overlaps the slot or its buffers, or another booking of the same type does.
+
+**I changed my hours; what about existing bookings?** They stay as booked. New hours apply to times offered from now on.
+
+## Related
+
+- [Create and edit appointment types](/guide/appointments/appointment-types)
+- [Calendar and video meetings](/guide/appointments/calendar-and-video)
+- [Booking page](/guide/appointments/booking-page)

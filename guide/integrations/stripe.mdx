@@ -1,0 +1,61 @@
+---
+title: "Stripe"
+description: "Connect Stripe with your secret key and a webhook signing secret to send Stripe checkout links in conversations."
+keywords: ["Stripe", "payments", "secret key", "webhook signing secret", "whsec", "checkout", "payment link"]
+---
+
+The **Stripe** card on the [Integrations](/guide/integrations/overview) page connects your Stripe account, so you can send Stripe checkout links in conversations and know when they're paid. Stripe supports more than 135 currencies. For how payment links, triggers and the inbox button work, see [Payment gateways](/guide/integrations/payment-gateways).
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Payments** tab.
+
+<Note>
+Don't see **Stripe**, or does it say **Not included in your plan**? Your plan or your platform doesn't include payments yet.
+</Note>
+
+## Fields
+
+| Field | What to enter |
+| --- | --- |
+| **Secret key** | Your Stripe secret key, starting with `sk_test_` or `sk_live_`. |
+| **Webhook signing secret** | The signing secret of the webhook you add in Stripe, starting with `whsec_`. |
+
+## Connect Stripe
+
+<Steps>
+  <Step title="Copy your secret key">
+    In the Stripe Dashboard, open **Developers → API keys** and copy your **Secret key**.
+  </Step>
+  <Step title="Connect">
+    In the sidebar, open **Integrations** > **Stripe** and paste it into **Secret key**. Every field must be filled in to connect, but you only get the signing secret after the next step, so type a temporary value in **Webhook signing secret** for now. Click **Connect**. The page confirms "Stripe connected." and shows the **Webhook endpoint** panel.
+  </Step>
+  <Step title="Add the webhook in Stripe">
+    Click **Copy** next to the webhook URL. In Stripe, open **Developers → Webhooks**, add an endpoint with that URL, and subscribe to these events:
+    - `checkout.session.completed`
+    - `checkout.session.async_payment_succeeded`
+    - `checkout.session.async_payment_failed`
+    - `checkout.session.expired`
+    - `charge.refunded`
+  </Step>
+  <Step title="Save the signing secret">
+    Copy the endpoint's signing secret from Stripe, paste it into **Webhook signing secret** in place of the temporary value, and click **Save & reconnect**. Until you do, payments can't be confirmed.
+  </Step>
+</Steps>
+
+Each event Stripe sends is checked against the signing secret, so events that don't come from your Stripe account are ignored.
+
+## Test and live mode
+
+Whether you're in test or live mode follows the key: an `sk_test_` key creates test checkouts, an `sk_live_` key real ones. Test and live mode have separate webhooks in Stripe, so add the webhook (and paste its signing secret) again when you switch to live keys.
+
+## Troubleshooting
+
+- **"Could not reach the Stripe API: …"** Stripe refused the key. Check you copied the secret key (not the publishable key, which starts with `pk_`).
+- **Payments stay Pending.** The webhook is missing, has the wrong events, or its signing secret doesn't match the one saved here. Check all three in **Developers → Webhooks**.
+- **Test payments work but live ones don't.** Add a live-mode webhook and save its signing secret.
+- **The card shows Error.** Stripe rejected the saved key, for example after you rolled it. Paste the new key and click **Save & reconnect**.
+
+## Related
+
+- [Payment gateways](/guide/integrations/payment-gateways)
+- [PayPal](/guide/integrations/paypal)
+- [Integrations](/guide/integrations/overview)

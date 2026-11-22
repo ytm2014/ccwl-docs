@@ -1,0 +1,83 @@
+---
+title: "Add and edit contacts"
+sidebarTitle: "Add and edit contacts"
+description: "Create a contact by hand, link it to a WhatsApp number with consent, and edit a contact's details."
+keywords: ["new contact", "create contact", "edit contact", "phone number", "country code", "whatsapp opt-in", "custom fields", "duplicate phone"]
+---
+
+Most contacts arrive on their own when someone messages you. Add one by hand when you meet a lead elsewhere (at an event, on a call) and want them in your pipeline, tagged and ready for later.
+
+## Create a contact
+
+<Steps>
+  <Step title="Open the form">
+    In the sidebar, open **Salesbot** > **Contacts** and click **New contact**. The button is also on the **Board** tab. You need the **Create contacts** permission.
+  </Step>
+  <Step title="Fill in the details">
+    Enter at least a **Name**. Everything else is optional; see the field list below.
+  </Step>
+  <Step title="Save">
+    Click **Create**. The new contact's profile opens.
+  </Step>
+</Steps>
+
+| Field | Notes |
+| --- | --- |
+| **Name** | Required, up to 120 characters. |
+| **Phone** | The full international number, starting with `+` or `00`. A country is never guessed from a local number. |
+| **Channel** | Only for workspace admins, and only when the workspace has a WhatsApp number. See below. |
+| **Email** | A valid email address. |
+| **Tags** | Pick existing tags, or type a new tag name and press Enter to create it. Up to 50 tags. |
+| **Stage** | A pipeline stage, or **No stage**. |
+| **Notes** | Saved as a first internal note on the profile, up to 2,000 characters. |
+| **Custom fields** | Click **Add field**, then enter a **Field name** and a **Value**. Up to 50 fields. |
+
+### Things that stop a contact being saved
+
+- **The number is already taken.** A phone number can belong to only one contact in the workspace. You see *This number already belongs to a contact in this workspace*. Open that contact, or merge the two.
+- **The number can't be read.** Write it with its country code, for example `+44 7700 900000`.
+- **The plan limit is reached.** You see *You've reached your plan's limit of n contacts*. See [Contact limits](/guide/contacts/contact-limits).
+
+## Link a new contact to a WhatsApp number
+
+A contact made by hand isn't linked to any channel, so you can't message it until the person writes in. Workspace admins can make one exception for WhatsApp, as long as the person agreed to receive WhatsApp messages from you.
+
+<Steps>
+  <Step title="Choose the number">
+    In **Channel**, pick one of the workspace's WhatsApp numbers instead of **No channel**.
+  </Step>
+  <Step title="Enter the phone">
+    Fill in **Phone** with the contact's WhatsApp number and its country code.
+  </Step>
+  <Step title="Confirm consent">
+    Tick **This contact agreed to receive WhatsApp messages from us**. The confirmation is recorded with your name.
+  </Step>
+</Steps>
+
+If the number is already a contact on that WhatsApp channel, you're told to open that contact instead. Only admins see **Channel**; editing a contact later never changes its channel.
+
+<Warning>
+Only tick the consent box when the person really agreed. The box is your statement that they did, and it's kept in the workspace's audit log.
+</Warning>
+
+## Edit a contact
+
+You need the **Edit contacts, their stage and notes** permission.
+
+- From the list or the board: open the row's or card's menu and choose **Edit**.
+- From the profile: choose **Edit profile** (the main button when the inbox isn't available to you, otherwise in **More contact actions**), or the pencil next to **Tags**.
+
+The **Edit contact** form has the same fields as **New contact**. Click **Save**.
+
+- Changing **Phone** changes the number on the contact record only. The number a person messaged you from on WhatsApp is a channel identity and stays as it is.
+- Text typed in **Notes** is added as a new note; earlier notes stay. To change or delete a note, use the **Notes** tab of the profile.
+- If your role masks phone numbers or email addresses, those fields are read-only and show *Hidden by your role*. Saving keeps the stored values.
+
+You can also change a contact's stage from the profile's side panel or the **Board**, and tags from the inbox's contact details. See [The contact profile](/guide/contacts/contact-profile).
+
+## Related
+
+- [The contact profile](/guide/contacts/contact-profile)
+- [Custom fields](/guide/contacts/custom-fields)
+- [Import contacts from CSV](/guide/contacts/import-csv)
+- [Merge duplicate contacts](/guide/contacts/merge-duplicates)

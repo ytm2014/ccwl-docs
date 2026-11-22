@@ -1,0 +1,69 @@
+---
+title: "Zoom"
+description: "Sign in with Zoom so every booking of a Zoom meeting type gets its own Zoom meeting and join link."
+keywords: ["Zoom", "meeting", "join link", "booking", "meeting type", "video call"]
+---
+
+The **Zoom** card on the [Integrations](/guide/integrations/overview) page connects a Zoom account to your bookings. Once it's connected, every booking of a meeting type set to Zoom gets its own Zoom meeting, hosted on that account, and the join link is shared with the contact.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Productivity** tab.
+
+<Note>
+If the card says **Not available yet** and the page reads "Zoom is not available yet.", your platform hasn't set up Zoom sign-in. If it says **Not included in your plan**, your plan doesn't include it.
+</Note>
+
+## Connect Zoom
+
+<Steps>
+  <Step title="Sign in with Zoom">
+    In the sidebar, open **Integrations** > **Zoom** and click **Sign in with Zoom**.
+  </Step>
+  <Step title="Approve access">
+    Sign in with the Zoom account that should host the meetings and approve access. You're brought back to the page.
+  </Step>
+  <Step title="Check the account">
+    The **Zoom account** panel shows **Connected as** with that account. Meetings are created on it.
+  </Step>
+</Steps>
+
+## Turn on Zoom for a meeting type
+
+Zoom links are created per meeting type:
+
+<Steps>
+  <Step title="Open the meeting type">
+    Open the meeting type in your appointments area. See [Appointment types](/guide/appointments/appointment-types).
+  </Step>
+  <Step title="Choose the Zoom location">
+    Set its location to **Zoom (auto link)**. This option only appears while Zoom is connected.
+  </Step>
+  <Step title="Save">
+    From now on, each new booking of that type gets a Zoom meeting and its join link.
+  </Step>
+</Steps>
+
+## What happens to the meeting
+
+| When | What happens in Zoom |
+| --- | --- |
+| A contact books | A Zoom meeting is created at the booked time, for the meeting type's length. If [Google Calendar](/guide/integrations/google-calendar) is connected, the calendar event carries the join link too. |
+| The booking is rescheduled | The Zoom meeting moves to the new time. |
+| The booking is cancelled | The Zoom meeting is deleted. |
+
+Bookings can come from a **Book Meeting** flow step or a booking link. See [Flows](/guide/automation/overview) and [Appointments](/guide/appointments/overview).
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The saved Zoom sign-in is removed and new bookings no longer get Zoom links. Meetings already created stay in your Zoom account. To remove the app's access completely, also remove it from the apps list in your Zoom account.
+
+## Troubleshooting
+
+- **The Zoom (auto link) location is missing.** Zoom isn't connected, or the card shows **Error**. Connect again.
+- **A booking fails on a Zoom meeting type.** If Zoom can't create the meeting (for example the sign-in was withdrawn), the booking isn't made, so the contact isn't given a time without a link. Reconnect Zoom and ask the contact to book again.
+- **The card shows Error.** Zoom rejected the saved sign-in. Click **Sign in with Zoom** again.
+
+## Related
+
+- [Google Calendar](/guide/integrations/google-calendar)
+- [Appointments](/guide/appointments/overview)
+- [Integrations](/guide/integrations/overview)

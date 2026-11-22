@@ -1,0 +1,75 @@
+---
+title: "Assign conversations"
+description: "Give a conversation an owner, find what's yours, and let your conversation rules assign new and answered conversations automatically."
+keywords: ["assign", "assignment", "owner", "unassigned", "mine", "round-robin", "auto assign", "team", "inbox"]
+---
+
+Assigning a conversation tells your team who is looking after it. The owner's name shows in the conversation list, in the thread header and in the contact panel, and the owner can be told by notification. Assigning doesn't move or hide the conversation: everyone with access to the channel still sees it, unless their role limits them to their own conversations.
+
+## Assign a conversation
+
+<Steps>
+  <Step title="Open the conversation">
+    In the sidebar, open **Inbox** and click the conversation.
+  </Step>
+  <Step title="Choose the owner">
+    In the thread header, open **Assign** and pick a teammate. Your own name is marked *(you)*. Choose **Unassigned** to remove the owner.
+  </Step>
+</Steps>
+
+The contact panel on the right shows the current owner under **Owner**. On the **Engagements** tab, use **Assign to** in the thread header or the author panel.
+
+The list of teammates only includes people who can use the inbox on that conversation's channel. Assigning needs the permission *Assign conversations to teammates*, which admins and members have unless a custom role removes it.
+
+## Find conversations by owner
+
+- The **Mine** quick filter shows conversations assigned to you.
+- The **Unassigned** quick filter shows conversations nobody owns.
+- **Filter** > **Assigned to** shows one teammate's conversations, **Anyone**, or **Unassigned**.
+
+Each row in the list shows *Assigned to* and the name, or **Unassigned**.
+
+## Assign automatically
+
+Two of your [conversation rules](/guide/inbox/conversation-rules) assign conversations for you. Open the gear in the Inbox header and choose **Conversation rules**, or in the sidebar open **Salesbot** > **More** > **Conversation rules**.
+
+### Who owns the conversation after a reply
+
+| Option | What happens |
+| --- | --- |
+| **Assign it to whoever replied last** | The conversation follows the person answering it. This is the default. |
+| **Only claim it if nobody owns it** | Your reply makes you the owner only when the conversation has none. You never take a conversation off a teammate by answering one message. |
+| **Never change the owner** | Replying doesn't change the owner. Assigning is always done by hand. |
+
+### A brand-new conversation
+
+| Option | What happens |
+| --- | --- |
+| **Leave new conversations unassigned** | New conversations wait in **Open** for someone to pick them up. This is the default. |
+| **Round-robin to the least busy member** | Each new conversation goes to the teammate with the fewest open conversations at that moment. Everyone with inbox access takes part. |
+
+<Tip>
+Round-robin balances by current open conversations, not by how many someone has handled overall. Marking conversations done promptly keeps the rotation fair.
+</Tip>
+
+## Get told about assignments
+
+When a conversation is assigned to you, you get a notification in the bell at the top of the page (*Conversation assigned to you*). In the bell's **Settings** you can also choose, under *When a conversation is assigned to me*, to get an email or a WhatsApp message. WhatsApp alerts need your WhatsApp number in your profile and use your workspace's default WhatsApp number. See [New-message alerts](/guide/inbox/alerts).
+
+## Assigned-only access
+
+Where your platform offers it, an admin can give a custom role without the permission *See every conversation, not only those assigned to them*. People with that role see only the conversations assigned to them; unassigned conversations are hidden from them too. Admins, and members without a custom role, always see every conversation on their channels.
+
+## Common questions
+
+**A teammate is missing from the Assign list.** They need inbox access, and access to the conversation's channel if their role limits channels. Ask an admin to check their role.
+
+**Can a flow assign a conversation?** Flows have their own steps for this. See [Flows](/guide/automation/overview).
+
+**Does assigning stop the bot?** No. Pausing the bot is a separate action. See [Take over from the bot](/guide/inbox/bot-handover).
+
+## Related
+
+- [Conversation rules](/guide/inbox/conversation-rules)
+- [Conversation status](/guide/inbox/status)
+- [Notes and teamwork](/guide/inbox/notes)

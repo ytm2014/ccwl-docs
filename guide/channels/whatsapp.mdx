@@ -1,0 +1,92 @@
+---
+title: "WhatsApp"
+description: "Connect a WhatsApp Business number through Meta's signup, keep using the WhatsApp Business app if you want, and manage your connected numbers."
+keywords: ["whatsapp", "whatsapp business", "cloud api", "embedded signup", "connect number", "business app", "coexistence", "default number", "disconnect", "templates"]
+---
+
+Connecting a WhatsApp Business number lets your team answer WhatsApp messages from the Inbox, run flows on WhatsApp and send WhatsApp broadcasts. The connection goes through Meta's own signup window, where you choose or create your WhatsApp Business Account and verify the number.
+
+<Note>
+Don't see WhatsApp? Your plan or your platform doesn't include it yet. Connecting a number is for workspace admins, or members whose role allows connecting channels.
+</Note>
+
+## Before you start
+
+Have these ready:
+
+- **Phone Number**: a number without a WhatsApp account, or one already on a WhatsApp Business Account.
+- **Business Manager Access**: access to your company's Meta Business Manager.
+- **Business Documents**: your business documents, if your business isn't verified with Meta yet.
+
+The number must be owned by you, have a country code, and be able to receive a verification code by SMS or voice call. Check that your business is allowed under the WhatsApp Commerce Policy.
+
+If you're moving the number from another provider, turn off two-step verification for it in WhatsApp Business Manager first.
+
+## Connect a number
+
+<Steps>
+  <Step title="Open the WhatsApp page">
+    In the sidebar, open **Accounts**, click **Add account** and choose **WhatsApp**. You can also open **Salesbot** > **More** > **Numbers**.
+  </Step>
+  <Step title="Start the signup">
+    Click **Connect WhatsApp**, or **Configure** under *Configure WhatsApp via Embedded Signup*, depending on what your page shows. On the connection screen, click **Login with Facebook**.
+  </Step>
+  <Step title="Finish in Meta's window">
+    In the window that opens, sign in, choose or create your WhatsApp Business Account, add the number and verify it with the code Meta sends.
+  </Step>
+  <Step title="Check the number">
+    Back on the WhatsApp page, the number appears with its status, usually within a few seconds. If it doesn't, reload the page.
+  </Step>
+</Steps>
+
+<Note>
+Not every existing WhatsApp Business Account qualifies for this signup, and some features may be unavailable for numbers that already use the WhatsApp Business app, because of Meta's limits.
+</Note>
+
+## Keep using the WhatsApp Business app
+
+If your number already runs on the WhatsApp Business app on your phone, you may be able to keep it there and connect it as well. On the connection screen, choose **Connect Business app number** under *Keep using the WhatsApp Business app*. Meta checks eligibility and confirms; keep the phone at hand to scan the signup QR code.
+
+Once connected, the number shows *also on the WhatsApp Business app*. Replies sent from the phone appear in the Inbox too. To let the team take over when someone answers from the phone, tick **Pause the bot when someone replies from the Business app** and click **Save app settings**.
+
+## Manage your numbers
+
+The WhatsApp page lists each connected number with its status. Depending on the number, you can:
+
+| Action | What it does |
+| --- | --- |
+| **Manage** | Opens the number's settings. See [WhatsApp number settings](/guide/channels/whatsapp-settings). |
+| **Retry** | Shown when incoming messages aren't set up yet for the number. Tries again. |
+| **Default WhatsApp number** | Choose the number used for new conversations and notifications that have no existing channel, then click **Save default**. Replies always keep the number the customer contacted. |
+| **Connect another number** | Adds another number. |
+| **Disconnect** | Stops messages to this number reaching the Inbox. Its conversations are kept, and connecting the number again brings it back. |
+
+If a number says *This connection expires soon*, connect it again to keep it working.
+
+## Message templates
+
+Outside the 24-hour window, only templates WhatsApp has approved can be sent. Templates are created and approved in WhatsApp Manager or in **Salesbot** > **More** > **Message templates**, and copied to your workspace automatically. Where the WhatsApp page lists them, **Refresh from WhatsApp** fetches the latest. See [WhatsApp templates](/guide/broadcasts/message-templates).
+
+## What you get
+
+- WhatsApp conversations in the Inbox, with text, media, voice notes, templates and forms.
+- Flows, broadcasts and sequences on WhatsApp.
+- Number settings for your business profile, catalogue and conversational components.
+
+## Troubleshooting
+
+**The number doesn't appear after signup.** Wait a few seconds and reload the page. If you closed Meta's window before finishing, start again.
+
+**Incoming WhatsApp messages are not set up yet.** Click **Retry** next to the number.
+
+**Your plan's connected-account limit has been reached.** You can still reconnect a number you had before; to add a new one, upgrade or disconnect another account.
+
+**Only 5 messages a day.** Meta provided the number and hasn't approved its display name yet. See [WhatsApp number settings](/guide/channels/whatsapp-settings#number-health).
+
+More in [Channel troubleshooting](/guide/channels/troubleshooting).
+
+## Related
+
+- [WhatsApp number settings](/guide/channels/whatsapp-settings)
+- [Reply windows](/guide/inbox/reply-windows)
+- [WhatsApp templates](/guide/broadcasts/message-templates)

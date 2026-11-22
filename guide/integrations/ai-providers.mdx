@@ -1,58 +1,80 @@
 ---
 title: "AI providers"
-description: "Connect your own OpenAI, Claude, Google Gemini or DeepSeek key for AI replies in your flows, and manage vector stores the AI can search."
-keywords: ["AI", "OpenAI", "Claude", "Anthropic", "Gemini", "DeepSeek", "API key", "vector store", "knowledge", "AI replies"]
+description: "How your own OpenAI, Claude, Google Gemini or DeepSeek key works with the built-in AI, what each provider can do, and how to choose one."
+keywords: ["AI", "OpenAI", "Claude", "Anthropic", "Gemini", "DeepSeek", "API key", "built-in AI", "AI replies", "AI credits", "compare"]
 ---
 
-The AI cards on the [Integrations](/guide/integrations/overview) page connect your own account with an AI provider. Once connected, you can pick that provider's model in the **AI** step of the flow builder so your automations reply with AI. The available providers are **OpenAI**, **Claude**, **Google Gemini** and **DeepSeek**; you'll find them under the **AI** tab.
+The cards under the **AI** tab of the [Integrations](/guide/integrations/overview) page connect your own account with an AI provider: **OpenAI**, **Claude**, **Google Gemini** or **DeepSeek**. Once connected, your flows' **AI Reply** steps can run on that provider's models and your own key. This page explains how that fits with the built-in AI and helps you choose; each provider then has its own page.
 
 You need the **Admin** role or the **Connect integrations and manage webhooks** permission.
 
-## Connect a provider
+## Built-in AI or your own key
+
+Your workspace can run AI replies in two ways:
+
+- **Built-in AI.** Your platform provides the AI. Replies count towards your plan's monthly AI allowance. When it runs out, AI replies pause until the start of next month, or until you upgrade.
+- **Your own key.** You connect a provider here and pay that provider directly. When your own provider is connected, AI replies run on it first, and they don't count towards the monthly allowance.
+
+Some plans only use the built-in AI. On those, connecting a provider shows "This plan uses the built-in AI. Upgrade to connect your own AI provider keys." See [Plans and add-ons](/guide/billing/add-ons).
+
+## Compare the providers
+
+Each provider page has a **Capabilities** panel that shows what the provider can do inside the **AI Reply** step. Supported features are highlighted; unsupported ones are struck through.
+
+| Capability | OpenAI | Claude | Google Gemini | DeepSeek |
+| --- | --- | --- | --- | --- |
+| **File search** (search your documents) | Yes | No | Yes | No |
+| **Web search** | Yes | Yes | Yes | No |
+| **Reasoning effort** | Yes | No | No | No |
+| **Functions** (call tools) | Yes | Yes | Yes | Yes |
+| **CRM contact tools** | Yes | Yes | Yes | Yes |
+
+- **File search** lets the AI look things up in documents you upload. Only OpenAI and Google Gemini have it, so only their pages show a **Vector stores** tab, and only they can hold your [AI knowledge](/guide/automation/overview) when you use your own key.
+- **Reasoning effort** lets the step tell the model how hard to think before replying. Only OpenAI's models offer it.
+- **CRM contact tools** let the AI read and update the contact it is talking to. Every provider has them.
+
+## Choose a provider
+
+- Want the AI to answer from your own documents? Choose **OpenAI** or **Google Gemini**.
+- Need web search but not documents? **Claude**, OpenAI and Google Gemini all offer it.
+- Only need plain replies and tools? **DeepSeek** offers function calling, without web or file search.
+
+You can connect more than one provider. Each **AI Reply** step uses the provider and model you pick in it.
+
+## Connect any provider
 
 <Steps>
   <Step title="Get a key from the provider">
-    The page's **Setup guide** tells you where: the OpenAI platform (**API keys**), the Anthropic Console (**Settings → API keys**), Google AI Studio (**Get API key**) or the DeepSeek platform (**API keys**).
+    The provider page's **Setup guide** tells you where to create it.
   </Step>
   <Step title="Paste it">
-    Open the provider's card and paste the key into the **API key** field under **API credentials**. For DeepSeek, fill in **Base URL (optional)** only if you use a proxy.
+    In the sidebar, open **Integrations**, click the provider's card and paste the key into **API key** under **API credentials**.
   </Step>
   <Step title="Connect">
-    Click **Connect**. Keys are encrypted and never sent back to your browser.
+    Click **Connect**. The key is checked with the provider before it is saved, and the page confirms "… connected."
   </Step>
   <Step title="Use it in a flow">
-    In the flow builder, add the **AI** step and pick this provider's model.
+    In the flow builder, add an **AI Reply** step and pick this provider's model. See [Flows](/guide/automation/overview).
   </Step>
 </Steps>
 
-To change the key later, paste the new one and click **Save & reconnect**. A saved key shows as dots; leave the field blank to keep it.
+To change the key later, paste the new one and click **Save & reconnect**. **Disconnect** removes the key; vector stores you created stay listed.
 
-## Capabilities and models
+## Troubleshooting
 
-The **Capabilities** panel shows what the provider can do inside the AI step: **File search**, **Web search**, **Reasoning effort**, **Functions** and **CRM contact tools**. Supported features are highlighted and unsupported ones are struck through. **File search** is what lets the AI search your [vector stores](#vector-stores).
-
-Below the capabilities, **Models:** lists the models you can pick in the flow builder and **Default:** names the one used when you don't choose.
-
-## Vector stores
-
-For providers with file search (OpenAI and Google Gemini, where your plan includes it), a **Vector stores** tab appears next to **Configuration**. A vector store groups documents the AI can search when it writes a reply. Connect the provider first.
-
-<Steps>
-  <Step title="Create a store">
-    Under **Create a vector store**, enter a **Store name** (for example "Product docs") and click **Create**.
-  </Step>
-  <Step title="Add content">
-    In the store, click **+ Upload file** to add a PDF, TXT or MD file of up to 20 MB, or paste a web address and click **Add URL** to have the page fetched and indexed.
-  </Step>
-</Steps>
-
-Each store shows its number of files and each file's name and source. Click **Delete** to remove a store and its indexed files from the provider; this can't be undone.
-
-## Test or disconnect
-
-Once connected, use **Test connection** at the top of the page to check the key still works, or **Disconnect** to remove the provider.
+| Message or symptom | What to do |
+| --- | --- |
+| "This plan uses the built-in AI. Upgrade to connect your own AI provider keys." | Your plan doesn't allow own keys. Use the built-in AI or upgrade. |
+| "Enter the API key." | Paste a key before clicking **Connect**. |
+| "Could not reach the … API: …" | The provider refused the key or couldn't be reached. Check the key is active and has credit at the provider, then try again. The message includes the provider's own reason. |
+| "AI reply limit reached for this month" | The built-in allowance ran out. Connect your own key, or upgrade. |
+| "No AI provider is connected." | Connect a provider, or ask your platform to set up the built-in AI. |
+| The card shows **Error** | The provider rejected the saved key (for example it was deleted). Paste a new key and click **Save & reconnect**. |
 
 ## Related
 
-- [Integrations](/guide/integrations/overview)
-- [AI assistants](/guide/integrations/ai-assistants)
+- [OpenAI](/guide/integrations/openai)
+- [Claude](/guide/integrations/claude)
+- [Google Gemini](/guide/integrations/gemini)
+- [DeepSeek](/guide/integrations/deepseek)
+- [Flows and AI replies](/guide/automation/overview)

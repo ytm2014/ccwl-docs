@@ -1,0 +1,63 @@
+---
+title: "HubSpot"
+description: "Push your sales inbox contacts into HubSpot CRM, automatically or from a flow step, with a private app token."
+keywords: ["HubSpot", "CRM", "private app", "access token", "auto-sync", "contacts", "Sync to HubSpot"]
+---
+
+The **HubSpot** card on the [Integrations](/guide/integrations/overview) page sends your sales inbox contacts to HubSpot CRM. Each contact is created in HubSpot, or updated when HubSpot already has someone with the same email address, with their name, email and phone number. You can sync every contact automatically, or only the ones a flow picks.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Sales & CRM** tab.
+
+<Note>
+Don't see **HubSpot**, or does it say **Not included in your plan**? Your plan or your platform doesn't include it yet.
+</Note>
+
+## Connect HubSpot
+
+<Steps>
+  <Step title="Create a private app in HubSpot">
+    In HubSpot, open **Settings → Integrations → Private Apps** and create a private app. Grant it the `crm.objects.contacts.write` scope and copy its access token.
+  </Step>
+  <Step title="Paste the token">
+    In the sidebar, open **Integrations** > **HubSpot**. Under **HubSpot credentials**, paste it into **Private app access token**.
+  </Step>
+  <Step title="Choose auto-sync">
+    Optionally tick **Auto-sync every new & updated contact**. See below.
+  </Step>
+  <Step title="Connect">
+    Click **Connect**. The token is checked with HubSpot first; the page then confirms "HubSpot connected."
+  </Step>
+</Steps>
+
+To change the token or the auto-sync setting later, edit the form and click **Save**. A saved token shows as dots; leave the field blank to keep it.
+
+## Two ways to sync
+
+| Way | How it works |
+| --- | --- |
+| **Auto-sync** | With **Auto-sync every new & updated contact** ticked, every contact with an email is pushed to HubSpot when it's created or changed. No flow step is needed. |
+| **Sync to HubSpot** step | Add this step to a flow (under **Actions**) to push only the contacts that reach it, for example after a lead answers your qualifying questions. It has no settings. See [Flows](/guide/automation/overview). |
+
+Either way, a contact needs an email address. Contacts without one are skipped, and the skip is recorded in the flow's run log.
+
+## Synced count
+
+Once connected, the **Synced** panel shows how many contacts have been sent to HubSpot so far.
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The token is removed, auto-sync stops and **Sync to HubSpot** steps skip their contacts. Contacts already in HubSpot stay there.
+
+## Troubleshooting
+
+- **"Could not reach HubSpot: …"** HubSpot refused the token or couldn't be reached. Check the private app still exists and has the `crm.objects.contacts.write` scope, then paste the token again.
+- **A contact never appears in HubSpot.** It has no email address. Add one in the contact's profile; with auto-sync on, the change syncs it.
+- **The card shows Error.** HubSpot rejected the saved token, for example because the private app was deleted or its token rotated. Paste the new token and click **Save**.
+- **"Too many tests. Wait a minute, then try again."** Wait before the next **Test connection**.
+
+## Related
+
+- [Mailchimp](/guide/integrations/mailchimp)
+- [Contacts](/guide/contacts/overview)
+- [Flows](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

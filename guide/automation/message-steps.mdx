@@ -1,0 +1,103 @@
+---
+title: "Message and question steps"
+sidebarTitle: "Message and question steps"
+description: "Send text, buttons, quick replies, images, video, audio and files, and ask questions whose answers are checked and saved to the contact."
+keywords: ["send message", "message step", "buttons", "quick replies", "send image", "send video", "send audio", "send file", "user input", "ask a question", "save answer", "retry message", "skip", "alternate versions"]
+---
+
+Message steps send something to the contact; question steps send a question and wait for the answer. They work on every messaging channel, with extras that depend on what the channel can carry. Add them from the **Send message** and **Ask a question** tiles in the builder.
+
+For channel-specific steps see [WhatsApp steps](/guide/automation/whatsapp-steps) and [Facebook and Instagram steps](/guide/automation/facebook-instagram-steps). Public replies to comments are covered in [Comment automation](/guide/automation/comment-automation).
+
+## Send Message
+
+The basic step: a text message, optionally with buttons and quick replies.
+
+| Field | What it does |
+| --- | --- |
+| **Message text** | The text to send. Use the variable button to insert details such as `{{first_name}}`. |
+| **Send as** | **Automatically (reply where the contact wrote)**, **Direct message**, or **Reply to the comment** (a public reply, for flows started by a comment). |
+| **Alternate versions** | Click **Add** to write other wordings. "Versions are rotated so replies don't look automated." |
+| **Buttons** | Up to 3 buttons (see below). |
+| **Quick replies** | Up to 13 tappable chips shown under the message (Facebook and Instagram). |
+
+### Buttons
+
+Each button has **Button text** and a type. The types depend on the channel:
+
+| Channel | Button types |
+| --- | --- |
+| Facebook | **Quick reply**, **Open URL**, **Webview**, **Call number** |
+| Instagram | **Quick reply**, **Open URL** |
+| WhatsApp | **Reply button** only, where your platform allows reply buttons on messages |
+| TikTok, SMS | No buttons |
+
+"Each reply button has its own output dot on the right of this step — connect each one to the path it should run, so every tap routes independently. URL / call buttons open externally and don't continue the flow." Under each reply button the panel shows **This button's path**: **Connected** or **Not connected**.
+
+On WhatsApp, reply buttons go out as WhatsApp buttons: up to 3, 20 characters each, every one with a different title. Text over 1,024 characters is sent on its own first. Where reply buttons aren't available, the step is plain text only: use the **Buttons Message** or **List Message** steps for tappable replies.
+
+### Quick replies
+
+Each quick reply has **Quick reply text** and, on Facebook, a type: **Text**, **Ask for email** or **Ask for phone**. "Instagram quick replies are text-only." Like reply buttons, each quick reply has its own output, so connect each to the path it should run.
+
+### SMS
+
+"SMS is text-only — media and tappable buttons aren't available on this channel." Use variables to personalise the text.
+
+## Send Image, Send Video, Send Audio, Send File
+
+| Step | Fields |
+| --- | --- |
+| **Send Image**, **Send Video** | The media (**Choose from library** or a URL) and an optional **Caption**. |
+| **Send Audio** | **Audio URL** or **Choose from library**. |
+| **Send File** | **File URL** or **Choose from library**, and an optional **File name**. |
+
+Media steps are offered only where your workspace can send media, and not on SMS flows. If a channel can't carry the file, the step is refused when you publish.
+
+## User Input (ask a question)
+
+**User Input** asks a question, waits for the contact's next message, checks it and saves it.
+
+| Field | What it does |
+| --- | --- |
+| **Question** | The question text. |
+| **Expected reply** | **Text**, **Email**, **Phone**, **Number**, **URL**, **Date**, **Multiple choice**, **File**, **Image** or **Location**. |
+| **Choices** | For **Multiple choice**: click **Add** for each option. "Add at least 2 choices." |
+| **Save answer to** | **Don't save**, **First name**, **Last name**, **Email**, **Phone**, or **Custom field…** with the field name. |
+| **Ask as** | **Automatically (reply where the contact wrote)** or **Direct message**. "The answer is read from the contact's next direct message." |
+| **Retry message** | Sent when the answer doesn't fit the expected reply ("(invalid input)"). |
+| **Allow skipping** | Adds a **Skip** word and a **SKIP** output. "The SKIP port routes contacts who tap skip." |
+
+### What happens to the answer
+
+- The contact gets up to three tries. After the third wrong answer the flow follows **SKIP** if skipping is allowed; otherwise the run stops ("The customer's answer did not pass validation within the allowed retries.").
+- A valid answer is saved to the field you chose and to the contact's history of flow answers, and is available to later steps as a variable named after that field (for example `{{email}}`), or `{{answer}}` when you chose **Don't save**. See [Variables](/guide/automation/variables).
+- A shared location is saved as "latitude,longitude"; a typed address is accepted too.
+- Saving an answer does not start **Field changed** flows.
+- **Image** and **File** answers need your workspace to keep the files customers send; otherwise the step is refused by name.
+
+<Warning>
+A flow started by a comment or a review can't ask a question: "the answer can only come back as a direct message." Send a direct message first, or start the conversation with a message trigger.
+</Warning>
+
+## Typing indicator
+
+Under **Advanced**, turn on **Show typing indicator** and set **Typing delay (seconds)** to show "typing…" before the step is sent. The step shows **Typing indicator on** on the canvas.
+
+## Common problems
+
+| You see | What to do |
+| --- | --- |
+| "Message text is empty." | Write the message, or delete the step. |
+| "Button "…" is not connected to a next step." | Connect each reply button and quick reply, or remove it. |
+| "More than 3 buttons (Meta limit)." / "More than 13 quick replies (Meta limit)." | Remove the extra ones. |
+| "Instagram does not support call/webview buttons." | Use **Quick reply** or **Open URL**. |
+| "WhatsApp text messages can't carry buttons — use the Buttons Message step." | Move the buttons to a **Buttons Message** step. |
+| "Multiple choice needs at least 2 choices." | Add another choice. |
+
+## Related
+
+- [WhatsApp steps](/guide/automation/whatsapp-steps)
+- [Facebook and Instagram steps](/guide/automation/facebook-instagram-steps)
+- [Logic steps](/guide/automation/logic-steps)
+- [Variables](/guide/automation/variables)

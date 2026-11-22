@@ -1,0 +1,68 @@
+---
+title: "Google Calendar"
+description: "Sign in with Google so bookings create calendar events with a Google Meet link, and offered times respect your calendar's busy slots."
+keywords: ["Google Calendar", "Google Meet", "booking", "meetings", "availability", "free/busy", "Book Meeting", "meeting type"]
+---
+
+The **Google Calendar** card on the [Integrations](/guide/integrations/overview) page connects a Google calendar to your bookings. Once it's connected, a booking made in a conversation (by a **Book Meeting** flow step or a booking link) becomes an event in your calendar, can get a Google Meet link automatically, and the times offered to contacts skip the slots your calendar shows as busy.
+
+You need the **Admin** role or the **Connect integrations and manage webhooks** permission. The card is under the **Productivity** tab.
+
+<Note>
+If the card says **Not available yet** and the page reads "Google is not available yet.", your platform hasn't set up Google sign-in. If it says **Not included in your plan**, your plan doesn't include it.
+</Note>
+
+## Connect Google Calendar
+
+<Steps>
+  <Step title="Sign in with Google">
+    In the sidebar, open **Integrations** > **Google Calendar** and click **Sign in with Google**.
+  </Step>
+  <Step title="Allow calendar access">
+    Choose your Google account and allow access to your calendars. You're brought back to the page, which shows **Connected as** with your Google address.
+  </Step>
+  <Step title="Choose the booking calendar">
+    Under **Booking calendar**, pick the calendar to use; your main calendar is marked **primary**. Click **Refresh** if a calendar you just created in Google isn't listed.
+  </Step>
+</Steps>
+
+## What the booking calendar does
+
+- New meetings are created as events in this calendar.
+- When times are offered to a contact, this calendar's free/busy time is checked, so slots that clash with an existing event aren't offered.
+- A meeting type can use a different calendar, which then takes over for that type.
+
+## Use it for bookings
+
+Set up a meeting type in your appointments area and choose its location. With Google Calendar connected, the location **Google Meet (auto link)** creates a Meet link on the calendar event for every booking. The other locations (**Phone call**, **In person**, **Custom (your own link/notes)**) still create a calendar event, without a Meet link. See [Appointment types](/guide/appointments/appointment-types).
+
+Then let contacts book:
+
+- Add a **Book Meeting** step to a flow and pick the meeting type. It offers times in the chat (or sends a booking link) and has three exits: booked, **NO SLOTS** when no time is free, and **FAILED**. See [Flows](/guide/automation/overview).
+- Or share the meeting type's booking link.
+
+## What it unlocks
+
+| Where | What you get |
+| --- | --- |
+| Meeting types | The **Google Meet (auto link)** location, and a calendar per type. |
+| **Book Meeting** step | Calendar events, Meet links and availability checks for in-chat bookings. |
+| [Webhooks](/guide/integrations/webhooks), [Slack](/guide/integrations/slack), [Zapier](/guide/integrations/zapier) | The **Meeting booked**, **Meeting rescheduled** and **Meeting cancelled** events. |
+
+## Disconnect
+
+Click **Disconnect** at the top of the page. The Google sign-in is removed. New bookings no longer create calendar events or Meet links, and availability is no longer checked against your calendar. Events already in your calendar stay there.
+
+## Troubleshooting
+
+- **No times are offered (the step takes NO SLOTS).** Your booking calendar may be busy for the whole period the meeting type offers, or the meeting type has no open hours. Check both.
+- **A calendar is missing from the list.** Click **Refresh** to reload the list from Google. Check the calendar belongs to, or is shared with, the Google account shown under **Connected as**.
+- **Bookings stop creating events.** The card may show **Error** because Google withdrew access (for example after a password change). Click **Sign in with Google** again.
+- **You want Zoom links instead.** Connect [Zoom](/guide/integrations/zoom) and set the meeting type's location to **Zoom (auto link)**.
+
+## Related
+
+- [Zoom](/guide/integrations/zoom)
+- [Appointments](/guide/appointments/overview)
+- [Flows](/guide/automation/overview)
+- [Integrations](/guide/integrations/overview)

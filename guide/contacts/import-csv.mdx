@@ -1,0 +1,89 @@
+---
+title: "Import contacts from CSV"
+sidebarTitle: "Import from CSV"
+description: "Bring an existing list into Contacts with a CSV file, and understand which rows are added, updated or skipped."
+keywords: ["import contacts", "csv", "upload", "sample file", "columns", "skipped rows", "whatsapp opt-in", "duplicates"]
+---
+
+Import a spreadsheet of customers or leads so they're ready to tag, segment and work through your pipeline. You need the **Import contacts** permission, and you can't import if your role is limited to some channels.
+
+## Import a file
+
+<Steps>
+  <Step title="Open the import page">
+    In the sidebar, open **Salesbot** > **Contacts**, then choose **More contact actions** > **Import**. When the workspace has no contacts yet, **Import** is also on the empty page.
+  </Step>
+  <Step title="Choose where the rows go">
+    The **Channel** panel says where the contacts will be imported. By default they become CRM records with no channel. Workspace admins with a WhatsApp number can link the rows to it instead; see below.
+  </Step>
+  <Step title="Get the format right">
+    Click **Download sample** for a ready-made file with the expected columns.
+  </Step>
+  <Step title="Upload your CSV">
+    Drop the file on **Upload CSV** or click to choose it. **Preview** shows its first ten rows.
+  </Step>
+  <Step title="Import">
+    Click **Import**. You go back to the list with a summary of how many contacts were imported, how many existing contacts were updated and how many rows were skipped.
+  </Step>
+</Steps>
+
+## The columns
+
+The first row must be a header. Only `name` is required; other columns are read by name, in any order, and unknown columns are ignored.
+
+| Column | What to put in it |
+| --- | --- |
+| `name` | The contact's name. Required on every row. |
+| `country_code` | The dialling code without `+`, such as `44`, when `phone` is a local number. |
+| `phone` | The phone number, with its country code or with `country_code` filled in. |
+| `email` | An email address. |
+| `tags` | One or more tag names, separated by vertical bars or commas. New tags are created. |
+| `stage` | The exact name of an existing pipeline stage. Unknown names are ignored. |
+| `notes` | Text saved as an internal note. |
+| `custom_fields` | JSON, for example `{"company":"Acme"}`. |
+
+A file from **Export** uses the same columns, so you can export, edit and re-import.
+
+## Which rows are added
+
+Each row needs a name and a way to reach the person: a phone number with its country code, or an email address.
+
+- **New person:** a contact is created with the source *CSV import*.
+- **Same phone or email as an existing contact:** that contact is updated, not duplicated. The file only fills in what's missing (email, phone, stage, custom fields) and adds its tags and note. Anything the contact already has is kept.
+- **Skipped:** a row with no name, with neither phone nor email, or with a phone number that can't be read.
+
+Importing doesn't start your automations, so people aren't messaged one by one as the file is read.
+
+## Link imported contacts to WhatsApp
+
+Workspace admins can link the imported numbers to one of the workspace's WhatsApp numbers, as long as the people agreed to receive WhatsApp messages.
+
+1. In **Channel**, choose the WhatsApp number instead of **No channel**.
+2. Tick **These contacts agreed to receive WhatsApp messages from us**. Without it, no WhatsApp number is linked.
+
+The summary then says how many contacts were linked, and how many weren't because they had no phone or their number is already another contact's on that channel. The confirmation is recorded in the workspace's audit log.
+
+## Limits
+
+- Up to 10 MB and 5,000 rows per file. Split bigger files and import each part.
+- With a plan contact limit, every row counts towards it, including rows that will update an existing contact. If the file would go over, nothing is imported. See [Contact limits](/guide/contacts/contact-limits).
+
+## Troubleshooting
+
+| Message | What to do |
+| --- | --- |
+| *The first row must be a header with a `name` column.* | Add a header row, or start from **Download sample**. |
+| *The file has more than 5,000 rows.* / *The file is larger than 10 MB.* | Split the file and import each part. |
+| *No contacts were imported: all n row(s) lacked a name, or a phone written with its country code or an email.* | Check that phones include a country code (or fill in `country_code`), and that each row has a name. |
+| *You've reached your plan's limit of n contacts.* | Import fewer rows, delete contacts you no longer need, or raise your limit. |
+| *Contacts are being added to this workspace. Please try again in a moment.* | Another import or new contact is being saved. Wait and try again. |
+| **Import** does nothing | Choose a file first; the button stays disabled until you do. |
+
+The file is read as UTF-8, whatever your spreadsheet saved it as.
+
+## Related
+
+- [The contact list](/guide/contacts/contact-list)
+- [Tags](/guide/contacts/tags)
+- [Custom fields](/guide/contacts/custom-fields)
+- [Merge duplicate contacts](/guide/contacts/merge-duplicates)
