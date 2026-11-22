@@ -5,7 +5,7 @@ description: "Status codes, error bodies and rate limits."
 
 ## Error format
 
-Errors return JSON with a `message`:
+Errors return JSON with a `message`, and some also a `code`:
 
 ```json
 { "message": "This API key cannot call this endpoint." }
@@ -27,9 +27,10 @@ When a message cannot be sent, the Messaging API returns `422` with a `reason`, 
 | Code | Meaning |
 | --- | --- |
 | `200` `201` `202` `204` | Success. `201` means created, `202` means accepted for processing, `204` means deleted. |
-| `401` | The key is missing, invalid, revoked or expired, or you sent two different keys. |
-| `403` | The key lacks a permission, its admin can no longer do this, or the workspace is suspended. |
-| `404` | The resource does not exist in this workspace, or the feature is not available on it. |
+| `400` | A personal access token called the Messaging or Link in Bio API without an `X-Workspace` header (`code: workspace_required`). |
+| `401` | The key or token is missing, invalid, revoked or expired, or you sent two different credentials. |
+| `403` | The key or token lacks a permission, its admin (or, for a personal access token, your role) can no longer do this, or the workspace is suspended. A personal access token created before token permissions gets `code: token_permissions_required` on the Messaging and Link in Bio APIs. |
+| `404` | The resource does not exist in this workspace, or the feature is not available on it. With `X-Workspace`: the workspace does not exist or you are not a member (`code: workspace_not_found`). |
 | `409` | Conflict, for example an `Idempotency-Key` reused with a different body. |
 | `412` | The `If-Match` revision is out of date. Fetch the resource again. |
 | `422` | Validation failed. |
@@ -41,11 +42,13 @@ When a message cannot be sent, the Messaging API returns `422` with a `reason`, 
 | Limit | Default |
 | --- | --- |
 | Per workspace API key, across both APIs | 60 requests per minute |
+| Per personal access token, in each workspace (Messaging and Link in Bio APIs) | 60 requests per minute |
+| Per personal access token, across all workspaces (Messaging and Link in Bio APIs) | 300 requests per minute |
 | Per client IP | 300 requests per minute |
 | Requests with an invalid key, per IP | 30 per minute |
 | Webhook management changes, per workspace | 60 per minute |
 
-The Messaging API may also apply its own per-key limit. Your platform can change these defaults. When you get a `429`, wait for `Retry-After` seconds before retrying.
+The Messaging API may also apply its own per-key or per-token limit. Your platform can change these defaults. When you get a `429`, wait for `Retry-After` seconds before retrying.
 
 ## Retrying safely
 

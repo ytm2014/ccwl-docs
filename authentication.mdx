@@ -1,31 +1,47 @@
 ---
 title: "Authentication"
-description: "Workspace API keys, how to send them and what they can do."
+description: "Workspace API keys and personal access tokens: how to create them, send them and what they can do."
 ---
 
-## Workspace API keys
+## Two kinds of credential
 
-A workspace API key starts with `osk_`. It belongs to exactly one workspace and acts on behalf of the admin who created it.
+| | Workspace API key | Personal access token |
+| --- | --- | --- |
+| Looks like | Starts with `osk_` | Letters and digits, no prefix |
+| Works in | One workspace | Every workspace you belong to, now or later |
+| Acts as | The admin who created it | You, with your role in each workspace |
+| Who can create one | Workspace admins | Any user |
+| The workspace | Comes from the key | You name it on each call (see [Choosing the workspace](#choosing-the-workspace)) |
+| Best for | A server integration for one workspace | A tool or AI assistant that works across your workspaces |
+
+Both get only the permissions you tick when you create them.
+
+## Creating a key or token
 
 <Steps>
-  <Step title="Open the key manager">
-    In your dashboard, go to **Configuration → Integrations → REST API**. Only workspace admins can create keys.
+  <Step title="Open the dialog">
+    In your dashboard, go to **Configuration → Integrations → REST API** and click **Create API key**. You can also create a personal access token from **Access Tokens** in your user menu.
   </Step>
-  <Step title="Create a key">
-    Give it a name, pick its permissions and, optionally, an expiry date. No permissions are selected by default.
+  <Step title="Choose where it works">
+    **This workspace only** creates a workspace API key. Only workspace admins see this choice. **All my workspaces** creates a personal access token.
+  </Step>
+  <Step title="Name it, set an expiry and pick permissions">
+    No permissions are ticked by default. A personal access token expires after 90 days unless you choose another date. A workspace API key does not expire unless you choose a date.
   </Step>
   <Step title="Copy it once">
-    The key is shown only once. Store it in your secret manager straight away; it cannot be shown again.
+    The secret is shown only once. Store it in your secret manager straight away; it cannot be shown again.
   </Step>
 </Steps>
 
 <Warning>
-If the admin who created a key leaves the workspace or stops being an admin, the key stops working. Create integration keys from an admin account that will stay in place.
+If the admin who created a workspace API key leaves the workspace or stops being an admin, the key stops working. Create integration keys from an admin account that will stay in place.
+
+A personal access token stops working in a workspace as soon as you leave it. Revoking a token stops every integration that uses it, in every workspace.
 </Warning>
 
 ## Sending the key
 
-Send the key in **one** of these headers. Both work on both APIs.
+Send the key in **one** of these headers.
 
 <CodeGroup>
 ```http Bearer
@@ -37,13 +53,49 @@ x-api-key: osk_YOUR_SECRET
 ```
 </CodeGroup>
 
+A workspace API key works in either header on every API. A personal access token works in either header on the Messaging and Link in Bio APIs, and only as `Authorization: Bearer` on the Publishing API.
+
 If you send both headers with different values, the request is rejected with `401`.
+
+## Choosing the workspace
+
+| API | Workspace API key | Personal access token |
+| --- | --- | --- |
+| Messaging API | The key's workspace | The `X-Workspace` header |
+| Link in Bio API | The key's workspace | The `X-Workspace` header |
+| Publishing API | The workspace UUID in the URL. It must be the key's workspace | The workspace UUID in the URL |
+
+With a personal access token, name the workspace by its UUID on every Messaging and Link in Bio call:
+
+```bash
+curl https://app.example.com/api/v1/contacts \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "X-Workspace: c2a4f0d1-58e4-4c1b-a1f7-2b6f3e9d0a11"
+```
+
+To find your workspace UUIDs with a personal access token, call `GET https://app.example.com/os/api/workspaces`. It lists every workspace you belong to, with its `uuid`, `name` and your `role`. With a workspace API key, [Get the authenticated workspace](/messaging/account/get-the-authenticated-workspace) returns the key's workspace.
+
+A workspace API key may send `X-Workspace` too, so one client can send the header with every credential. It must name the key's own workspace; any other workspace gets `404`.
+
+## Which APIs accept which credential
+
+| API | Workspace API key | Personal access token with permissions | Personal access token created before permissions |
+| --- | :---: | :---: | :---: |
+| Publishing API | ✅ | ✅ | ✅ every endpoint |
+| Messaging API | ✅ | ✅ | ❌ `403` |
+| Link in Bio API | ✅ | ✅ except managing custom domains | ❌ `403` |
+| [Webhook management API](/webhooks/manage) | ✅ | ❌ | ❌ |
+| [Zapier](/zapier) | ✅ | ❌ | ❌ |
+
+Personal access tokens made before token permissions existed keep exactly what they could do before, and gain nothing. To use the Messaging or Link in Bio API with a personal access token, create a new token with those permissions.
 
 ## Permissions
 
-A key only gets the permissions you select when you create it. Picking "all" selects every permission that exists at that moment; permissions added to the platform later are never added to existing keys. To change a key's permissions, create a new key, switch your integration over, then revoke the old one.
+A key or token only gets the permissions you select when you create it. Picking "all" selects every permission that exists at that moment; permissions added to the platform later are never added to existing keys or tokens. To change permissions, create a new key or token, switch your integration over, then revoke the old one.
 
-Permissions narrow what the creating admin can already do; they never add to it. Plan limits and features that are switched off still apply.
+Permissions narrow what the person behind the credential can already do; they never add to it. For a workspace API key that person is the admin who created it. For a personal access token it is you: in each workspace the token can only do what you can do there yourself, so your role and any team role limits apply. Plan limits and features that are switched off still apply.
+
+Personal access tokens can never hold the webhook permissions, `salesbot:zapier:hooks` or `biolinks:domains:manage`. Use a workspace API key for those.
 
 ### Publishing
 
@@ -78,7 +130,7 @@ Creating or updating a post that schedules it (`schedule`, `schedule_now`, `queu
 | `salesbot:automations:write` | Switch automations on and off |
 | `salesbot:media:read` | Read the media library |
 | `salesbot:media:write` | Upload and delete media |
-| `salesbot:zapier:hooks` | Subscribe Zapier triggers |
+| `salesbot:zapier:hooks` | Subscribe Zapier triggers. Workspace API keys only |
 
 ### Link in Bio
 
@@ -101,11 +153,21 @@ Creating or updating a post that schedules it (`schedule`, `schedule_now`, `queu
 | `biolinks:pixels:read` | Read tracking pixels |
 | `biolinks:pixels:write` | Create and delete tracking pixels |
 | `biolinks:domains:read` | Read custom domains and domain operations |
-| `biolinks:domains:manage` | Connect, verify and remove custom domains |
+| `biolinks:domains:manage` | Connect, verify and remove custom domains. Workspace API keys only |
 
 Some write permissions only appear when creating a key if your platform has Link in Bio writes switched on.
 
+With a personal access token, a viewer can use the read permissions for pages, short links, the catalogue, analytics and QR codes. Every other Link in Bio permission needs the member or admin role in that workspace.
+
+### AI assistants
+
+| Permission | Allows |
+| --- | --- |
+| `mcp:use` | Connect an AI assistant (MCP) with this key or token. The assistant only gets the tools its other permissions allow. Only offered where your platform has AI assistants switched on |
+
 ### Webhooks
+
+These are for workspace API keys only.
 
 | Permission | Allows |
 | --- | --- |
@@ -118,15 +180,26 @@ Some write permissions only appear when creating a key if your platform has Link
 
 See [Managing endpoints](/webhooks/manage) for how these combine.
 
-## Workspaces
+## Authentication errors
 
-- **Messaging and Link in Bio APIs:** the key selects the workspace. No workspace ID appears in the URL.
-- **Publishing API:** the workspace UUID is part of the URL and must match the key's workspace. A key from another workspace gets `404`, even if its admin belongs to both.
+| Status | `code` | When |
+| --- | --- | --- |
+| `400` | `workspace_required` | A personal access token called the Messaging or Link in Bio API without an `X-Workspace` header. |
+| `401` | | The key or token is missing, invalid, revoked or expired, or you sent two different credentials. |
+| `403` | `token_permissions_required` | A personal access token created before token permissions called the Messaging or Link in Bio API. Create a new token with the permissions it needs. |
+| `403` | | The key or token lacks the permission (the message names it), your role in that workspace does not allow it, or the workspace is suspended. |
+| `404` | `workspace_not_found` | The `X-Workspace` value is not a valid UUID, the workspace does not exist, or you are not a member of it. All three get the same answer. A workspace API key also gets this when `X-Workspace` names another workspace. |
+| `404` | | Publishing API: the workspace in the URL is not the key's workspace. |
+
+```json
+{
+  "message": "Name the workspace in the X-Workspace header (its uuid).",
+  "code": "workspace_required"
+}
+```
+
+See [Errors and limits](/errors-and-limits) for every status code and the rate limits.
 
 ## Older credentials
 
-Personal publishing tokens and messaging keys starting with `sbk_` keep working on their own API as before. They are never converted or expired automatically. To move an integration to a workspace key: create the key, update the integration, check a read and a safe write, then revoke the old credential.
-
-<Info>
-Personal publishing tokens can cover several workspaces. Revoking one can affect integrations in all of them.
-</Info>
+Messaging keys starting with `sbk_` keep working on their own API as before. They are never converted or expired automatically. To move an integration to a workspace API key or a personal access token: create it, update the integration, check a read and a safe write, then revoke the old credential.

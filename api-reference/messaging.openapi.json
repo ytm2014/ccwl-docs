@@ -3,7 +3,7 @@
   "info": {
     "title": "Messaging API",
     "version": "1.0.0",
-    "description": "Contacts, conversations, messages, broadcasts, automations and media for one workspace. The workspace is selected by the API key, so no workspace ID appears in any URL."
+    "description": "Contacts, conversations, messages, broadcasts, automations and media for one workspace. No workspace ID appears in any URL: a workspace API key selects its own workspace, and a personal access token names it in the `X-Workspace` header."
   },
   "servers": [
     {
@@ -30,20 +30,20 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "A workspace API key: `Authorization: Bearer osk_...`"
+        "description": "A workspace API key (`Authorization: Bearer osk_...`), or a personal access token created with permissions, sent with `X-Workspace`."
       },
       "apiKeyHeader": {
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "The same workspace API key in the `x-api-key` header."
+        "description": "The same key or token in the `x-api-key` header."
       }
     }
   },
   "tags": [
     {
       "name": "Account",
-      "description": "The workspace is selected by the API key, so no workspace id appears in any /api/v1 URL."
+      "description": "No workspace id appears in any /api/v1 URL. A workspace API key selects its own workspace; a personal access token names it in the `X-Workspace` header."
     },
     {
       "name": "Automations",
@@ -85,8 +85,20 @@
           "Account"
         ],
         "summary": "Get the authenticated workspace",
-        "description": "Returns the workspace (account) the API key belongs to. Use it as a connectivity / auth check.\n\n**Required permission:** any messaging permission.",
+        "description": "Returns the workspace (account) the API key belongs to. Use it as a connectivity / auth check. With a personal access token, it returns the workspace named in `X-Workspace`.\n\n**Required permission:** any messaging permission.",
         "operationId": "account.show",
+        "parameters": [
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -152,6 +164,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -178,6 +200,16 @@
               "type": "string"
             },
             "description": "The automation ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -204,6 +236,16 @@
               "type": "string"
             },
             "description": "The automation ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -230,6 +272,16 @@
               "type": "string"
             },
             "description": "The automation ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -277,6 +329,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -292,6 +354,18 @@
         "summary": "Create a broadcast",
         "description": "Creates a campaign. Draft unless `schedule` is true. `timezone_mode: contact` sends the same wall-clock in each recipient's own timezone and requires `scheduled_local_at`. Set `type: retarget` with `source_broadcast_id` + `retarget_engagement` to re-message a prior broadcast's recipients instead of a segment.\n\n**Required permission:** `salesbot:broadcasts:write`",
         "operationId": "broadcasts.store",
+        "parameters": [
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -374,6 +448,16 @@
               "type": "string"
             },
             "description": "The broadcast ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -398,6 +482,16 @@
               "type": "string"
             },
             "description": "The broadcast ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -451,6 +545,16 @@
               "type": "string"
             },
             "description": "The broadcast ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -477,6 +581,16 @@
               "type": "string"
             },
             "description": "The broadcast ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -503,6 +617,16 @@
               "type": "string"
             },
             "description": "The broadcast ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -549,6 +673,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -606,6 +740,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -632,6 +776,16 @@
               "type": "string"
             },
             "description": "The channel ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -739,6 +893,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -754,6 +918,18 @@
         "summary": "Create a contact",
         "description": "Creates a contact and fires contact.created. To make it reachable on WhatsApp, supply `channel` (one of the workspace's WhatsApp numbers), `phone` in international form and `opt_in_attested: true`, confirming the person agreed to receive WhatsApp messages from you; no other channel can be bound here. A number another contact already holds is refused. Subject to the workspace's plan contact cap.\n\n**Required permission:** `salesbot:contacts:write`",
         "operationId": "contacts.store",
+        "parameters": [
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -829,6 +1005,18 @@
         "summary": "Bulk action on contacts",
         "description": "Applies one action to up to 500 contacts: up to 50 inline, more queued (202, `queued: true`). Actions: delete, add_tag, remove_tag, set_stage. `value` is the tag NAME for add_tag/remove_tag and the stage id for set_stage. Per-contact webhooks still fire; contact-event automation triggers are suppressed so a bulk change cannot stampede the flow engine. `delete` also needs the key creator to hold the bulk-delete permission.\n\n**Required permission:** `salesbot:contacts:write`",
         "operationId": "contacts.bulk",
+        "parameters": [
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -880,6 +1068,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -904,6 +1102,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -948,6 +1156,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -974,6 +1192,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1017,6 +1245,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1062,6 +1300,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1104,6 +1352,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1207,6 +1465,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1233,6 +1501,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1269,6 +1547,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1295,6 +1583,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1321,6 +1619,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1367,6 +1675,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1409,6 +1727,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1451,6 +1779,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1493,6 +1831,16 @@
               "type": "string"
             },
             "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1535,6 +1883,16 @@
               "type": "string"
             },
             "description": "Makes a retried request a single send."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1600,6 +1958,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1615,6 +1983,18 @@
         "summary": "Upload a file",
         "description": "multipart/form-data with a `file` field. Runs the same upload pipeline as the dashboard, so the file gets its thumbnail conversions and the workspace storage path. Allowed mime types and the per-type size cap come from the install's file config.\n\n**Required permission:** `salesbot:media:write`",
         "operationId": "media.store",
+        "parameters": [
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -1639,6 +2019,16 @@
               "type": "string"
             },
             "description": "The media ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1663,6 +2053,16 @@
               "type": "string"
             },
             "description": "The media ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1710,6 +2110,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1725,6 +2135,18 @@
         "summary": "Create a segment",
         "description": "Creates a saved filter. Tags are referenced by tag id. `conditions` is an optional grouped rule tree; unknown fields and operators are stripped by the shared sanitiser, so an invalid rule is dropped rather than silently matching everything.\n\n**Required permission:** `salesbot:contacts:write`",
         "operationId": "segments.store",
+        "parameters": [
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -1825,6 +2247,16 @@
               "type": "string"
             },
             "description": "The segment ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1849,6 +2281,16 @@
               "type": "string"
             },
             "description": "The segment ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1893,6 +2335,16 @@
               "type": "string"
             },
             "description": "The segment ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1929,6 +2381,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1966,6 +2428,16 @@
               "example": "25"
             },
             "description": "Items per page (max 100)"
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1981,6 +2453,18 @@
         "summary": "Create a tag",
         "description": "Creates a tag, or returns the existing one with the same name (200 instead of 201).\n\n**Required permission:** `salesbot:contacts:write`",
         "operationId": "tags.store",
+        "parameters": [
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -2025,6 +2509,16 @@
               "type": "string"
             },
             "description": "The tag ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2049,6 +2543,16 @@
               "type": "string"
             },
             "description": "The tag ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2093,6 +2597,16 @@
               "type": "string"
             },
             "description": "The tag ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {

@@ -43,6 +43,23 @@ const SCOPES = {
 
 const SKIP_MODULES = new Set(['Webhooks']);
 
+// Personal access tokens name the workspace in this header; a workspace API key may send it too.
+const WORKSPACE_HEADER = {
+  name: 'X-Workspace',
+  in: 'header',
+  required: false,
+  schema: { type: 'string', format: 'uuid' },
+  description: "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace.",
+};
+
+// Tag notes that replace the manifest's, and sentences added to an endpoint's description.
+const TAG_NOTES = {
+  Account: 'No workspace id appears in any /api/v1 URL. A workspace API key selects its own workspace; a personal access token names it in the `X-Workspace` header.',
+};
+const EXTRA_NOTES = {
+  'account.show': ' With a personal access token, it returns the workspace named in `X-Workspace`.',
+};
+
 // Wording the manifests use internally, swapped for neutral terms.
 const neutral = (s) => String(s ?? '')
   .replace(/\bS\d+[a-z]?\b ?/g, '')
@@ -71,7 +88,7 @@ const spec = {
   info: {
     title: 'Messaging API',
     version: '1.0.0',
-    description: 'Contacts, conversations, messages, broadcasts, automations and media for one workspace. The workspace is selected by the API key, so no workspace ID appears in any URL.',
+    description: 'Contacts, conversations, messages, broadcasts, automations and media for one workspace. No workspace ID appears in any URL: a workspace API key selects its own workspace, and a personal access token names it in the `X-Workspace` header.',
   },
   servers: [{
     url: 'https://{domain}/api/v1',
@@ -81,8 +98,8 @@ const spec = {
   security: [{ bearerAuth: [] }, { apiKeyHeader: [] }],
   components: {
     securitySchemes: {
-      bearerAuth: { type: 'http', scheme: 'bearer', description: 'A workspace API key: `Authorization: Bearer osk_...`' },
-      apiKeyHeader: { type: 'apiKey', in: 'header', name: 'x-api-key', description: 'The same workspace API key in the `x-api-key` header.' },
+      bearerAuth: { type: 'http', scheme: 'bearer', description: 'A workspace API key (`Authorization: Bearer osk_...`), or a personal access token created with permissions, sent with `X-Workspace`.' },
+      apiKeyHeader: { type: 'apiKey', in: 'header', name: 'x-api-key', description: 'The same key or token in the `x-api-key` header.' },
     },
   },
   tags: [],
@@ -93,7 +110,7 @@ const files = readdirSync(dir).filter((f) => f.endsWith('.json')).sort();
 for (const file of files) {
   const manifest = JSON.parse(readFileSync(join(dir, file), 'utf8').replace(/^﻿/, ''));
   if (SKIP_MODULES.has(manifest.module)) continue;
-  spec.tags.push({ name: manifest.module, description: neutral(manifest.notes) || undefined });
+  spec.tags.push({ name: manifest.module, description: TAG_NOTES[manifest.module] ?? (neutral(manifest.notes) || undefined) });
 
   for (const ep of manifest.endpoints) {
     const path = '/' + ep.path;
@@ -107,6 +124,7 @@ for (const file of files) {
     if (method === 'post' && ep.name === 'messages.store') {
       params.push({ name: 'Idempotency-Key', in: 'header', required: false, schema: { type: 'string' }, description: 'Makes a retried request a single send.' });
     }
+    params.push(WORKSPACE_HEADER);
 
     const scope = SCOPES[ep.name];
     if (scope === undefined) throw new Error(`No scope mapping for ${ep.name}`);
@@ -117,9 +135,9 @@ for (const file of files) {
     const op = {
       tags: [manifest.module],
       summary: ep.summary,
-      description: neutral(ep.description) + scopeNote,
+      description: neutral(ep.description) + (EXTRA_NOTES[ep.name] ?? '') + scopeNote,
       operationId: ep.name,
-      parameters: params.length ? params : undefined,
+      parameters: params,
       responses: { 200: { description: 'Success' } },
     };
     if (ep.body && Object.keys(ep.body).length) {

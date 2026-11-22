@@ -3,7 +3,7 @@
   "info": {
     "title": "Link in Bio API",
     "version": "1.0.0",
-    "description": "Link-in-bio pages and their blocks, short links, QR codes, tracking pixels, form submissions, analytics and custom domains."
+    "description": "Link-in-bio pages and their blocks, short links, QR codes, tracking pixels, form submissions, analytics and custom domains. Authenticate with a workspace API key, which selects its own workspace, or a personal access token created with `biolinks:` permissions, which names the workspace in the `X-Workspace` header."
   },
   "servers": [
     {
@@ -59,13 +59,13 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "A workspace API key: `Authorization: Bearer osk_...`"
+        "description": "A workspace API key (`Authorization: Bearer osk_...`), or a personal access token created with permissions, sent with `X-Workspace`."
       },
       "apiKeyHeader": {
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "The same workspace API key in the `x-api-key` header."
+        "description": "The same key or token in the `x-api-key` header."
       }
     },
     "schemas": {
@@ -429,6 +429,16 @@
               "type": "string"
             },
             "description": "Search titles."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -483,6 +493,16 @@
               "maxLength": 200
             },
             "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -682,6 +702,16 @@
               "format": "uuid"
             },
             "description": "Page ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -729,6 +759,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -933,6 +973,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -970,6 +1020,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -1052,6 +1112,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -1137,6 +1207,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -1200,6 +1280,16 @@
               "format": "uuid"
             },
             "description": "Page ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1261,6 +1351,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -1345,6 +1445,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -1417,6 +1527,16 @@
               "format": "uuid"
             },
             "description": "Block ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1474,6 +1594,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -1557,6 +1687,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1609,6 +1749,16 @@
               "type": "string"
             },
             "description": "Search titles."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1663,6 +1813,16 @@
               "maxLength": 200
             },
             "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -1796,6 +1956,16 @@
               "format": "uuid"
             },
             "description": "Link ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -1843,6 +2013,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -1981,6 +2161,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2018,6 +2208,16 @@
               "example": "\"a1b2c3\""
             },
             "description": "The current `revision` in quotes, from the resource's `ETag`. Missing returns `428`; out of date returns `412`."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -2073,7 +2273,19 @@
           "200": {
             "description": "Success"
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ]
       }
     },
     "/pages/{page}/analytics": {
@@ -2094,6 +2306,16 @@
               "format": "uuid"
             },
             "description": "Page ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2121,6 +2343,16 @@
               "format": "uuid"
             },
             "description": "Link ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2163,6 +2395,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2213,6 +2455,16 @@
               "format": "uuid"
             },
             "description": "Submission ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2250,6 +2502,16 @@
               "format": "uuid"
             },
             "description": "Submission ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2283,6 +2545,16 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2337,6 +2609,16 @@
               "maxLength": 200
             },
             "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -2450,6 +2732,16 @@
               "format": "uuid"
             },
             "description": "QR code ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2487,6 +2779,16 @@
               "format": "uuid"
             },
             "description": "QR code ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2514,6 +2816,16 @@
               "format": "uuid"
             },
             "description": "QR code ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2574,6 +2886,16 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2628,6 +2950,16 @@
               "maxLength": 200
             },
             "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -2707,6 +3039,16 @@
               "format": "uuid"
             },
             "description": "Pixel ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2740,6 +3082,16 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2773,6 +3125,16 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2815,7 +3177,7 @@
         ],
         "summary": "Connect a domain",
         "operationId": "domains.store",
-        "description": "Adds the domain as `pending`. Point its DNS at the platform, then call Verify a domain. Plan limits apply.\n\n**Required permission:** `biolinks:domains:manage`",
+        "description": "Adds the domain as `pending`. Point its DNS at the platform, then call Verify a domain. Plan limits apply.\n\n**Required permission:** `biolinks:domains:manage`\n\nWorkspace API keys only: a personal access token gets `403`.",
         "parameters": [
           {
             "name": "Idempotency-Key",
@@ -2827,6 +3189,16 @@
               "maxLength": 200
             },
             "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "requestBody": {
@@ -2886,6 +3258,16 @@
               "format": "uuid"
             },
             "description": "Domain ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2912,7 +3294,7 @@
         ],
         "summary": "Remove a domain",
         "operationId": "domains.destroy",
-        "description": "Queued: returns `202` with an operation to poll. Domains still used by pages or links cannot be removed.\n\n**Required permission:** `biolinks:domains:manage`",
+        "description": "Queued: returns `202` with an operation to poll. Domains still used by pages or links cannot be removed.\n\n**Required permission:** `biolinks:domains:manage`\n\nWorkspace API keys only: a personal access token gets `403`.",
         "parameters": [
           {
             "name": "domain",
@@ -2923,6 +3305,16 @@
               "format": "uuid"
             },
             "description": "Domain ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -2951,7 +3343,7 @@
         ],
         "summary": "Verify a domain",
         "operationId": "domains.verify",
-        "description": "Queued: returns `202` with an operation to poll. Verification does not mean SSL is ready; check `ssl_active` on the domain.\n\n**Required permission:** `biolinks:domains:manage`",
+        "description": "Queued: returns `202` with an operation to poll. Verification does not mean SSL is ready; check `ssl_active` on the domain.\n\n**Required permission:** `biolinks:domains:manage`\n\nWorkspace API keys only: a personal access token gets `403`.",
         "parameters": [
           {
             "name": "domain",
@@ -2973,6 +3365,16 @@
               "maxLength": 200
             },
             "description": "8–200 letters, digits, `.`, `_`, `:` or `-`. Retry with the same key and exact same body to get the original response."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {
@@ -3012,6 +3414,16 @@
               "format": "uuid"
             },
             "description": "Operation ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
           }
         ],
         "responses": {

@@ -5,7 +5,7 @@ description: "Create a key and make your first request."
 
 <Steps>
   <Step title="Create a workspace API key">
-    In your dashboard go to **Configuration → Integrations → REST API** and create a key. For this guide, give it `salesbot:contacts:read` and `publishing:accounts:read`. Copy the key; it is shown only once.
+    In your dashboard go to **Configuration → Integrations → REST API**, click **Create API key** and choose **This workspace only**. For this guide, give it `salesbot:contacts:read` and `publishing:accounts:read`. Copy the key; it is shown only once.
   </Step>
   <Step title="Find your domain">
     Your API lives on the same domain you sign in to. In the examples below, replace `app.example.com` with it.
@@ -67,6 +67,10 @@ curl -X POST https://app.example.com/os/api/WORKSPACE_UUID/posts \
     ]
   }'
 ```
+
+<Tip>
+Using a personal access token instead? Send `X-Workspace: WORKSPACE_UUID` with every Messaging and Link in Bio request. See [Choosing the workspace](/authentication#choosing-the-workspace).
+</Tip>
 
 ## Next steps
 

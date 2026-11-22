@@ -5,7 +5,25 @@ description: "How pages, short links and domains work through the API, and the r
 
 Base URL: `https://app.example.com/api/v1/biolinks`
 
-Authenticate with a [workspace API key](/authentication) that has `biolinks:` permissions. The key chooses the workspace, so no workspace ID appears in the URL. IDs in paths are the `id` values the API returns.
+Authenticate with a [workspace API key or a personal access token](/authentication) that has `biolinks:` permissions. IDs in paths are the `id` values the API returns.
+
+## Choosing the workspace
+
+No workspace ID appears in the URL.
+
+- **Workspace API key:** the key chooses the workspace.
+- **Personal access token:** send the workspace UUID in an `X-Workspace` header on every call. The token acts as you, with your role in that workspace: a viewer can read pages, short links, the catalogue, analytics and QR codes, and everything else needs the member or admin role. Managing custom domains needs a workspace API key.
+
+```bash
+curl https://app.example.com/api/v1/biolinks/pages   -H "Authorization: Bearer YOUR_TOKEN"   -H "X-Workspace: c2a4f0d1-58e4-4c1b-a1f7-2b6f3e9d0a11"
+```
+
+| Status | `code` | When |
+| --- | --- | --- |
+| `400` | `workspace_required` | A personal access token sent no `X-Workspace` header. |
+| `403` | `token_permissions_required` | The personal access token was created before token permissions. Create a new one with `biolinks:` permissions. |
+| `403` | | The key or token lacks the permission, or your role in the workspace does not allow it. |
+| `404` | `workspace_not_found` | The workspace does not exist, the value is not a UUID, or you are not a member. A workspace API key also gets this when `X-Workspace` names another workspace. |
 
 ## New content starts paused
 
@@ -44,6 +62,8 @@ Use the block endpoints to change a page's content; sending `blocks` in a page u
 - A page can have up to 200 blocks. Reordering needs every block ID exactly once.
 
 ## Custom domains
+
+Domains are managed with a workspace API key that has `biolinks:domains:manage`. Personal access tokens can read domains but not connect, verify or remove them.
 
 1. [Connect a domain](/biolinks/domains/connect-a-domain) with its host name. It starts `pending`.
 2. Point the domain's DNS at the platform.

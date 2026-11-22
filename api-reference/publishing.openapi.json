@@ -3,7 +3,7 @@
   "info": {
     "title": "Publishing API",
     "version": "1.0.0",
-    "description": "Social accounts, posts, scheduling, approval, tags, media and analytics for one workspace."
+    "description": "Social accounts, posts, scheduling, approval, tags, media and analytics for one workspace. Authenticate with a workspace API key or a personal access token; the workspace UUID is part of every URL."
   },
   "servers": [
     {
@@ -30,6 +30,9 @@
       "name": "Diagnostics"
     },
     {
+      "name": "Workspaces"
+    },
+    {
       "name": "Accounts"
     },
     {
@@ -51,13 +54,13 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "A workspace API key: `Authorization: Bearer osk_...`"
+        "description": "A workspace API key (`Authorization: Bearer osk_...`) or a personal access token."
       },
       "apiKeyHeader": {
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "The same workspace API key in the `x-api-key` header."
+        "description": "A workspace API key in the `x-api-key` header. Personal access tokens must use `Authorization: Bearer`."
       }
     },
     "schemas": {
@@ -981,7 +984,7 @@
         ],
         "summary": "Check your key",
         "operationId": "ping",
-        "description": "Returns `{\"status\":\"ok\"}` when the key is valid.\n\n**Required permission:** any publishing permission.",
+        "description": "Returns `{\"status\":\"ok\"}` when the key or token is valid.\n\n**Required permission:** any publishing permission.",
         "responses": {
           "200": {
             "description": "Key is valid",
@@ -993,6 +996,73 @@
                     "status": {
                       "type": "string",
                       "example": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces": {
+      "get": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "List your workspaces",
+        "operationId": "workspaces.index",
+        "description": "Every workspace you belong to, most recently updated first, with its `uuid` and your `role`. Use the `uuid` in Publishing URLs and in the `X-Workspace` header of the Messaging and Link in Bio APIs.\n\nPersonal access tokens only: a workspace API key gets `403`.\n\n**Required permission:** any publishing permission.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 12
+                          },
+                          "uuid": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "c2a4f0d1-58e4-4c1b-a1f7-2b6f3e9d0a11"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Acme Marketing"
+                          },
+                          "pivot": {
+                            "type": "object",
+                            "properties": {
+                              "role": {
+                                "type": "string",
+                                "enum": [
+                                  "viewer",
+                                  "member",
+                                  "admin"
+                                ],
+                                "example": "admin"
+                              },
+                              "can_approve": {
+                                "type": "boolean",
+                                "example": true
+                              },
+                              "joined_at": {
+                                "type": "string",
+                                "example": "2026-01-14 10:22:31"
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -1019,7 +1089,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "responses": {
@@ -1061,7 +1131,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "account",
@@ -1104,7 +1174,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "status",
@@ -1206,7 +1276,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "requestBody": {
@@ -1353,7 +1423,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "requestBody": {
@@ -1416,7 +1486,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "post",
@@ -1457,7 +1527,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "post",
@@ -1601,7 +1671,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "post",
@@ -1661,7 +1731,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "post",
@@ -1734,7 +1804,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "post",
@@ -1823,7 +1893,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "post",
@@ -1893,7 +1963,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "post",
@@ -1944,7 +2014,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "limit",
@@ -2006,7 +2076,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "requestBody": {
@@ -2061,7 +2131,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "requestBody": {
@@ -2122,7 +2192,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "media",
@@ -2163,7 +2233,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "media",
@@ -2230,7 +2300,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "requestBody": {
@@ -2305,7 +2375,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "upload",
@@ -2364,7 +2434,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "upload",
@@ -2423,7 +2493,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "upload",
@@ -2471,7 +2541,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "requestBody": {
@@ -2547,7 +2617,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "download",
@@ -2611,7 +2681,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "responses": {
@@ -2651,7 +2721,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           }
         ],
         "requestBody": {
@@ -2711,7 +2781,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "tag",
@@ -2752,7 +2822,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "tag",
@@ -2820,7 +2890,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "tag",
@@ -2868,7 +2938,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "period",
@@ -2966,7 +3036,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "account",
@@ -3130,7 +3200,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "accounts[]",
@@ -3204,7 +3274,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "accounts[]",
@@ -3287,7 +3357,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Your workspace UUID. Must match the API key's workspace."
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
           },
           {
             "name": "post",
