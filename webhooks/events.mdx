@@ -146,9 +146,16 @@ or reconnect link, not a later token expiry or disconnection (that is
 | `publishing.account.connection.expired` | `connection` |
 
 `connection` carries `id` (the connection, not the account), `provider`,
-`status`, `account_id` (only on `completed`), `channel_id` (only on `completed`,
-and only when the account also has an inbox channel), `error_code`, `state` and
-`expires_at`.
+`status`, `account_id` (the first account, only on `completed`), `account_ids`
+(every account the link connected, only on `completed`), `channel_id` (only on
+`completed`, and only when the account also has an inbox channel), `error_code`,
+`state` and `expires_at`.
+
+A connection for a provider with a messaging channel (Facebook Pages,
+Instagram, TikTok, YouTube, LinkedIn pages, Google Business Profile, Threads,
+Reddit, Mastodon and Bluesky) also sends the matching
+`salesbot.channel.connection.*` event, in the
+[Channel connect](#channel-connect) shape, with the same connection `id`.
 
 ```json
 {
@@ -159,6 +166,7 @@ and only when the account also has an inbox channel), `error_code`, `state` and
       "provider": "google_m_b",
       "status": "connected",
       "account_id": "9d3f6a10-...",
+      "account_ids": ["9d3f6a10-..."],
       "channel_id": null,
       "error_code": null,
       "state": "dealer-4821",

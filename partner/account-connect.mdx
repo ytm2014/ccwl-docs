@@ -1,6 +1,6 @@
 ---
 title: "Account Connect"
-description: "Give a customer a link that connects, or reconnects, one of their social accounts for publishing, with no dashboard login."
+description: "Give a customer a link that connects, or reconnects, their social accounts for publishing and messaging, with no dashboard login."
 ---
 
 <Warning>
@@ -14,30 +14,42 @@ tells you whether it is on for you and which providers you can use.
 </Note>
 
 Your software gives one of your customers a link. They open it, sign in with
-the social network, pick the account if there is a choice, and the account
-appears in their workspace ready to publish to. Nobody logs into the dashboard,
+the social network, tick the accounts if there is a choice, and the accounts
+appear in their workspace ready to publish to. Nobody logs into the dashboard,
 and no provider token ever reaches your software or their browser.
 
 All paths are relative to `/api/partner`, authenticated by your partner key as
 `X-API-KEY`, from your backend only.
 
 [Channel Connect](/partner/channel-connect) is the sibling of this page: it
-connects **messaging** channels (WhatsApp, Telegram, Messenger and so on).
-Account Connect connects accounts for **publishing**.
+connects **messaging-only** channels (WhatsApp, Telegram, Messenger and so on).
+Account Connect connects accounts for **publishing**, and, where the workspace
+has an inbox, the same account's messaging channel too.
 
 ## What you can connect
 
 | `provider` | What your customer does |
 | --- | --- |
-| `facebook_page` | Signs in with Facebook, then picks the Page. |
-| `instagram` | Signs in with Facebook, then picks the Instagram professional account (it must be linked to a Page). |
+| `facebook_page` | Signs in with Facebook, then ticks the Pages. |
+| `instagram` | Signs in with Facebook, then ticks the Instagram professional accounts (each linked to a Page). |
+| `instagram_direct` | Signs in with Instagram (Instagram Login: no Facebook Page needed). `instagram_login` is accepted as an alias. |
 | `linkedin` | Signs in with LinkedIn. One login is one profile. |
-| `linkedin_page` | Signs in with LinkedIn, then picks the organisation page. |
-| `youtube` | Signs in with Google, then picks the channel. |
-| `google_m_b` | Signs in with Google, then picks the Business Profile location. `gbp` is accepted as an alias. |
+| `linkedin_page` | Signs in with LinkedIn, then ticks the organisation pages. |
+| `youtube` | Signs in with Google, then ticks the channels. |
+| `google_m_b` | Signs in with Google, then ticks the Business Profile locations. `gbp` is accepted as an alias. |
+| `threads` | Signs in with Threads. |
+| `tiktok` | Signs in with TikTok. |
+| `pinterest` | Signs in with Pinterest. Boards are chosen per post. |
+| `reddit` | Signs in with Reddit, then ticks the profile and the subreddits they moderate. |
+| `tumblr` | Signs in with Tumblr, then ticks the blogs. |
+| `twitter` | Signs in with X. `x` is accepted as an alias. |
+| `v_kontakte` | Signs in with VK. `vk` is accepted as an alias. |
+| `blue_sky` | Signs in with Bluesky (no app password). `bluesky` is accepted as an alias. |
+| `mastodon` | Types their Mastodon server (unless you send it), then signs in there. |
 
-`provider` is the same value the Publishing API returns in an account's
-`provider` field.
+When the sign-in gives access to just one account, it is connected straight
+away, with no picker. `provider` is the same value the Publishing API returns
+in an account's `provider` field.
 
 <Note>
 Which providers are available depends on how the instance is configured, so ask
@@ -58,15 +70,49 @@ curl https://app.example.com/api/partner/account-connect/providers \
   "data": {
     "enabled": true,
     "providers": [
-      { "provider": "facebook_page", "broker_slug": "facebook_page", "mode": "relay", "entities": true, "reconnect": true },
-      { "provider": "linkedin", "broker_slug": "linkedin", "mode": "relay", "entities": false, "reconnect": true }
+      { "provider": "facebook_page", "broker_slug": "facebook_page", "mode": "relay", "entities": true, "reconnect": true, "configured": true, "asks_for": null },
+      { "provider": "mastodon", "broker_slug": null, "mode": "direct", "entities": false, "reconnect": true, "configured": true, "asks_for": "server" }
     ],
     "return_urls": ["https://app.acmedealers.test/integrations/callback"]
   }
 }
 ```
 
-`entities` is `true` when your customer picks an account after signing in.
+- `entities` is `true` when your customer ticks accounts after signing in.
+- `configured` is `false` when the instance has no credentials for that
+  provider yet. A link for it fails at the start with `provider_not_configured`.
+- `asks_for` names what the hosted page asks your customer for when you did not
+  send it: `server` for Mastodon, `handle` (optional) for Bluesky.
+
+## Check the allowance first
+
+A workspace's plan limits how many accounts it can connect. Ask before you show
+your customer a Connect button:
+
+```bash
+curl https://app.example.com/api/partner/workspaces/$WORKSPACE/account-connect/allowance \
+  -H "X-API-KEY: $PARTNER_KEY"
+```
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "limit": 10,
+    "used": 7,
+    "remaining": 3,
+    "providers": { "facebook_page": true, "twitter": false }
+  }
+}
+```
+
+- `limit` and `remaining` are `null` when the plan sets no account limit.
+- `providers` says, per provider, whether a new account may be added now.
+
+Creating a connection for a provider whose answer is `false` is refused at once
+with a `422` and `"error_code": "account_limit_reached"`, before your customer
+signs in anywhere. A reconnect never uses a new slot, so it is never refused for
+the limit.
 
 ## 1. Register your return URLs
 
@@ -100,10 +146,14 @@ curl -X POST https://app.example.com/api/partner/workspaces/$WORKSPACE/account-c
     "status": "pending",
     "account_id": null,
     "account": null,
+    "accounts": [],
+    "skipped": [],
+    "max_accounts": null,
+    "allow_unverified": false,
     "channel_id": null,
     "error_code": null,
     "state": "dealer-4821",
-    "expires_at": "2026-11-23T18:30:00+00:00",
+    "expires_at": "2026-11-24T18:30:00+00:00",
     "connect_url": "https://app.example.com/partner-connect/accounts/c6a1f0d2-...?token=..."
   }
 }
@@ -113,12 +163,19 @@ Open `connect_url` as a **top-level navigation** in your customer's browser,
 not an iframe and not a fetch. Everything after they click Continue is bound to
 that browser. The session lasts **30 minutes**.
 
-One connection connects **one** account. A customer with three Pages needs
-three connections.
+Optional fields:
 
-`state` comes back to you on the return URL and in the completion event, so use
-it to match the session to your own customer. Do not put secrets or personal
-data in it; at most 500 characters.
+| Field | For | What it does |
+| --- | --- | --- |
+| `max_accounts` | Pages, channels, locations, blogs | The most accounts your customer may tick. `1` makes it a single choice. Default: as many as the plan allows. |
+| `server` | `mastodon` | Your customer's server, such as `mastodon.social`. Without it, the hosted page asks. |
+| `handle` | `blue_sky` | The handle Bluesky's sign-in page opens on. |
+| `account_id` | any | Makes it a reconnect of that account. See [Reconnect an account](#reconnect-an-account). |
+| `allow_unverified` | reconnects | Lets your customer confirm a profile that cannot be proven to be the same one. See below. |
+
+`state` comes back to you on the return URL and in the completion events, so
+use it to match the session to your own customer. Do not put secrets or
+personal data in it; at most 500 characters.
 
 `Idempotency-Key` (1–200 characters) is optional. The same key and the same
 request returns the same connection with `200`; a different request on that key
@@ -139,20 +196,26 @@ curl https://app.example.com/api/partner/workspaces/$WORKSPACE/account-connectio
 | --- | --- |
 | `pending` | The link has not been used yet. |
 | `authorizing` | Your customer is signing in with the provider. |
-| `selecting` | They signed in and are choosing the account. |
-| `connected` | Done. `account_id` and `account` name the account. |
+| `selecting` | They signed in and are ticking accounts. |
+| `confirming` | A reconnect you allowed to be confirmed is waiting for your customer to confirm. |
+| `connected` | Done. `accounts` lists what was connected. |
 | `failed` | See `error_code`. |
-| `cancelled` | The customer denied the sign-in, or you cancelled. |
+| `cancelled` | The customer denied the sign-in or refused a confirmation, or you cancelled. |
 | `expired` | The 30 minutes ran out. |
 
 On `connected`:
 
-- `account_id` is the account's uuid, the `{account}` in the Publishing API's
-  `GET /accounts/{account}`.
-- `account.id` is the integer the Publishing API's post endpoints take in
-  `accounts`. `account` also carries `uuid`, `provider`, `name` and `username`.
-- `channel_id` is set when the workspace also has an inbox channel for that
-  account. It is `null` otherwise, and that is not an error.
+- `accounts` lists every account connected, in the order the provider listed
+  them. Each has `id`, `uuid`, `provider`, `name` and `username`.
+- `account_id` and `account` are the first of them, for code that reads one.
+- `uuid` is the `{account}` in the Publishing API's `GET /accounts/{account}`.
+  `id` is the integer the Publishing API's post endpoints take in `accounts`.
+- `skipped` lists accounts your customer ticked that were not connected, each
+  with `name` and `reason` (for example `account_limit_reached` when the plan
+  had room for fewer).
+- `channel_id` is set when the workspace has an inbox and the account was
+  mirrored into a messaging channel. It is `null` otherwise, and that is not an
+  error.
 
 `POST …/account-connections/{connection}/cancel` cancels an unfinished session.
 Repeating it is safe, and it never disconnects an account that already connected.
@@ -184,11 +247,28 @@ must sign in as the **same** profile:
 - `account_id` must be an account of that workspace and that `provider`, or the
   request is a `422`.
 
+### When the profile cannot be proven
+
+Some providers give a different user id to each app, so after an instance moves
+apps a reconnect cannot always prove it is the same profile. By default such a
+reconnect fails with `reconnect_needs_confirmation` and nothing is changed.
+
+If you know who your customer is, send `"allow_unverified": true` with the
+reconnect. The hosted page then shows the account being reconnected and the
+profile they signed in as, and your customer confirms or refuses. A profile
+proven to be a different one is still refused.
+
 ## Or subscribe
 
 Rather than polling, subscribe the workspace's webhooks (with the `osk_` key you
 issued for it) to `publishing.account.connection.completed`, `.failed`,
 `.cancelled` and `.expired`. See [Events](/webhooks/events#account-connect).
+
+A connection for a provider that has a messaging channel (Facebook Pages,
+Instagram, TikTok, YouTube, LinkedIn pages, Google Business Profile, Threads,
+Reddit, Mastodon and Bluesky) also sends Channel Connect's
+`salesbot.channel.connection.*` events, with the same connection `id`. If your
+code already handles Channel Connect, it hears about these channels too.
 
 Delivery is at least once. **Deduplicate on the envelope's `id`.**
 
@@ -205,9 +285,10 @@ Delivery is at least once. **Deduplicate on the envelope's `id`.**
 | `account_limit_reached` | The plan's connected-account limit is full. |
 | `account_blocked` | That profile may not be connected on this instance. |
 | `reconnection_target_mismatch` | A reconnect signed in as a different profile, or without access to the account it was meant to reconnect. Nothing was changed. |
-| `reconnect_needs_confirmation` | The reconnect could not prove it is the same profile. A workspace admin must reconnect it in the dashboard. |
+| `reconnect_needs_confirmation` | The reconnect could not prove it is the same profile, and the link did not allow your customer to confirm (or they refused). |
 | `reconnect_not_supported` | That account's provider cannot be reconnected by link. |
 | `reconnect_failed` | The account changed while the session was open. Retry with a new session. |
+| `server_not_supported` | Mastodon: that server could not be used (not a public server, or it refused the app registration). |
 | `session_expired` | The 30 minutes ran out. |
 
 Provider error bodies are deliberately not exposed. Fix the configuration, or
@@ -223,3 +304,6 @@ let your customer retry with a **new** session.
   e-mail a link to **your own** app and create the connection when they arrive.
 - A connection id is not a secret, but your `state` should be unguessable if you
   use it to resume anything on your side.
+- Send `allow_unverified` only when your own records tie the link to the account's
+  owner: a confirmed reconnect hands the account's scheduled posts to the profile
+  that signed in.
