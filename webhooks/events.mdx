@@ -126,6 +126,48 @@ onboarding — not a later token expiry or disconnection. See
 }
 ```
 
+### Account connect
+
+<Warning>
+Draft. These events belong to [Account Connect](/partner/account-connect), which
+is not released yet.
+</Warning>
+
+Only on instances where partner-initiated account onboarding is switched on, and
+only for connections a partner started. They report the outcome of the connect
+or reconnect link, not a later token expiry or disconnection (that is
+`publishing.account.disconnected`).
+
+| Event | Data |
+| --- | --- |
+| `publishing.account.connection.completed` | `connection` |
+| `publishing.account.connection.failed` | `connection` |
+| `publishing.account.connection.cancelled` | `connection` |
+| `publishing.account.connection.expired` | `connection` |
+
+`connection` carries `id` (the connection, not the account), `provider`,
+`status`, `account_id` (only on `completed`), `channel_id` (only on `completed`,
+and only when the account also has an inbox channel), `error_code`, `state` and
+`expires_at`.
+
+```json
+{
+  "event": "publishing.account.connection.completed",
+  "data": {
+    "connection": {
+      "id": "c6a1f0d2-...",
+      "provider": "google_m_b",
+      "status": "connected",
+      "account_id": "9d3f6a10-...",
+      "channel_id": null,
+      "error_code": null,
+      "state": "dealer-4821",
+      "expires_at": "2026-11-23T18:30:00+00:00"
+    }
+  }
+}
+```
+
 ### Store
 
 All store events carry `event`, `contact` and `order`.

@@ -1,0 +1,225 @@
+---
+title: "Account Connect"
+description: "Give a customer a link that connects, or reconnects, one of their social accounts for publishing, with no dashboard login."
+---
+
+<Warning>
+Draft. Account Connect is not released: it is switched off on every instance,
+and this page may change before it ships.
+</Warning>
+
+<Note>
+Private beta, and switched on per partner. `GET /api/partner/account-connect/providers`
+tells you whether it is on for you and which providers you can use.
+</Note>
+
+Your software gives one of your customers a link. They open it, sign in with
+the social network, pick the account if there is a choice, and the account
+appears in their workspace ready to publish to. Nobody logs into the dashboard,
+and no provider token ever reaches your software or their browser.
+
+All paths are relative to `/api/partner`, authenticated by your partner key as
+`X-API-KEY`, from your backend only.
+
+[Channel Connect](/partner/channel-connect) is the sibling of this page: it
+connects **messaging** channels (WhatsApp, Telegram, Messenger and so on).
+Account Connect connects accounts for **publishing**.
+
+## What you can connect
+
+| `provider` | What your customer does |
+| --- | --- |
+| `facebook_page` | Signs in with Facebook, then picks the Page. |
+| `instagram` | Signs in with Facebook, then picks the Instagram professional account (it must be linked to a Page). |
+| `linkedin` | Signs in with LinkedIn. One login is one profile. |
+| `linkedin_page` | Signs in with LinkedIn, then picks the organisation page. |
+| `youtube` | Signs in with Google, then picks the channel. |
+| `google_m_b` | Signs in with Google, then picks the Business Profile location. `gbp` is accepted as an alias. |
+
+`provider` is the same value the Publishing API returns in an account's
+`provider` field.
+
+<Note>
+Which providers are available depends on how the instance is configured, so ask
+rather than assume: `GET /api/partner/account-connect/providers` returns the
+list. A provider that is not on it is refused with a `422` and
+`"error_code": "provider_not_supported"`. WhatsApp is connected through
+[Channel Connect](/partner/channel-connect), not here.
+</Note>
+
+```bash
+curl https://app.example.com/api/partner/account-connect/providers \
+  -H "X-API-KEY: $PARTNER_KEY"
+```
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "enabled": true,
+    "providers": [
+      { "provider": "facebook_page", "broker_slug": "facebook_page", "mode": "relay", "entities": true, "reconnect": true },
+      { "provider": "linkedin", "broker_slug": "linkedin", "mode": "relay", "entities": false, "reconnect": true }
+    ],
+    "return_urls": ["https://app.acmedealers.test/integrations/callback"]
+  }
+}
+```
+
+`entities` is `true` when your customer picks an account after signing in.
+
+## 1. Register your return URLs
+
+Account Connect uses the same return-URL list as Channel Connect. Register it
+once with `PUT /api/partner/channel-connect/settings`; see
+[Channel Connect](/partner/channel-connect#1-register-your-return-urls).
+Matching is exact, including the path and any trailing slash.
+
+## 2. Create a connection
+
+```bash
+curl -X POST https://app.example.com/api/partner/workspaces/$WORKSPACE/account-connections \
+  -H "X-API-KEY: $PARTNER_KEY" -H "Content-Type: application/json" \
+  -H "Idempotency-Key: dealer-4821-gbp-1" \
+  -d '{
+    "provider": "google_m_b",
+    "return_url": "https://app.acmedealers.test/integrations/callback",
+    "state": "dealer-4821"
+  }'
+```
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "id": "c6a1f0d2-....",
+    "workspace_id": "6b1f0e2c-....",
+    "provider": "google_m_b",
+    "mode": "relay",
+    "reconnect": false,
+    "status": "pending",
+    "account_id": null,
+    "account": null,
+    "channel_id": null,
+    "error_code": null,
+    "state": "dealer-4821",
+    "expires_at": "2026-11-23T18:30:00+00:00",
+    "connect_url": "https://app.example.com/partner-connect/accounts/c6a1f0d2-...?token=..."
+  }
+}
+```
+
+Open `connect_url` as a **top-level navigation** in your customer's browser,
+not an iframe and not a fetch. Everything after they click Continue is bound to
+that browser. The session lasts **30 minutes**.
+
+One connection connects **one** account. A customer with three Pages needs
+three connections.
+
+`state` comes back to you on the return URL and in the completion event, so use
+it to match the session to your own customer. Do not put secrets or personal
+data in it; at most 500 characters.
+
+`Idempotency-Key` (1–200 characters) is optional. The same key and the same
+request returns the same connection with `200`; a different request on that key
+is a `409`. Only a pending, unexpired session carries a `connect_url`. Use a
+new key to start over.
+
+## 3. Read the result
+
+Your customer comes back to your registered URL with `connection_id` and
+`state`. That redirect is a hint, not the answer. Read the authoritative result:
+
+```bash
+curl https://app.example.com/api/partner/workspaces/$WORKSPACE/account-connections/$CONNECTION \
+  -H "X-API-KEY: $PARTNER_KEY"
+```
+
+| `status` | Meaning |
+| --- | --- |
+| `pending` | The link has not been used yet. |
+| `authorizing` | Your customer is signing in with the provider. |
+| `selecting` | They signed in and are choosing the account. |
+| `connected` | Done. `account_id` and `account` name the account. |
+| `failed` | See `error_code`. |
+| `cancelled` | The customer denied the sign-in, or you cancelled. |
+| `expired` | The 30 minutes ran out. |
+
+On `connected`:
+
+- `account_id` is the account's uuid, the `{account}` in the Publishing API's
+  `GET /accounts/{account}`.
+- `account.id` is the integer the Publishing API's post endpoints take in
+  `accounts`. `account` also carries `uuid`, `provider`, `name` and `username`.
+- `channel_id` is set when the workspace also has an inbox channel for that
+  account. It is `null` otherwise, and that is not an error.
+
+`POST …/account-connections/{connection}/cancel` cancels an unfinished session.
+Repeating it is safe, and it never disconnects an account that already connected.
+
+## Reconnect an account
+
+When an account stops working (an expired or revoked sign-in), send your
+customer a reconnect link: create a connection with the account's uuid as
+`account_id`.
+
+```bash
+curl -X POST https://app.example.com/api/partner/workspaces/$WORKSPACE/account-connections \
+  -H "X-API-KEY: $PARTNER_KEY" -H "Content-Type: application/json" \
+  -d '{
+    "provider": "linkedin",
+    "return_url": "https://app.acmedealers.test/integrations/callback",
+    "account_id": "9d3f6a10-...."
+  }'
+```
+
+The account keeps its id, its scheduled posts and its history. Your customer
+must sign in as the **same** profile:
+
+- If they sign in as a different one, nothing is changed and the session fails
+  with `reconnection_target_mismatch`.
+- For a Page, channel or location, there is no picker on a reconnect. The
+  sign-in must have access to that same Page, channel or location, or the
+  session fails with `reconnection_target_mismatch`.
+- `account_id` must be an account of that workspace and that `provider`, or the
+  request is a `422`.
+
+## Or subscribe
+
+Rather than polling, subscribe the workspace's webhooks (with the `osk_` key you
+issued for it) to `publishing.account.connection.completed`, `.failed`,
+`.cancelled` and `.expired`. See [Events](/webhooks/events#account-connect).
+
+Delivery is at least once. **Deduplicate on the envelope's `id`.**
+
+## Error codes
+
+| Code | Meaning |
+| --- | --- |
+| `provider_not_supported` | That provider is not available on this instance. Read `GET /account-connect/providers` for the list. |
+| `provider_not_configured` | The provider is not set up on this instance. Contact the operator. |
+| `provider_unavailable` | A transient failure reaching the provider. Retry with a new session. |
+| `authorization_not_completed` | The sign-in was closed or denied. |
+| `token_exchange_failed` | The provider would not exchange the authorization. Retry with a new session. |
+| `no_eligible_accounts` | The sign-in has nothing to connect: no Page, no Instagram professional account, no channel, no location or no organisation page. |
+| `account_limit_reached` | The plan's connected-account limit is full. |
+| `account_blocked` | That profile may not be connected on this instance. |
+| `reconnection_target_mismatch` | A reconnect signed in as a different profile, or without access to the account it was meant to reconnect. Nothing was changed. |
+| `reconnect_needs_confirmation` | The reconnect could not prove it is the same profile. A workspace admin must reconnect it in the dashboard. |
+| `reconnect_not_supported` | That account's provider cannot be reconnected by link. |
+| `reconnect_failed` | The account changed while the session was open. Retry with a new session. |
+| `session_expired` | The 30 minutes ran out. |
+
+Provider error bodies are deliberately not exposed. Fix the configuration, or
+let your customer retry with a **new** session.
+
+## Keep it safe
+
+- The partner key stays on your server. It can act on every workspace you have
+  provisioned.
+- `connect_url` carries a one-session capability and lasts 30 minutes. Hand it
+  straight to the customer's browser; do not log it, e-mail it or put it in an
+  analytics event. To invite a customer by e-mail (a reconnect reminder, say),
+  e-mail a link to **your own** app and create the connection when they arrive.
+- A connection id is not a secret, but your `state` should be unguessable if you
+  use it to resume anything on your side.
