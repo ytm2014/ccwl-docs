@@ -14,7 +14,8 @@
  *
  * The platform's name comes the same way (&name=Their%20Brand). The app guide writes the
  * product's name with <AppName /> (snippets/app-name.jsx), which renders "the app" in a
- * .wg-app-name span; this script puts the platform's name in those spans.
+ * .wg-app-name span; this script puts the platform's name in those spans, and after the site
+ * title in the header, in brackets: "Help & Docs (Their Brand)".
  *
  * A link that carries a domain or a name replaces whatever was remembered, so one platform's
  * name never sticks to another's domain.
@@ -117,6 +118,24 @@
     });
   }
 
+  // The site title in the header ("Help & Docs") gets the platform's name in brackets. It is
+  // drawn by CSS after the title, so the header's own rendering is never touched. The name is
+  // already limited to letters, digits, spaces and & ' . , ! + _ -; JSON.stringify makes it a
+  // valid CSS string.
+  function nameInHeader() {
+    if (!platform.name || document.getElementById('wg-header-name')) return;
+    var style = document.createElement('style');
+    style.id = 'wg-header-name';
+    // A long name is cut with an ellipsis but keeps its closing bracket: "(Acme Soci…)".
+    style.textContent = '.nav-logo{display:inline-flex;align-items:baseline;white-space:nowrap}'
+      + '.nav-logo::before,.nav-logo::after{font-weight:500;opacity:.6}'
+      + '.nav-logo::before{order:1;content:' + JSON.stringify('(' + platform.name) + ';margin-left:.3em;'
+      + 'max-width:16ch;overflow:hidden;text-overflow:ellipsis}'
+      + '.nav-logo::after{order:2;content:")"}'
+      + '@media (max-width:1024px){.nav-logo::before{max-width:10ch}}';
+    document.head.appendChild(style);
+  }
+
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, INPUT: 1, NOSCRIPT: 1 };
 
   function swapIn(root) {
@@ -166,6 +185,7 @@
   }
 
   function start() {
+    nameInHeader();
     swapIn(document.body);
     new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true, characterData: true });
   }
