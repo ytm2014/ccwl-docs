@@ -108,6 +108,10 @@ curl https://app.example.com/api/partner/workspaces/$WORKSPACE/account-connect/a
 
 - `limit` and `remaining` are `null` when the plan sets no account limit.
 - `providers` says, per provider, whether a new account may be added now.
+- `partner_pool` (`limit`, `used`, `remaining`) appears when your agreement sets
+  a profile pool across all your workspaces (see
+  [Your limits](/partner/overview#your-limits)). Once it is full, every provider
+  answers `false`.
 
 Creating a connection for a provider whose answer is `false` is refused at once
 with a `422` and `"error_code": "account_limit_reached"`, before your customer
