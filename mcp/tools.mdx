@@ -7,7 +7,7 @@ description: "Every tool the MCP server offers, grouped by what it works on."
 Your assistant discovers these tools by itself when it connects. You never call them by name; this page is for knowing what to ask for, and why a tool might be missing.
 
 <Note>
-You only see the tools your role and plan allow. Sales inbox tools appear only where your plan includes the sales inbox, and each one hides itself if your team role cannot open that area in the dashboard. With a token or workspace API key created with permissions, you also only see the tools those permissions allow. Almost every tool takes a `workspace` uuid from `list-workspaces`.
+You only see the tools your role and plan allow. Sales inbox tools appear only where your plan includes the sales inbox, and each one hides itself if your team role cannot open that area in the dashboard. Bio Links tools appear only where your platform offers the Link in Bio API. With a token or workspace API key created with permissions, you also only see the tools those permissions allow. Almost every tool takes a `workspace` uuid from `list-workspaces`.
 </Note>
 
 ## Publishing
@@ -16,9 +16,9 @@ You only see the tools your role and plan allow. Sales inbox tools appear only w
 
 | Tool | What it does |
 | --- | --- |
-| `list-workspaces` | The workspaces you can use here, most recently updated first. With a sign-in connection, just the ones you ticked when you connected. |
+| `list-workspaces` | The workspaces you can use here, most recently updated first. With a sign-in connection, just the ones you ticked when you connected; with a workspace API key, just the key's workspace. |
 | `get-workspace` | One workspace: name, colour, your role and approval rights, and counts of accounts, posts and members. |
-| `list-accounts` | The social accounts connected to a workspace, with the numeric IDs `create-post` needs. |
+| `list-accounts` | The social accounts connected to a workspace, with the numeric IDs `create-post` needs, what each one publishes (`content_type`) and the post options it accepts (`post_options`). |
 | `get-account` | One account: provider, username, authorisation status, profile link and metrics. |
 
 ### Posts
@@ -27,16 +27,28 @@ You only see the tools your role and plan allow. Sales inbox tools appear only w
 | --- | --- |
 | `list-posts` | Posts, newest first. Filter by account, status, tag, keyword and date ranges. |
 | `get-post` | One post: status, times, tags, the accounts it targets with live links or publish errors, and every content version. |
-| `create-post` | Create a post, and optionally schedule or publish it. |
-| `update-post` | Change a post's content, accounts, tags or schedule. |
+| `list-mentions` | Search the workspace's mention book for the people and pages a post can mention. |
+| `create-post` | Create a post, and optionally schedule it, add it to the queue or publish it now. Pass `first_comment` to add a first comment on the accounts that publish one. |
+| `update-post` | Change a post's content, accounts or tags, or add a first comment with `first_comment`. Versions you leave out keep what they had. It never changes the schedule: use `schedule-post` or `unschedule-post`. |
 | `update-post-version` | Change one account's version of a post and leave the others alone. |
+| `delete-post-version` | Remove one account's own version, so that account goes back to the post's default content. |
 | `duplicate-post` | Copy a post as a new draft. |
-| `schedule-post` | Schedule a post for a date and time, or publish it now. |
-| `add-post-to-queue` | Put a post in the next free slot of the workspace's posting schedule. |
+| `schedule-post` | Schedule a post for a date and time, or publish it now. Refused, with a list of what to fix, if one of its accounts cannot publish it. |
+| `unschedule-post` | Take a scheduled, queued or awaiting-approval post back to draft. Its content, accounts and tags stay as they are. |
+| `add-post-to-queue` | Put a post in the next free slot of the workspace's posting schedule. Refused, like `schedule-post`, if one of its accounts cannot publish it. |
 | `delete-post` | Move a post to the trash, delete it for good, or also remove it from the social networks. |
 | `restore-post` | Bring a post back from the trash as a draft. |
 | `attach-tags-to-post` | Add tags to a post. |
 | `detach-tags-from-post` | Remove tags from a post. |
+
+### First comments, mentions and post options
+
+- **What each account publishes.** A post's text is a list of content items, and each account's `content_type` says how far its network goes. `thread` publishes every item as a reply in a thread (X, Threads, Bluesky and Mastodon, for example). `comments` publishes the first item as the post and the second as its first comment (Facebook Pages, Instagram and YouTube, and LinkedIn where its `content_type` says so). `single` publishes only the first item.
+- **First comments.** `first_comment` takes a `body` (required) and optional `media` IDs. It is written as the second item of each `comments` account's own version, so thread networks never post it as a reply. It is refused when none of the post's accounts publishes a first comment, or when a version you give for one of those accounts already has a second item. On YouTube a first comment must be text only, at most 10,000 characters, and the video must not be made for kids.
+- **Mentions.** Find the person with `list-mentions` and write `{{mention:<reference>}}` in the text, including in a first comment. It becomes a real mention on the networks listed for that person, and plain "@name" text elsewhere. A plain "@name" is always published as text. People who are not in the mention book are added from the post editor.
+- **Extra items.** An account's own version may not have more items than its network publishes; the change is refused. Extra items in the default content are skipped for that account, and the answer warns you.
+- **Post options.** Options are keyed by provider, such as `{"linkedin": {"visibility": "PUBLIC"}}`, and only the keys an account lists in `post_options` are accepted. An unknown provider or option key is an error, not silently dropped. A plain value for an option that is set per account, such as TikTok's `"allow_duet": true`, is still accepted and used for each of the post's accounts.
+- **Scheduled posts stay publishable.** `schedule-post` and `add-post-to-queue` refuse a post that one of its accounts cannot publish, such as Instagram without media or Pinterest without a board. On a post that is already scheduled, `update-post`, `update-post-version` and `delete-post-version` change nothing unless every account can still publish it.
 
 ### Tags and media
 
@@ -80,8 +92,8 @@ Analytics tools only read, so every role can use them, viewers included. Periods
 | --- | --- |
 | `search-contacts` | Find people by name, phone, email or handle, and filter by stage, tag, segment or date. |
 | `get-contact` | Everything about one contact: profile, stage, tags, custom fields, channels, notes and upcoming meetings. |
-| `create-contact` | Add a person. Refuses a phone number that already belongs to a contact. |
-| `update-contact` | Change a contact's details, custom fields or pipeline stage. Only the fields you pass change. |
+| `create-contact` | Add a person. Refuses a phone number that already belongs to a contact, and refuses when the workspace has reached its plan's contact limit. It can start a contact-created automation, so it needs `confirm: true`. |
+| `update-contact` | Change a contact's details, custom fields or pipeline stage. Only the fields you pass change. Needs `confirm: true`. |
 | `tag-contact` | Add a contact tag (not a post tag). Can start automations that listen for that tag. |
 | `untag-contact` | Remove a contact tag. |
 | `add-contact-note` | Write an internal note on a contact. |
@@ -111,9 +123,9 @@ Analytics tools only read, so every role can use them, viewers included. Periods
 | `list-automations` | The workspace's automations: trigger, channel, whether each is live, and runs in flight or failed. |
 | `get-automation-flow` | The steps inside one automation. |
 | `get-automation-runs` | Recent runs and why each one stopped. |
-| `create-automation` | Create an automation as an unpublished draft. |
-| `save-automation-flow` | Replace a draft's steps. Customers keep getting the published version until someone presses Publish. |
-| `set-automation-state` | Switch an automation on or off. |
+| `create-automation` | Create an automation as an unpublished draft. Needs `confirm: true`. |
+| `save-automation-flow` | Replace a draft's steps. Customers keep getting the published version until someone presses Publish. Needs `confirm: true`. |
+| `set-automation-state` | Switch an automation on or off. Needs `confirm: true`. |
 
 ### Appointments
 
@@ -121,9 +133,26 @@ Analytics tools only read, so every role can use them, viewers included. Periods
 | --- | --- |
 | `list-appointments` | The meetings calendar. |
 | `find-available-slots` | Bookable slots for a meeting type over a date window, honouring its hours, buffers and connected calendar. |
-| `book-appointment` | Book a contact into a slot. |
-| `reschedule-appointment` | Move a booking. |
-| `cancel-appointment` | Cancel a booking. |
+| `book-appointment` | Book a contact into a slot. The customer gets the meeting type's confirmation message unless the assistant passes `notify: false`. Needs `confirm: true`. |
+| `reschedule-appointment` | Move a booking to a new time and tell the customer, unless `notify: false`. Needs `confirm: true`. |
+| `cancel-appointment` | Cancel a booking and tell the customer, unless `notify: false`. It cannot be undone. Needs `confirm: true`. |
+| `mark-appointment-outcome` | Record a confirmed appointment whose start time has passed as completed or no-show. Nobody is messaged, and it cannot be undone. Needs `confirm: true`. |
+
+## Bio Links
+
+Bio Links tools appear only where your platform offers the Link in Bio API, and the four that create or change something only where it allows changes through that API. Each call also needs a plan that includes Bio Links. Every role can read; creating and changing need the **Member** or **Admin** role.
+
+| Tool | What it does |
+| --- | --- |
+| `list-biolink-pages` | Bio pages, newest first. Filter by status (active or paused) or a title keyword. |
+| `get-biolink-page` | One bio page, with its blocks. |
+| `create-biolink-page` | Create a bio page from a title, and optionally a slug (its address), tagline and theme. It starts paused, with starter blocks. |
+| `set-biolink-page-status` | Publish (active) or pause a bio page. |
+| `list-biolink-links` | Short links, newest first. Filter by status or a title keyword. |
+| `create-biolink-link` | Create a short link to an `http`, `https`, `mailto` or `tel` address. It starts paused. |
+| `set-biolink-link-status` | Turn a short link on (active) or pause it. |
+| `list-biolink-submissions` | Leads collected by bio page forms, newest first, optionally for one page. They hold personal data: name, email, phone and message. |
+| `get-biolink-analytics` | A bio page's or short link's views and clicks: lifetime totals, a 7-day trend and 30-day breakdowns. |
 
 ## Resources
 

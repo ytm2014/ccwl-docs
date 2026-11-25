@@ -18,7 +18,9 @@ Authenticate with a [workspace API key](/authentication). Older credentials (`sb
 | `GET /endpoints/{endpoint}/deliveries`, `GET /deliveries/{delivery}` | `webhooks:deliveries:read` |
 | `POST /deliveries/{delivery}/resend` | `webhooks:deliveries:retry` |
 
-The key also needs `publishing:webhooks:subscribe` and/or `salesbot:webhooks:subscribe` for every product the endpoint subscribes to. Endpoints that include a product your key cannot subscribe to are left out of lists and refused on direct access.
+The key also needs the subscribe permission of every product the endpoint subscribes to: `publishing:webhooks:subscribe`, `salesbot:webhooks:subscribe` (Messaging) or `biolinks:webhooks:subscribe` (Link in Bio). Endpoints that include a product your key cannot subscribe to are left out of lists and refused on direct access.
+
+The key that last changed an endpoint's `url` or `subscriptions` manages it. Lead form contents in `biolinks.lead.submitted` reach an endpoint managed by a key only while that key also has `biolinks:submissions:read`; otherwise the endpoint gets the lead's ID only. See [Lead contents](/webhooks/events#lead-contents).
 
 ## Required headers
 
@@ -54,8 +56,8 @@ curl -X POST https://app.example.com/api/v1/workspace-webhooks/endpoints \
   }'
 ```
 
-- `url` must be public `https://`.
-- Publishing events always use `"channel": "all"`.
+- `url` must be `https://` on a host that resolves only to public IP addresses. Otherwise the request fails with `422` (`Use a public HTTPS endpoint.`). See [Receiver requirements](/webhooks/overview#receiver-requirements).
+- Publishing and Link in Bio events always use `"channel": "all"`.
 - New endpoints are always created paused, whatever you send in `enabled`. [Enable it](#update-an-endpoint) once your receiver is ready.
 - Returns `201` with the endpoint and its **signing secret** (`whsec_...`) in a top-level `secret` field. This is the only time the secret is returned. If the response is lost, retry with the same `Idempotency-Key` and body to get it again within 24 hours.
 - A workspace can have up to 25 endpoints.

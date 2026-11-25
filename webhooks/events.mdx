@@ -5,7 +5,7 @@ description: "Every event you can subscribe to, and what its data contains."
 
 The authoritative list for your workspace is [`GET /api/v1/workspace-webhooks/events`](/webhooks/manage#list-available-events). It includes each event's JSON schema and a sample. This page summarises it.
 
-Fields that have no value are left out of `data`. IDs are always UUIDs.
+A field with no value is `null` or left out of `data`. IDs are always UUIDs.
 
 ## Publishing events
 
@@ -13,15 +13,17 @@ Fields that have no value are left out of `data`. IDs are always UUIDs.
 | --- | --- |
 | `publishing.account.added` | A social account is connected |
 | `publishing.account.updated` | A social account changes |
+| `publishing.account.disconnected` | A social account loses its connection, for example because the network refused its token. Sent once per lost connection; after a reconnect, the next loss sends it again. |
 | `publishing.account.deleted` | A social account is removed |
 | `publishing.post.scheduled` | A post is scheduled |
-| `publishing.post.published` | A post is published |
-| `publishing.post.publishing_failed` | Publishing a post failed |
+| `publishing.post.published` | A post is published on one of its accounts. Sent once for each account. |
+| `publishing.post.published_all` | A post is published on every one of its accounts. Sent once per post. |
+| `publishing.post.publishing_failed` | Publishing a post failed on one of its accounts. Sent once for each account. |
 | `publishing.post.deleted` | Posts are deleted or moved to trash |
 
-**Account events** carry the account's `id`, `name`, `provider` (for example `instagram`) and `status`. `account.deleted` carries `id` and `"deleted": true`.
+**Account events** carry the account's `id`, `name`, `provider` (for example `instagram`) and `status` (`connected` or `disconnected`). `account.deleted` carries `id` and `"deleted": true`.
 
-**Post events** carry the post's `id` and a numeric `status`. Fetch the full post with [Get a post](/publishing/posts/get-a-post).
+**`post.scheduled` and `post.published_all`** carry the post's `id` and a numeric `status`. Fetch the full post with [Get a post](/publishing/posts/get-a-post).
 
 **`post.deleted`** carries `ids` (a list of post IDs), `deleted` and `to_trash`.
 
@@ -31,7 +33,7 @@ Fields that have no value are left out of `data`. IDs are always UUIDs.
 
 ## Messaging events
 
-Messaging events can be limited to one channel per subscription: `whatsapp`, `facebook`, `instagram`, `sms` or `tiktok`, or `all`.
+Messaging events are sent only while your plan includes the Messaging API. They can be limited to one channel per subscription: `whatsapp`, `facebook`, `instagram`, `sms` or `tiktok`, or `all`.
 
 ### Contacts
 
@@ -214,6 +216,64 @@ When someone taps an ad without writing anything, an inbound message reading `Op
         "ctwa_clid": null
       }
     }
+  }
+}
+```
+
+## Link in Bio events
+
+Link in Bio events have `"product": "biolinks"`. They are sent while your plan includes Link in Bio, and they always use `"channel": "all"`. Each change raises one event, whether it was made in the dashboard, through the [Link in Bio API](/biolinks/overview) or by an AI assistant. Content brought in by an import raises none.
+
+| Event | When | Data |
+| --- | --- | --- |
+| `biolinks.lead.submitted` | Someone submits a form, email or phone block on a page | `submission`, `page`, `block`, `source` |
+| `biolinks.submission.deleted` | A lead is deleted | `submission` (`id`) |
+| `biolinks.page.created` | A page is created | `page`, `via` (`dashboard`, `api` or `template`) |
+| `biolinks.page.published` | A page goes live | `page`, with `status` and `previous_status` |
+| `biolinks.page.paused` | A page is paused | `page`, with `status` and `previous_status` |
+| `biolinks.page.deleted` | A page is deleted | `page` (`id`, `slug`) |
+| `biolinks.link.created` | A short link is created | `link` |
+| `biolinks.link.status_changed` | A short link's status changes | `link`, with `previous_status` |
+| `biolinks.link.deleted` | A short link is deleted | `link` (`id`) |
+| `biolinks.link.click_milestone` | A page or short link reaches 100, 1,000, 10,000 or 100,000 clicks | `target` (`type` `page` or `link`, `id`, `url`), `milestone`, `total_clicks` |
+| `biolinks.qr.created` | A QR code is created | `qr` (`id`, `target_type` `page`, `link` or `url`, `target_id`) |
+| `biolinks.domain.verified` | A custom domain's DNS is verified | `domain`, `operation_id` |
+| `biolinks.domain.ssl_active` | HTTPS is ready on a custom domain | `domain`, `operation_id` |
+| `biolinks.domain.failed` | A domain operation started through the API fails | `domain`, `operation_id`, `reason_code` |
+
+| Object | Fields |
+| --- | --- |
+| `page` | `id`, `slug`, `title`, `url`, `status` (`active` or `paused`). On `page.created` also `domain` (the custom domain's host, or `null`). |
+| `link` | `id`, `title`, `short_url`, `destination_url`, `status` (`active` or `paused`) |
+| `domain` | `id`, `host`, `status` (`verified` or `pending`), `ssl_status` (`active` or `pending`) |
+| `submission` | `id`, `type` (`form`, `email` or `phone`), `fields` (`name`, `email`, `phone`, `message`), `created_at` |
+| `block` | `id`, `type`, `title` of the block the lead came from |
+| `source` | `referrer_host`, `utm_source`, `utm_medium`, `utm_campaign` of the page visit, when known. Never an IP address, user agent or cookie. |
+
+### Lead contents
+
+Lead form contents are personal data. An endpoint receives them only when a workspace admin set it up in the dashboard, or when it is managed by an API key that also has `biolinks:submissions:read`. Any other endpoint gets the lead's ID only:
+
+```json
+{ "event": "biolinks.lead.submitted", "data": { "submission": { "id": "6f1c2b9e-...", "fields": null } } }
+```
+
+Fetch the lead with the Link in Bio API if you need it. If a key loses `biolinks:submissions:read` or is revoked, deliveries of lead contents to the endpoints it manages are cancelled.
+
+```json
+{
+  "event": "biolinks.lead.submitted",
+  "product": "biolinks",
+  "data": {
+    "submission": {
+      "id": "6f1c2b9e-...",
+      "type": "form",
+      "fields": { "name": "Ada Lovelace", "email": "ada@example.com", "phone": null, "message": "Do you cater?" },
+      "created_at": "2026-11-07T12:00:00+00:00"
+    },
+    "page": { "id": "1e7d9b0a-...", "slug": "joes-pizza", "title": "Joe's Pizza", "url": "https://example.com/b/joes-pizza" },
+    "block": { "id": "9c4d7e21-...", "type": "form", "title": "Contact us" },
+    "source": { "referrer_host": "instagram.com", "utm_source": "instagram", "utm_medium": "social", "utm_campaign": "autumn" }
   }
 }
 ```

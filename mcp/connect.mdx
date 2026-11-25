@@ -104,7 +104,7 @@ If you later leave one of the workspaces, the connection keeps working in the ot
   <Tab title="Other apps">
     Any app that supports **remote MCP servers with OAuth** (also called streamable HTTP with dynamic client registration) works: give it the server URL and leave client ID and secret fields empty.
 
-    If your app can only send a fixed token, use a [personal access token](#use-a-personal-access-token).
+    If your app can only send a fixed token, use a [personal access token](#use-a-personal-access-token) or a [workspace API key](#use-a-workspace-api-key).
   </Tab>
 </Tabs>
 
@@ -163,10 +163,29 @@ The token keeps working until it expires or you delete it under **Profile** > **
 A token without the **AI assistants** permission is refused with `403`. The assistant only gets the tools the token's other permissions allow; to give it more, create a new token. Tokens created before token permissions existed keep working with every tool.
 </Note>
 
+## Use a workspace API key
+
+A workspace API key (it starts with `osk_`) works in **one** workspace only, and acts as the person who created it, with the role they hold now. Use one when an assistant or tool should never reach your other workspaces. Only workspace admins can create one.
+
+<Steps>
+  <Step title="Create the key">
+    On the **MCP** page, click **Create API key** and choose **This workspace only**, or create the key under **Configuration → Integrations → REST API**. Tick the **AI assistants** permission plus the permissions for what the assistant should do. Copy the key. It is shown once.
+  </Step>
+  <Step title="Send it as a Bearer token">
+    Use it in place of the token in the examples above. The assistant can leave out `workspace`: the key's workspace is used.
+  </Step>
+</Steps>
+
+The key keeps working until you revoke it, or until the expiry date if you set one. If the person who created it leaves the workspace, the key is revoked. A key without the **AI assistants** permission is refused with `403`, and the assistant only gets the tools the key's other permissions allow.
+
+<Note>
+The MCP server reads a token or key only from the `Authorization: Bearer` header. The `x-api-key` header, which the REST APIs accept, does not work here.
+</Note>
+
 ## Check the connection
 
 Ask the assistant to *"list my workspaces"*. If they come back, you are connected. If not, see [Troubleshooting](/mcp/troubleshooting).
 
 ## Disconnect
 
-Remove the connector in your AI app (for example **Settings → Connectors** in Claude). For a token connection, also delete the token under **Profile** > **API** in your dashboard.
+Remove the connector in your AI app (for example **Settings → Connectors** in Claude). For a token connection, also delete the token under **Profile** > **API** in your dashboard; for a workspace API key, revoke it under **Configuration → Integrations → REST API**.

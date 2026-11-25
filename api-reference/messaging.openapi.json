@@ -3,7 +3,7 @@
   "info": {
     "title": "Messaging API",
     "version": "1.0.0",
-    "description": "Contacts, conversations, messages, broadcasts, automations and media for one workspace. No workspace ID appears in any URL: a workspace API key selects its own workspace, and a personal access token names it in the `X-Workspace` header."
+    "description": "Contacts, conversations, messages, broadcasts, automations and media for one workspace. No workspace ID appears in any URL: a workspace API key selects its own workspace, and a personal access token names it in the `X-Workspace` header.\n\nA key or token acts as the person who created it, with that person's channels and role. When your plan doesn't include this API, every call except GET /account answers 403 with `code: plan_feature_missing` (see the `PlanFeatureMissing` schema)."
   },
   "servers": [
     {
@@ -38,12 +38,56 @@
         "name": "x-api-key",
         "description": "The same key or token in the `x-api-key` header."
       }
+    },
+    "schemas": {
+      "PlanFeatureMissing": {
+        "type": "object",
+        "description": "Your plan doesn't include this feature. Every Messaging API call except GET /account answers this with `module: integrations.salesbot_api` when the plan doesn't include the Messaging API; creating, editing, approving or sending a broadcast answers it with `module: broadcasts` when the plan doesn't include broadcasts.",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "plan_feature_missing"
+            ]
+          },
+          "module": {
+            "type": "string",
+            "example": "broadcasts",
+            "description": "The plan feature that is missing."
+          }
+        }
+      },
+      "SendRefused": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "A sentence you can show to a person."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why the send was refused. Nothing was sent and nothing was recorded. The most common reasons:\n- `active_contacts_limit`: the workspace is at its active contacts limit and the contact has not been active in the last 30 days.\n- `blocked`, `opted_out`: the contact is blocked or opted out of messages.\n- `marketing_opted_out`: the contact asked WhatsApp to stop marketing messages from this number (marketing templates only).\n- `messaging_window`: the messaging window has closed. Send an approved WhatsApp template.\n- `standing`: the workspace is not in good standing for this kind of send.\n- `no_channel`, `no_account`, `channel_inactive`: there is no working channel to send through.\n- `platform_unsupported`, `unsupported_send_type`: the channel cannot carry this message.\n- `invalid_reply`: an empty message, an unknown or incomplete template, or a comment that is no longer available.\n- `access_denied`: the person behind the key cannot reply on this conversation's channel.\n- `already_attempted`: this send (the same idempotency key) was already made.",
+            "example": "active_contacts_limit"
+          },
+          "errors": {
+            "type": "object",
+            "description": "Validation errors, by field."
+          },
+          "data": {
+            "type": "object",
+            "description": "The recorded failed message, when the provider refused the send."
+          }
+        }
+      }
     }
   },
   "tags": [
     {
       "name": "Account",
-      "description": "No workspace id appears in any /api/v1 URL. A workspace API key selects its own workspace; a personal access token names it in the `X-Workspace` header."
+      "description": "No workspace id appears in any /api/v1 URL. A workspace API key selects its own workspace; a personal access token names it in the `X-Workspace` header.\n\nA workspace API key acts as the member who created it, and a personal access token acts as its owner. The API shows and changes only what that person could in the dashboard: a member limited to some channels sees only the contacts and conversations on those channels, a role that sees only its own assigned conversations sees only those in the conversation and message endpoints, and a role that hides phone numbers or email addresses gets them masked. A contact or conversation that person cannot see answers 404."
     },
     {
       "name": "Automations",
@@ -55,11 +99,11 @@
     },
     {
       "name": "Channels",
-      "description": "Read-only: connecting a channel is an OAuth flow that must happen in the dashboard."
+      "description": "Read-only: connecting a channel is an OAuth flow that happens in the dashboard. A whitelabel partner can also start one with the separate partner API; see [Channel Connect](/partner/channel-connect)."
     },
     {
       "name": "Contacts",
-      "description": "custom_fields is a flat {key: value} map. An empty map is returned as {} so client-side property access is always safe."
+      "description": "custom_fields is a flat {key: value} map. An empty map is returned as {} so client-side property access is always safe.\n\nWhen the person behind the key has a role that hides phone numbers or email addresses, `phone`, `email` and the WhatsApp or SMS `handle` come back masked (for example `••••••••3456` and `j•••@example.com`), and searching with `q` matches those fields only by their whole value. Sending a masked value back in an update leaves the stored value unchanged."
     },
     {
       "name": "Conversations & Messages",
@@ -352,7 +396,7 @@
           "Broadcasts"
         ],
         "summary": "Create a broadcast",
-        "description": "Creates a campaign. Draft unless `schedule` is true. `timezone_mode: contact` sends the same wall-clock in each recipient's own timezone and requires `scheduled_local_at`. Set `type: retarget` with `source_broadcast_id` + `retarget_engagement` to re-message a prior broadcast's recipients instead of a segment.\n\n**Required permission:** `salesbot:broadcasts:write`",
+        "description": "Creates a campaign. Draft unless `schedule` is true. `timezone_mode: contact` sends the same wall-clock in each recipient's own timezone and requires `scheduled_local_at`. Set `type: retarget` with `source_broadcast_id` + `retarget_engagement` to re-message a prior broadcast's recipients instead of a segment. When link tracking is on for the workspace, links in message.text and in template parameters go out as short per-recipient tracked links. Tracking follows the workspace setting; `message.track_clicks` is ignored. A WhatsApp template broadcast respects the number’s Meta messaging limit: recipients over what the limit has left are held and sent in later waves, so a large broadcast can stay sending for more than a day.\n\n**Required permission:** `salesbot:broadcasts:write`",
         "operationId": "broadcasts.store",
         "parameters": [
           {
@@ -369,6 +413,21 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "403": {
+            "description": "Your plan doesn't include this feature.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanFeatureMissing"
+                },
+                "example": {
+                  "message": "Broadcasts are not included in your plan. You can add them with an add-on.",
+                  "code": "plan_feature_missing",
+                  "module": "broadcasts"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -398,11 +457,7 @@
                   "message": {
                     "type": "object",
                     "properties": {
-                      "type": {
-                        "type": "string",
-                        "example": "text"
-                      },
-                      "body": {
+                      "text": {
                         "type": "string",
                         "example": "20% off this week."
                       }
@@ -437,7 +492,7 @@
           "Broadcasts"
         ],
         "summary": "Get a broadcast",
-        "description": "Returns a single broadcast with its channel and delivery counters.\n\n**Required permission:** `salesbot:broadcasts:read`",
+        "description": "Returns a single broadcast with its channel and delivery counters, including clicks_count (recipients who clicked a tracked link, each counted once) and partially_failed (true when the broadcast finished as sent but at least one recipient failed). A recipient later reported failed moves out of sent_count into failed_count. Delivered and read are counted on WhatsApp, Messenger and Instagram (an Instagram seen also counts as delivered).\n\n**Required permission:** `salesbot:broadcasts:read`",
         "operationId": "broadcasts.show",
         "parameters": [
           {
@@ -471,7 +526,7 @@
           "Broadcasts"
         ],
         "summary": "Update a broadcast",
-        "description": "Partial update, allowed only while draft or scheduled — an in-flight or finished broadcast is a historical record. Re-enabling `requires_approval` voids any prior sign-off.\n\n**Required permission:** `salesbot:broadcasts:write`",
+        "description": "Partial update, allowed only while draft or scheduled — an in-flight or finished broadcast is a historical record. Re-enabling `requires_approval` voids any prior sign-off. `PATCH` works the same way.\n\n**Required permission:** `salesbot:broadcasts:write`",
         "operationId": "broadcasts.update",
         "parameters": [
           {
@@ -497,6 +552,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "403": {
+            "description": "Your plan doesn't include this feature.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanFeatureMissing"
+                },
+                "example": {
+                  "message": "Broadcasts are not included in your plan. You can add them with an add-on.",
+                  "code": "plan_feature_missing",
+                  "module": "broadcasts"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -513,11 +583,7 @@
                   "message": {
                     "type": "object",
                     "properties": {
-                      "type": {
-                        "type": "string",
-                        "example": "text"
-                      },
-                      "body": {
+                      "text": {
                         "type": "string",
                         "example": "25% off this week."
                       }
@@ -596,6 +662,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "403": {
+            "description": "Your plan doesn't include this feature.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanFeatureMissing"
+                },
+                "example": {
+                  "message": "Broadcasts are not included in your plan. You can add them with an add-on.",
+                  "code": "plan_feature_missing",
+                  "module": "broadcasts"
+                }
+              }
+            }
           }
         }
       }
@@ -632,6 +713,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "403": {
+            "description": "Your plan doesn't include this feature.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanFeatureMissing"
+                },
+                "example": {
+                  "message": "Broadcasts are not included in your plan. You can add them with an add-on.",
+                  "code": "plan_feature_missing",
+                  "module": "broadcasts"
+                }
+              }
+            }
           }
         }
       }
@@ -916,7 +1012,7 @@
           "Contacts"
         ],
         "summary": "Create a contact",
-        "description": "Creates a contact and fires contact.created. To make it reachable on WhatsApp, supply `channel` (one of the workspace's WhatsApp numbers), `phone` in international form and `opt_in_attested: true`, confirming the person agreed to receive WhatsApp messages from you; no other channel can be bound here. A number another contact already holds is refused. Subject to the workspace's plan contact cap.\n\n**Required permission:** `salesbot:contacts:write`",
+        "description": "Creates a contact and fires contact.created. To make it reachable on WhatsApp, supply `channel` (one of the workspace's WhatsApp numbers), `phone` in international form and `opt_in_attested: true`, confirming the person agreed to receive WhatsApp messages from you; no other channel can be bound here. A number another contact already holds is refused. Subject to the workspace's plan contact cap. At the plan's total contacts limit the request is refused with 422 and an error on `name`. Contacts who have only commented publicly do not count toward the limit.\n\n**Required permission:** `salesbot:contacts:write`",
         "operationId": "contacts.store",
         "parameters": [
           {
@@ -933,6 +1029,21 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "422": {
+            "description": "Validation failed. At the plan's total contacts limit the error is on `name`.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "You've reached your plan's limit of 1000 contacts.",
+                  "errors": {
+                    "name": [
+                      "You've reached your plan's limit of 1000 contacts."
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -1091,7 +1202,7 @@
           "Contacts"
         ],
         "summary": "Update a contact",
-        "description": "Partial update — omitted fields keep their stored value. Any tags supplied are ADDED, never synced. Fires contact.updated.\n\n**Required permission:** `salesbot:contacts:write`",
+        "description": "Partial update — omitted fields keep their stored value. Any tags supplied are ADDED, never synced. Fires contact.updated. `PATCH` works the same way. A phone number must be in full international form and cannot belong to another contact. `custom_fields`, when sent, replaces the whole map. The channel of an existing contact cannot be changed here.\n\n**Required permission:** `salesbot:contacts:write`",
         "operationId": "contacts.update",
         "parameters": [
           {
@@ -1125,14 +1236,68 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "description": "Send only the fields you want to change.",
                 "properties": {
                   "name": {
                     "type": "string",
+                    "maxLength": 120,
                     "example": "Ada King"
                   },
                   "email": {
                     "type": "string",
+                    "format": "email",
+                    "maxLength": 190,
                     "example": "ada@example.org"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "example": "+15550100",
+                    "description": "Full international form, starting with `+` or `00`. A local number is refused, and so is a number another contact holds."
+                  },
+                  "source": {
+                    "type": "string",
+                    "maxLength": 60,
+                    "example": "API"
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "example": "Europe/London",
+                    "description": "An IANA timezone name."
+                  },
+                  "custom_fields": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string",
+                      "maxLength": 500
+                    },
+                    "maxProperties": 50,
+                    "example": {
+                      "plan": "pro"
+                    },
+                    "description": "A flat map of up to 50 keys (each up to 60 characters). Replaces the whole map; an empty map clears it."
+                  },
+                  "stage": {
+                    "type": "string",
+                    "format": "uuid",
+                    "nullable": true,
+                    "description": "A pipeline stage id. `null` clears the stage. An unknown stage is refused. Fires contact.stage_changed."
+                  },
+                  "tags": {
+                    "type": "array",
+                    "maxItems": 50,
+                    "items": {
+                      "type": "string",
+                      "maxLength": 60
+                    },
+                    "example": [
+                      "VIP"
+                    ],
+                    "description": "Tag names to add. Missing tags are created. Tags already on the contact are kept."
+                  },
+                  "marketing_opted_out": {
+                    "type": "boolean",
+                    "description": "Sets (`true`) or clears (`false`) the contact's opt-out from promotional messages, where the workspace has that option. While set, automated marketing templates are not sent to the contact."
                   }
                 }
               }
@@ -1602,6 +1767,58 @@
         }
       }
     },
+    "/conversations/{contact}/unread": {
+      "post": {
+        "tags": [
+          "Conversations & Messages"
+        ],
+        "summary": "Mark a conversation unread",
+        "description": "Flags one thread for follow-up: its unread counter becomes at least 1; the other thread's counter is left as it is. `kind` (dm | comment) picks the thread, dm by default.\n\n**Required permission:** `salesbot:conversations:write`",
+        "operationId": "conversations.unread",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID."
+          },
+          {
+            "name": "X-Workspace",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The workspace UUID. Required with a personal access token. A workspace API key can leave it out; if sent, it must be the key's own workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "example": "dm"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/conversations/{contact}/status": {
       "put": {
         "tags": [
@@ -1872,7 +2089,7 @@
           "Conversations & Messages"
         ],
         "summary": "Send a message",
-        "description": "Sends on the channel the customer last used (or the identity or channel uuid in `channel`), records it in the thread and fires the same message.* webhooks a dashboard reply does. Counted as a BOT send: it needs the workspace in good standing, never takes the conversation over, and gets the bot's messaging window. Refused with 422 (with a `reason`) when the contact is blocked or opted out, or the window is closed — send an approved template (`type: template`, `template_id`, `parameters`) to re-engage. Media (while inbox media is on) is sent by reference: `media.library` (an id from POST /media) or `media.source_message_id`; a URL is refused. Send an `Idempotency-Key` header to make a retried request one send.\n\n**Required permission:** `salesbot:messages:send`",
+        "description": "Sends on the channel the customer last used (or the identity or channel uuid in `channel`), records it in the thread and fires the same message.* webhooks a dashboard reply does. Counted as a BOT send: it needs the workspace in good standing, never takes the conversation over, and gets the bot's messaging window. Refused with 422 (with a `reason`) when the contact is blocked or opted out, or the window is closed — send an approved template (`type: template`, `template_id`, `parameters`) to re-engage. A template with a copy-code button also needs `coupon_code`, the code the button copies (at most 15 characters). A limited-time offer template that shows a countdown needs when the offer ends, as `expiration_time_ms` (a UNIX timestamp in milliseconds, not a duration) or `offer_expires_at` (an ISO 8601 date and time) in the future. Without them the send is refused with 422 and nothing is sent; both are ignored for a template without them. Media (while inbox media is on) is sent by reference: `media.library` (an id from POST /media) or `media.source_message_id`; a URL is refused. Send an `Idempotency-Key` header to make a retried request one send.\n\nThe contact must be one the person behind the key can see, otherwise the request answers 404. A template sent without `channel` goes to the contact's WhatsApp, even when they last wrote on another channel. At the plan's active contacts limit, direct messages go only to contacts active in the last 30 days; anyone else is refused with `reason: active_contacts_limit`. Public comment replies (`kind: comment`) are not limited. Retrying with the same `Idempotency-Key` after a successful send is refused with `reason: already_attempted`, so check the conversation before sending again.\n\n**Required permission:** `salesbot:messages:send`",
         "operationId": "messages.store",
         "parameters": [
           {
@@ -1897,7 +2114,36 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Sent and recorded. `data` is the message. A `delivery` field is present when the provider did not answer: the message may have arrived, and it is not retried."
+          },
+          "404": {
+            "description": "No contact with this id that the person behind the key can see."
+          },
+          "422": {
+            "description": "The send was refused before anything reached the provider (`message` and `reason`), the request failed validation (`message` and `errors`), or the provider refused it (`message`, with the failed message recorded in the thread and returned in `data`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendRefused"
+                },
+                "examples": {
+                  "active_contacts_limit": {
+                    "summary": "Active contacts limit reached",
+                    "value": {
+                      "message": "The workspace reached its active contacts limit, so messages can only go to contacts active in the last 30 days. Add a contacts pack for more.",
+                      "reason": "active_contacts_limit"
+                    }
+                  },
+                  "messaging_window": {
+                    "summary": "Messaging window closed",
+                    "value": {
+                      "message": "WhatsApp's 24-hour messaging window has closed, so only an approved template may be sent.",
+                      "reason": "messaging_window"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -1906,22 +2152,111 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "contact_id"
+                ],
                 "properties": {
                   "contact_id": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "The contact (conversation) to send to."
                   },
                   "type": {
                     "type": "string",
-                    "example": "text"
+                    "enum": [
+                      "text",
+                      "image",
+                      "video",
+                      "audio",
+                      "file",
+                      "template"
+                    ],
+                    "default": "text",
+                    "description": "What to send. `image`, `video`, `audio` and `file` need `media`; `template` needs `template_id`."
                   },
                   "body": {
                     "type": "string",
-                    "example": "Your order has shipped."
+                    "maxLength": 4096,
+                    "example": "Your order has shipped.",
+                    "description": "The message text, or the caption of a file."
                   },
                   "kind": {
                     "type": "string",
-                    "example": "dm"
+                    "enum": [
+                      "dm",
+                      "comment"
+                    ],
+                    "default": "dm",
+                    "description": "`dm` sends a direct message. `comment` replies publicly to one of the contact's comments. A template is always a direct message."
+                  },
+                  "channel": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "A channel id from List channels. The contact must be known on it, otherwise the send is refused with `reason: no_channel`. Left out, the message goes on the channel the customer last wrote on, and a template goes to their WhatsApp."
+                  },
+                  "template_id": {
+                    "type": "string",
+                    "description": "An approved WhatsApp template. Templates are sent on WhatsApp only, and reach a contact whose messaging window has closed."
+                  },
+                  "parameters": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "items": {
+                      "type": "string",
+                      "maxLength": 1024
+                    },
+                    "description": "Values for the template's `{{1}}`, `{{2}}`, … placeholders, in order."
+                  },
+                  "coupon_code": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "description": "For a template with a copy-code button: the code the button copies (Meta allows at most 15 characters)."
+                  },
+                  "expiration_time_ms": {
+                    "type": "integer",
+                    "description": "For a limited-time offer template with a countdown: when the offer ends, as a UNIX timestamp in milliseconds."
+                  },
+                  "offer_expires_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The same as `expiration_time_ms`, as an ISO 8601 date and time."
+                  },
+                  "media": {
+                    "type": "object",
+                    "description": "The file to send, by reference. A `url` is refused: upload the file with POST /media first. A channel that cannot carry the file type refuses the send with `reason: unsupported_send_type`.",
+                    "properties": {
+                      "library": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "A media library id, from POST /media or List media."
+                      },
+                      "source_message_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Send again an attachment of a message in this workspace."
+                      },
+                      "source_media_index": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 20,
+                        "description": "Which attachment of `source_message_id` to send, counting from 0."
+                      }
+                    }
+                  },
+                  "reply_to_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Quote one of the contact's messages on the same channel. WhatsApp shows it as a reply. An id that matches nothing is ignored and the message goes out unquoted."
+                  },
+                  "parent_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "For `kind: comment`: the comment to reply to. Left out, the reply goes to the contact's newest comment."
+                  },
+                  "idempotency_key": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "description": "The same as the `Idempotency-Key` header."
                   }
                 }
               }
@@ -2270,7 +2605,7 @@
           "Segments"
         ],
         "summary": "Update a segment",
-        "description": "Partial update — an omitted key keeps its stored value, so changing the name cannot erase the conditions.\n\n**Required permission:** `salesbot:contacts:write`",
+        "description": "Partial update — an omitted key keeps its stored value, so changing the name cannot erase the conditions. `PATCH` works the same way.\n\n**Required permission:** `salesbot:contacts:write`",
         "operationId": "segments.update",
         "parameters": [
           {
@@ -2532,7 +2867,7 @@
           "Tags"
         ],
         "summary": "Update a tag",
-        "description": "Renames or recolours a tag.\n\n**Required permission:** `salesbot:contacts:write`",
+        "description": "Renames or recolours a tag. `PATCH` works the same way.\n\n**Required permission:** `salesbot:contacts:write`",
         "operationId": "tags.update",
         "parameters": [
           {

@@ -94,12 +94,40 @@
           "authorized": {
             "type": "boolean"
           },
+          "profile_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "The account's profile on the network."
+          },
           "created_at": {
             "type": "string"
           },
           "published_at": {
             "type": "string",
             "nullable": true
+          },
+          "external_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Link to this account's copy of the post on the network, once published. Only in a post's `accounts`."
+          },
+          "errors": {
+            "type": "array",
+            "description": "Why publishing failed on this account. Only in a post's `accounts`."
+          },
+          "publish_status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "publishing",
+              "published",
+              "failed"
+            ],
+            "description": "Only in a post's `accounts`."
+          },
+          "published_parts": {
+            "type": "integer",
+            "description": "How many of this account's items are live: the post, then its first comment or thread replies. A failed account can have some. Only in a post's `accounts`."
           }
         }
       },
@@ -131,6 +159,45 @@
           },
           "is_video": {
             "type": "boolean"
+          },
+          "is_processing": {
+            "type": "boolean",
+            "description": "`true` while the file is still being processed."
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "duration_ms": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Video length in milliseconds. `null` for images, and for a video not read yet."
+          },
+          "size": {
+            "type": "integer",
+            "description": "File size in bytes."
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "folder": {
+            "type": "object",
+            "nullable": true,
+            "description": "The folder the item is filed in, or `null` at the top level.",
+            "properties": {
+              "uuid": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
           },
           "created_at": {
             "type": "string"
@@ -176,7 +243,23 @@
               "failed",
               "needs_approval",
               "approval_denied"
-            ]
+            ],
+            "description": "`publishing` while the post is going out."
+          },
+          "publish_progress": {
+            "type": "object",
+            "description": "Only while the post is publishing: how many of its accounts are done.",
+            "properties": {
+              "total": {
+                "type": "integer"
+              },
+              "published": {
+                "type": "integer"
+              },
+              "failed": {
+                "type": "integer"
+              }
+            }
           },
           "accounts": {
             "type": "array",
@@ -204,28 +287,46 @@
                   "description": "Only the first version is the original.",
                   "example": true
                 },
+                "synced_with": {
+                  "type": "integer",
+                  "nullable": true,
+                  "description": "The `account_id` of the version this one copies its content from (`0` for the original), or `null`."
+                },
                 "content": {
                   "type": "array",
                   "minItems": 1,
-                  "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon and Threads, where each further item continues the thread. Other networks publish only the first item.",
+                  "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon, Threads and Pixelfed, where each further item continues the thread. Other networks publish only the first item. A first comment needs text; on Facebook Pages and LinkedIn it can also carry one image or GIF, and on Instagram and YouTube it takes no media.",
                   "items": {
                     "type": "object",
                     "properties": {
                       "body": {
                         "type": "string",
-                        "nullable": true,
-                        "example": "Our autumn sale starts today!"
+                        "example": "Our autumn sale starts today!",
+                        "description": "Multi-line text comes back as HTML, one `<div>` per line."
                       },
                       "url": {
-                        "type": "string",
-                        "nullable": true
+                        "type": "string"
                       },
                       "media": {
                         "type": "array",
                         "items": {
-                          "type": "integer"
+                          "$ref": "#/components/schemas/Media"
                         },
-                        "description": "Media `id`s from the media library."
+                        "description": "Media objects. In requests you send media `id`s instead."
+                      },
+                      "video_thumbs": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "media_id": {
+                              "type": "integer"
+                            },
+                            "thumb_id": {
+                              "type": "integer"
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -974,6 +1075,29 @@
           }
         }
       }
+    },
+    "responses": {
+      "PostRequirementsFailed": {
+        "description": "The post breaks a rule of one of its networks, so nothing was saved or scheduled. Each key is `requirements.{version}.{provider}.{rule}`. `{version}` is the `account_id` of the version at fault (`0` for the original), or the account `id` when the rule is about that account's own option, such as a Pinterest board. A rule about content ends in the content item's position, from `0`. Examples: `requirements.0.instagram.hashtags_0` (more than 5 hashtags), `requirements.0.instagram.post_0` (an Instagram feed post with no media), `requirements.12.pinterest.board` (no board), `requirements.0.twitter.text_0` (over 280 characters on an account without X Premium), `requirements.0.facebook_page.first_comment` (a second item with no text on a network that posts it as the first comment) and `requirements.0.instagram.first_comment_media` (media in an Instagram first comment). The same request's other checks can add other keys, such as `cannot_scheduled`.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "example": {
+              "message": "Instagram → Maximum of 5 hashtags allowed. (and 1 more error)",
+              "errors": {
+                "requirements.0.instagram.hashtags_0": [
+                  "Instagram → Maximum of 5 hashtags allowed."
+                ],
+                "requirements.12.pinterest.board": [
+                  "Pinterest (Acme Pins) → Choose a board."
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   },
   "paths": {
@@ -1090,6 +1214,33 @@
               "format": "uuid"
             },
             "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Match the name, the username or the network."
+          },
+          {
+            "name": "providers[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Only accounts of these providers, such as `instagram`."
+          },
+          {
+            "name": "unauthorized",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Only accounts that need reconnecting."
           }
         ],
         "responses": {
@@ -1164,7 +1315,7 @@
         ],
         "summary": "List posts",
         "operationId": "posts.index",
-        "description": "20 posts per page.\n\n**Required permission:** `publishing:posts:read`",
+        "description": "Newest first. 50 posts per page; set `limit` for up to 100.\n\n**Required permission:** `publishing:posts:read`",
         "parameters": [
           {
             "name": "workspace",
@@ -1180,9 +1331,17 @@
             "name": "status",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "draft",
+                "scheduled",
+                "published",
+                "failed",
+                "needs_approval",
+                "trash"
+              ]
             },
-            "description": "Filter by status."
+            "description": "Filter by status. `trash` lists trashed posts."
           },
           {
             "name": "keyword",
@@ -1226,6 +1385,15 @@
             }
           },
           {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "schema": {
@@ -1266,7 +1434,7 @@
         ],
         "summary": "Create a post",
         "operationId": "posts.store",
-        "description": "Creates a draft, or schedules it if you set `schedule`, `schedule_now` or `queue` (which also needs at least one account). Each line of `body` becomes a paragraph.\n\n**Required permission:** `publishing:posts:write`, plus `publishing:posts:publish` to schedule, queue or publish now.",
+        "description": "Creates a draft, or schedules it if you set `schedule`, `schedule_now` or `queue` (which also needs at least one account). `schedule` needs `date` and `time`; without them the post is saved as a draft. `queue` gives each account its own next free slot in its posting schedule, and the post's `scheduled_at` is the earliest of them. Each line of `body` becomes a paragraph.\n\nWhen you schedule, queue or publish now, the post is first checked against each network's rules, such as Instagram's limit of 5 hashtags or Pinterest's board. If it breaks one you get `422` and nothing is created. Drafts are not checked.\n\n**Required permission:** `publishing:posts:write`, plus `publishing:posts:publish` to schedule, queue or publish now.",
         "parameters": [
           {
             "name": "workspace",
@@ -1321,7 +1489,7 @@
                   "timezone": {
                     "type": "string",
                     "example": "Europe/London",
-                    "description": "Timezone for `date` and `time`."
+                    "description": "IANA timezone for `date` and `time`. Defaults to the timezone setting of the key's creator (or the token's user), then UTC."
                   },
                   "schedule": {
                     "type": "boolean",
@@ -1333,7 +1501,7 @@
                   },
                   "queue": {
                     "type": "boolean",
-                    "description": "Add to the next free slot in the posting schedule."
+                    "description": "Give each account its own next free slot in its posting schedule."
                   },
                   "versions": {
                     "type": "array",
@@ -1356,10 +1524,15 @@
                           "description": "Only the first version is the original.",
                           "example": true
                         },
+                        "synced_with": {
+                          "type": "integer",
+                          "nullable": true,
+                          "description": "Keep this version's content a copy of another version: that version's `account_id`, or `0` for the original. This version's own `options` still apply. Ignored on the original."
+                        },
                         "content": {
                           "type": "array",
                           "minItems": 1,
-                          "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon and Threads, where each further item continues the thread. Other networks publish only the first item.",
+                          "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon, Threads and Pixelfed, where each further item continues the thread. Other networks publish only the first item. A first comment needs text; on Facebook Pages and LinkedIn it can also carry one image or GIF, and on Instagram and YouTube it takes no media.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -1378,6 +1551,23 @@
                                   "type": "integer"
                                 },
                                 "description": "Media `id`s from the media library."
+                              },
+                              "video_thumbs": {
+                                "type": "array",
+                                "description": "A cover image for a video in this item, on networks that take one.",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "media_id": {
+                                      "type": "integer",
+                                      "description": "The video's media `id` (MP4 or M4V)."
+                                    },
+                                    "thumb_id": {
+                                      "type": "integer",
+                                      "description": "The cover's media `id` (JPG or PNG)."
+                                    }
+                                  }
+                                }
                               }
                             }
                           }
@@ -1404,6 +1594,9 @@
                 }
               }
             }
+          },
+          "422": {
+            "$ref": "#/components/responses/PostRequirementsFailed"
           }
         }
       },
@@ -1455,7 +1648,7 @@
                   },
                   "trash": {
                     "type": "boolean",
-                    "description": "Move to trash instead of deleting."
+                    "description": "Move to trash instead of deleting for good."
                   }
                 }
               }
@@ -1464,7 +1657,33 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted_from_app": {
+                      "type": "integer",
+                      "description": "How many posts were deleted or moved to trash. Not returned with `social_only`."
+                    },
+                    "deleting_from_social_platforms": {
+                      "type": "string",
+                      "example": "in_queue",
+                      "description": "With `social_only` or `app_and_social`: removal from the networks is queued."
+                    },
+                    "deleted": {
+                      "type": "integer",
+                      "description": "Without `trash`: same as `deleted_from_app` (`0` with `social_only`)."
+                    },
+                    "to_trash": {
+                      "type": "integer",
+                      "description": "With `trash`: same as `deleted_from_app` (`0` with `social_only`)."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1517,7 +1736,7 @@
         ],
         "summary": "Update a post",
         "operationId": "posts.update",
-        "description": "Replaces the post's accounts, tags, date, time and versions. `date` and `time` use the workspace's timezone. To schedule, call [Schedule a post](/publishing/posts/schedule-a-post) afterwards. A non-draft post with no accounts or no date and time goes back to draft.\n\n**Required permission:** `publishing:posts:write`, plus `publishing:posts:publish` if the post is scheduled or you send a `date` and `time`.",
+        "description": "Replaces the post's accounts, tags, date, time and versions. `date` and `time` are read in `timezone`, or without it in the timezone setting of the key's creator (or the token's user), then UTC. To schedule, call [Schedule a post](/publishing/posts/schedule-a-post) afterwards. A non-draft post with no accounts or no date and time goes back to draft.\n\nA scheduled post that stays scheduled is first checked against each network's rules. If it breaks one you get `422` and nothing changes.\n\n**Required permission:** `publishing:posts:write`, plus `publishing:posts:publish` if the post is scheduled or you send a `date` and `time`.",
         "parameters": [
           {
             "name": "workspace",
@@ -1578,6 +1797,11 @@
                     "example": "09:00",
                     "description": "`HH:mm`"
                   },
+                  "timezone": {
+                    "type": "string",
+                    "example": "Europe/London",
+                    "description": "IANA timezone for `date` and `time`. Defaults to the timezone setting of the key's creator (or the token's user), then UTC."
+                  },
                   "versions": {
                     "type": "array",
                     "minItems": 1,
@@ -1599,10 +1823,15 @@
                           "description": "Only the first version is the original.",
                           "example": true
                         },
+                        "synced_with": {
+                          "type": "integer",
+                          "nullable": true,
+                          "description": "Keep this version's content a copy of another version: that version's `account_id`, or `0` for the original. This version's own `options` still apply. Ignored on the original."
+                        },
                         "content": {
                           "type": "array",
                           "minItems": 1,
-                          "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon and Threads, where each further item continues the thread. Other networks publish only the first item.",
+                          "description": "Most posts have a single item. A second item is posted as the first comment on Facebook Pages, Instagram, LinkedIn and YouTube, and as a reply that starts a thread on X, Bluesky, Mastodon, Threads and Pixelfed, where each further item continues the thread. Other networks publish only the first item. A first comment needs text; on Facebook Pages and LinkedIn it can also carry one image or GIF, and on Instagram and YouTube it takes no media.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -1621,6 +1850,23 @@
                                   "type": "integer"
                                 },
                                 "description": "Media `id`s from the media library."
+                              },
+                              "video_thumbs": {
+                                "type": "array",
+                                "description": "A cover image for a video in this item, on networks that take one.",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "media_id": {
+                                      "type": "integer",
+                                      "description": "The video's media `id` (MP4 or M4V)."
+                                    },
+                                    "thumb_id": {
+                                      "type": "integer",
+                                      "description": "The cover's media `id` (JPG or PNG)."
+                                    }
+                                  }
+                                }
                               }
                             }
                           }
@@ -1652,6 +1898,9 @@
                 }
               }
             }
+          },
+          "422": {
+            "$ref": "#/components/responses/PostRequirementsFailed"
           }
         }
       },
@@ -1697,10 +1946,12 @@
                       "social_only",
                       "app_and_social"
                     ],
-                    "default": "app_only"
+                    "default": "app_only",
+                    "description": "Whether to also remove the post from the social networks."
                   },
                   "trash": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Move to trash instead of deleting for good."
                   }
                 }
               }
@@ -1709,7 +1960,33 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted_from_app": {
+                      "type": "integer",
+                      "description": "How many posts were deleted or moved to trash. Not returned with `social_only`."
+                    },
+                    "deleting_from_social_platforms": {
+                      "type": "string",
+                      "example": "in_queue",
+                      "description": "With `social_only` or `app_and_social`: removal from the networks is queued."
+                    },
+                    "deleted": {
+                      "type": "integer",
+                      "description": "Without `trash`: same as `deleted_from_app` (`0` with `social_only`)."
+                    },
+                    "to_trash": {
+                      "type": "integer",
+                      "description": "With `trash`: same as `deleted_from_app` (`0` with `social_only`)."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1721,7 +1998,7 @@
         ],
         "summary": "Schedule a post",
         "operationId": "posts.schedule",
-        "description": "Schedules the post for its saved date and time, or publishes it now with `postNow: true`. The post may need approval first.\n\n**Required permission:** `publishing:posts:publish`",
+        "description": "Schedules the post, or publishes it now with `postNow: true`. Send `date` and `time` to set its time here; without them it keeps its saved date and time. `postNow` sends every account now and drops their own times. The post may need approval first.\n\nThe post is first checked against each network's rules, such as Instagram's limit of 5 hashtags or Pinterest's board. If it breaks one you get `422` and nothing is scheduled.\n\n**Required permission:** `publishing:posts:publish`",
         "parameters": [
           {
             "name": "workspace",
@@ -1754,7 +2031,49 @@
                 ],
                 "properties": {
                   "postNow": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Publish now instead of at the post's time."
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2026-10-20",
+                    "description": "`YYYY-MM-DD`. Send with `time` to set the post's time."
+                  },
+                  "time": {
+                    "type": "string",
+                    "example": "09:00",
+                    "description": "`HH:mm`"
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "example": "Europe/London",
+                    "description": "IANA timezone for `date`, `time` and `accounts_schedule`. Defaults to the timezone setting of the key's creator (or the token's user), then UTC."
+                  },
+                  "accounts_schedule": {
+                    "type": "array",
+                    "description": "A time of its own for some accounts. The other accounts go at the post's time, and the post's `scheduled_at` becomes the earliest of them all. An entry for an account that is not in the post is ignored; a time in the past gets `422`.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "account_id",
+                        "date",
+                        "time"
+                      ],
+                      "properties": {
+                        "account_id": {
+                          "type": "integer",
+                          "example": 12
+                        },
+                        "date": {
+                          "type": "string",
+                          "example": "2026-10-20"
+                        },
+                        "time": {
+                          "type": "string",
+                          "example": "11:30"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -1774,15 +2093,20 @@
                     },
                     "scheduled_at": {
                       "type": "string",
-                      "example": "2026-10-20 09:00:00"
+                      "example": "2026-10-20 09:00:00",
+                      "description": "`YYYY-MM-DD HH:mm:ss`, UTC"
                     },
                     "needs_approval": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "`true` when the post now waits for approval instead of being scheduled."
                     }
                   }
                 }
               }
             }
+          },
+          "422": {
+            "$ref": "#/components/responses/PostRequirementsFailed"
           }
         }
       }
@@ -1794,7 +2118,7 @@
         ],
         "summary": "Reschedule a post",
         "operationId": "posts.reschedule",
-        "description": "**Required permission:** `publishing:posts:publish`",
+        "description": "Moves the post from its current date and time (`source_date`, `source_time`) to `target_date` and `target_time`. All four are read in the timezone setting of the key's creator (or the token's user), then UTC; there is no `timezone` field.\n\n**Required permission:** `publishing:posts:publish`",
         "parameters": [
           {
             "name": "workspace",
@@ -1863,7 +2187,8 @@
                     },
                     "scheduled_at": {
                       "type": "string",
-                      "example": "2026-10-20 09:00:00"
+                      "example": "2026-10-21 10:30:00",
+                      "description": "`YYYY-MM-DD HH:mm:ss`, UTC"
                     },
                     "needs_approval": {
                       "type": "boolean"
@@ -1883,7 +2208,7 @@
         ],
         "summary": "Add a post to the queue",
         "operationId": "posts.addToQueue",
-        "description": "Schedules the post into the next free slot of the posting schedule.\n\n**Required permission:** `publishing:posts:publish`",
+        "description": "Puts the post in the queue. Each account gets its own next free slot in its posting schedule, and the post's `scheduled_at` is the earliest of them. The slots follow each posting schedule's own timezone.\n\nThe post is first checked against each network's rules, such as Instagram's limit of 5 hashtags or Pinterest's board. If it breaks one you get `422` and nothing is scheduled.\n\n**Required permission:** `publishing:posts:publish`",
         "parameters": [
           {
             "name": "workspace",
@@ -1913,7 +2238,8 @@
                 "type": "object",
                 "properties": {
                   "timezone": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Accepted, but not used: the slots follow the posting schedule's timezone."
                   }
                 }
               }
@@ -1933,15 +2259,20 @@
                     },
                     "scheduled_at": {
                       "type": "string",
-                      "example": "2026-10-20 09:00:00"
+                      "example": "2026-10-20 09:00:00",
+                      "description": "`YYYY-MM-DD HH:mm:ss`, UTC"
                     },
                     "needs_approval": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "`true` when the post now waits for approval instead of being scheduled."
                     }
                   }
                 }
               }
             }
+          },
+          "422": {
+            "$ref": "#/components/responses/PostRequirementsFailed"
           }
         }
       }
@@ -1953,7 +2284,7 @@
         ],
         "summary": "Approve a post",
         "operationId": "posts.approve",
-        "description": "The key's admin must be allowed to approve posts.\n\n**Required permission:** `publishing:posts:approve`",
+        "description": "Approves a post that is waiting for approval, and schedules it. Send `date` and `time` (or `accounts_schedule`) to change its time as you approve; without them it keeps the time it was submitted with. The key's creator (or the token's user) must be allowed to approve posts.\n\nThe post is first checked against each network's rules, such as Instagram's limit of 5 hashtags or Pinterest's board. If it breaks one you get `422` and the post keeps waiting for approval.\n\n**Required permission:** `publishing:posts:approve`",
         "parameters": [
           {
             "name": "workspace",
@@ -1975,6 +2306,59 @@
             "description": "Post UUID."
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "2026-10-20",
+                    "description": "`YYYY-MM-DD`. Send with `time` to set the post's time."
+                  },
+                  "time": {
+                    "type": "string",
+                    "example": "09:00",
+                    "description": "`HH:mm`"
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "example": "Europe/London",
+                    "description": "IANA timezone for `date`, `time` and `accounts_schedule`. Defaults to the timezone setting of the key's creator (or the token's user), then UTC."
+                  },
+                  "accounts_schedule": {
+                    "type": "array",
+                    "description": "A time of its own for some accounts. The other accounts go at the post's time, and the post's `scheduled_at` becomes the earliest of them all. An entry for an account that is not in the post is ignored; a time in the past gets `422`.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "account_id",
+                        "date",
+                        "time"
+                      ],
+                      "properties": {
+                        "account_id": {
+                          "type": "integer",
+                          "example": 12
+                        },
+                        "date": {
+                          "type": "string",
+                          "example": "2026-10-20"
+                        },
+                        "time": {
+                          "type": "string",
+                          "example": "11:30"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -1987,9 +2371,101 @@
                       "type": "boolean"
                     },
                     "scheduled_at": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "2026-10-20 09:00:00",
+                      "description": "`YYYY-MM-DD HH:mm:ss`, UTC"
                     }
                   }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/PostRequirementsFailed"
+          }
+        }
+      }
+    },
+    "/{workspace}/posts/retry/{post}/{account}": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Retry a failed account",
+        "operationId": "posts.retryAccount",
+        "description": "Publishes the post again on one account that failed. The post's other accounts are left alone. Items already live on this account are not sent again: when only the first comment failed, only the comment is sent. The account must have failed, and the post must not be publishing.\n\n**Required permission:** `publishing:posts:publish`",
+        "parameters": [
+          {
+            "name": "workspace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
+          },
+          {
+            "name": "post",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Post UUID."
+          },
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Account UUID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "publishing",
+                      "description": "The post's status."
+                    },
+                    "publish_progress": {
+                      "type": "object",
+                      "description": "How many of the post's accounts are done.",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "published": {
+                          "type": "integer"
+                        },
+                        "failed": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The account is not in the post (`account`), the post is still publishing (`publishing`), or the account did not fail (`status`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
                 }
               }
             }
@@ -2004,7 +2480,7 @@
         ],
         "summary": "List media",
         "operationId": "media.index",
-        "description": "**Required permission:** `publishing:media:read`",
+        "description": "Newest first, 50 per page; set `limit` for up to 100. Without `folder`, every file is listed.\n\n**Required permission:** `publishing:media:read`",
         "parameters": [
           {
             "name": "workspace",
@@ -2015,6 +2491,82 @@
               "format": "uuid"
             },
             "description": "Your workspace UUID. With a workspace API key it must be the key's workspace; a personal access token works in every workspace you belong to."
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search file names. A search looks in every folder and ignores `favorite`."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "image",
+                "gif",
+                "video"
+              ]
+            }
+          },
+          {
+            "name": "mime_types[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Only these MIME types, such as `image/png`."
+          },
+          {
+            "name": "usage",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "unused",
+                "draft",
+                "scheduled",
+                "published"
+              ]
+            },
+            "description": "`unused`: in no post. `published`: in a published post. `scheduled`: in a scheduled post and no published one. `draft`: only in drafts, failed posts or posts waiting for approval."
+          },
+          {
+            "name": "favorite",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Only files the key's creator (or the token's user) starred."
+          },
+          {
+            "name": "folder",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "A folder `uuid` (as a media item's `folder` shows it), or `root` for files in no folder."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "newest",
+                "oldest",
+                "name",
+                "size"
+              ],
+              "default": "newest"
+            },
+            "description": "`size` puts the largest first."
           },
           {
             "name": "limit",
@@ -2096,6 +2648,10 @@
                   "alt_text": {
                     "type": "string",
                     "maxLength": 255
+                  },
+                  "folder": {
+                    "type": "string",
+                    "description": "A folder `uuid` (as a media item's `folder` shows it) to file the media in. An unknown folder files it at the top level."
                   }
                 }
               }
@@ -2258,6 +2814,11 @@
                   "alt_text": {
                     "type": "string",
                     "maxLength": 500
+                  },
+                  "folder": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Move the item: a folder `uuid` or `id`, or `null` for the top level. Leave it out to keep the item where it is. An unknown folder gets `422`."
                   }
                 }
               }
@@ -2456,6 +3017,10 @@
                   "alt_text": {
                     "type": "string",
                     "maxLength": 255
+                  },
+                  "folder": {
+                    "type": "string",
+                    "description": "A folder `uuid` (as a media item's `folder` shows it) to file the media in. An unknown folder files it at the top level."
                   }
                 }
               }
@@ -2561,6 +3126,10 @@
                   "alt_text": {
                     "type": "string",
                     "maxLength": 255
+                  },
+                  "folder": {
+                    "type": "string",
+                    "description": "A folder `uuid` (as a media item's `folder` shows it) to file the media in. An unknown folder files it at the top level."
                   }
                 }
               }

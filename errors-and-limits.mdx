@@ -20,7 +20,16 @@ Validation errors (`422`) also list the problem fields:
 }
 ```
 
-When a message cannot be sent, the Messaging API returns `422` with a `reason`, for example because the contact is blocked, has opted out, or the messaging window has closed.
+When a message cannot be sent, the Messaging API returns `422` with a `reason`, for example because the contact is blocked, has opted out, or the messaging window has closed:
+
+```json
+{
+  "message": "The workspace reached its active contacts limit, so messages can only go to contacts active in the last 30 days. Add a contacts pack for more.",
+  "reason": "active_contacts_limit"
+}
+```
+
+The **Send a message** page of the Messaging API reference lists the reasons.
 
 ## Status codes
 
@@ -30,12 +39,55 @@ When a message cannot be sent, the Messaging API returns `422` with a `reason`, 
 | `400` | A personal access token called the Messaging or Link in Bio API without an `X-Workspace` header (`code: workspace_required`). |
 | `401` | The key or token is missing, invalid, revoked or expired, or you sent two different credentials. |
 | `403` | The key or token lacks a permission, its admin (or, for a personal access token, your role) can no longer do this, or the workspace is suspended. A personal access token created before token permissions gets `code: token_permissions_required` on the Messaging and Link in Bio APIs. |
+| `403` `plan_feature_missing` | Your plan doesn't include this feature. `module` names it. See [Plan limits](#plan-limits). |
 | `404` | The resource does not exist in this workspace, or the feature is not available on it. With `X-Workspace`: the workspace does not exist or you are not a member (`code: workspace_not_found`). |
 | `409` | Conflict, for example an `Idempotency-Key` reused with a different body. |
 | `412` | The `If-Match` revision is out of date. Fetch the resource again. |
-| `422` | Validation failed. |
+| `422` | Validation failed, a message was refused (with a `reason`), a plan limit was reached, or a post breaks a network's rules. |
 | `428` | An `If-Match` header is required. |
 | `429` | Too many requests. Wait for the number of seconds in `Retry-After`. |
+
+## Plan limits
+
+When your plan doesn't include a feature, the request is refused with `403`:
+
+```json
+{
+  "message": "Broadcasts are not included in your plan. You can add them with an add-on.",
+  "code": "plan_feature_missing",
+  "module": "broadcasts"
+}
+```
+
+| `module` | Refused requests |
+| --- | --- |
+| `integrations.salesbot_api` | Every Messaging API call except `GET /api/v1/account` |
+| `broadcasts` | Creating, editing, approving or sending a broadcast |
+| `integrations.zapier` | The [Zapier](/zapier) trigger endpoints |
+| `integrations.biolinks_api` | Every Link in Bio API call. The Link in Bio API comes with every plan that includes Link in Bio. |
+
+Without broadcasts, you can still list, read and delete the broadcasts you have. Keys keep their permissions while refused, and work again as soon as the plan or an add-on includes the feature.
+
+Contact limits answer `422` instead:
+
+- **Total contacts.** `POST /api/v1/contacts` at the plan's contacts limit returns a validation error on `name`, for example `You've reached your plan's limit of 1000 contacts.` Contacts who have only commented publicly don't count.
+- **Active contacts.** At the plan's active contacts limit, `POST /api/v1/messages` sends direct messages only to contacts active in the last 30 days. Anyone else is refused with `reason: active_contacts_limit`. Replies to public comments are not limited.
+
+## Post rules (Publishing API)
+
+A post that is created or updated to be published, scheduled, queued or approved is checked against each network's rules first. If it breaks one, nothing is saved or scheduled and you get `422` with one error per problem. Each key is `requirements.{version}.{provider}.{rule}`:
+
+```json
+{
+  "message": "Instagram → Maximum of 5 hashtags allowed. (and 1 more error)",
+  "errors": {
+    "requirements.0.instagram.hashtags_0": ["Instagram → Maximum of 5 hashtags allowed."],
+    "requirements.12.pinterest.board": ["Pinterest (Acme Pins) → Choose a board."]
+  }
+}
+```
+
+Common causes are an Instagram post with more than 5 hashtags, an Instagram feed post without media, a Pinterest pin without a board, and X text over 280 characters on an account without X Premium. A draft is not checked. See [Create a post](/publishing/posts/create-a-post) for how the keys are built.
 
 ## Rate limits
 
@@ -53,6 +105,6 @@ The Messaging API may also apply its own per-key or per-token limit. Your platfo
 ## Retrying safely
 
 - `GET` requests are always safe to retry.
-- `POST /api/v1/messages` accepts an `Idempotency-Key` header. Retrying with the same key sends the message once.
+- `POST /api/v1/messages` accepts an `Idempotency-Key` header. Retrying with the same key sends the message once: after a successful send, the retry is refused with `422` and `reason: already_attempted`.
 - Every `POST` to the [webhook management API](/webhooks/manage) requires an `Idempotency-Key`.
 - Other writes are not idempotent. Check whether the first request succeeded before retrying.

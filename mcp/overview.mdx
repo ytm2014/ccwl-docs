@@ -27,44 +27,50 @@ MCP is an open standard that Claude, ChatGPT, Cursor, VS Code, Claude Code and m
 https://app.example.com/mcp
 ```
 
-It uses streamable HTTP. It is the same address for every workspace: [connect your app](/mcp/connect) by signing in with your usual login (OAuth) and ticking the workspaces it may use, or by sending a personal access token.
+It uses streamable HTTP. It is the same address for every workspace: [connect your app](/mcp/connect) by signing in with your usual login (OAuth) and ticking the workspaces it may use, or by sending a personal access token or a workspace API key.
 
 <Note>
-The older address `https://app.example.com/os/mcp` still works with a personal access token. Use `/mcp` for anything new: it is the only address that supports signing in.
+The older address `https://app.example.com/os/mcp` still works, with sign-in as well as tokens and keys. Use `/mcp` for anything new: it is the address your dashboard gives.
 </Note>
 
 ## What it can do
 
-The assistant gets two sets of tools. See the [tools reference](/mcp/tools) for the full list.
+The assistant gets up to three sets of tools. See the [tools reference](/mcp/tools) for the full list.
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card title="Publishing" icon="calendar">
-    Workspaces, connected social accounts, posts, scheduling and the queue, tags, the media library and analytics.
+    Workspaces, connected social accounts, posts and first comments, mentions, scheduling and the queue, tags, the media library and analytics.
   </Card>
   <Card title="Sales inbox" icon="messages">
     Contacts, conversations, messages, automations, appointments and broadcasts, where your plan includes the sales inbox.
   </Card>
+  <Card title="Bio Links" icon="link">
+    Bio pages, short links, form leads and their analytics, where your platform offers the Link in Bio API.
+  </Card>
 </CardGroup>
 
-## Sign-in or token
+## Sign-in, token or API key
 
-| | Sign in (OAuth) | Personal access token |
-| --- | --- | --- |
-| Set up | Paste the server URL, sign in, tick your workspaces | Create a token with the **AI assistants** permission, paste it into your app's config |
-| Workspaces | The workspaces you tick when you connect. Connect again to change them | Every workspace you belong to |
-| What it can do | Everything your role allows in those workspaces | What your role allows, narrowed to the token's permissions |
-| Best for | Claude, ChatGPT and other apps with connector screens | Claude Code, scripts, apps without OAuth |
-| Lasts | Refreshes itself. Unused for 90 days, sign in again | Until it expires (90 days unless you chose another date) or you revoke it |
+| | Sign in (OAuth) | Personal access token | Workspace API key |
+| --- | --- | --- | --- |
+| Set up | Paste the server URL, sign in, tick your workspaces | Create a token with the **AI assistants** permission, paste it into your app's config | A workspace admin creates a key with the **AI assistants** permission; paste it into your app's config |
+| Workspaces | The workspaces you tick when you connect. Connect again to change them | Every workspace you belong to | The key's own workspace only |
+| Acts as | You | You | The person who created the key, with the role they hold now |
+| What it can do | Everything your role allows in those workspaces | What your role allows, narrowed to the token's permissions | What its creator's role allows, narrowed to the key's permissions |
+| Best for | Claude, ChatGPT and other apps with connector screens | Claude Code, scripts, apps without OAuth | An assistant or tool that should only ever work in one workspace |
+| Lasts | Refreshes itself. Unused for 90 days, sign in again | Until it expires (90 days unless you chose another date) or you revoke it | Until you revoke it, or the expiry date if you set one. It stops working if its creator leaves the workspace |
 
-Either way, the assistant acts **as you**: it can never do more than your own role allows in each workspace.
+Whichever you use, the assistant can never do more than the role of the person it acts as allows in each workspace.
 
 ## How it works
 
 Almost every tool works on one workspace. The assistant is told this when it connects, so you can just ask; behind the scenes it:
 
-1. calls `list-workspaces` to get the workspace `uuid` (with a sign-in connection, only the workspaces you ticked),
+1. calls `list-workspaces` to get the workspace `uuid` (with a sign-in connection, only the workspaces you ticked; with a workspace API key, only the key's workspace),
 2. passes that `uuid` as `workspace` to every other tool,
 3. for posting, calls `list-accounts` for the account IDs, then `create-post`.
+
+When the connection can only use one workspace (a workspace API key, or a sign-in connection with one workspace ticked), `workspace` is optional and the tools use that workspace.
 
 ## Roles and permissions
 
@@ -76,13 +82,13 @@ What the assistant may do follows your role in the workspace:
 | Member | ✅ | ✅ |
 | Admin | ✅ | ✅ |
 
-Sales inbox tools also follow your team role: a tool for an area you cannot open in the dashboard is not offered at all. With a token or workspace API key created with permissions, the assistant also only gets the tools those permissions allow. If a workspace requires post approval, posts the assistant schedules or queues wait for approval like anyone else's.
+Sales inbox tools also follow your team role: a tool for an area you cannot open in the dashboard is not offered at all. A viewer can read through the sales inbox tools but cannot change anything with them, whatever their team role. With a token or workspace API key created with permissions, the assistant also only gets the tools those permissions allow. If a workspace requires post approval, posts the assistant schedules or queues wait for approval like anyone else's.
 
 A workspace you cannot access is reported as "not found", the same as one that does not exist.
 
 ## Safety rails
 
-- **Messages to customers need a yes.** Tools that reach real people, such as `send-message`, `send-template-message` and `submit-broadcast`, refuse to run until the assistant passes `confirm: true`, which it should only do after checking with you.
+- **Sensitive changes need a yes.** Tools that message people, can start or change an automation, or cannot be undone refuse to run until the assistant passes `confirm: true`, which it should only do after checking with you: `send-message`, `send-template-message`, `submit-broadcast`, `close-conversation`, `create-contact`, `update-contact`, `book-appointment`, `reschedule-appointment`, `cancel-appointment`, `mark-appointment-outcome`, `create-automation`, `save-automation-flow` and `set-automation-state`.
 - **Broadcasts are never sent by the assistant.** `submit-broadcast` creates the broadcast awaiting approval; a person approves it in the dashboard.
 - **Automations are saved as drafts.** Nothing an assistant builds answers customers until someone presses Publish in the app.
 - **A sending cap.** An assistant can send at most 60 messages an hour and reach 200 people a day per workspace. A send past the cap is refused with the reason.

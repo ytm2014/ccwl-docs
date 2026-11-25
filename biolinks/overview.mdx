@@ -23,6 +23,7 @@ curl https://app.example.com/api/v1/biolinks/pages   -H "Authorization: Bearer Y
 | `400` | `workspace_required` | A personal access token sent no `X-Workspace` header. |
 | `403` | `token_permissions_required` | The personal access token was created before token permissions. Create a new one with `biolinks:` permissions. |
 | `403` | | The key or token lacks the permission, or your role in the workspace does not allow it. |
+| `403` | `plan_feature_missing` | Your plan doesn't include this feature (`module: integrations.biolinks_api`). The Link in Bio API comes with every plan that includes Link in Bio pages, short links or QR codes. This applies to workspace API keys too. |
 | `404` | `workspace_not_found` | The workspace does not exist, the value is not a UUID, or you are not a member. A workspace API key also gets this when `X-Workspace` names another workspace. |
 
 ## New content starts paused
@@ -72,6 +73,10 @@ Domains are managed with a workspace API key that has `biolinks:domains:manage`.
 
 Removing a domain is queued the same way. A domain still used by a page or link can't be removed. You can queue up to 5 domain operations per minute.
 
+## Webhooks
+
+Link in Bio has its own webhook events for leads, pages, short links, custom domains, QR codes and click milestones. Subscribe to them like any other [webhook](/webhooks/overview); [Events](/webhooks/events#link-in-bio-events) lists them and their data. An endpoint managed through the API needs a key with `biolinks:webhooks:subscribe`.
+
 ## What else to know
 
 - Lists return 25 items by default, up to 100 with `per_page`. Pages and links can be filtered by `status` and searched with `keyword`.
@@ -80,4 +85,4 @@ Removing a domain is queued the same way. A domain still used by a page or link 
 - An `active` page can still be unreachable if its domain, plan or the platform blocks it. Check `disabled` and the domain's status.
 - Passwords are write-only; responses only say `has_password`. Pixel selections aren't returned either.
 
-Not available through the API yet: webhook events for pages and links, bulk writes, submission exports, raw visitor data, custom HTML/CSS, commerce blocks and setting a domain's home page.
+Not available through the API yet: bulk writes, submission exports, raw visitor data, custom HTML/CSS, commerce blocks and setting a domain's home page.

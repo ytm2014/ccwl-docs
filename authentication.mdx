@@ -9,7 +9,7 @@ description: "Workspace API keys and personal access tokens: how to create them,
 | --- | --- | --- |
 | Looks like | Starts with `osk_` | Letters and digits, no prefix |
 | Works in | One workspace | Every workspace you belong to, now or later |
-| Acts as | The admin who created it | You, with your role in each workspace |
+| Acts as | The person who created it, with their current role in the workspace | You, with your role in each workspace |
 | Who can create one | Workspace admins | Any user |
 | The workspace | Comes from the key | You name it on each call (see [Choosing the workspace](#choosing-the-workspace)) |
 | Best for | A server integration for one workspace | A tool or AI assistant that works across your workspaces |
@@ -34,7 +34,7 @@ Both get only the permissions you tick when you create them.
 </Steps>
 
 <Warning>
-If the admin who created a workspace API key leaves the workspace or stops being an admin, the key stops working. Create integration keys from an admin account that will stay in place.
+A workspace API key acts as the person who created it, with the role, team role limits and channel access they have today. If that person leaves the workspace or their account is deleted, the key stops working for good (`401`). The Link in Bio and webhook management APIs also need them to be a workspace admin: while they are not, those calls answer `403`. Create integration keys from an admin account that will stay in place.
 
 A personal access token stops working in a workspace as soon as you leave it. Revoking a token stops every integration that uses it, in every workspace.
 </Warning>
@@ -53,7 +53,7 @@ x-api-key: osk_YOUR_SECRET
 ```
 </CodeGroup>
 
-A workspace API key works in either header on every API. A personal access token works in either header on the Messaging and Link in Bio APIs, and only as `Authorization: Bearer` on the Publishing API.
+A workspace API key works in either header on every REST API. The MCP server for AI assistants reads only `Authorization: Bearer`. A personal access token works in either header on the Messaging and Link in Bio APIs, and only as `Authorization: Bearer` on the Publishing API.
 
 If you send both headers with different values, the request is rejected with `401`.
 
@@ -93,7 +93,7 @@ Personal access tokens made before token permissions existed keep exactly what t
 
 A key or token only gets the permissions you select when you create it. Picking "all" selects every permission that exists at that moment; permissions added to the platform later are never added to existing keys or tokens. To change permissions, create a new key or token, switch your integration over, then revoke the old one.
 
-Permissions narrow what the person behind the credential can already do; they never add to it. For a workspace API key that person is the admin who created it. For a personal access token it is you: in each workspace the token can only do what you can do there yourself, so your role and any team role limits apply. Plan limits and features that are switched off still apply.
+Permissions narrow what the person behind the credential can already do; they never add to it. For a workspace API key that person is whoever created it, in the role they hold now. For a personal access token it is you: in each workspace the token can only do what you can do there yourself, so your role and any team role limits apply. Plan limits and features that are switched off still apply.
 
 Personal access tokens can never hold the webhook permissions, `salesbot:zapier:hooks` or `biolinks:domains:manage`. Use a workspace API key for those.
 
