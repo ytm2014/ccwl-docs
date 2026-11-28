@@ -99,7 +99,7 @@
     },
     {
       "name": "Channels",
-      "description": "Read-only: connecting a channel is an OAuth flow that happens in the dashboard. A whitelabel partner can also start one with the separate partner API; see [Channel Connect](/partner/channel-connect)."
+      "description": "Read-only: connecting a channel is an OAuth flow that happens in the dashboard. A whitelabel partner can also start one with the separate partner API; see [Client Connect API](/partner/client-connect)."
     },
     {
       "name": "Contacts",

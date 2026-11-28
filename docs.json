@@ -465,8 +465,7 @@
             "group": "Partner API",
             "pages": [
               "partner/overview",
-              "partner/channel-connect",
-              "partner/account-connect"
+              "partner/client-connect"
             ]
           }
         ]
@@ -542,6 +541,8 @@
     ]
   },
   "redirects": [
+    { "source": "/partner/channel-connect", "destination": "/partner/client-connect" },
+    { "source": "/partner/account-connect", "destination": "/partner/client-connect" },
     {
       "source": "/guide/messaging/meetings",
       "destination": "/guide/appointments/overview"

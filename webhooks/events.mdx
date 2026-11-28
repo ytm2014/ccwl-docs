@@ -92,12 +92,14 @@ You can't subscribe a channel to a status it never reports.
 | `salesbot.booking.rescheduled` | `contact`, `booking` |
 | `salesbot.booking.cancelled` | `contact`, `booking` |
 
-### Channel connect
+### Channel connections
 
-Only on instances where partner-initiated channel onboarding is switched on, and
-only for connections a partner started. They report the outcome of the
-onboarding — not a later token expiry or disconnection. See
-[Channel Connect](/partner/channel-connect).
+Only on instances where partner-initiated onboarding is switched on, and
+only for connections a partner started through the
+[Client Connect API](/partner/client-connect) that have a messaging channel.
+They report the outcome of the onboarding, not a later token expiry or
+disconnection. The same connection also sends the
+[Client Connect API](#client-connect-api) event.
 
 | Event | Data |
 | --- | --- |
@@ -128,12 +130,13 @@ onboarding — not a later token expiry or disconnection. See
 }
 ```
 
-### Account connect
+### Client Connect API
 
-Only on instances where partner-initiated account onboarding is switched on, and
-only for connections a partner started. They report the outcome of the connect
+Only on instances where partner-initiated onboarding is switched on, and
+only for connections a partner started. Every connection sends one, whatever the
+provider, WhatsApp and Telegram included. They report the outcome of the connect
 or reconnect link, not a later token expiry or disconnection (that is
-`publishing.account.disconnected`).
+`publishing.account.disconnected`). See [Client Connect API](/partner/client-connect).
 
 | Event | Data |
 | --- | --- |
@@ -145,14 +148,14 @@ or reconnect link, not a later token expiry or disconnection (that is
 `connection` carries `id` (the connection, not the account), `provider`,
 `status`, `account_id` (the first account, only on `completed`), `account_ids`
 (every account the link connected, only on `completed`), `channel_id` (only on
-`completed`, and only when the account also has an inbox channel), `error_code`,
+`completed`, and only when there is a messaging channel), `error_code`,
 `state` and `expires_at`.
 
-A connection for a provider with a messaging channel (Facebook Pages,
+A connection with a messaging channel (WhatsApp, Telegram, Facebook Pages,
 Instagram, TikTok, YouTube, LinkedIn pages, Google Business Profile, Threads,
 Reddit, Mastodon and Bluesky) also sends the matching
 `salesbot.channel.connection.*` event, in the
-[Channel connect](#channel-connect) shape, with the same connection `id`.
+[Channel connections](#channel-connections) shape, with the same connection `id`.
 
 ```json
 {
