@@ -1,16 +1,12 @@
 ---
 title: "Account Connect"
 description: "Give a customer a link that connects, or reconnects, their social accounts for publishing and messaging, with no dashboard login."
+icon: "share-nodes"
 ---
 
-<Warning>
-Draft. Account Connect is not released: it is switched off on every instance,
-and this page may change before it ships.
-</Warning>
-
 <Note>
-Private beta, and switched on per partner. `GET /api/partner/account-connect/providers`
-tells you whether it is on for you and which providers you can use.
+Switched on per partner. `GET /api/partner/account-connect/providers` tells you
+whether it is on for you and which providers you can use.
 </Note>
 
 Your software gives one of your customers a link. They open it, sign in with
@@ -108,10 +104,6 @@ curl https://app.example.com/api/partner/workspaces/$WORKSPACE/account-connect/a
 
 - `limit` and `remaining` are `null` when the plan sets no account limit.
 - `providers` says, per provider, whether a new account may be added now.
-- `partner_pool` (`limit`, `used`, `remaining`) appears when your agreement sets
-  a profile pool across all your workspaces (see
-  [Your limits](/partner/overview#your-limits)). Once it is full, every provider
-  answers `false`.
 
 Creating a connection for a provider whose answer is `false` is refused at once
 with a `422` and `"error_code": "account_limit_reached"`, before your customer
