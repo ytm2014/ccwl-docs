@@ -465,7 +465,8 @@
             "group": "Partner API",
             "pages": [
               "partner/overview",
-              "partner/channel-connect"
+              "partner/channel-connect",
+              "partner/account-connect"
             ]
           }
         ]

@@ -88,6 +88,43 @@ An e-mail that already belongs to someone else is never taken over. You get a
 A `422` means a field failed validation; a `400` means the request was refused,
 for example an e-mail outside your allowed domains.
 
+### Your limits
+
+<Warning>
+Draft. Partner limits are switched off on every instance, and may change before
+they ship.
+</Warning>
+
+Your agreement can set two limits:
+
+- a **workspace limit**: how many workspaces your customers may have;
+- a **profile pool**: how many social profiles may be connected across **all**
+  your workspaces together.
+
+Read them, with what you have used, before you provision or connect:
+
+```bash
+curl https://app.example.com/api/partner/limits -H "X-API-KEY: $PARTNER_KEY"
+```
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "workspaces": { "limit": 10, "used": 7, "remaining": 3 },
+    "profiles": { "limit": 250, "used": 180, "remaining": 70 }
+  }
+}
+```
+
+`limit` and `remaining` are `null` when there is no limit. At the workspace
+limit, provisioning a **new** user answers `409` with
+`"error_code": "workspace_limit_reached"` and creates nothing; updating a user
+you already have always works. When the pool is full, new accounts are refused
+wherever they are connected (the dashboard, invites, the API,
+[Account Connect](/partner/account-connect)); reconnecting an existing account
+always works.
+
 ## Issue a workspace API key
 
 The `osk_` key your customer's integrations authenticate with, without anybody
@@ -131,4 +168,11 @@ uuid that does not exist — is a **404**, never a 403.
   Give a customer a link that connects their own WhatsApp number, Facebook Page,
   Instagram account or TikTok Business account — or connect a Telegram bot from
   its token.
+</Card>
+
+<Card title="Account Connect (draft)" icon="share-nodes" href="/partner/account-connect">
+  Give a customer a link that connects, or reconnects, their social accounts
+  for publishing (Facebook, Instagram, LinkedIn, YouTube, Google Business
+  Profile, X, TikTok, Threads, Pinterest, Reddit, Tumblr, VK, Bluesky and
+  Mastodon), with the messaging channel too where there is one. Not released yet.
 </Card>
