@@ -56,7 +56,7 @@ const WORKSPACE_HEADER = {
 const TAG_NOTES = {
   Account: 'No workspace id appears in any /api/v1 URL. A workspace API key selects its own workspace; a personal access token names it in the `X-Workspace` header.\n\n'
     + 'A workspace API key acts as the member who created it, and a personal access token acts as its owner. The API shows and changes only what that person could in the dashboard: a member limited to some channels sees only the contacts and conversations on those channels, a role that sees only its own assigned conversations sees only those in the conversation and message endpoints, and a role that hides phone numbers or email addresses gets them masked. A contact or conversation that person cannot see answers 404.',
-  Channels: 'Read-only: connecting a channel is an OAuth flow that happens in the dashboard. A whitelabel partner can also start one with the separate partner API; see [Channel Connect](/partner/channel-connect).',
+  Channels: 'Read-only: connecting a channel is an OAuth flow that happens in the dashboard. A whitelabel partner can also start one with the separate partner API; see [Client Connect API](/partner/client-connect).',
   Contacts: 'custom_fields is a flat {key: value} map. An empty map is returned as {} so client-side property access is always safe.\n\n'
     + 'When the person behind the key has a role that hides phone numbers or email addresses, `phone`, `email` and the WhatsApp or SMS `handle` come back masked (for example `••••••••3456` and `j•••@example.com`), and searching with `q` matches those fields only by their whole value. Sending a masked value back in an update leaves the stored value unchanged.',
 };
